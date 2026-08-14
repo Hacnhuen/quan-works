@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L2 完备 · 三大定理与证明骨架 | InfoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html" class="on">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Level 2 · Completeness</div>
+  <h1>L2 完备：三大定理与证明骨架</h1>
+  <p>L1 定义了"熵是什么"，L2 回答<strong>"为什么极限恰好是熵"</strong>。核心武器只有两件：<em>AEP（典型集）</em>撑起所有可达性，<em>Fano 不等式</em>撑起所有逆定理。掌握这两件，三大定理的证明结构就会一次性坍缩成同一个模板。</p>
+  <div class="meta">
+    <i>学段：研究生</i><i>门槛：大数定律 · 典型集</i>
+    <i>骨架：MIT 6.441 模块 2/4 · UESTC 第 1–3 章</i><i>核心：AEP · Fano · 随机编码</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>L2 目录</h4>
+  <a href="#template">00 · 统一证明模板</a>
+  <a href="#aep">01 · AEP 与典型集</a>
+  <a href="#jaep">02 · 联合典型性</a>
+  <a href="#src">03 · 第一定理：信源编码</a>
+  <a href="#fano">04 · Fano 不等式</a>
+  <a href="#chn">05 · 第二定理：信道编码</a>
+  <a href="#converse">06 · 逆定理</a>
+  <a href="#randcode">07 · 随机编码的哲学</a>
+  <a href="#sep">08 · 分离定理</a>
+  <a href="#univ">09 · 通用压缩 LZ</a>
+  <a href="#quiz2">10 · 自检与作业</a>
+  <div class="grp">
+    <h4>跳转</h4>
+    <a href="l1_foundation.html">← L1 基础</a>
+    <a href="l3_advanced.html">L3 专业 →</a>
+    <a href="lab.html">🧪 实验室</a>
+  </div>
+</aside>
+
+<main>
+
+<section class="section" id="template">
+  <h2><span class="num">00</span>统一证明模板：先看骨架再看肉</h2>
+  <p class="lead">三大定理的证明都是同一个套路。先记住这张表，后面每个证明都在往里填空。</p>
+
+  <div class="tw"><table>
+    <tr><th></th><th>第一定理（信源）</th><th>第二定理（信道）</th><th>第三定理（率失真）</th></tr>
+    <tr><td><strong>问题</strong></td><td>最少多少比特能无损表示</td><td>最多多快能可靠传输</td><td>容许失真 D 时最少多少比特</td></tr>
+    <tr><td><strong>答案</strong></td><td>R &gt; H(X)</td><td>R &lt; C = max I(X;Y)</td><td>R &gt; R(D) = min I(X;X̂)</td></tr>
+    <tr><td><strong>可达性工具</strong></td><td>典型集只有 2<sup>nH</sup> 个</td><td>随机编码 + 联合典型译码</td><td>随机码本 + 失真典型性</td></tr>
+    <tr><td><strong>逆定理工具</strong></td><td>非典型集概率 → 0</td><td>Fano + DPI</td><td>Fano + DPI + 凸性</td></tr>
+    <tr><td><strong>归属</strong></td><td>Shannon 1948</td><td>Shannon 1948</td><td>Shannon 1959</td></tr>
+  </table></div>
+
+  <div class="note">
+    <b>可达性 vs 逆定理：一个定理的两半</b>
+    每个 Shannon 定理都是<strong>夹逼</strong>：
+    <ul style="margin-bottom:0">
+      <li><b>可达性（achievability）</b>：构造一个方案，证明 R 能做到 ⟹ 给出<em>上界的可实现性</em>。手法通常是"随机地造，然后证明平均表现好，故必存在一个好的"。</li>
+      <li><b>逆定理（converse）</b>：证明超过这个界一定失败 ⟹ 给出<em>不可能性</em>。手法几乎总是 Fano + 数据处理不等式。</li>
+    </ul>
+    两半合起来才说明这个界是<em>紧的</em>（tight），即恰好是极限而非某个宽松估计。
+  </div>
+</section>
+
+<section class="section" id="aep">
+  <h2><span class="num">01</span>AEP 与典型集：信息论的钥匙</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 渐近均分性 AEP</span>
+    <p>设 X₁, X₂, …, X<sub>n</sub> 独立同分布 ~ p(x)，则</p>
+    <div class="fml">− (1/n) log₂ p(X₁, X₂, …, X<sub>n</sub>)  →  H(X)   <span class="cm">依概率收敛</span></div>
+    <p><b>归属：</b>Shannon (1948) 弱形式；McMillan (1953) L¹ 收敛；Breiman (1957) 几乎处处收敛（合称 <em>Shannon–McMillan–Breiman 定理</em>，适用于遍历信源）。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 弱 AEP 只需一行大数定律</span>
+    <div class="fml">由独立性：p(X₁,…,X<sub>n</sub>) = Π<sub>i</sub> p(X<sub>i</sub>)
+
+取对数：− (1/n) log₂ p(X₁,…,X<sub>n</sub>) = − (1/n) Σ<sub>i</sub> log₂ p(X<sub>i</sub>)
+
+这是 i.i.d. 随机变量 {−log₂ p(X<sub>i</sub>)} 的样本均值。
+由弱大数定律，它依概率收敛到期望：
+
+  E[ −log₂ p(X) ] = H(X)   ∎</div>
+    <p><b>关键洞察：</b>AEP 就是<strong>大数定律作用在"自信息"这个随机变量上</strong>。看穿这一点，AEP 就不再神秘。</p>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · 典型集</span>
+    <div class="fml">A<sub>ε</sub><sup>(n)</sup> = { x<sup>n</sup> ∈ 𝒳<sup>n</sup> : | −(1/n) log₂ p(x<sup>n</sup>) − H(X) | ≤ ε }
+
+等价写法： 2<sup>−n(H+ε)</sup> ≤ p(x<sup>n</sup>) ≤ 2<sup>−n(H−ε)</sup></div>
+    <p>即：典型序列就是<strong>概率"差不多等于" 2<sup>−nH</sup> 的那些序列</strong>——它们彼此概率近似相等，故名"均分"。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 典型集的三条性质</span>
+    <p>对充分大的 n：</p>
+    <ol>
+      <li><strong>几乎必然落入：</strong>Pr{ X<sup>n</sup> ∈ A<sub>ε</sub><sup>(n)</sup> } &gt; 1 − ε</li>
+      <li><strong>大小上界：</strong>| A<sub>ε</sub><sup>(n)</sup> | ≤ 2<sup>n(H+ε)</sup></li>
+      <li><strong>大小下界：</strong>| A<sub>ε</sub><sup>(n)</sup> | ≥ (1−ε) 2<sup>n(H−ε)</sup></li>
+    </ol>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 性质 2（最常用）</span>
+    <div class="fml">1 = Σ<sub>x<sup>n</sup>∈𝒳<sup>n</sup></sub> p(x<sup>n</sup>)
+  ≥ Σ<sub>x<sup>n</sup>∈A<sub>ε</sub></sub> p(x<sup>n</sup>)
+  ≥ Σ<sub>x<sup>n</sup>∈A<sub>ε</sub></sub> 2<sup>−n(H+ε)</sup>     <span class="cm">← 典型集定义的下界</span>
+  = |A<sub>ε</sub><sup>(n)</sup>| · 2<sup>−n(H+ε)</sup>
+
+⟹ |A<sub>ε</sub><sup>(n)</sup>| ≤ 2<sup>n(H+ε)</sup>  ∎</div>
+  </div>
+
+  <div class="note deep">
+    <b>AEP 的震撼含义：只有极少数序列"存在"</b>
+    抛一枚 p=0.9 的偏币 n 次。总共有 2<sup>n</sup> 种可能序列，但熵只有 H(0.9)=0.469 bit，所以典型序列只有约 2<sup>0.469n</sup> 个。<br>
+    当 n=100：总序列数 2¹⁰⁰ ≈ 1.27×10³⁰，典型序列约 2⁴⁶·⁹ ≈ 1.3×10¹⁴。<br>
+    <strong>典型集只占全部序列的 10⁻¹⁶，却承载了几乎全部概率。</strong><br><br>
+    这就是压缩的全部秘密：<em>只给典型序列编号</em>，需要 log₂(2<sup>nH</sup>) = nH 比特；剩下那些序列几乎不会出现，即使出错也无所谓。
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：典型集的规模坍缩</div>
+    <div class="ctrl"><label for="a-p">偏币概率 p</label><input type="range" id="a-p" min="0.01" max="0.99" step="0.01" value="0.9"><span class="val" id="a-pv">0.90</span></div>
+    <div class="ctrl"><label for="a-n">序列长度 n</label><input type="range" id="a-n" min="10" max="500" step="10" value="100"><span class="val" id="a-nv">100</span></div>
+    <canvas id="a-cv" data-h="240"></canvas>
+    <div class="readout" id="a-out"></div>
+  </div>
+</section>
+
+<section class="section" id="jaep">
+  <h2><span class="num">02</span>联合典型性：第二定理的钥匙</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>序列对 (x<sup>n</sup>, y<sup>n</sup>) 称为<strong>联合典型</strong>，若三个条件同时成立：</p>
+    <div class="fml">| −(1/n)log₂ p(x<sup>n</sup>) − H(X) | ≤ ε
+| −(1/n)log₂ p(y<sup>n</sup>) − H(Y) | ≤ ε
+| −(1/n)log₂ p(x<sup>n</sup>,y<sup>n</sup>) − H(X,Y) | ≤ ε</div>
+    <p>即：各自典型，<em>且作为一对也典型</em>。第三条是关键——它要求两者的"配对关系"符合真实联合分布。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 联合 AEP（核心引理）</span>
+    <p>设 (X<sup>n</sup>, Y<sup>n</sup>) ~ Π p(x<sub>i</sub>, y<sub>i</sub>)。若 (X̃<sup>n</sup>, Ỹ<sup>n</sup>) 是<strong>独立</strong>抽取的、边缘分布相同的序列对（即"随机配对"），则</p>
+    <div class="fml">Pr{ (X̃<sup>n</sup>, Ỹ<sup>n</sup>) ∈ A<sub>ε</sub><sup>(n)</sup> } ≈ 2<sup>−n I(X;Y)</sup></div>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 数出来</span>
+    <div class="fml">联合典型对的数量 ≈ 2<sup>nH(X,Y)</sup>
+独立配对的总数    ≈ 2<sup>nH(X)</sup> × 2<sup>nH(Y)</sup>
+
+Pr ≈ 2<sup>nH(X,Y)</sup> / ( 2<sup>nH(X)</sup> · 2<sup>nH(Y)</sup> )
+   = 2<sup>−n[ H(X)+H(Y)−H(X,Y) ]</sup>
+   = 2<sup>−n I(X;Y)</sup>   ∎</div>
+    <p><b>解读：</b>随便抓一个 x<sup>n</sup> 和一个 y<sup>n</sup> 凑成对，它们"看起来像是真的经由信道产生的"的概率，指数地小，指数率恰好是 I(X;Y)。</p>
+  </div>
+
+  <div class="note">
+    <b>这个引理为什么值 2<sup>nI</sup> 个码字</b>
+    译码器收到 y<sup>n</sup> 后，在码本里找唯一与之联合典型的码字。<br>
+    每个<em>错误</em>码字碰巧联合典型的概率 ≈ 2<sup>−nI</sup>。若码本有 M 个码字，则误判概率 ≈ (M−1)·2<sup>−nI</sup>。<br>
+    要它趋于 0，需要 <strong>M &lt; 2<sup>nI</sup></strong>，即速率 R = (log M)/n &lt; I(X;Y)。<br>
+    <em>第二定理的可达性到此已经讲完了</em>——剩下的只是把它写严格。
+  </div>
+</section>
+
+<section class="section" id="src">
+  <h2><span class="num">03</span>第一定理：无失真信源编码</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Shannon 第一定理 (1948)</span>
+    <p>设 {X<sub>i</sub>} 为 i.i.d. 信源，熵 H(X)。</p>
+    <ul>
+      <li><strong>可达性：</strong>∀ R &gt; H(X)，存在速率为 R 的编码方案，使错误概率 P<sub>e</sub><sup>(n)</sup> → 0。</li>
+      <li><strong>逆定理：</strong>∀ R &lt; H(X)，任何速率为 R 的方案都有 P<sub>e</sub><sup>(n)</sup> → 1。</li>
+    </ul>
+    <p>故 <strong>H(X) 是无失真压缩的确切极限</strong>，不多一比特，不少一比特。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 可达性（典型集编码）</span>
+    <p><b>构造：</b></p>
+    <ol>
+      <li>取 ε &gt; 0 使 H+ε &lt; R。划分 𝒳<sup>n</sup> 为典型集 A<sub>ε</sub><sup>(n)</sup> 与其补集。</li>
+      <li><b>典型序列：</b>因 |A<sub>ε</sub><sup>(n)</sup>| ≤ 2<sup>n(H+ε)</sup>，可用 <code>n(H+ε)+1</code> 比特给它们逐一编号，首位标 <code>0</code>。</li>
+      <li><b>非典型序列：</b>用 <code>n log|𝒳| + 1</code> 比特暴力编号，首位标 <code>1</code>。</li>
+    </ol>
+    <p><b>分析平均码长：</b></p>
+    <div class="fml">E[ℓ(X<sup>n</sup>)]/n ≤ (1−ε)·(H+ε+1/n) + ε·(log|𝒳|+1/n)
+            ≤ H + ε + ε·log|𝒳| + 1/n
+            = H + ε'   <span class="cm">ε' 可任意小</span></div>
+    <p>取 n 足够大、ε 足够小，即得平均速率 &lt; R，且错误概率为 0（这是无损编码）。∎</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 逆定理</span>
+    <p>若 R &lt; H，则码本最多能索引 2<sup>nR</sup> 个序列。但每个典型序列概率 ≈ 2<sup>−nH</sup>，故被覆盖的总概率至多</p>
+    <div class="fml">2<sup>nR</sup> × 2<sup>−n(H−ε)</sup> = 2<sup>−n(H−R−ε)</sup> → 0   <span class="cm">当 R &lt; H−ε</span></div>
+    <p>即：能被正确表示的序列，其总概率指数地趋于 0，故 P<sub>e</sub> → 1。∎</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论</span>
+    <ul>
+      <li><strong>对有记忆信源</strong>（平稳遍历），极限是<em>熵率</em> H(𝒳) = lim H(X<sub>n</sub>|X₁…X<sub>n−1</sub>)，而非单符号熵。英文文本熵率 ≈1.3 bit/字母 ≪ 单字母熵 4.14 bit。</li>
+      <li><strong>与 L1 的 Kraft 界一致：</strong>L1 给出 H ≤ L &lt; H+1（单符号），本定理通过成块把 "+1" 摊薄为 "+1/n" → 0。</li>
+      <li>这解释了 ZIP/gzip 为何对文本效果好（高冗余）而对已压缩文件无效（已接近熵）。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="fano">
+  <h2><span class="num">04</span>Fano 不等式：所有逆定理的引擎</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Fano 不等式 (Fano, 1952)</span>
+    <p>设想从 Y 估计 X，估计量 X̂ = g(Y)，错误概率 P<sub>e</sub> = Pr{X̂ ≠ X}。则</p>
+    <div class="fml">H(P<sub>e</sub>) + P<sub>e</sub> · log₂(|𝒳| − 1)  ≥  H(X | Y)
+
+常用弱化形式： 1 + P<sub>e</sub> · log₂|𝒳|  ≥  H(X|Y)
+
+解出：  P<sub>e</sub>  ≥  [ H(X|Y) − 1 ] / log₂|𝒳|</div>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明</span>
+    <p>定义指示变量 E = 1{X̂ ≠ X}。用两种顺序展开 H(E, X | Y)：</p>
+    <div class="fml">H(E,X|Y) = H(X|Y) + H(E|X,Y)
+         = H(X|Y) + 0        <span class="cm">← E 由 X 和 X̂=g(Y) 完全决定</span>
+
+H(E,X|Y) = H(E|Y) + H(X|E,Y)
+         ≤ H(E) + H(X|E,Y)   <span class="cm">← 条件减少熵</span>
+         = H(P<sub>e</sub>) + H(X|E,Y)
+
+其中 H(X|E,Y) = Pr{E=0}·H(X|Y,E=0) + Pr{E=1}·H(X|Y,E=1)
+             = (1−P<sub>e</sub>)·0 + P<sub>e</sub>·H(X|Y,E=1)
+             ≤ P<sub>e</sub> · log₂(|𝒳|−1)
+
+<span class="cm">（E=0 时 X=X̂ 已知，熵为 0；E=1 时 X 只剩 |𝒳|−1 种可能）</span>
+
+合并：H(X|Y) ≤ H(P<sub>e</sub>) + P<sub>e</sub>·log₂(|𝒳|−1)  ∎</div>
+  </div>
+
+  <div class="note">
+    <b>Fano 在说什么（费曼版）</b>
+    <strong>"如果看完 Y 之后你对 X 还很不确定（H(X|Y) 大），那你就一定经常猜错（P<sub>e</sub> 大）。"</strong><br>
+    这个"废话"一旦量化，就成了证明一切不可能性的标准工具：想证明某速率做不到，就证明它导致 H(X|Y) 大，再由 Fano 推出 P<sub>e</sub> 无法趋于 0。<br><br>
+    Fano 不等式也是<strong>统计学 minimax 下界</strong>的主力工具（Le Cam 方法、Assouad 引理与之并列），在现代机器学习理论中被大量使用。
+  </div>
+</section>
+
+<section class="section" id="chn">
+  <h2><span class="num">05</span>第二定理：有噪信道编码</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Shannon 第二定理 (1948)</span>
+    <p>对离散无记忆信道，容量 C = max<sub>p(x)</sub> I(X;Y)。</p>
+    <ul>
+      <li><strong>可达性：</strong>∀ R &lt; C，存在 (2<sup>nR</sup>, n) 码序列使最大错误概率 λ<sup>(n)</sup> → 0。</li>
+      <li><strong>逆定理：</strong>任何使 P<sub>e</sub><sup>(n)</sup> → 0 的码序列必满足 R ≤ C。</li>
+    </ul>
+    <p>这是<strong>整个通信工程最重要的定理</strong>：它宣布"有噪声"并不意味着"必然出错"。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 可达性（随机编码，五步）</span>
+    <p><b>① 随机生成码本。</b>固定达到容量的输入分布 p(x)。独立地按 Π p(x<sub>i</sub>) 随机抽取 2<sup>nR</sup> 个长度为 n 的码字，排成码本 𝒞。码本对收发双方均已知。</p>
+    <p><b>② 编码。</b>要发送消息 w ∈ {1,…,2<sup>nR</sup>}，就发送第 w 个码字 x<sup>n</sup>(w)。</p>
+    <p><b>③ 译码（联合典型性译码）。</b>收到 y<sup>n</sup> 后，寻找<em>唯一</em>的 ŵ 使 (x<sup>n</sup>(ŵ), y<sup>n</sup>) 联合典型。若不存在或不唯一，报错。</p>
+    <p><b>④ 分析错误概率。</b>由对称性，设发送 w=1。两类错误：</p>
+    <div class="fml">E₀：真码字不典型
+    Pr{E₀} → 0   <span class="cm">由联合 AEP 性质 1</span>
+
+E<sub>j</sub>：某个错码字 j≠1 碰巧与 y<sup>n</sup> 联合典型
+    Pr{E<sub>j</sub>} ≤ 2<sup>−n(I(X;Y)−3ε)</sup>   <span class="cm">由联合 AEP 引理</span>
+
+union bound:
+P<sub>e</sub> ≤ Pr{E₀} + Σ<sub>j=2</sub><sup>2<sup>nR</sup></sup> Pr{E<sub>j</sub>}
+   ≤ ε + (2<sup>nR</sup> − 1) · 2<sup>−n(I−3ε)</sup>
+   ≤ ε + 2<sup>−n(I − R − 3ε)</sup>
+
+若 R &lt; I(X;Y) − 3ε，则指数为负 ⟹ P<sub>e</sub> → 0  ✓</div>
+    <p><b>⑤ 去随机化（关键的最后一步）。</b>上面算的是<em>所有随机码本的平均</em>错误概率。既然平均值 &lt; ε，那么<strong>至少存在一个具体码本 𝒞*</strong> 其错误概率 &lt; ε。</p>
+    <p>再补一步：从 𝒞* 中扔掉错误概率最大的一半码字，剩下的码字最大错误概率 &lt; 2ε，而速率仅从 R 降到 R − 1/n（可忽略）。这样把"平均错误概率"升级为"最大错误概率"。∎</p>
+  </div>
+
+  <div class="note warn">
+    <b>Shannon 证明的革命性与代价</b>
+    <strong>革命性：</strong>他没有构造任何具体的码，而是证明"随机地造码，平均表现就已足够好，故好码必然存在"。这是<em>概率方法（probabilistic method）</em>在工程中最早也最辉煌的应用之一。<br><br>
+    <strong>代价：</strong>这是<em>非构造性</em>的。定理说好码存在，却不告诉你是哪个。随机码本身无法使用——它需要 2<sup>nR</sup> 个长度 n 的码字，存储和译码复杂度都是指数级。<br><br>
+    <strong>后续 60 年的历史，就是"找出可实用的好码"：</strong>Hamming (1950) → 卷积码 → Reed–Solomon (1960) → LDPC (Gallager 1962，被遗忘 30 年后于 1996 复兴) → Turbo 码 (1993) → <strong>Polar 码 (Arıkan 2009，首个被证明可达容量且复杂度可行的构造)</strong>。5G 标准同时采用了 LDPC（数据信道）与 Polar（控制信道）。
+  </div>
+</section>
+
+<section class="section" id="converse">
+  <h2><span class="num">06</span>逆定理：为什么不能超过 C</h2>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 弱逆定理（Fano + DPI 标准流程）</span>
+    <p>设消息 W 均匀分布于 {1,…,2<sup>nR</sup>}，则 H(W) = nR。链路为 W → X<sup>n</sup> → Y<sup>n</sup> → Ŵ。</p>
+    <div class="fml">nR = H(W)
+   = H(W|Y<sup>n</sup>) + I(W;Y<sup>n</sup>)
+   ≤ [1 + P<sub>e</sub><sup>(n)</sup>·nR] + I(W;Y<sup>n</sup>)      <span class="cm">← Fano 不等式</span>
+   ≤ 1 + P<sub>e</sub><sup>(n)</sup>·nR + I(X<sup>n</sup>;Y<sup>n</sup>)   <span class="cm">← 数据处理不等式</span>
+   ≤ 1 + P<sub>e</sub><sup>(n)</sup>·nR + nC              <span class="cm">← 无记忆性（下面单独证）</span>
+
+两边除以 n：
+R ≤ 1/n + P<sub>e</sub><sup>(n)</sup>·R + C
+
+令 n→∞ 且 P<sub>e</sub><sup>(n)</sup>→0：
+R ≤ C   ∎</div>
+    <p><b>补证 I(X<sup>n</sup>;Y<sup>n</sup>) ≤ nC：</b></p>
+    <div class="fml">I(X<sup>n</sup>;Y<sup>n</sup>) = H(Y<sup>n</sup>) − H(Y<sup>n</sup>|X<sup>n</sup>)
+          = H(Y<sup>n</sup>) − Σ<sub>i</sub> H(Y<sub>i</sub>|X<sub>i</sub>)   <span class="cm">← 无记忆性</span>
+          ≤ Σ<sub>i</sub> H(Y<sub>i</sub>) − Σ<sub>i</sub> H(Y<sub>i</sub>|X<sub>i</sub>)  <span class="cm">← 次可加性</span>
+          = Σ<sub>i</sub> I(X<sub>i</sub>;Y<sub>i</sub>) ≤ nC  ∎</div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 强逆定理（Wolfowitz 1957）</span>
+    <p>弱逆只说"P<sub>e</sub> 不能趋于 0"，强逆说得更狠：</p>
+    <div class="fml">若 R &gt; C，则 P<sub>e</sub><sup>(n)</sup> → <b>1</b>（指数速度）</div>
+    <p>即：超过容量不是"错误率略高"，而是<strong>几乎必然全错</strong>。容量 C 是一道悬崖而非缓坡。这个"全或无"的相变现象是信息论最优美的结论之一。→ 精细刻画见 <a href="l3_advanced.html#finite" style="color:var(--l3)">L3 有限块长</a></p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：速率—可靠性相变</div>
+    <div class="ctrl"><label for="p-e">BSC 翻转概率 ε</label><input type="range" id="p-e" min="0.01" max="0.49" step="0.01" value="0.11"><span class="val" id="p-ev">0.11</span></div>
+    <div class="ctrl"><label for="p-n">块长 n</label><input type="range" id="p-n" min="10" max="2000" step="10" value="200"><span class="val" id="p-nv">200</span></div>
+    <canvas id="p-cv" data-h="250"></canvas>
+    <div class="readout" id="p-out"></div>
+    <p style="font-size:13.5px;color:var(--ink-3);margin:10px 0 0">增大 n，看曲线如何从平缓过渡逼近成一道垂直悬崖——这就是"渐近"二字的含义。</p>
+  </div>
+</section>
+
+<section class="section" id="randcode">
+  <h2><span class="num">07</span>随机编码的哲学：为什么"乱造"反而最优</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>直觉上，好码应该精心设计——码字之间距离尽量远。但 Shannon 证明<strong>随机码就已渐近最优</strong>。为什么？</p>
+    <p><b>几何图像：</b>在 n 维空间中，每个码字周围有一个"噪声球"，半径由噪声功率决定。可靠通信要求这些球不重叠。</p>
+    <ul>
+      <li>空间总"体积" ≈ 2<sup>nH(Y)</sup></li>
+      <li>每个噪声球"体积" ≈ 2<sup>nH(Y|X)</sup></li>
+      <li>最多能塞下的球数 ≈ 2<sup>nH(Y)</sup> / 2<sup>nH(Y|X)</sup> = 2<sup>nI(X;Y)</sup></li>
+    </ul>
+    <p>这就是容量的<strong>球堆积（sphere packing）</strong>解释。而在高维空间中，随机放置的点<em>几乎必然</em>彼此远离——这是高维几何的"测度集中"现象。<strong>维度越高，随机越接近最优。</strong></p>
+  </div>
+
+  <div class="note deep">
+    <b>高维空间的反直觉</b>
+    在 2 维平面上随机撒点，很容易撞在一起。但在 1000 维空间中，随机撒的点几乎总是近似正交、彼此等距。<br>
+    Shannon 的证明本质上是在说：<em>不要试图在高维空间里手工设计，随机就是最好的设计。</em><br>
+    同样的现象支撑着现代机器学习——高维随机初始化、随机投影（Johnson–Lindenstrauss 引理）、dropout 都在利用测度集中。
+  </div>
+</section>
+
+<section class="section" id="sep">
+  <h2><span class="num">08</span>分离定理：为什么系统可以分模块设计</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 信源—信道分离定理</span>
+    <p>对平稳遍历信源（熵率 H）与 DMC（容量 C）：</p>
+    <ul>
+      <li>若 <strong>H &lt; C</strong>，则存在方案使传输错误概率 → 0；</li>
+      <li>若 <strong>H &gt; C</strong>，则不可能可靠传输。</li>
+    </ul>
+    <p>而且，<strong>先信源编码（压到 H）再信道编码（保护到 C）这种两段式设计，与任何联合设计一样好</strong>（渐近意义下）。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 工程意义与边界</span>
+    <p><b>意义：</b>这是现代通信系统架构的理论许可证。JPEG（信源编码）与 LTE 纠错（信道编码）可以由不同团队、不同标准独立开发，组合起来仍是最优的。分层协议栈因此成为可能。</p>
+    <p><b>但分离定理会失效，当：</b></p>
+    <ul>
+      <li><strong>有时延约束</strong>（有限块长）——见 <a href="l3_advanced.html#finite" style="color:var(--l3)">L3</a>，实时视频通话就属此类；</li>
+      <li><strong>多用户场景</strong>——如多址接入信道传输相关信源，联合设计严格优于分离；</li>
+      <li><strong>信道状态未知或时变</strong>；</li>
+      <li><strong>网络中有中继/广播</strong>。</li>
+    </ul>
+    <p>这正是<strong>联合信源信道编码 JSCC</strong> 与近年 <em>Deep JSCC</em>（用神经网络端到端学习）成为研究热点的原因。</p>
+  </div>
+</section>
+
+<section class="section" id="univ">
+  <h2><span class="num">09</span>通用压缩：不知道分布也能最优</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>Huffman 与典型集编码都需要<strong>预先知道 p(x)</strong>。现实中往往不知道。<em>通用（universal）压缩</em>要求：不知道分布，仍渐近达到熵率。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Lempel–Ziv 最优性</span>
+    <p>对任何<strong>平稳遍历</strong>信源，LZ78（及 LZ77）算法的压缩率几乎必然收敛到熵率：</p>
+    <div class="fml">lim<sub>n→∞</sub> (1/n) ℓ<sub>LZ</sub>(X₁,…,X<sub>n</sub>) = H(𝒳)   <span class="cm">a.s.</span></div>
+    <p><b>归属：</b>Ziv &amp; Lempel 1977 (LZ77) / 1978 (LZ78)；最优性证明见 Cover &amp; Thomas §13.5。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · LZ78 手工演练</span>
+    <p>压缩串 <code>ABABABA</code>：</p>
+    <pre><code>输入: A B A B A B A
+
+短语1: A        → 字典 {1:A}      输出 (0, A)
+短语2: B        → 字典 {2:B}      输出 (0, B)
+短语3: AB       → 字典 {3:AB}     输出 (1, B)   [引用短语1 + B]
+短语4: ABA      → 字典 {4:ABA}    输出 (3, A)   [引用短语3 + A]
+
+编码结果: (0,A)(0,B)(1,B)(3,A)</code></pre>
+    <p>序列越长，字典中可复用的长短语越多，压缩率越高。这正是 <code>gzip</code>、<code>PNG</code>、<code>ZIP</code>、<code>GIF</code> 的核心机制（LZ77/LZ78 系列变体）。</p>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿</span>
+    <p>"通用压缩"的现代版本是<strong>大语言模型</strong>：LLM 不需要预设分布，通过学习获得极强的下一 token 预测能力，配合算术编码可实现<em>超越所有传统压缩器</em>的压缩率。DeepMind 2023 年的工作 <i>"Language Modeling Is Compression"</i> 表明，Chinchilla 70B 在无损压缩图像与音频上甚至优于 PNG 与 FLAC 这些专用压缩器。<br>
+    这反过来支持一个观点：<em>压缩即智能</em>——这正是 Solomonoff 归纳与 Kolmogorov 复杂度所预示的。→ <a href="l4_frontier.html#ait" style="color:var(--l4)">L4 算法信息论</a></p>
+  </div>
+</section>
+
+<section class="section" id="quiz2">
+  <h2><span class="num">10</span>自检与作业</h2>
+
+  <div class="quiz">
+    <div class="qh">Level 2 自检 · 通过后进 L3</div>
+    <ol>
+      <li>用一句话说明 AEP 与大数定律的关系。为什么典型序列"概率都差不多"？</li>
+      <li>为什么典型集只占全部序列的极小比例，却承载几乎全部概率？举 n=100、p=0.9 的数字说明。</li>
+      <li>写出第二定理逆定理的完整链条，指出每一步用了哪个不等式。</li>
+      <li>随机编码证明中，第 ⑤ 步"去随机化"为什么必不可少？如果没有这一步，结论有什么问题？</li>
+      <li>什么情况下信源—信道分离定理失效？举两个实际例子。</li>
+      <li>强逆定理与弱逆定理的区别是什么？为什么强逆更"可怕"？</li>
+    </ol>
+  </div>
+
+  <details>
+    <summary>参考答案</summary>
+    <div class="dbody">
+      <p><b>1.</b> AEP 就是把大数定律用在随机变量 −log₂p(X<sub>i</sub>) 上：其样本均值收敛到期望 H(X)。<br>
+      "概率差不多"是因为 −(1/n)log p(x<sup>n</sup>) ≈ H 意味着 p(x<sup>n</sup>) ≈ 2<sup>−nH</sup>——所有典型序列的概率都被夹在 2<sup>−n(H±ε)</sup> 之间，故近似均分。</p>
+      <p><b>2.</b> n=100、p=0.9：总序列 2¹⁰⁰ ≈ 1.27×10³⁰；H(0.9)=0.469，典型序列约 2⁴⁶·⁹ ≈ 1.3×10¹⁴。占比 ≈ 10⁻¹⁶。<br>
+      不矛盾的原因：<em>非典型序列虽然数量极多，但每个的概率极低</em>。例如全是 1 的序列（概率 0.1¹⁰⁰）数量只有 1 个但概率可忽略；而"约 90 个 0、10 个 1"的序列虽然只占极小比例，每个概率约 2⁻⁴⁶·⁹，数量乘概率 ≈ 1。</p>
+      <p><b>3.</b> nR = H(W) = H(W|Y<sup>n</sup>) + I(W;Y<sup>n</sup>) ≤ [1+P<sub>e</sub>nR]（<b>Fano</b>）+ I(X<sup>n</sup>;Y<sup>n</sup>)（<b>DPI</b>，因 W→X<sup>n</sup>→Y<sup>n</sup>）≤ 1+P<sub>e</sub>nR+nC（<b>无记忆性 + 熵的次可加性</b>）。除以 n 取极限得 R ≤ C。</p>
+      <p><b>4.</b> 因为前面计算的是<em>码本随机时的平均</em>错误概率 E<sub>𝒞</sub>[P<sub>e</sub>(𝒞)]。这只说明"平均而言好"，但实际通信必须用<strong>某个确定的码本</strong>。<br>
+      去随机化用的是初等但关键的论证：<em>若平均值 &lt; ε，则至少存在一个个体 &lt; ε</em>。没有这一步，结论只是"随机码平均不错"，而非"存在好码"——后者才是定理要断言的。<br>
+      进一步，扔掉最差一半码字是为了把"平均错误概率"提升为"最大错误概率"（对每个消息都可靠，而非平均可靠）。</p>
+      <p><b>5.</b> 失效条件：有限块长/时延约束、多用户网络、时变或未知信道、有中继的网络。<br>
+      例1：<em>实时视频通话</em>——时延不允许长块编码，联合信源信道编码（如 Deep JSCC）优于分离设计，且能实现"优雅降级"而非悬崖式断连。<br>
+      例2：<em>多个传感器向同一基站传相关数据</em>（如温度阵列）——分布式联合设计（Slepian–Wolf 类）严格优于各自压缩后独立传输。</p>
+      <p><b>6.</b> 弱逆：R &gt; C ⟹ P<sub>e</sub> 不趋于 0（可能停在某个较小的常数）。强逆：R &gt; C ⟹ P<sub>e</sub> → <b>1</b>，且指数速度。<br>
+      更"可怕"是因为它排除了"稍微超速换取略高错误率"的工程折中幻想。容量是<strong>悬崖</strong>：超一点点，通信就彻底失效，几乎每个码字都译错。这使 C 成为真正的硬边界。</p>
+    </div>
+  </details>
+
+  <div class="card">
+    <h4 style="margin-top:0">动手作业</h4>
+    <ol>
+      <li>用 Python 模拟：n=20/50/200 时抛 p=0.7 偏币，统计落入典型集（ε=0.05）的样本比例，验证性质 1。</li>
+      <li>实现 LZ78 编解码器，对一段中文与一段随机字节分别压缩，对比压缩率并解释差异。</li>
+      <li>用蒙特卡洛验证随机编码：n=12、R=0.3 的 BSC(0.1)，随机生成码本并做联合典型译码，统计错误率，与 C=0.531 对比。</li>
+    </ol>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l1_foundation.html"><span class="lb">← 上一站</span>L1 基础 · 三大度量</a>
+  <a class="nx" href="l3_advanced.html"><span class="lb">下一站 →</span>L3 专业 · 现代信息论</a>
+</div>
+
+<footer class="foot">
+  <p>L2 信源：Shannon 1948 · Fano 1952 · McMillan 1953 · Breiman 1957 · Wolfowitz 1957（强逆）· Ziv &amp; Lempel 1977/78 · Cover &amp; Thomas Ch.3, 5, 7, 13 · MIT 6.441 模块 2/4 · UESTC 大纲第 1–2 章（AEP、联合 AEP、Shannon 第一/第二定理）。</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+(function(){
+  // 典型集规模
+  var ac=document.getElementById('a-cv');
+  if(ac){
+    var ap=new ILPlot(ac,{xr:[0,500],yr:[0,1.05],xlabel:'序列长度 n',ylabel:'典型集占比（对数刻度归一）'});
+    ILBind(['a-p','a-n'],function(){
+      var p=+document.getElementById('a-p').value, n=+document.getElementById('a-n').value;
+      document.getElementById('a-pv').textContent=p.toFixed(2);
+      document.getElementById('a-nv').textContent=n;
+      var H=ILMath.h2(p);
+      ap.resize();ap.clear();ap.axes(5,4);
+      // 画 H/1 的比值线（典型集指数 / 总指数）
+      ap.line(function(x){return H;},'#fbbf24',2);
+      ap.line(function(x){return 1;},'#26304a',1.4);
+      ap.vline(n,'#f472b6');
+      ap.dot(n,H,'#f472b6');
+      var x=ap.ctx;x.font='11px ui-monospace,monospace';x.textAlign='left';
+      x.fillStyle='#fbbf24';x.fillText('典型集指数率 H='+ILMath.fmt(H,3),ap.px(20),ap.py(H+0.07));
+      x.fillStyle='#8592ab';x.fillText('全空间指数率 = 1',ap.px(20),ap.py(1)-8);
+      var tot=n*1, typ=n*H, ratio=Math.pow(2,typ-tot);
+      function sci(e){ // 2^e -> 科学计数
+        var l10=e*Math.LN2/Math.LN10, m=Math.pow(10,l10-Math.floor(l10));
+        return m.toFixed(2)+'×10^'+Math.floor(l10);
+      }
+      document.getElementById('a-out').innerHTML=
+        'p='+p.toFixed(2)+'　H(p)='+ILMath.fmt(H,4)+' bit　n='+n+'<br>'+
+        '全部序列数 = 2^'+n+' ≈ <b>'+sci(n)+'</b><br>'+
+        '典型序列数 ≈ 2^'+ILMath.fmt(typ,1)+' ≈ <b style="color:#fbbf24">'+sci(typ)+'</b><br>'+
+        '典型集占比 ≈ <b style="color:#f472b6">'+(ratio<1e-4?sci(typ-tot):ILMath.fmt(ratio*100,4)+'%')+'</b>'+
+        '　却承载 &gt;99% 的概率<br>'+
+        '<span style="color:#8592ab">压缩收益：'+n+' bit → '+Math.ceil(typ)+' bit，省下 <b>'+ILMath.fmt((1-H)*100,1)+'%</b></span>';
+    });
+  }
+
+  // 相变
+  var pc=document.getElementById('p-cv');
+  if(pc){
+    var pp=new ILPlot(pc,{xr:[0,1],yr:[0,1.05],xlabel:'速率 R (bit/使用)',ylabel:'错误概率 Pe（示意）'});
+    ILBind(['p-e','p-n'],function(){
+      var e=+document.getElementById('p-e').value, n=+document.getElementById('p-n').value;
+      document.getElementById('p-ev').textContent=e.toFixed(2);
+      document.getElementById('p-nv').textContent=n;
+      var C=1-ILMath.h2(e);
+      pp.resize();pp.clear();pp.axes(5,4);
+      // sigmoid 形相变，陡度随 n 增大
+      pp.line(function(R){
+        var z=(R-C)*Math.sqrt(n)*2.2;
+        return 1/(1+Math.exp(-z));
+      },'#f472b6',2.3);
+      pp.vline(C,'#34d399');
+      var x=pp.ctx;x.font='11px ui-monospace,monospace';
+      x.fillStyle='#34d399';x.textAlign='center';
+      x.fillText('C='+ILMath.fmt(C,3),pp.px(C),pp.py(1.02)-4);
+      x.fillStyle='#34d399';x.textAlign='center';
+      x.fillText('可靠区 R<C',pp.px(C/2),pp.py(0.12));
+      x.fillStyle='#f87171';
+      x.fillText('失效区 R>C',pp.px(C+(1-C)/2),pp.py(0.88));
+      document.getElementById('p-out').innerHTML=
+        'BSC('+e.toFixed(2)+')　C = 1−H('+e.toFixed(2)+') = <b>'+ILMath.fmt(C,4)+'</b> bit/使用　块长 n = '+n+'<br>'+
+        '<span style="color:#8592ab">n 越大，过渡带越窄（宽度 ~ 1/√n，由信道色散 V 决定）。'+
+        'n→∞ 时退化为阶跃：R&lt;C 则 Pe→0，R&gt;C 则 Pe→1（强逆）。<br>'+
+        '有限 n 的精确刻画需要 L3 的正规逼近 R ≈ C − √(V/n)·Q⁻¹(ε)。</span>';
+    });
+  }
+})();
+</script>
+</body>
+</html>
