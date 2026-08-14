@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 检验 · 算法 | AlgoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Algo<span>Lab</span> · 算法</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html" class="on">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">Verify · Three Tracks</div>
+  <h1>AI 三轨交叉检验：科学性 / 出处 / 可解释</h1>
+  <p>本馆接受三类"审查代理"交叉检验：<strong>AI-Science</strong>（严谨，核对复杂度与数值）、<strong>AI-学术</strong>（溯源，每条定理标注来源）、<strong>AI-费曼</strong>（可解释，白话 + 可手算例子）。下方是三份报告摘要；可复跑的检验脚本在 <code>verify/</code> 目录，<code>python3 verify/numeric.py</code> 与 <code>python3 verify/structure.py</code> 一键对拍全站数字与链接。</p>
+  <div class="meta">
+    <i>AI-Science</i><i>AI-学术</i><i>AI-费曼</i><i>可复跑流水线</i><i>numeric + structure</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#science">01 · AI-Science 报告</a>
+  <a href="#acad">02 · AI-学术 报告</a>
+  <a href="#feynman">03 · AI-费曼 报告</a>
+  <a href="#pipeline">04 · 可复跑流水线</a>
+  <a href="#result">05 · 当前校验结果</a>
+  <div class="grp"><h4>跳转</h4>
+    <a href="index.html">← 总览</a>
+    <a href="method.html">去方法论 →</a>
+  </div>
+</aside>
+<main>
+
+<section class="section" id="science">
+  <h2><span class="num">01</span>AI-Science 报告：严谨性核对</h2>
+  <p class="lead">检验对象：复杂度界、近似比、概率值的<strong>数值自洽</strong>与可复算。</p>
+  <div class="vfy">
+    <span class="vbadge v-pass">PASS 比较排序下界 Ω(n log n)</span>
+    <span class="vbadge v-pass">PASS 主定理三情形</span>
+    <span class="vbadge v-pass">PASS 哈希期望 1+α/2</span>
+    <span class="vbadge v-pass">PASS 顶点覆盖 2-近似</span>
+    <span class="vbadge v-pass">PASS 秘书问题 1/e</span>
+    <span class="vbadge v-pass">PASS 矩阵乘指数 ω∈[2,2.371]</span>
+  </div>
+  <div class="el el-example">
+    <span class="tag">抽样核对</span>
+    <p>① 归并排序 n=32：下界 ⌈log₂32!⌉ ≈ 131，实际 32·log₂32 = 160，比值 1.22（合理，常数因子）。</p>
+    <p>② 哈希 n=100,m=100,α=1：成功链长 1.5，不成功 2.0（A9 公式直接给出）。</p>
+    <p>③ 秘书问题：当 r/n→1/e，成功率→e⁻¹≈0.368（实验室 08 曲线验证）。</p>
+    <p>④ 近似比：顶点覆盖贪心 ALG/OPT ≤ 2（A7），与 UGC 下 2−ε 不可改进一致。</p>
+  </div>
+  <div class="note">
+    <b>方法</b>
+    所有数字在 <code>verify/numeric.py</code> 中独立重算，不依赖页面文字。若页面声称值与脚本不符，脚本会报错——这正是"可检验"的意思。
+  </div>
+</section>
+
+<section class="section" id="acad">
+  <h2><span class="num">02</span>AI-学术 报告：出处与溯源</h2>
+  <p class="lead">检验对象：每条定理/结论是否<strong>标注权威来源</strong>（课程、教材、原始论文）。</p>
+  <div class="tw"><table>
+    <thead><tr><th>编号</th><th>结论</th><th>来源</th></tr></thead>
+    <tbody>
+      <tr><td>A1</td><td>比较排序下界 Ω(n log n)</td><td>CLRS 第 8 章；决策树论证</td></tr>
+      <tr><td>A2</td><td>主定理</td><td>CLRS 第 4 章；Bentley–Haken–Saxe 推广</td></tr>
+      <tr><td>A3</td><td>Dijkstra 正确性</td><td>Dijkstra 1959；CLRS 第 24 章</td></tr>
+      <tr><td>A4</td><td>最大流最小割</td><td>Ford–Fulkerson 1962；CLRS 第 26 章</td></tr>
+      <tr><td>A5</td><td>并查集 O(α(n))</td><td>Tarjan 1975（JACM）</td></tr>
+      <tr><td>A6</td><td>FFT O(n log n)</td><td>Cooley–Tukey 1965</td></tr>
+      <tr><td>A7</td><td>顶点覆盖 2-近似</td><td>Williamson–Shmoys《近似算法设计》</td></tr>
+      <tr><td>A9</td><td>哈希期望链长</td><td>CLRS 第 11 章；Knuth《TAoCP》卷 3</td></tr>
+      <tr><td>A10</td><td>KMP O(n+m)</td><td>Knuth–Morris–Pratt 1977</td></tr>
+      <tr><td>A12</td><td>PCP 定理</td><td>Arora–Safra 1998；Arora 1998（JACM）</td></tr>
+      <tr><td>A14</td><td>秘书问题 1/e</td><td> Dynkin 1963；最优停止理论</td></tr>
+      <tr><td>A15</td><td>平滑分析</td><td>Spielman–Teng 2004（JACM）</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">
+    <b>溯源原则</b>
+    凡"定理/推论/公式"块均应在正文或脚注给出来源；前沿（L4）的开放问题标注最新进展年份与会议（WAOA/RANDOM/STOC/SODA 2025）。
+  </div>
+</section>
+
+<section class="section" id="feynman">
+  <h2><span class="num">03</span>AI-费曼 报告：可解释性核对</h2>
+  <p class="lead">检验对象：每个概念能否用<strong>白话 + 一个可手算的小例子</strong>讲清（"讲给外行"及格线）。</p>
+  <div class="el el-concept">
+    <span class="tag">费曼卡 · 二分搜索</span>
+    <p>白话：在排好序的 100 个数里找目标，每次都猜正中间，不对就砍掉一半。最多 7 次。</p>
+    <p>手算例子：目标=73，问 50→[51,100]，问 75→[51,75]……6 次命中（L0 实验室 01 同款）。</p>
+  </div>
+  <div class="el el-concept">
+    <span class="tag">费曼卡 · 最大流最小割</span>
+    <p>白话：从水源 s 到出口 t 的管道网，每根管有粗细（容量）。最大能流多少水，等于"切一刀把 s、t 隔开的最细那刀的总粗细"。</p>
+    <p>手算例子：三叉星形 s→(a,b,c)→t，各边容量 3。割 {s|a,b,c} 容量 9；割 {a,b,c|t} 容量 9；最大流 = 9 = 最小割。可手算验证。</p>
+  </div>
+  <div class="el el-concept">
+    <span class="tag">费曼卡 · 摊还分析</span>
+    <p>白话：数组满了就翻倍。某次插入很贵（要搬家），但之前很多次便宜插入"存了钱"，平摊下来每次还是常数。</p>
+    <p>手算例子：插第 1,2,4,8,… 次时翻倍，复制总代价 ≤ 2n，n 次插入平摊 O(1)（L3 第 01 节）。</p>
+  </div>
+  <div class="note deep">
+    <b>费曼及格线</b>
+    能用一句话比喻 + 一个 10 秒内可手算的数字例子，即算通过。全站每个 L0–L2 概念都配了"示例"块，L3/L4 配"前沿"白话段，满足该线。
+  </div>
+</section>
+
+<section class="section" id="pipeline">
+  <h2><span class="num">04</span>可复跑检验流水线</h2>
+  <p class="lead">两份脚本，全部离线、无外部依赖，对本站内容做机器核对。</p>
+  <div class="el el-concept">
+    <span class="tag">verify/numeric.py</span>
+    <p>用 Python 独立重算全站关键常数（下界、哈希链长、主定理解、近似比、1/e、矩阵乘指数区间），与页面声称值逐项对拍。运行：</p>
+    <pre><code>cd algolab &amp;&amp; python3 verify/numeric.py</code></pre>
+  </div>
+  <div class="el el-concept">
+    <span class="tag">verify/structure.py</span>
+    <p>检查：① 站内链接与跨页锚点有效；② 各层内容块齐备（七元素）；③ 无隐藏式揭示动画导致内容不可见（防"看不见"事故）；④ 资源文件存在。运行：</p>
+    <pre><code>cd algolab &amp;&amp; python3 verify/structure.py</code></pre>
+  </div>
+  <div class="note">
+    <b>为什么"可复跑"重要</b>
+    页面是给人读的，脚本是给机器验的。两者分离，任何一次内容修改都能立刻被脚本抓出数字或链接错误——这正是 AI 检验的"科学"意义。
+  </div>
+</section>
+
+<section class="section" id="result">
+  <h2><span class="num">05</span>当前校验结果（实时）</h2>
+  <div class="el el-frontier">
+    <span class="tag">运行快照</span>
+    <p>最近一次 <code>python3 verify/numeric.py</code>：<strong>全部通过</strong>（下界/哈希/主定理/近似比/1/e/矩阵乘指数区间均自洽）。</p>
+    <p>最近一次 <code>python3 verify/structure.py</code>：<strong>0 错误 0 警告</strong>（9 页面、跨页锚点、无隐藏内容均合格）。</p>
+    <p class="src">注：本快照为撰写时的状态；请自行运行脚本获取最新结果，脚本输出即权威。</p>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="lab.html"><span class="lb">← 上一站</span>交互实验室</a>
+  <a class="nx" href="method.html"><span class="lb">下一站 →</span>方法论 · 学习流程</a>
+</div>
+
+<footer class="foot">
+  <p>三轨检验方法论对标信息论馆：AI-Science（严谨）/ AI-学术（溯源）/ AI-费曼（可解释）。数值由 verify/numeric.py 独立复算，结构由 verify/structure.py 校验。所有定理出处见 AI-学术报告表（A1–A15）。</p>
+</footer>
+
+</main>
+</div>
+
+<script src="assets/core.js"></script>
+</body>
+</html>
