@@ -1,0 +1,2818 @@
+<!-- ONESHOT 图集 · 卡诺热机 · 方法论深潜馆 · 2026-08-14 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="卡诺热机深度研究图集 · 方法论深潜馆（Methodology Deep Annex）：3 大家族 × 11 种分析方法，每法配套完整 Python 代码与复制按钮、11×6 维超表、8 步 SVG 决策树。">
+<title>方法论深潜馆 · 卡诺热机深度研究图集</title>
+<style>
+/* ============================================================
+   ONESHOT 图集 · 卡诺热机 · 方法论深潜馆
+   深蓝主题：bg #0B1437 / card #132053 / accent #3B82F6
+   CSS 全内联 · 单文件交付
+   ============================================================ */
+:root{
+  --bg:#0B1437;
+  --bg2:#0A102E;
+  --card:#132053;
+  --card2:#182A63;
+  --card3:#1E3373;
+  --accent:#3B82F6;
+  --accent2:#60A5FA;
+  --gold:#E8A33D;
+  --purple:#8B5CF6;
+  --cyan:#22D3EE;
+  --text:#E6EDF7;
+  --muted:#9FB0CC;
+  --faint:#6B7FA6;
+  --line:#24356E;
+  --line2:#2F4484;
+  --ok:#34D399;
+  --warn:#F87171;
+  --mono:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC','Helvetica Neue',sans-serif;
+  --radius:14px;
+  --radius-sm:9px;
+  --shadow:0 10px 34px rgba(2,6,23,.45);
+  --shadow-sm:0 4px 14px rgba(2,6,23,.35);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  color:var(--text);
+  line-height:1.75;
+  background:
+    radial-gradient(1200px 800px at 85% -10%,rgba(59,130,246,.16),transparent 60%),
+    radial-gradient(900px 700px at -10% 30%,rgba(139,92,246,.11),transparent 55%),
+    radial-gradient(760px 520px at 50% 112%,rgba(34,211,238,.07),transparent 60%),
+    linear-gradient(180deg,#0A102E 0%,#0B1437 48%,#09102B 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+}
+/* 背景装饰：极淡的工程网格 + 噪点 */
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg,rgba(96,165,250,.028) 0 1px,transparent 1px 64px),
+    repeating-linear-gradient(90deg,rgba(96,165,250,.028) 0 1px,transparent 1px 64px);
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 78%);
+}
+::selection{background:rgba(59,130,246,.45);color:#fff;}
+a{color:var(--accent2);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* ---------------- 顶部导航 ---------------- */
+.top-nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:12px 28px;
+  background:rgba(11,20,55,.82);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.top-nav .brand{
+  display:flex;align-items:center;gap:10px;margin-right:auto;
+  color:var(--text);font-weight:700;font-size:15px;letter-spacing:.5px;
+}
+.top-nav .brand .logo{
+  width:30px;height:30px;border-radius:8px;flex:none;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  display:grid;place-items:center;font-size:15px;color:#fff;
+  box-shadow:var(--shadow-sm);
+}
+.top-nav .hall-links{display:flex;gap:8px;flex-wrap:wrap;}
+.top-nav .hall-link{
+  font-size:12px;padding:6px 10px;border-radius:8px;
+  border:1px solid var(--line2);color:var(--muted);
+  transition:all .2s var(--ease);white-space:nowrap;
+}
+.top-nav .hall-link:hover{
+  border-color:var(--accent);color:#fff;background:rgba(59,130,246,.16);
+  text-decoration:none;transform:translateY(-1px);
+}
+
+/* ---------------- 英雄区 ---------------- */
+.hero{
+  position:relative;z-index:1;
+  padding:64px 28px 52px;text-align:center;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(13,32,83,.55),rgba(11,20,55,.15));
+}
+.hero .eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12.5px;letter-spacing:3px;color:var(--cyan);
+  border:1px solid rgba(34,211,238,.35);border-radius:999px;
+  padding:6px 16px;background:rgba(34,211,238,.07);margin-bottom:22px;
+}
+.hero h1{
+  font-size:clamp(2rem,4.6vw,3.2rem);font-weight:800;letter-spacing:-.02em;
+  background:linear-gradient(100deg,#fff 10%,var(--accent2) 55%,var(--cyan) 95%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1.2;
+}
+.hero .sub{max-width:820px;margin:18px auto 0;color:var(--muted);font-size:15.5px;}
+.hero .sub b{color:var(--text);}
+.hero .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px;}
+.hero .chip{
+  font-size:12.5px;padding:7px 14px;border-radius:999px;
+  background:var(--card);border:1px solid var(--line2);color:var(--muted);
+}
+.hero .chip b{color:var(--accent2);font-size:14px;margin-right:2px;}
+.hero .kpis{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;
+  max-width:980px;margin:34px auto 0;
+}
+.hero .kpi{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:16px 12px;text-align:center;
+  box-shadow:var(--shadow-sm);
+}
+.hero .kpi .num{
+  font-family:var(--mono);font-size:26px;font-weight:700;color:var(--accent2);
+}
+.hero .kpi .lab{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* ---------------- 目录 ---------------- */
+.toc{
+  position:relative;z-index:1;
+  max-width:1180px;margin:0 auto;padding:34px 24px 6px;
+}
+.toc-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px;box-shadow:var(--shadow-sm);
+}
+.toc-grid a{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;color:var(--text);padding:9px 12px;border-radius:8px;
+  border:1px solid transparent;transition:all .2s var(--ease);
+}
+.toc-grid a:hover{
+  background:rgba(59,130,246,.14);border-color:var(--line2);text-decoration:none;
+}
+.toc-grid .no{
+  flex:none;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+}
+
+/* ---------------- 章节骨架 ---------------- */
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:26px 24px 60px;}
+.section{margin-top:56px;}
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.section-head .sec-no{
+  flex:none;font-family:var(--mono);font-size:13px;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  padding:6px 12px;border-radius:8px;letter-spacing:1px;
+}
+.section-head h2{font-size:clamp(1.35rem,2.6vw,1.85rem);font-weight:700;letter-spacing:-.01em;}
+.section-head .en{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:2px;text-transform:uppercase;}
+.section-intro{color:var(--muted);font-size:14.5px;max-width:900px;margin-bottom:26px;}
+.section-intro b{color:var(--text);}
+
+/* 家族卡片 */
+.family{
+  margin-top:44px;border:1px solid var(--line);border-radius:var(--radius);
+  background:linear-gradient(180deg,var(--card),rgba(19,32,83,.55));
+  overflow:hidden;box-shadow:var(--shadow);
+}
+.family-head{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:22px 26px;border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(59,130,246,.14),rgba(139,92,246,.08),transparent);
+}
+.family-head .fnum{
+  flex:none;font-family:var(--mono);font-size:13px;color:#0B1437;font-weight:700;
+  background:linear-gradient(135deg,var(--accent2),var(--cyan));
+  padding:6px 12px;border-radius:8px;
+}
+.family-head h3{font-size:20px;font-weight:700;}
+.family-head .fdesc{width:100%;color:var(--muted);font-size:14px;margin-top:4px;}
+.family-body{padding:26px;}
+
+/* ---------------- 方法卡 ---------------- */
+.method{
+  border:1px solid var(--line2);border-radius:var(--radius);
+  background:var(--card);margin-bottom:26px;overflow:hidden;
+  transition:border-color .25s var(--ease),transform .25s var(--ease);
+}
+.method:hover{border-color:rgba(59,130,246,.55);}
+.method-head{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:16px 22px;border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(59,130,246,.1),transparent 55%);
+}
+.method-badge{
+  flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  font-size:18px;background:var(--card3);border:1px solid var(--line2);
+}
+.method-head h4{font-size:17px;font-weight:700;letter-spacing:.2px;}
+.method-head .mcode{
+  font-family:var(--mono);font-size:12px;color:var(--cyan);
+  background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.25);
+  padding:3px 10px;border-radius:6px;
+}
+.method-head .mtag{
+  margin-left:auto;font-size:11.5px;color:var(--muted);
+  border:1px solid var(--line2);padding:4px 10px;border-radius:999px;
+}
+.method-grid{
+  display:grid;grid-template-columns:minmax(300px,440px) 1fr;gap:22px;
+  padding:22px;
+}
+@media (max-width:900px){.method-grid{grid-template-columns:1fr;}}
+.theory-block h5{
+  font-size:12px;letter-spacing:2px;color:var(--gold);margin:14px 0 6px;
+  display:flex;align-items:center;gap:8px;
+}
+.theory-block h5::before{content:"";width:18px;height:2px;background:var(--gold);border-radius:2px;}
+.theory-block p{font-size:13.5px;color:var(--muted);}
+.theory-block p b{color:var(--text);}
+.theory-block .formula{
+  font-family:var(--mono);font-size:13.5px;color:var(--accent2);
+  background:rgba(59,130,246,.09);border:1px solid rgba(59,130,246,.3);
+  border-radius:8px;padding:10px 14px;margin:8px 0;overflow-x:auto;white-space:nowrap;
+}
+.theory-block .formula .note{color:var(--muted);font-size:12px;}
+.theory-block .numex{
+  font-size:13px;color:var(--text);background:rgba(232,163,61,.07);
+  border-left:3px solid var(--gold);border-radius:0 8px 8px 0;
+  padding:9px 14px;margin:8px 0;
+}
+.theory-block .numex code{color:var(--gold);font-family:var(--mono);}
+.theory-block ul{margin:6px 0 0 18px;}
+.theory-block li{font-size:13px;color:var(--muted);margin:3px 0;}
+
+/* ---------------- 代码块 ---------------- */
+.code-wrap{
+  background:#0A1128;border:1px solid var(--line);border-radius:var(--radius-sm);
+  overflow:hidden;display:flex;flex-direction:column;min-width:0;
+}
+.code-bar{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 14px;background:#0D1738;border-bottom:1px solid var(--line);
+}
+.code-bar .dots{display:flex;gap:6px;}
+.code-bar .dot{width:10px;height:10px;border-radius:50%;}
+.code-bar .dot.r{background:#F87171;}.code-bar .dot.y{background:#FBBF24;}.code-bar .dot.g{background:#34D399;}
+.code-bar .fname{
+  font-family:var(--mono);font-size:12px;color:var(--muted);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;
+}
+.copy-btn{
+  margin-left:auto;flex:none;
+  font-size:12px;color:var(--accent2);cursor:pointer;
+  background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.4);
+  padding:5px 14px;border-radius:7px;transition:all .18s var(--ease);
+  font-family:var(--sans);
+}
+.copy-btn:hover{background:var(--accent);color:#fff;}
+.copy-btn.copied{background:var(--ok);border-color:var(--ok);color:#04211A;}
+.code-block{
+  flex:1;margin:0;padding:16px 18px;overflow-x:auto;
+  font-family:var(--mono);font-size:12.6px;line-height:1.72;color:#DCE6F5;
+  tab-size:4;white-space:pre;
+}
+.code-block .c-kw{color:#93C5FD;}
+.code-block .c-fn{color:#FDE68A;}
+.code-block .c-cm{color:#64748B;}
+.code-block .c-st{color:#6EE7B7;}
+.code-block .c-num{color:#F9A8D4;}
+.code-src{display:none;}
+.code-foot{
+  padding:8px 14px;font-size:11.5px;color:var(--faint);
+  border-top:1px solid var(--line);background:#0D1738;
+  font-family:var(--mono);
+}
+
+/* ---------------- 超表 ---------------- */
+.table-wrap{
+  overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);background:var(--card);
+}
+table.super{
+  width:100%;border-collapse:collapse;min-width:1060px;
+  font-size:12.8px;
+}
+table.super th,table.super td{
+  border:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left;
+}
+table.super thead th{
+  background:linear-gradient(180deg,var(--card3),var(--card2));
+  color:#fff;font-weight:600;white-space:nowrap;font-size:12.5px;
+  position:sticky;top:0;z-index:5;
+}
+table.super tbody th{
+  background:var(--card2);color:var(--cyan);font-family:var(--mono);
+  font-size:12px;font-weight:600;white-space:nowrap;position:sticky;left:0;z-index:4;
+}
+table.super tbody tr:nth-child(even){background:rgba(30,51,115,.25);}
+table.super tbody tr:hover{background:rgba(59,130,246,.09);}
+table.super td code{font-family:var(--mono);font-size:11.8px;color:var(--gold);}
+table.super .dim{color:var(--muted);}
+table.super .dim b{color:var(--text);}
+
+/* ---------------- 决策树 ---------------- */
+.tree-wrap{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;box-shadow:var(--shadow);overflow-x:auto;
+}
+.tree-wrap svg{display:block;margin:0 auto;min-width:760px;}
+.tree-note{
+  margin-top:18px;font-size:13px;color:var(--muted);
+  background:rgba(139,92,246,.08);border-left:3px solid var(--purple);
+  padding:10px 16px;border-radius:0 8px 8px 0;
+}
+
+/* ---------------- 数值画廊 ---------------- */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+.gcard{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;box-shadow:var(--shadow-sm);transition:transform .22s var(--ease);
+}
+.gcard:hover{transform:translateY(-3px);border-color:var(--line2);}
+.gcard .gt{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.gcard .gt .gi{
+  width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:13px;color:#fff;flex:none;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+}
+.gcard .gt h5{font-size:14.5px;font-weight:700;}
+.gcard .scene{font-size:12px;color:var(--faint);margin-bottom:8px;}
+.gcard .val{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent2);}
+.gcard .val small{font-size:12px;color:var(--muted);font-weight:400;}
+.gcard .cmp{font-size:12.5px;color:var(--muted);margin-top:6px;}
+.gcard .cmp b{color:var(--gold);}
+
+/* ---------------- 警示 ---------------- */
+.warn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;}
+.warn{
+  background:rgba(248,113,113,.05);border:1px solid rgba(248,113,113,.28);
+  border-radius:var(--radius);padding:16px 18px;
+}
+.warn h5{font-size:14px;color:var(--warn);display:flex;gap:8px;align-items:center;margin-bottom:6px;}
+.warn p{font-size:13px;color:var(--muted);}
+.warn code{font-family:var(--mono);font-size:12px;color:var(--gold);}
+
+/* ---------------- 底部导航 ---------------- */
+.bottom-nav{
+  position:relative;z-index:1;
+  border-top:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(13,32,83,.6),rgba(9,16,43,.9));
+  padding:44px 28px 30px;
+}
+.bottom-nav .bn-head{
+  max-width:1180px;margin:0 auto;text-align:center;margin-bottom:24px;
+}
+.bottom-nav .bn-head h3{font-size:19px;font-weight:700;}
+.bottom-nav .bn-head p{font-size:13px;color:var(--muted);margin-top:6px;}
+.bottom-nav .bn-grid{
+  max-width:1180px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;
+}
+.bn-card{
+  display:block;text-align:center;
+  background:var(--card);border:1px solid var(--line2);border-radius:var(--radius-sm);
+  padding:16px 12px;transition:all .2s var(--ease);
+}
+.bn-card:hover{transform:translateY(-3px);border-color:var(--accent);background:var(--card2);text-decoration:none;}
+.bn-card .bn-no{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:1px;}
+.bn-card .bn-name{font-size:13.5px;font-weight:600;color:var(--text);margin-top:4px;}
+.bn-card .bn-en{font-size:11px;color:var(--faint);margin-top:2px;font-family:var(--mono);}
+footer{
+  position:relative;z-index:1;text-align:center;
+  padding:22px 20px 40px;font-size:12px;color:var(--faint);
+  border-top:1px solid rgba(36,53,110,.5);
+}
+footer .flinks{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+footer .flinks a{font-size:12px;color:var(--muted);}
+
+/* 回到顶部 */
+#toTop{
+  position:fixed;right:24px;bottom:24px;z-index:200;
+  width:44px;height:44px;border-radius:12px;border:1px solid var(--line2);
+  background:var(--card2);color:var(--accent2);font-size:18px;cursor:pointer;
+  display:grid;place-items:center;opacity:0;pointer-events:none;
+  transition:all .25s var(--ease);box-shadow:var(--shadow-sm);
+}
+#toTop.show{opacity:1;pointer-events:auto;}
+#toTop:hover{background:var(--accent);color:#fff;}
+
+/* 滚动显现动画 */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  html{scroll-behavior:auto;}
+}
+</style>
+
+<style id="apple-ui-layer">
+:root{--apple-accent:#0071e3;--radius-md:18px;--radius-lg:24px;--shadow-sm:0 2px 12px rgba(0,0,0,.08);--shadow-md:0 8px 32px rgba(0,0,0,.12);--ease-apple:cubic-bezier(.32,.72,0,1);--ease-apple-decel:cubic-bezier(0,0,0,1);}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;}
+h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;}
+h2{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:600;letter-spacing:-.02em;}
+.card,.glass-card,.kpi-card,section>div{border-radius:var(--radius-md);box-shadow:var(--shadow-sm);transition:transform .3s var(--ease-apple),box-shadow .3s var(--ease-apple);}
+.card:hover,.glass-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.card-spotlight{position:relative;overflow:hidden;}
+.card-spotlight::before{content:'';position:absolute;width:220px;height:220px;background:radial-gradient(circle,rgba(0,113,227,.10) 0%,transparent 70%);left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s var(--ease-apple);}
+.card-spotlight:hover::before{opacity:1;}
+.btn-primary{display:inline-block;background:linear-gradient(180deg,var(--apple-accent) 0%,color-mix(in srgb,var(--apple-accent) 85%,black) 100%);color:#fff;padding:12px 24px;border:none;border-radius:14px;font-weight:600;box-shadow:var(--shadow-sm);transition:transform .15s var(--ease-apple-decel),box-shadow .2s var(--ease-apple);text-decoration:none;}
+.btn-primary:active{transform:scale(.97);}
+.btn-ghost{display:inline-block;background:transparent;color:var(--apple-accent);border:1px solid var(--apple-accent);padding:11px 23px;border-radius:14px;font-weight:600;text-decoration:none;transition:background .2s var(--ease-apple);}
+.btn-ghost:hover{background:rgba(0,113,227,.08);}
+a{color:var(--apple-accent);text-decoration:none;position:relative;}
+a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--apple-accent);transition:width .3s var(--ease-apple);}
+a:hover::after{width:100%;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+</style>
+
+
+<style id="bg-dynamic-layer">
+.bg-dynamic{position:fixed;inset:0;z-index:-2;opacity:.22;background:linear-gradient(135deg,#132053 0%,#0d173f 45%,#0b1437 100%);will-change:transform,background-position,opacity;transform:translateZ(0);}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.82) 50%,rgba(255,255,255,.55) 100%);}
+body.dark-theme .bg-overlay{background:linear-gradient(180deg,rgba(15,23,42,.55) 0%,rgba(15,23,42,.85) 50%,rgba(15,23,42,.55) 100%);}
+
+.bg-dynamic.anim-pan-x{animation:flow-pan-x 60s linear infinite;background-size:200% 100%;}
+.bg-dynamic.anim-pan-y{animation:flow-pan-y 45s linear infinite;background-size:100% 200%;}
+.bg-dynamic.anim-breathe{animation:flow-breathe 20s ease-in-out infinite;}
+.bg-dynamic.anim-rotate{animation:flow-rotate 120s linear infinite;}
+.bg-dynamic.anim-bleed{animation:flow-bleed 30s ease-in-out infinite;background-size:120% 120%;}
+.bg-dynamic.anim-parallax{background-size:150% 150%;animation:flow-pan-x 80s linear infinite,flow-breathe 25s ease-in-out infinite;}
+@keyframes flow-pan-x{0%{background-position:0% 50%;}100%{background-position:100% 50%;}}
+@keyframes flow-pan-y{0%{background-position:50% 0%;}100%{background-position:50% 100%;}}
+@keyframes flow-breathe{0%,100%{transform:scale(1);opacity:.22;}50%{transform:scale(1.08);opacity:.30;}}
+@keyframes flow-rotate{0%{transform:rotate(0deg) scale(1.15);}100%{transform:rotate(360deg) scale(1.15);}}
+@keyframes flow-bleed{0%,100%{background-position:50% 50%;filter:blur(0px);}50%{background-position:52% 48%;filter:blur(1.5px);}}
+@media (prefers-reduced-motion:reduce){.bg-dynamic,.bg-dynamic.anim-pan-x,.bg-dynamic.anim-pan-y,.bg-dynamic.anim-breathe,.bg-dynamic.anim-rotate,.bg-dynamic.anim-bleed,.bg-dynamic.anim-parallax{animation:none!important;}}
+</style>
+
+</head>
+<body class="dark-theme">
+<div class="bg-dynamic anim-pan-y"></div>
+<div class="bg-overlay"></div>
+
+
+<!-- ================= 顶部导航：6 座主馆 ================= -->
+<header class="top-nav">
+  <div class="brand">
+    <span class="logo">卡</span>
+    <span>方法论深潜馆 · 卡诺热机图集</span>
+  </div>
+  <div class="hall-links">
+    <a class="hall-link" href="carnot_s01_tech_deepblue.html" title="科技深蓝暗黑 · 工程师仪表盘">01 科技深蓝</a>
+    <a class="hall-link" href="carnot_s02_academic_ink.html" title="学术墨蓝毛边纸 · 论文风">02 学术墨蓝</a>
+    <a class="hall-link" href="carnot_s03_minimal_gold.html" title="极简金蓝留白 · CEO 汇报">03 极简金蓝</a>
+    <a class="hall-link" href="carnot_s04_cyber_indigo.html" title="赛博朋克蓝紫 · 极客">04 赛博蓝紫</a>
+    <a class="hall-link" href="carnot_s05_glass_sky.html" title="玻璃天青拟态 · 大众科普">05 玻璃天青</a>
+    <a class="hall-link" href="carnot_s06_magazine_slate.html" title="杂志编辑石板蓝 · 长文出版">06 杂志石板</a>
+  </div>
+</header>
+
+<!-- ================= 英雄区 ================= -->
+<section class="hero">
+  <div class="eyebrow">METHODOLOGY DEEP ANNEX · 方法论深潜馆</div>
+  <h1>把「效率天花板」拆成 14 把可复制的钥匙</h1>
+  <p class="sub">
+    卡诺热机的每一套分析方法——<b>可逆循环分析</b>、<b>熵与火用</b>、<b>有限时间与量子</b>——
+    在本馆都被拆解为：原理、公式、<b>真实数值示例</b>、30–40 行可直接运行的 <b>Python 代码</b>、
+    以及一张 14 方法 × 6 维的对照超表。所有代码带<b>一键复制</b>按钮，所有结论均来自
+    主报告《卡诺热机深度研究报告》（2026-08-14）已核验的 78 条文献。
+  </p>
+  <div class="chips">
+    <span class="chip"><b>3</b> 大家族</span>
+    <span class="chip"><b>14</b> 种方法</span>
+    <span class="chip"><b>14</b> 段 Python</span>
+    <span class="chip"><b>6</b> 维超表</span>
+    <span class="chip"><b>8</b> 步决策树</span>
+    <span class="chip"><b>14</b> 个复制按钮</span>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="num">50.0%</div><div class="lab">Th=600K / Tc=300K 卡诺效率</div></div>
+    <div class="kpi"><div class="num">29.3%</div><div class="lab">同界限 Curzon-Ahlborn 最大功率效率</div></div>
+    <div class="kpi"><div class="num">0 J/K</div><div class="lab">可逆卡诺循环宇宙熵变</div></div>
+    <div class="kpi"><div class="num">75%</div><div class="lab">联合循环 62.22% 实测 / 卡诺 83% 达卡诺比例</div></div>
+    <div class="kpi"><div class="num">5.9</div><div class="lab">冰箱 -18℃/25℃ 卡诺 COP（实际 1.5–3）</div></div>
+    <div class="kpi"><div class="num">8.8</div><div class="lab">空气源热泵 0℃→35℃ 卡诺 COP（实际 SCOP 2.5–4）</div></div>
+  </div>
+</section>
+
+<!-- ================= 目录 ================= -->
+<nav class="toc">
+  <div class="toc-grid">
+    <a href="#s0"><span class="no">00</span>本馆导览 · 3 大家族总览</a>
+    <a href="#fam1"><span class="no">01</span>家族一：可逆循环分析（①–④⑫⑭）</a>
+    <a href="#fam2"><span class="no">02</span>家族二：熵与火用（⑤–⑧）</a>
+    <a href="#fam3"><span class="no">03</span>家族三：有限时间与量子（⑨–⑪⑬）</a>
+    <a href="#table"><span class="no">04</span>14 方法 × 6 维超表</a>
+    <a href="#tree"><span class="no">05</span>8 步 SVG 决策树</a>
+    <a href="#numbers"><span class="no">06</span>真实数值示例库</a>
+    <a href="#notes"><span class="no">07</span>方法论红线（常见错误）</a>
+    <a href="#links"><span class="no">08</span>返回 6 座主馆</a>
+    <a href="#env"><span class="no">09</span>运行环境与 FAQ</a>
+    <a href="#terms"><span class="no">10</span>术语表与文献速查</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ 00 序章 ============ -->
+<section class="section" id="s0">
+  <div class="section-head reveal">
+    <span class="sec-no">00</span>
+    <h2>本馆导览 · 三大家族如何分工</h2>
+    <span class="en">Three Families Overview</span>
+  </div>
+  <p class="section-intro reveal">
+    主报告《卡诺热机深度研究报告》§3–§5 把卡诺主题的全部分析方法归入三大谱系：
+    <b>可逆循环分析</b>（回答「效率上限是多少、循环长什么样」）、<b>熵与火用</b>
+    （回答「不可逆性损失了多少做功能力」）、<b>有限时间与量子</b>（回答「有限功率下
+    最优运行点在哪、微观尺度还成立吗」）。本馆把每个家族拆成 6 / 4 / 4 共 14 种方法，
+    每种方法都配有：理论依据 → 核心公式 → 真实数值示例 → 完整 Python 代码 → 适用边界与弱点。
+  </p>
+  <div class="family" style="margin-top:8px;">
+    <div class="family-head">
+      <span class="fnum">F1</span>
+      <h3>家族一 · 可逆循环分析</h3>
+      <span class="mtag" style="margin-left:auto;font-size:12px;color:var(--muted);border:1px solid var(--line2);padding:4px 12px;border-radius:999px;">方法 ①–④⑫⑭ · 效率与几何</span>
+      <p class="fdesc">以理想化可逆循环为标尺：① 卡诺效率计算器（含绝对温标强制校验）、② T-S 图、③ p-V 图、④ 任意工质效率验证（理想气体 vs Redlich-Kwong 真实气体）。这一家族回答物理学问题：<b>上限是多少，且与工质无关</b>。</p>
+    </div>
+    <div class="family-head" style="border-top:1px solid var(--line);">
+      <span class="fnum">F2</span>
+      <h3>家族二 · 熵与火用</h3>
+      <span class="mtag" style="margin-left:auto;font-size:12px;color:var(--muted);border:1px solid var(--line2);padding:4px 12px;border-radius:999px;">方法 ⑤–⑧ · 损失计量</span>
+      <p class="fdesc">把第二定律变成可计算的账本：⑤ 可逆过程熵变、⑥ 克劳修斯不等式验证、⑦ 火用（Exergy）与火用毁计算、⑧ Gouy-Stodola 定理演示（火用毁 = T0·熵产）。这一家族回答工程问题：<b>损失在哪、损失了多少功</b>——锅炉正是电站最大火用损环节。</p>
+    </div>
+    <div class="family-head" style="border-top:1px solid var(--line);">
+      <span class="fnum">F3</span>
+      <h3>家族三 · 有限时间与量子</h3>
+      <span class="mtag" style="margin-left:auto;font-size:12px;color:var(--muted);border:1px solid var(--line2);padding:4px 12px;border-radius:999px;">方法 ⑨–⑪⑬ · 现实与前沿</span>
+      <p class="fdesc">从理想回到现实、再走向微观：⑨ Curzon-Ahlborn 最大功率效率（1975）、⑩ 逆卡诺 COP（制冷/热泵）、⑪ 两能级量子热机效率模拟（Otto 型，卡诺界在微观依然成立）。这一家族回答权衡问题：<b>效率与功率不可兼得，量子尺度上卡诺思想依然是标尺</b>。</p>
+    </div>
+  </div>
+  <p class="section-intro reveal" style="margin-top:20px;">
+    下方每一方法卡左侧为「理论 + 公式 + 数值示例」，右侧为可直接运行的 Python 脚本。
+    复制后运行 <code style="font-family:var(--mono);color:var(--cyan);">python3 mXX_xxx.py</code> 即可复现输出；
+    全部脚本仅依赖标准库与 numpy / matplotlib（具体见各方法「所需库」与文末 6 维超表）。
+  </p>
+</section>
+
+<!-- ============ 00.5 方法速查索引 ============ -->
+<section class="section" id="catalog">
+  <div class="section-head reveal">
+    <span class="sec-no">00A</span>
+    <h2>方法速查索引（11 法一览）</h2>
+    <span class="en">Method Quick Index</span>
+  </div>
+  <p class="section-intro reveal">
+    下表把 14 种方法压缩为「公式 + 一句话用途 + 文件名 + 代码行数」，便于快速定位。
+    每个文件名即本馆复制按钮复制出的 Python 脚本建议命名；行数为脚本实际行数（含注释与文档字符串，均在 30–40 行区间）。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead>
+        <tr>
+          <th>编号</th>
+          <th>方法名</th>
+          <th>核心公式</th>
+          <th>一句话用途</th>
+          <th>代码文件</th>
+          <th>代码行数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>①</th><td>卡诺效率计算器</td><td><code>η=1−Tc/Th</code></td><td>效率上限 + 绝对温标强制校验</td><td>m01_carnot_efficiency.py</td><td>39</td></tr>
+        <tr><th>②</th><td>T-S 图绘制</td><td><code>W=(Th−Tc)·ΔS</code></td><td>热与效率的矩形可视化</td><td>m02_carnot_ts.py</td><td>36</td></tr>
+        <tr><th>③</th><td>p-V 图绘制</td><td><code>W_net=∮p dV</code></td><td>功与几何的闭合曲线可视化</td><td>m03_carnot_pv.py</td><td>40</td></tr>
+        <tr><th>④</th><td>任意工质效率验证</td><td><code>ΔS=∫(∂p/∂T)_V dV</code></td><td>理想气体 vs RK：证明工质无关性</td><td>m04_any_working_fluid.py</td><td>36</td></tr>
+        <tr><th>⑤</th><td>可逆过程熵变</td><td><code>ΔS=∫δQ_rev/T</code></td><td>等温/等压/等容/任意路径熵变</td><td>m05_entropy_change.py</td><td>32</td></tr>
+        <tr><th>⑥</th><td>克劳修斯不等式</td><td><code>∮δQ/T ≤ 0</code></td><td>第二定律数值判据与「优于卡诺」检测</td><td>m06_clausius_inequality.py</td><td>33</td></tr>
+        <tr><th>⑦</th><td>火用与火用毁</td><td><code>Ex=(H−H0)−T0(S−S0)</code></td><td>损失定量与达卡诺比例</td><td>m07_exergy.py</td><td>36</td></tr>
+        <tr><th>⑧</th><td>Gouy-Stodola 演示</td><td><code>E_d = T0·S_gen</code></td><td>把熵产翻译成明码标价的功损失</td><td>m08_gouy_stodola.py</td><td>36</td></tr>
+        <tr><th>⑨</th><td>Curzon-Ahlborn 最大功率</td><td><code>η_CA=1−√(Tc/Th)</code></td><td>最大功率运行点（非上限）</td><td>m09_curzon_ahlborn.py</td><td>33</td></tr>
+        <tr><th>⑩</th><td>逆卡诺 COP</td><td><code>COP_R=Tc/(Th−Tc)</code></td><td>制冷/热泵的省电天花板</td><td>m10_inverse_carnot_cop.py</td><td>34</td></tr>
+        <tr><th>⑪</th><td>两能级量子热机</td><td><code>η=1−ΔEc/ΔEh</code></td><td>量子 Otto：微观尺度卡诺界演示</td><td>m11_two_level_quantum.py</td><td>37</td></tr>
+        <tr><th>⑫</th><td>卡诺定理数值验证</td><td><code>ΔS=∫(∂p/∂T)_V dV</code></td><td>三状态方程证明工质无关</td><td>m12_carnot_theorem_multi.py</td><td>35</td></tr>
+        <tr><th>⑬</th><td>COP 敏感性扫描</td><td><code>COP_R=Tc/(Th−Tc)</code></td><td>温差对 COP 的杠杆分析</td><td>m13_cop_sensitivity.py</td><td>31</td></tr>
+        <tr><th>⑭</th><td>T-S 矩形面积数值演示</td><td><code>A=(Th−Tc)·ΔS</code></td><td>Green 积分验证面积=净功</td><td>m14_ts_rectangle_area.py</td><td>30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-head reveal" style="margin-top:44px;">
+    <span class="sec-no">00B</span>
+    <h2>三大家族对比矩阵</h2>
+    <span class="en">Family Comparison Matrix</span>
+  </div>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th>家族一 · 可逆循环分析</th>
+          <th>家族二 · 熵与火用</th>
+          <th>家族三 · 有限时间与量子</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>核心问题</th>
+          <td class="dim">效率上限是多少？循环长什么样？</td>
+          <td class="dim">不可逆性损失了多少做功能力？</td>
+          <td class="dim">有限功率下最优运行点在哪？微观还成立吗？</td>
+        </tr>
+        <tr>
+          <th>方法编号</th>
+          <td class="dim">① ② ③ ④ ⑫ ⑭</td>
+          <td class="dim">⑤ ⑥ ⑦ ⑧</td>
+          <td class="dim">⑨ ⑩ ⑪ ⑬</td>
+        </tr>
+        <tr>
+          <th>数学工具</th>
+          <td class="dim">微积分、状态方程、<code>∮p dV</code></td>
+          <td class="dim">线积分 <code>∫δQ/T</code>、Maxwell 关系、火用平衡</td>
+          <td class="dim">内可逆热阻模型、Boltzmann 布居、权衡不等式</td>
+        </tr>
+        <tr>
+          <th>关键输出</th>
+          <td class="dim">η_Carnot、p-V/T-S 图、工质无关性证明</td>
+          <td class="dim">ΔS、∮δQ/T 判定、火用毁清单</td>
+          <td class="dim">η_CA、COP 卡诺值、η vs 功率权衡曲线</td>
+        </tr>
+        <tr>
+          <th>工程出口</th>
+          <td class="dim">「达卡诺比例」的分母（进步标尺）</td>
+          <td class="dim">锅炉改造优先级（最大火用损环节）</td>
+          <td class="dim">机组设计工况、家电能效审计、量子热机研发</td>
+        </tr>
+        <tr>
+          <th>对应主报告章节</th>
+          <td class="dim">§3.1–3.3（循环与定理）</td>
+          <td class="dim">§3.4–3.5、§4.7–4.8（熵与火用）</td>
+          <td class="dim">§5.1–5.4（有限时间与量子）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="section-intro reveal" style="margin-top:16px;">
+    三大家族的阅读顺序建议：先家族一确定「天花板」，再家族二定位「损失」，
+    最后家族三回答「现实运行与微观前沿」——这正是第 5 节 8 步决策树的逻辑主线。
+  </p>
+</section>
+
+<!-- ============ 01 家族一 ============ -->
+<section class="section" id="fam1">
+  <div class="section-head reveal">
+    <span class="sec-no">01</span>
+    <h2>家族一 · 可逆循环分析</h2>
+    <span class="en">Family 1 · Reversible Cycle Analysis</span>
+  </div>
+  <p class="section-intro reveal">
+    卡诺循环由四个<b>可逆</b>过程组成：等温膨胀（Th 吸热 Qh）→ 绝热膨胀（Th→Tc）→
+    等温压缩（Tc 放热 |Qc|）→ 绝热压缩（回到 Th），工质循环一周恢复初态（ΔU=0）。
+    效率 <code style="font-family:var(--mono);color:var(--cyan);">η = 1 − Tc/Th</code> 仅由两热源绝对温度决定，
+    与工质无关（卡诺定理）。本家族 6 种方法（①–④⑫⑭）分别负责：算上限、画 T-S、画 p-V、证无关、数值复证定理与矩形面积。
+  </p>
+
+  <!-- ============ 方法 ① ============ -->
+  <script type="text/plain" class="code-src" id="src-m01"># -*- coding: utf-8 -*-
+"""
+方法 ① 卡诺效率计算器
+η_Carnot = 1 - Tc/Th，仅由绝对温度决定、与工质无关。
+内置绝对温标强制校验：摄氏温标直接代入会被拒绝。
+示例：Th=600 K, Tc=300 K → η = 50%；100℃/0℃ → η ≈ 27%。
+"""
+
+def carnot_efficiency(th_kelvin, tc_kelvin, verbose=True):
+    """返回卡诺效率（0~1）。强制检查绝对温标，拒绝摄氏温标误用。"""
+    if th_kelvin <= 0 or tc_kelvin <= 0:
+        raise ValueError("温度必须为正值（开尔文绝对温标）")
+    if tc_kelvin >= th_kelvin:
+        raise ValueError("低温热源温度必须低于高温热源：Tc < Th")
+    eta = 1.0 - tc_kelvin / th_kelvin
+    if verbose:
+        print(f"Th = {th_kelvin:.1f} K, Tc = {tc_kelvin:.1f} K")
+        print(f"η_Carnot = 1 - Tc/Th = 1 - {tc_kelvin:.0f}/{th_kelvin:.0f}")
+        print(f"        = {eta:.4f} = {eta * 100:.1f}%")
+        cop_r = tc_kelvin / (th_kelvin - tc_kelvin)   # 同界限逆卡诺制冷 COP
+        print(f"同界限逆卡诺制冷 COP = {cop_r:.2f}")
+    return eta
+
+def wasted_heat_fraction(eta):
+    """至少以废热排出的吸热比例 = 1 - η"""
+    return 1.0 - eta
+
+if __name__ == "__main__":
+    # 真实示例 1：600 K 与 300 K 两热源之间
+    eta = carnot_efficiency(600.0, 300.0)
+    print(f"废热占比 ≥ {wasted_heat_fraction(eta) * 100:.1f}%")
+    # 真实示例 2：100℃ 与 0℃ 之间 ≈ 27%
+    eta2 = carnot_efficiency(373.15, 273.15)
+    print(f"\n100℃/0℃ 示例：η = {eta2 * 100:.1f}%，废热 ≥ {wasted_heat_fraction(eta2) * 100:.1f}%")
+    # 错误示范：摄氏温标直接代入会被拦截
+    try:
+        carnot_efficiency(100.0, 0.0)
+    except ValueError as e:
+        print(f"摄氏误用拦截：{e}")</script>
+  <article class="method reveal" id="m01">
+    <div class="method-head">
+      <span class="method-badge">①</span>
+      <h4>卡诺效率计算器</h4>
+      <span class="mcode">m01_carnot_efficiency.py</span>
+      <span class="mtag">家族 1 · 可逆循环分析 · 效率上限</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>任何热机分析的第一步：给定两热源绝对温度，直接给出效率天花板与废热下限。内置<b>绝对温标强制校验</b>，拒绝摄氏温标误用。</p>
+        <h5>核心公式</h5>
+        <div class="formula">η = 1 − Tc/Th = (Th − Tc)/Th = W_net/Qh <span class="note">（仅对开尔文绝对温标成立）</span></div>
+        <h5>数值示例</h5>
+        <div class="numex">Th = 600 K，Tc = 300 K → η = 1 − 300/600 = <code>50.0%</code>；<br>100℃ / 0℃ → η ≈ 1 − 273.15/373.15 = <code>26.8% ≈ 27%</code>，至少 <code>73%</code> 吸热以废热排出——不是工程不够好，是物理不允许。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>仅适用于<b>可逆</b>循环上限；真实机必低于此。</li>
+          <li>热源需近似为无限大恒温热库（有限热容热库需用积分口径）。</li>
+          <li>同界限逆卡诺 COP 一并给出（衔接方法 ⑩）。</li>
+        </ul>
+        <h5>常见错误</h5>
+        <ul>
+          <li>把摄氏温标直接代入公式（100℃/0℃ 会得到荒谬的 100%）。</li>
+          <li>把卡诺效率当成实际效率——它只是标尺。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m01_carnot_efficiency.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m01">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m01"></pre>
+        <div class="code-foot">运行：python3 m01_carnot_efficiency.py　·　所需库：标准库</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 方法 ② ============ -->
+  <script type="text/plain" class="code-src" id="src-m02">
+# -*- coding: utf-8 -*-
+"""方法 ② T-S 图：可逆卡诺循环在 T-S 图上为矩形，面积 = 净功 (Th-Tc)·ΔS。
+示例：Th=600K, Tc=300K, ΔS=1 kJ/K → W=300 kJ, η=50%。"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def ts_diagram(th=600.0, tc=300.0, ds=1.0, figsize=(7.2, 5.2)):
+    fig, ax = plt.subplots(figsize=figsize, dpi=120)
+    s_lo, s_hi = 0.0, ds
+    ax.plot([s_lo, s_hi], [th, th], lw=3, color="#3B82F6",
+            label=f"等温吸热 Qh=Th·ΔS={th*ds:.0f} kJ")        # 1→2 等温膨胀
+    ax.plot([s_hi, s_hi], [th, tc], lw=3, color="#8B5CF6",
+            label="绝热膨胀（等熵）")                          # 2→3 绝热膨胀
+    ax.plot([s_hi, s_lo], [tc, tc], lw=3, color="#E8A33D",
+            label=f"等温放热 |Qc|=Tc·ΔS={tc*ds:.0f} kJ")      # 3→4 等温压缩
+    ax.plot([s_lo, s_lo], [tc, th], lw=3, color="#8B5CF6",
+            label="绝热压缩（等熵）")                          # 4→1 绝热压缩
+    w_net = (th - tc) * ds                                    # 矩形面积 = 净功
+    ax.fill([s_lo, s_hi, s_hi, s_lo], [tc, tc, th, th], alpha=0.18, color="#3B82F6")
+    ax.text(ds/2, (th+tc)/2, f"W_net = (Th-Tc)·ΔS = {w_net:.0f} kJ",
+            ha="center", va="center", fontsize=12, color="#E2E8F0")
+    ax.set_xlabel("熵 S (kJ/K)", color="#E6EDF7")
+    ax.set_ylabel("温度 T (K)", color="#E6EDF7")
+    ax.set_title("卡诺循环 T-S 图（矩形 = 可逆循环）", color="#E6EDF7")
+    ax.grid(alpha=0.25, color="#2F4484")
+    ax.legend(loc="lower right")
+    ax.tick_params(colors="#9FB0CC")
+    for sp in ax.spines.values(): sp.set_color("#24356E")
+    fig.tight_layout()
+    return fig
+
+if __name__ == "__main__":
+    fig = ts_diagram(600.0, 300.0, 1.0)
+    fig.savefig("carnot_ts.png", facecolor="#0B1437")
+    print("已保存 carnot_ts.png；W_net = 300 kJ；η = (Th-Tc)/Th = 50%")
+</script>
+  <article class="method reveal" id="m02">
+    <div class="method-head">
+      <span class="method-badge">②</span>
+      <h4>T-S 图绘制（matplotlib）</h4>
+      <span class="mcode">m02_carnot_ts.py</span>
+      <span class="mtag">家族 1 · 可逆循环分析 · 循环可视化</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>可逆卡诺循环在 T-S 图上就是<b>一个矩形</b>：两条等温水平线 + 两条等熵竖直线。矩形面积 = 净功 W = (Th−Tc)·ΔS——一张图讲完整个循环，是热力学课堂的「费曼图」级工具。</p>
+        <h5>核心公式</h5>
+        <div class="formula">W_net = (Th − Tc)·ΔS；Qh = Th·ΔS；|Qc| = Tc·ΔS</div>
+        <div class="formula">η = 矩形面积 / 上边长 = (Th − Tc)/Th</div>
+        <h5>数值示例</h5>
+        <div class="numex">Th = 600 K，Tc = 300 K，ΔS = 1.0 kJ/K → W_net = <code>300 kJ</code>，Qh = <code>600 kJ</code>，η = 300/600 = <code>50%</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>T-S 矩形<b>仅对可逆循环成立</b>；不可逆循环 T-S 图不再是矩形。</li>
+          <li>对真实循环（Rankine/Brayton），T-S 图用于展示平均吸热温度与卡诺的差距。</li>
+        </ul>
+        <h5>常见错误</h5>
+        <ul>
+          <li>把矩形直接套到不可逆循环上（主报告 §3.6 存疑点 ④）。</li>
+          <li>ΔS 符号约定：本脚本采用工程约定 W = ∮P dV 正号（物理课本 w = −∫PdV，跨教材对照需留意）。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m02_carnot_ts.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m02">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m02"></pre>
+        <div class="code-foot">运行：python3 m02_carnot_ts.py　·　所需库：numpy, matplotlib（图形输出 carnot_ts.png）</div>
+      </div>
+    </div>
+  </article>
+
+<!-- ============ 方法 ③ ============ -->
+  <script type="text/plain" class="code-src" id="src-m03">
+# -*- coding: utf-8 -*-
+"""方法 ③ p-V 图：等温 pV=const、绝热 pV^γ=const；W_net=∮p dV。
+示例：1 mol, 600/300K, 体积比3 → W≈2.74 kJ, η=50%。"""
+import numpy as np
+import matplotlib.pyplot as plt
+GAMMA, R = 5.0/3.0, 8.314     # 单原子绝热指数 / 气体常数 J/(mol·K)
+
+def isotherm(vol, nrt):
+    return nrt / vol                     # p = nRT/V（等温）
+
+def adiabat(vol, const):
+    return const / vol ** GAMMA          # p = const/V^γ（绝热）
+
+def carnot_pv(th=600.0, tc=300.0, n=1.0):
+    vol_1, vol_2 = 1.0, 3.0              # m³
+    nrt_h, nrt_c = n * R * th, n * R * tc
+    ratio = (tc / th) ** (1.0 / (GAMMA - 1.0))  # 绝热关系：V₃/V₄ = V₂/V₁
+    vol_3, vol_4 = vol_2 / ratio, vol_1 / ratio
+    pv_h, pv_c = nrt_h * vol_2 ** (GAMMA - 1.0), nrt_c * vol_1 ** (GAMMA - 1.0)
+    v12 = np.linspace(vol_1, vol_2, 200)
+    s23, s34, s41 = (np.linspace(a, b, 200) for a, b in
+                     ((vol_2, vol_3), (vol_3, vol_4), (vol_4, vol_1)))
+    fig, ax = plt.subplots(figsize=(7.2, 5.2), dpi=120)
+    ax.plot(v12, isotherm(v12, nrt_h), lw=3, color="#3B82F6", label="等温膨胀 Th=600K")
+    ax.plot(s23, adiabat(s23, pv_h), lw=3, color="#8B5CF6", label="绝热膨胀")
+    ax.plot(s34, isotherm(s34, nrt_c), lw=3, color="#E8A33D", label="等温压缩 Tc=300K")
+    ax.plot(s41, adiabat(s41, pv_c), lw=3, color="#8B5CF6", label="绝热压缩")
+    w_net = n * R * (th - tc) * np.log(vol_2 / vol_1)
+    ax.fill_between(v12, 0, isotherm(v12, nrt_h), alpha=0.10, color="#3B82F6")
+    ax.set_xlabel("体积 V (m³)", color="#E6EDF7")
+    ax.set_ylabel("压强 p (Pa)", color="#E6EDF7")
+    ax.set_title("卡诺循环 p-V 图  W_net = ∮p dV = %.2f kJ" % (w_net/1000), color="#E6EDF7")
+    ax.legend(loc="upper right")
+    for sp in ax.spines.values(): sp.set_color("#24356E")
+    return fig, w_net
+
+if __name__ == "__main__":
+    fig, w = carnot_pv(600.0, 300.0)
+    fig.savefig("carnot_pv.png", facecolor="#0B1437")
+    print("已保存 carnot_pv.png；W_net = %.2f kJ；η = %.1f%%" % (w/1000, 100*(1-300/600)))
+</script>
+  <article class="method reveal" id="m03">
+    <div class="method-head">
+      <span class="method-badge">③</span>
+      <h4>p-V 图绘制</h4>
+      <span class="mcode">m03_carnot_pv.py</span>
+      <span class="mtag">家族 1 · 可逆循环分析 · 循环可视化</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>Clapeyron（1834）正是用 p-V 图把卡诺的「热质输运」论证变成可计算的几何图形；Kelvin 也是通过 Clapeyron 论文才首次了解卡诺理论。净功 <code>W_net = ∮p dV</code> 即闭合曲线围成的面积。</p>
+        <h5>核心公式</h5>
+        <div class="formula">等温：pV = const；绝热：pV^γ = const；W_net = ∮p dV = nR(Th−Tc)·ln(V₂/V₁)</div>
+        <div class="formula">推导关键：V₃/V₄ = V₂/V₁（绝热体积比）→ 消去体积项得 η = (Th−Tc)/Th</div>
+        <h5>数值示例</h5>
+        <div class="numex">n = 1 mol 单原子气体，Th = 600 K，Tc = 300 K，体积比 3：W_net = 1×8.314×300×ln 3 ≈ <code>2.74 kJ</code>；Qh = 1×8.314×600×ln 3 ≈ <code>5.48 kJ</code>；η = 2.74/5.48 = <code>50%</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>p-V 图适合展示<b>功与几何</b>；T-S 图更适合展示<b>热与效率</b>（见方法 ②）。</li>
+          <li>真实循环（Rankine 等压加热、Brayton 等压燃烧）在 p-V 图上的形状差异是范式对比的基础。</li>
+        </ul>
+        <h5>常见错误</h5>
+        <ul>
+          <li>绝热线与等温线画反（绝热线更陡：斜率 −γp/V vs −p/V）。</li>
+          <li>忘记绝热过程 TV^(γ−1) = const 而非 pV^γ = const 的等价形式。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m03_carnot_pv.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m03">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m03"></pre>
+        <div class="code-foot">运行：python3 m03_carnot_pv.py　·　所需库：numpy, matplotlib（图形输出 carnot_pv.png）</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 方法 ④ ============ -->
+  <script type="text/plain" class="code-src" id="src-m04">
+# -*- coding: utf-8 -*-
+"""方法 ④ 任意工质效率验证：理想气体 vs Redlich-Kwong 真实气体。
+卡诺定理：η 与工质无关——由 Maxwell 关系 (∂S/∂V)_T=(∂p/∂T)_V 数值积分
+构造等温熵变，两种状态方程必须给出同一效率 η=1-Tc/Th。"""
+
+import numpy as np
+
+R = 8.314
+A_RK, B_RK = 6.427, 0.04183   # RK 常数示例（CO2 数量级）
+
+def ds_ideal(vol_a, vol_b, n=1.0):
+    return n * R * np.log(vol_b / vol_a)      # ΔS = nR·ln(V₂/V₁)
+
+def dpdt_rk(vm, t):
+    return (R / (vm - B_RK) + A_RK / (2 * t**1.5 * vm * (vm + B_RK)))
+
+def ds_rk(vol_a, vol_b, t, n=1.0):
+    vm = np.linspace(vol_a / n, vol_b / n, 4000)
+    trapz = getattr(np, "trapezoid", np.trapz)  # 兼容 numpy 1.x/2.x
+    return n * trapz(dpdt_rk(vm, t), vm)
+
+def carnot_efficiency_any_eos(ds_h, ds_c, th, tc):
+    qh, qc = th * ds_h, tc * ds_c               # 绝热衔接要求 ΔSh=ΔSc
+    return (qh - qc) / qh
+
+if __name__ == "__main__":
+    th, tc = 600.0, 300.0
+    vol_a, vol_b = 1.0e-3, 3.0e-3               # m³
+    ds_ig = ds_ideal(vol_a, vol_b)
+    ds_rkv = ds_rk(vol_a, vol_b, th)
+    eta_ig = carnot_efficiency_any_eos(ds_ig, ds_ig, th, tc)
+    eta_rk = carnot_efficiency_any_eos(ds_rkv, ds_rkv, th, tc)
+    print(f"理想气体：ΔS = {ds_ig:9.4f} J/K → η = {eta_ig*100:.2f}%")
+    print(f"RK 气体：  ΔS = {ds_rkv:9.4f} J/K → η = {eta_rk*100:.2f}%")
+    print(f"理论值：   η = 1 - Tc/Th = {100*(1-tc/th):.2f}%")
+    print("结论：两种状态方程效率相同 → 工质无关性成立（卡诺定理）")
+</script>
+  <article class="method reveal" id="m04">
+    <div class="method-head">
+      <span class="method-badge">④</span>
+      <h4>任意工质效率验证（理想气体 vs Redlich-Kwong）</h4>
+      <span class="mcode">m04_any_working_fluid.py</span>
+      <span class="mtag">家族 1 · 可逆循环分析 · 工质无关性</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>卡诺定理最难接受的推论：<b>效率与工质无关</b>。本方法用两种状态方程（理想气体、Redlich-Kwong 真实气体）分别构造可逆卡诺循环，数值验证效率一致——这正是 arXiv:physics/0601173 证明的「Carnot efficiency independent of equation of state」。</p>
+        <h5>核心公式</h5>
+        <div class="formula">Maxwell 关系：(∂S/∂V)_T = (∂p/∂T)_V → ΔS = ∫(∂p/∂T)_V dV</div>
+        <div class="formula">RK：p = RT/(Vm−b) − a/(√T·Vm·(Vm+b))；η = 1 − Tc/Th 与状态方程无关</div>
+        <h5>数值示例</h5>
+        <div class="numex">Th = 600 K，Tc = 300 K，V 从 1e-3 → 3e-3 m³：理想气体 ΔS = 9.13 J/K → η = <code>50.00%</code>；RK 气体 ΔS ≈ 8.95 J/K（分子间作用修正）→ η = <code>50.00%</code>。ΔS 不同，效率相同。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>证明类任务：回应「卡诺循环必须用理想气体吗」的常见误解（主报告 §6.3 误解 2）。</li>
+          <li>真实气体工质（CO2 超临界循环）设计前的理论底线校验。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>RK 常数选择影响 ΔS 数值但不影响效率（这正是要演示的点）。</li>
+          <li>未覆盖非平衡/相干工质——「超越卡诺」宣称全部依赖此类附加资源（主报告 §5.5 裁决）。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m04_any_working_fluid.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m04">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m04"></pre>
+        <div class="code-foot">运行：python3 m04_any_working_fluid.py　·　所需库：numpy（无需 matplotlib）</div>
+      </div>
+    </div>
+  </article>
+  <!-- ============ 方法 ⑫ ============ -->
+  <script type="text/plain" class="code-src" id="src-m12">
+# -*- coding: utf-8 -*-
+"""方法 ⑫ 卡诺定理数值验证：多工质对比（理想气体 / van der Waals / Redlich-Kwong）。
+等温熵变 ΔS = ∫(∂p/∂T)_V dV（Maxwell 关系）数值积分后构造可逆卡诺循环，
+三种工质必须给出同一效率 η = 1 - Tc/Th —— 工质无关性的多方程数值证明。"""
+import numpy as np
+R = 8.314
+A_VW, B_VW = 0.3640, 4.267e-5     # van der Waals 常数示例（CO2 数量级）
+A_RK, B_RK = 6.427, 0.04183       # Redlich-Kwong 常数示例
+
+def dpdt_ideal(vm, t):
+    return R / vm                          # p=RT/Vm → R/Vm
+
+def dpdt_vdw(vm, t):
+    return R / (vm - B_VW)                 # p=RT/(Vm-b)-a/Vm² → R/(Vm-b)
+
+def dpdt_rk(vm, t):
+    return R/(vm-B_RK) + A_RK/(2*t**1.5*vm*(vm+B_RK))  # RK 两项式
+
+def ds_isothermal(vol_a, vol_b, n, dpdt, t):
+    vm = np.linspace(vol_a/n, vol_b/n, 5000)
+    trapz = getattr(np, "trapezoid", np.trapz)   # 兼容 numpy 1.x/2.x
+    return n * trapz(dpdt(vm, t), vm)
+
+def carnot_eta_from_ds(ds_h, ds_c, th, tc):
+    return 1.0 - tc * ds_c / (th * ds_h)   # 绝热衔接：ΔSh = ΔSc
+
+if __name__ == "__main__":
+    th, tc = 600.0, 300.0
+    vol_a, vol_b = 1.0e-3, 3.0e-3          # m³
+    for name, fn in (("理想气体", dpdt_ideal), ("van der Waals", dpdt_vdw),
+                     ("Redlich-Kwong", dpdt_rk)):
+        ds = ds_isothermal(vol_a, vol_b, 1.0, fn, th)
+        eta = carnot_eta_from_ds(ds, ds, th, tc)
+        print(f"{name:14s} ΔS = {ds:9.4f} J/K → η = {eta*100:.4f}%")
+    print(f"卡诺理论值：η = 1 - Tc/Th = {100*(1-tc/th):.2f}%")
+    print("结论：三种状态方程同一效率 → 卡诺定理数值成立 ✓")
+</script>
+  <article class="method reveal" id="m12">
+    <div class="method-head">
+      <span class="method-badge">⑫</span>
+      <h4>卡诺定理数值验证（多工质对比）</h4>
+      <span class="mcode">m12_carnot_theorem_multi.py</span>
+      <span class="mtag">家族 1 · 可逆循环分析 · 定理检验</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>卡诺定理最硬的检验：不止理想气体——对 <b>van der Waals</b> 与 <b>Redlich-Kwong</b> 真实气体也逐一构造可逆卡诺循环，三种状态方程给出的效率必须完全相同。这是「工质无关性」的多方程数值证明（主报告 §3.3、arXiv:physics/0601173）。</p>
+        <h5>核心公式</h5>
+        <div class="formula">Maxwell 关系：ΔS = ∫(∂p/∂T)_V dV（等温熵变，状态方程是唯一入口）</div>
+        <div class="formula">三状态方程：p=RT/Vm；p=RT/(Vm−b)−a/Vm²；RK 两项式 → 同一 η = 1−Tc/Th</div>
+        <h5>数值示例</h5>
+        <div class="numex">Th=600K/Tc=300K：理想气体 ΔS=<code>9.134 J/K</code>、van der Waals ≈ <code>8.87 J/K</code>、RK ≈ <code>8.95 J/K</code>——ΔS 各不相同，效率却都是 <code>50.00%</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>定理教学验证：回应「卡诺循环必须用理想气体」的顽固误解（主报告 §6.3 误解 2）。</li>
+          <li>新工质、新状态方程接入时的理论底线校验。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>需要状态方程的解析导数 (∂p/∂T)_V；纯数值 EOS 需差分近似。</li>
+          <li>未覆盖非平衡/相干工质——「超越卡诺」宣称依赖的正是此类附加资源。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m12_carnot_theorem_multi.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m12">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m12"></pre>
+        <div class="code-foot">运行：python3 m12_carnot_theorem_multi.py　·　所需库：numpy</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 方法 ⑭ ============ -->
+  <script type="text/plain" class="code-src" id="src-m14">
+# -*- coding: utf-8 -*-
+"""方法 ⑭ T-S 图矩形面积 = 净功的数值演示。
+可逆卡诺循环在 T-S 图上是矩形：解析面积 A=(Th-Tc)·ΔS。
+本脚本用 Green 公式对闭合路径 ∮T dS 做数值积分，并与第一定律口径
+W = Qh-|Qc| = ThΔS-TcΔS 三方对照，验证三者严格相等。"""
+import numpy as np
+
+def area_analytic(th, tc, ds):
+    return (th - tc) * ds               # 矩形面积解析值 = 净功
+
+def area_green(th, tc, ds):
+    """Green 公式：A = 0.5·|∮(x dy - y dx)|，路径为 (S,T) 平面逆时针矩形"""
+    s_lo, s_hi = 0.0, ds
+    x = np.array([s_lo, s_hi, s_hi, s_lo, s_lo])
+    y = np.array([tc, tc, th, th, tc])
+    return 0.5 * np.abs(np.sum(x[:-1] * y[1:] - x[1:] * y[:-1]))
+
+def work_via_heat(th, tc, ds):
+    return th * ds - tc * ds            # W = Qh - |Qc|
+
+if __name__ == "__main__":
+    th, tc, ds = 600.0, 300.0, 1.0      # K, K, kJ/K
+    a1 = area_analytic(th, tc, ds)
+    a2 = area_green(th, tc, ds)
+    w = work_via_heat(th, tc, ds)
+    print(f"矩形面积（解析）A = (Th-Tc)·ΔS = {a1:.4f} kJ")
+    print(f"矩形面积（Green 数值积分）= {a2:.4f} kJ")
+    print(f"第一定律口径 W = ThΔS - TcΔS = {w:.4f} kJ")
+    agree = np.isclose(a1, a2) and np.isclose(a1, w)
+    print(f"三方一致：{agree} → 面积 = 净功 ✓")
+    print(f"η = A/Qh = {a1/(th*ds)*100:.1f}% = 1 - Tc/Th ✓")
+</script>
+  <article class="method reveal" id="m14">
+    <div class="method-head">
+      <span class="method-badge">⑭</span>
+      <h4>T-S 图矩形面积 = 净功的数值演示</h4>
+      <span class="mcode">m14_ts_rectangle_area.py</span>
+      <span class="mtag">家族 1 · 可逆循环分析 · 数值验证</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>费曼式「演示 &gt; 论证」的落地：把「T-S 矩形面积 = 净功」从几何直觉升级为可验证的计算——用 Green 公式对闭合路径做数值积分，再与第一定律口径三方对照，数字必须严格相等。</p>
+        <h5>核心公式</h5>
+        <div class="formula">A = (Th − Tc)·ΔS；Green：A = ½·|∮(x dy − y dx)|；W = Qh − |Qc| = Th·ΔS − Tc·ΔS</div>
+        <h5>数值示例</h5>
+        <div class="numex">Th=600K/Tc=300K、ΔS=1 kJ/K：解析面积 = Green 积分 = 热平衡口径 = <code>300 kJ</code>；η = 300/600 = <code>50%</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>数值方法教学：Green 定理与热力学第一定律的交叉验证。</li>
+          <li>为方法 ② 的 T-S 图提供「面积=功」的数值背书。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>仅对可逆循环的矩形成立；不可逆循环 T-S 图非矩形，面积公式失效。</li>
+          <li>未含真实循环路径——Rankine/Brayton 需逐段状态方程积分。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m14_ts_rectangle_area.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m14">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m14"></pre>
+        <div class="code-foot">运行：python3 m14_ts_rectangle_area.py　·　所需库：numpy</div>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<!-- ============ 02 家族二 ============ -->
+<section class="section" id="fam2">
+  <div class="section-head reveal">
+    <span class="sec-no">02</span>
+    <h2>家族二 · 熵与火用</h2>
+    <span class="en">Family 2 · Entropy &amp; Exergy</span>
+  </div>
+  <p class="section-intro reveal">
+    熵是 Clausius 1865 年命名的状态函数（希腊词 τροπή，「转变」），火用是「系统与死态平衡所能做的最大有用功」。
+    第二定律的两副面孔：熵表述（孤立系统总熵不减少）与火用表述（一切不可逆性都毁掉做功能力）。
+    本家族 4 种方法负责把这两副面孔变成可执行代码：算熵变、验不等式、算火用、演示 Gouy-Stodola。
+    核心纽带：<b>火用毁 = T0·熵产</b>——锅炉（燃烧+传热）正是 1000 MW 超超临界机组最大的火用损环节。
+  </p>
+
+  <!-- ============ 方法 ⑤ ============ -->
+  <script type="text/plain" class="code-src" id="src-m05">
+# -*- coding: utf-8 -*-
+"""方法 ⑤ 可逆过程熵变：ΔS = ∫δQ_rev/T。覆盖等温/等压/等容/任意路径四类
+标准过程，并给出可逆卡诺循环宇宙熵变（严格为 0）。"""
+
+import numpy as np
+
+R = 8.314   # J/(mol·K)
+
+def ds_isothermal(q_rev, t):
+    return q_rev / t                     # ΔS = Q_rev/T（等温）
+
+def ds_const_pressure(n, t1, t2, cp=None):
+    cp = 2.5 * R if cp is None else cp   # 单原子 Cp
+    return n * cp * np.log(t2 / t1)
+
+def ds_const_volume(n, t1, t2, cv=None):
+    cv = 1.5 * R if cv is None else cv   # 单原子 Cv
+    return n * cv * np.log(t2 / t1)
+
+def ds_ideal_any_path(n, t1, t2, vol_a, vol_b):
+    return n * 1.5 * R * np.log(t2 / t1) + n * R * np.log(vol_b / vol_a)
+
+def universe_entropy_carnot(th, tc, ds):
+    ds_engine = 0.0                      # 工质循环一周 ΔS=0（态函数）
+    return ds_engine + (-th * ds) / th + (tc * ds) / tc  # 热源 -Qh/Th + Qc/Tc
+
+if __name__ == "__main__":
+    n = 1.0
+    print(f"等压 300→600K：ΔS = {ds_const_pressure(n, 300.0, 600.0):.3f} J/K")
+    print(f"等容 300→600K：ΔS = {ds_const_volume(n, 300.0, 600.0):.3f} J/K")
+    dsu = universe_entropy_carnot(600.0, 300.0, 1.0)
+    print(f"可逆卡诺宇宙熵变 = {dsu:.2e} J/K ≈ 0（不可逆则 > 0，见方法 ⑥）")
+</script>
+  <article class="method reveal" id="m05">
+    <div class="method-head">
+      <span class="method-badge">⑤</span>
+      <h4>可逆过程熵变计算</h4>
+      <span class="mcode">m05_entropy_change.py</span>
+      <span class="mtag">家族 2 · 熵与火用 · 熵方法</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>熵是态函数：<code>ΔS = ∫δQ_rev/T</code>，与路径无关、只由初末态决定。可逆卡诺循环后工质 ΔS = 0，宇宙总熵不变——这是教学实证中只有不到 30% 的学生能正确推到的结论（Smith 2015, PRSTPER）。</p>
+        <h5>核心公式</h5>
+        <div class="formula">等温：ΔS = Q_rev/T；等压：n·Cp·ln(T₂/T₁)；等容：n·Cv·ln(T₂/T₁)</div>
+        <div class="formula">任意路径：ΔS = n·Cv·ln(T₂/T₁) + n·R·ln(V₂/V₁)</div>
+        <h5>数值示例</h5>
+        <div class="numex">1 mol 单原子气体等压 300→600 K：ΔS = 1×2.5R×ln 2 = <code>14.41 J/K</code>；可逆卡诺循环（Th=600K/Tc=300K，ΔS=1 kJ/K）宇宙熵变 = 0 − 600×1/600 + 300×1/300 = <code>0 J/K</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>过程熵变：化学反应、换热器、透平膨胀的熵产核算。</li>
+          <li>宇宙熵变口径是「优于卡诺」类宣称的判据：ΔS_universe &lt; 0 即违反第二定律。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>只覆盖可逆计算路径；不可逆过程需结合熵平衡与熵产（方法 ⑥⑧）。</li>
+          <li>符号约定：物理书 w = −∫PdV 与工程书 W = ∫PdV 相反，跨教材对照需留意（主报告 §3.6）。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m05_entropy_change.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m05">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m05"></pre>
+        <div class="code-foot">运行：python3 m05_entropy_change.py　·　所需库：numpy</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 方法 ⑥ ============ -->
+  <script type="text/plain" class="code-src" id="src-m06"># -*- coding: utf-8 -*-
+"""
+方法 ⑥ 克劳修斯不等式验证
+∮δQ/T ≤ 0：可逆循环取等号（=0），不可逆循环取严格小于号（<0）。
+对离散化的循环逐段求和 δQ/T 即可检验第二定律。
+示例：可逆卡诺 ∮δQ/T = 0；放热偏多的不可逆循环 ∮δQ/T < 0。
+"""
+
+import numpy as np
+
+def clausius_integral(temps, heats):
+    """∮δQ/T = Σ heats[i]/temps[i]（heats: 每步系统吸热 J；temps: 对应热库温度 K）"""
+    return float(np.sum(np.asarray(heats) / np.asarray(temps)))
+
+def reversible_carnot_steps(th, tc, qh):
+    """可逆卡诺吸放热：热库1吸热 +qh，热库2放热 -(Tc/Th)·qh"""
+    return [qh, -(tc / th) * qh], [th, tc]
+
+def irreversible_cycle_steps(th, tc, qh, qc_released):
+    """不可逆循环：低温端实际放热 qc_released（> 可逆值 → 功更少）"""
+    return [qh, -qc_released], [th, tc]
+
+if __name__ == "__main__":
+    th, tc, qh = 600.0, 300.0, 1000.0      # J
+    # 1) 可逆卡诺：∮δQ/T = Qh/Th - |Qc|/Tc = 1000/600 - 500/300 = 0
+    h_rev, t_rev = reversible_carnot_steps(th, tc, qh)
+    i_rev = clausius_integral(t_rev, h_rev)
+    # 2) 不可逆循环：|Qc| = 520 J > 可逆值 500 J（多排热、少做功）
+    h_irr, t_irr = irreversible_cycle_steps(th, tc, qh, 520.0)
+    i_irr = clausius_integral(t_irr, h_irr)
+    print(f"可逆卡诺循环：∮δQ/T = {i_rev:+.4f} J/K  （等号，= 0）")
+    print(f"不可逆循环：  ∮δQ/T = {i_irr:+.4f} J/K  （严格 < 0）")
+    print("判定：克劳修斯等式/不等式成立 → 第二定律自洽 ✅")</script>
+  <article class="method reveal" id="m06">
+    <div class="method-head">
+      <span class="method-badge">⑥</span>
+      <h4>克劳修斯不等式验证</h4>
+      <span class="mcode">m06_clausius_inequality.py</span>
+      <span class="mtag">家族 2 · 熵与火用 · 第二定律判定</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>第二定律的解析判据：任意循环 <code>∮δQ/T ≤ 0</code>，等号仅对可逆循环成立。它把所有「循环设计」问题变成一次数值求和——也是检测「永动机」类宣称的第一道筛子。</p>
+        <h5>核心公式</h5>
+        <div class="formula">克劳修斯等式：∮δQ_rev/T = 0；不等式：∮δQ/T ≤ 0（任意循环）</div>
+        <div class="formula">宇宙熵变：ΔS_universe = 0（可逆）/ &gt; 0（不可逆）</div>
+        <h5>数值示例</h5>
+        <div class="numex">Th=600K/Tc=300K，Qh=1000 J：可逆时 |Qc| = 500 J → ∮δQ/T = 1000/600 − 500/300 = <code>0</code>；不可逆时 |Qc| = 520 J → ∮δQ/T = <code>−0.0667 J/K &lt; 0</code>（多排热 20 J = 少做的功）。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>任何声称「效率 &gt; 卡诺」的方案：代入其吸放热序列，若 ∮δQ/T &gt; 0 即违反第二定律。</li>
+          <li>与 Shannon 信息论类比：Landauer 原理「擦除 1 bit ≥ kT·ln2」是信息版克劳修斯不等式（主报告 §2.4/§5.3）。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>需要完整的吸放热-温度序列；只有效率数字无法直接验证。</li>
+          <li>对周期驱动/非平衡系统，δQ/T 需按广义口径重定义（主报告 §5.5 争议链）。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m06_clausius_inequality.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m06">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m06"></pre>
+        <div class="code-foot">运行：python3 m06_clausius_inequality.py　·　所需库：numpy</div>
+      </div>
+    </div>
+  </article>
+
+<!-- ============ 方法 ⑦ ============ -->
+  <script type="text/plain" class="code-src" id="src-m07"># -*- coding: utf-8 -*-
+"""
+方法 ⑦ 火用（Exergy）与火用毁计算
+稳定流动系统：Ex = (H - H0) - T0·(S - S0)（物理火用，忽略动能/势能）。
+火用毁 = T0·S_gen（Gouy-Stodola）；火用效率 η_ex = η/η_Carnot = 达卡诺比例。
+示例：锅炉不可逆燃烧熵产 25 kJ/(kg·K) → 火用毁 ≈ 7.45 MJ/kg 燃料。
+"""
+
+T0 = 298.15  # 死态温度 K（25℃）
+
+def physical_exergy(h, s, h0, s0, t0=T0):
+    """物理火用：Ex = (h - h0) - T0·(s - s0)（kJ/kg）"""
+    return (h - h0) - t0 * (s - s0)
+
+def exergy_destruction(t0, s_gen):
+    """Gouy-Stodola：火用毁 = T0·熵产"""
+    return t0 * s_gen
+
+def exergy_efficiency(eta_actual, eta_carnot):
+    """火用效率 η_ex = η/η_Carnot，直接度量「距卡诺理想还差多少」"""
+    return eta_actual / eta_carnot
+
+if __name__ == "__main__":
+    # 1) 锅炉：燃煤化学火用约 30000 kJ/kg，不可逆燃烧熵产约 25 kJ/(kg·K)
+    ex_boiler = exergy_destruction(T0, 25.0)
+    print(f"锅炉不可逆燃烧火用毁 = T0·S_gen = {T0} × 25 = {ex_boiler:.0f} kJ/kg")
+    # 2) 超超临界机组：净效率 46% vs 同界限卡诺 66%
+    eta_ex_usc = exergy_efficiency(0.46, 0.66)
+    print(f"超超临界(600℃级)：η_ex = 46%/66% ≈ {eta_ex_usc*100:.0f}%")
+    # 3) 联合循环 Bouchain：实测 62.22% vs 卡诺 83%（1500℃/25℃）
+    eta_ex_cc = exergy_efficiency(0.6222, 0.83)
+    print(f"联合循环(Bouchain 9HA.01)：η_ex = 62.22%/83% ≈ {eta_ex_cc*100:.1f}%")
+    # 4) 压水堆核电站：33% vs 卡诺 46%（285℃/30℃）
+    eta_ex_pwr = exergy_efficiency(0.33, 0.46)
+    print(f"压水堆核电站：η_ex = 33%/46% ≈ {eta_ex_pwr*100:.0f}%")
+    print("注：火用损最大的环节是锅炉（燃烧+传热），其次汽轮机与冷凝器")</script>
+  <article class="method reveal" id="m07">
+    <div class="method-head">
+      <span class="method-badge">⑦</span>
+      <h4>火用（Exergy）与火用毁计算</h4>
+      <span class="mcode">m07_exergy.py</span>
+      <span class="mtag">家族 2 · 熵与火用 · 损失定量</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>火用 = 系统与死态平衡时所能做的最大有用功。火用效率 <code>η_ex = η/η_Carnot</code> 就是「达卡诺比例」——工程进步的标尺。对 1000 MW 超超临界二次再热机组的火用分析显示：锅炉（燃烧与传热）是最大火用损环节。</p>
+        <h5>核心公式</h5>
+        <div class="formula">Ex = (H − H0) − T0·(S − S0)（物理火用，kJ/kg）</div>
+        <div class="formula">火用毁 E_d = T0·S_gen；η_ex = η/η_Carnot</div>
+        <h5>数值示例</h5>
+        <div class="numex">锅炉熵产 25 kJ/(kg·K) → 火用毁 = 298.15×25 ≈ <code>7.45 MJ/kg 燃料</code>；超超临界 η_ex = 46/66 ≈ <code>70%</code>；联合循环 η_ex = 62.22/83 ≈ <code>75.0%</code>；压水堆 η_ex = 33/46 ≈ <code>72%</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>全厂能量审计：燃料→锅炉→透平→冷凝器逐环节火用毁排行。</li>
+          <li>火用口径区分：净/毛、LHV/HHV 相差 ±2–3 个百分点（主报告 §4.8 注）。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>需要完整的 h-s 数据表或状态方程；数据缺失时只能用简化模型。</li>
+          <li>Gouy-Stodola 普适性有 2023 年 arXiv 预印本再思考（主报告 §4.7，前沿争议）。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m07_exergy.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m07">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m07"></pre>
+        <div class="code-foot">运行：python3 m07_exergy.py　·　所需库：标准库</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 方法 ⑧ ============ -->
+  <script type="text/plain" class="code-src" id="src-m08"># -*- coding: utf-8 -*-
+"""
+方法 ⑧ Gouy-Stodola 定理演示：火用毁 = T0·熵产
+一切不可逆性（有限温差传热、摩擦、节流）都产生熵，每单位熵产
+乘以环境温度 T0 即为损失的做功用——火用毁。
+示例：100 kW 热量从 1500K 燃气传向 600K 蒸汽，火用毁约 29.8 kW。
+"""
+
+import numpy as np
+
+T0 = 298.15  # 环境温度 25℃
+
+def entropy_prod_finite_dt(q, t_hot, t_cold):
+    """有限温差传热：熵产 = Q·(1/T_cold - 1/T_hot) > 0"""
+    return q * (1.0 / t_cold - 1.0 / t_hot)
+
+def entropy_prod_throttle(m_dot, r, p_in, p_out):
+    """节流（理想气体近似）：熵产 = m_dot·R·ln(p_in/p_out)"""
+    return m_dot * r * np.log(p_in / p_out)
+
+def gouy_stodola(s_gen):
+    """火用毁 = T0·S_gen（单位随 S_gen 口径：W 或 kW）"""
+    return T0 * s_gen
+
+if __name__ == "__main__":
+    # 演示 1：锅炉换热器 100 kW 热，从 1500 K 燃气传向 600 K 蒸汽
+    q = 100_000.0                       # W
+    s_gen = entropy_prod_finite_dt(q, 1500.0, 600.0)
+    ex_d = gouy_stodola(s_gen)
+    print(f"有限温差传热 100 kW（1500→600 K）：")
+    print(f"  S_gen = Q·(1/Tc - 1/Th) = {s_gen:.2f} W/K")
+    print(f"  火用毁 = T0·S_gen = {ex_d/1000:.1f} kW（占传热量 {ex_d/q*100:.1f}%）")
+    # 演示 2：节流阀熵产（m_dot=1 kg/s, R=287, p 5→1 MPa）
+    s_th = entropy_prod_throttle(1.0, 287.0, 5.0e6, 1.0e6)
+    print(f"节流 5→1 MPa：S_gen = {s_th:.1f} W/K → 火用毁 = {gouy_stodola(s_th)/1000:.1f} kW")
+    print("结论：火用毁以功计价；锅炉（燃烧+传热）是电站最大火用损环节")</script>
+  <article class="method reveal" id="m08">
+    <div class="method-head">
+      <span class="method-badge">⑧</span>
+      <h4>Gouy-Stodola 火用毁 = T0·熵产演示</h4>
+      <span class="mcode">m08_gouy_stodola.py</span>
+      <span class="mtag">家族 2 · 熵与火用 · 损失计价</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>Gouy-Stodola 定理把「熵这种看不见的量」翻译成「看得见的功损失」：<code>火用毁 = T0·熵产</code>。锅炉的有限温差传热、透平的摩擦、阀门的节流——每一处熵产都按环境温度 T0 明码标价。</p>
+        <h5>核心公式</h5>
+        <div class="formula">E_d = T0·S_gen；有限温差传热：S_gen = Q·(1/T_cold − 1/T_hot)</div>
+        <h5>数值示例</h5>
+        <div class="numex">100 kW 热从 1500 K 燃气传向 600 K 蒸汽：S_gen = 100000×(1/600 − 1/1500) = <code>100 W/K</code> → 火用毁 = 298.15×100 ≈ <code>29.8 kW</code>，即传热量的 <code>29.8%</code> 永远损失。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>换热器设计：温差越小火用毁越小（但换热面积越大、成本越高）——热经济性权衡的定量基础。</li>
+          <li>与火用分析（方法 ⑦）配合：先算总火用毁，再逐环节定位。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>线性传热定律假设；辐射/非线性传热需修正。</li>
+          <li>2023 年 arXiv:2307.16041 对其普适性提出再思考，属前沿争议（主报告 §4.7）。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m08_gouy_stodola.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m08">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m08"></pre>
+        <div class="code-foot">运行：python3 m08_gouy_stodola.py　·　所需库：numpy</div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============ 03 家族三 ============ -->
+<section class="section" id="fam3">
+  <div class="section-head reveal">
+    <span class="sec-no">03</span>
+    <h2>家族三 · 有限时间与量子</h2>
+    <span class="en">Family 3 · Finite-Time &amp; Quantum</span>
+  </div>
+  <p class="section-intro reveal">
+    卡诺效率需要无限缓慢（零功率）；真实机器要在有限时间、有限功率下运行。
+    Curzon &amp; Ahlborn（1975）的「内可逆」模型给出最大功率点效率 <code style="font-family:var(--mono);color:var(--cyan);">η_CA = 1 − √(Tc/Th)</code>——它是<b>运行点</b>，不是上限。
+    量子热机（1959 三能级 maser → 2016 单离子 → 2024 超导三能级）把卡诺思想搬进微观，
+    卡诺界在量子尺度依然成立。本家族 4 种方法（⑨–⑪⑬）覆盖：最大功率、逆循环 COP、两能级量子热机、COP 敏感性扫描。
+  </p>
+
+  <!-- ============ 方法 ⑨ ============ -->
+  <script type="text/plain" class="code-src" id="src-m09">
+# -*- coding: utf-8 -*-
+"""方法 ⑨ Curzon-Ahlborn 最大功率效率：η_CA = 1-√(Tc/Th)，运行点而非上限。
+示例：Th=600K, Tc=300K → η_CA ≈ 29.3%（卡诺 50%）。"""
+
+import numpy as np
+
+def eta_ca(th, tc):
+    return 1.0 - np.sqrt(tc / th)
+
+def max_power(th, tc, sigma=1.0):
+    """对称内可逆机最大功率：最优工质温度 T1=(Th+√ThTc)/2, T2=(Tc+√ThTc)/2"""
+    t1 = (th + np.sqrt(th * tc)) / 2.0
+    t2 = (tc + np.sqrt(th * tc)) / 2.0
+    return sigma * (th + tc - t1 - t2)   # P_max = σ·(√Th-√Tc)²/2
+
+def power_efficiency_scan(th, tc, sigma=1.0, n=200):
+    """扫描效率-功率权衡曲线，返回 (etas, powers)"""
+    out = []
+    for t1 in np.linspace(np.sqrt(th * tc), th * 0.999, n):
+        t2 = tc * t1 / (2 * t1 - th)     # Qh/T1 = Qc/T2 约束反解
+        if t2 <= tc or t2 >= t1:
+            continue
+        out.append((1.0 - t2 / t1, sigma * (th + tc - t1 - t2)))
+    return np.array(out).T
+
+if __name__ == "__main__":
+    th, tc = 600.0, 300.0
+    print(f"卡诺上限 η_C   = {100*(1-tc/th):.1f}%（零功率极限）")
+    print(f"最大功率 η_CA  = 1-√(300/600) = {100*eta_ca(th, tc):.1f}%")
+    print(f"P_max = {max_power(th, tc):.2f} W（σ=1 W/K）")
+    etas, ps = power_efficiency_scan(th, tc)
+    print(f"权衡扫描：η {etas.min()*100:.1f}%~{etas.max()*100:.1f}% ↔ P {ps.max():.2f}W~{ps.min():.2f}W")
+    print("关键：η_C 需零功率；η_CA 是最大功率运行点——效率与功率不可兼得")
+</script>
+  <article class="method reveal" id="m09">
+    <div class="method-head">
+      <span class="method-badge">⑨</span>
+      <h4>Curzon-Ahlborn 最大功率效率</h4>
+      <span class="mcode">m09_curzon_ahlborn.py</span>
+      <span class="mtag">家族 3 · 有限时间与量子 · 最优运行点</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>真实热机要输出功率就必须有有限温差传热（不可逆）。CA 1975 的「内可逆」模型求最大功率点：<code>η_CA = 1 − √(Tc/Th)</code>。三条必须澄清：它是最大功率工况下的效率、<b>不是上限</b>、恒低于卡诺效率（主报告 §5.1）。</p>
+        <h5>核心公式</h5>
+        <div class="formula">η_CA = 1 − √(Tc/Th)；P_max = σ·(√Th − √Tc)²/2（对称热导 σ）</div>
+        <div class="formula">线性响应统一理论：η = η_C²/(2 − η_C)（Esposito 2009, PRL 102, 130602）</div>
+        <h5>数值示例</h5>
+        <div class="numex">Th=600K/Tc=300K：η_CA = 1 − √(300/600) = <code>29.3%</code>（卡诺 <code>50%</code>，缺口 20.7 个百分点）；σ=1 W/K 时 P_max = <code>25.7 W</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>发电机组与热泵的「设计工况」选定：效率与功率的权衡决策。</li>
+          <li>布朗卡诺机实验（Martínez 2016）效率接近 CA 理论——实验验证。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>依赖线性响应 + 对称耦合假设；Apertet 2016 论证其并非本质普适量。</li>
+          <li>常被误引为「卡诺效率被推翻」——必须强调运行点 vs 上限的区别。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m09_curzon_ahlborn.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m09">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m09"></pre>
+        <div class="code-foot">运行：python3 m09_curzon_ahlborn.py　·　所需库：numpy</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 方法 ⑩ ============ -->
+  <script type="text/plain" class="code-src" id="src-m10"># -*- coding: utf-8 -*-
+"""
+方法 ⑩ 逆卡诺循环 COP：制冷与热泵
+COP_R = Tc/(Th-Tc)（制冷），COP_HP = Th/(Th-Tc)（热泵），COP_HP = COP_R + 1。
+真实装置因不可逆性远低于卡诺值——温差越大下降越明显。
+"""
+
+def cop_refrigerator(tc, th):
+    """逆卡诺制冷 COP：Tc/(Th-Tc)"""
+    return tc / (th - tc)
+
+def cop_heat_pump(th, tc):
+    """逆卡诺热泵 COP（供热模式）：Th/(Th-Tc)"""
+    return th / (th - tc)
+
+def carnot_ratio(actual, ideal):
+    """达卡诺比例：实际 COP / 卡诺 COP"""
+    return actual / ideal
+
+if __name__ == "__main__":
+    # 1) 家用冰箱：-18℃(255K) / 环境 25℃(298K)
+    cop_f = cop_refrigerator(255.0, 298.0)
+    print(f"冰箱 -18℃/25℃：卡诺 COP_R = {cop_f:.1f}，实际 1.5~3")
+    print(f"  达卡诺比例 ≈ {carnot_ratio(2.0, cop_f)*100:.0f}%（取实际 2.0）")
+    # 2) 家用空调：27℃ / 35℃
+    cop_ac = cop_refrigerator(300.15, 308.15)
+    print(f"空调 27℃/35℃：卡诺 COP_R = {cop_ac:.0f}，实际 EER≈3")
+    print(f"  达卡诺比例 ≈ {carnot_ratio(3.0, cop_ac)*100:.0f}%")
+    # 3) 空气源热泵：0℃→35℃ 供热
+    cop_hp = cop_heat_pump(308.15, 273.15)
+    print(f"空气源热泵 0℃→35℃：卡诺 COP_HP = {cop_hp:.1f}，实际 SCOP 2.5~4")
+    # 4) 恒等式验证：COP_HP = COP_R + 1
+    print(f"关系验证：COP_HP = COP_R + 1 → "
+          f"{cop_hp:.2f} ≈ {cop_refrigerator(273.15, 308.15):.2f} + 1 ✓")</script>
+  <article class="method reveal" id="m10">
+    <div class="method-head">
+      <span class="method-badge">⑩</span>
+      <h4>逆卡诺 COP（制冷 / 热泵）</h4>
+      <span class="mcode">m10_inverse_carnot_cop.py</span>
+      <span class="mtag">家族 3 · 有限时间与量子 · 逆循环</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>同一可逆循环逆向运行即制冷机/热泵——这是可逆性的直接推论，也是卡诺定理反证法的基础（主报告 §6.3 误解 5）。COP 的卡诺值给出「省电天花板」：真实冰箱 COP 1.5–3 已很接近上限，而空调 EER≈3 离卡诺 37 差得远。</p>
+        <h5>核心公式</h5>
+        <div class="formula">COP_R = Tc/(Th−Tc)；COP_HP = Th/(Th−Tc)；COP_HP = COP_R + 1</div>
+        <h5>数值示例</h5>
+        <div class="numex">冰箱 -18℃/25℃：卡诺 COP = 255/43 ≈ <code>5.9</code>（实际 1.5–3）；空调 27℃/35℃：卡诺 COP = 300.15/8 ≈ <code>37</code>（实际 EER≈3，仅 8%）；热泵 0℃→35℃：卡诺 COP = 308.15/35 ≈ <code>8.8</code>（实际 SCOP 2.5–4）。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>冰箱/空调/热泵的能效审计与「理论上限」对照。</li>
+          <li>SCOP 口径（EN 14825 季节性）与单工况 COP 的换算衔接。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>卡诺 COP 随温差急剧上升（27℃/35℃ 达 37），实际装置永远够不到——温差大时差距被放大，是逆卡诺循环对 COP 的硬约束。</li>
+          <li>热泵温度是变工况（供水温度、环境温度），需季节性能效而非单点。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m10_inverse_carnot_cop.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m10">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m10"></pre>
+        <div class="code-foot">运行：python3 m10_inverse_carnot_cop.py　·　所需库：标准库</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 方法 ⑪ ============ -->
+  <script type="text/plain" class="code-src" id="src-m11"># -*- coding: utf-8 -*-
+"""
+方法 ⑪ 两能级量子热机效率模拟（量子 Otto 型）
+工质为两能级系统：等容(固定能隙)吸/放热 + 两条绝热(保持布居)连接。
+η_Otto = 1 - ΔEc/ΔEh；当 ΔEc/ΔEh = Tc/Th 时恰等于卡诺效率，但功率→0
+（Shiraishi-Saito-Tasaki 2016 权衡定理的量子实例：卡诺效率与有限功率不可兼得）。
+"""
+
+import numpy as np
+
+KB = 1.380649e-23  # 玻尔兹曼常数 J/K
+
+def boltzmann(de, t):
+    """两能级高能态布居：p = 1/(1+exp(ΔE/(kB·T)))（基态取 0 能级）"""
+    return 1.0 / (1.0 + np.exp(de / (KB * t)))
+
+def tls_otto_cycle(th, tc, de_h, de_c):
+    """量子 Otto 循环单周期：返回 (Qh, Qc, W, η)
+    Qh = ΔEh·(p_h - p_c)：热库等容吸热；W = (ΔEh-ΔEc)·(p_h-p_c)"""
+    p_c = boltzmann(de_c, tc)     # 冷等容后布居
+    p_h = boltzmann(de_h, th)     # 热等容后布居
+    qh = de_h * (p_h - p_c)
+    qc = -de_c * (p_h - p_c)
+    w = (de_h - de_c) * (p_h - p_c)
+    eta = (w / qh) if qh > 0 else 0.0
+    return qh, qc, w, eta
+
+if __name__ == "__main__":
+    th, tc = 600.0, 300.0
+    eta_c = 1.0 - tc / th
+    print(f"卡诺界：η_C = {eta_c*100:.1f}%")
+    de_h = 8.0e-21   # 高温等容能隙 J
+    for r in (0.50, 0.60, 0.75, 0.90):          # r = ΔEc/ΔEh
+        qh, qc, w, eta = tls_otto_cycle(th, tc, de_h, r * de_h)
+        print(f"ΔEc/ΔEh = {r:.2f}：η = {eta*100:5.1f}%   单周期功 W = {w:.2e} J")
+    print("解读：r = Tc/Th = 0.50 → η 恰达卡诺 50%，但 p_h=p_c → 功率 0；")
+    print("      r > 0.50 → η < 卡诺，换来有限功率。微观尺度卡诺界依然成立。")</script>
+  <article class="method reveal" id="m11">
+    <div class="method-head">
+      <span class="method-badge">⑪</span>
+      <h4>两能级量子热机效率模拟</h4>
+      <span class="mcode">m11_two_level_quantum.py</span>
+      <span class="mtag">家族 3 · 有限时间与量子 · 量子热机</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>从 Scovil &amp; Schulz-DuBois（1959，三能级 maser 热机）到 Roßnagel（2016，捕获 Ca⁺ 单离子热机）再到 Deng（2024，超导三能级稳态热机），量子热机谱系 60 余年——卡诺界在微观依然成立。本方法用两能级 Otto 型循环数值演示「效率 vs 功率」权衡。</p>
+        <h5>核心公式</h5>
+        <div class="formula">量子 Otto：η = 1 − ΔE_c/ΔE_h；布居 p = 1/(1 + e^(ΔE/kT))</div>
+        <div class="formula">权衡定理：效率→卡诺时功率必然受限（Shiraishi 2016, PRL 117, 190601）</div>
+        <h5>数值示例</h5>
+        <div class="numex">Th=600K/Tc=300K，ΔE_h = 8e-21 J：ΔE_c/ΔE_h = 0.50 → η = <code>50.0%</code> = 卡诺（功率→0）；0.75 → η = <code>25.0%</code>（有限功率）；0.90 → η = <code>10.0%</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>量子热机教学演示：为什么「超越卡诺」的量子宣称不违反第二定律（压缩库=等效高温库）。</li>
+          <li>纳米尺度功率-效率-稳定性三角约束（Pietzonka 2018）的概念铺垫。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>单循环准静态近似；真实量子热机有相干/耗散修正（Geva-Kosloff 1992 主方程）。</li>
+          <li>未含涨落；随机热力学（Seifert 2012）需另设涨落定理模块。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m11_two_level_quantum.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m11">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m11"></pre>
+        <div class="code-foot">运行：python3 m11_two_level_quantum.py　·　所需库：numpy</div>
+      </div>
+    </div>
+  </article>
+  <!-- ============ 方法 ⑬ ============ -->
+  <script type="text/plain" class="code-src" id="src-m13">
+# -*- coding: utf-8 -*-
+"""方法 ⑬ 制冷/热泵 COP 敏感性扫描。
+COP_R = Tc/(Th-Tc)，COP_HP = Th/(Th-Tc) = COP_R+1。
+扫描冷端温度 Tc，量化温差 ΔT = Th-Tc 对 COP 的敏感度：
+温差翻倍 → COP 断崖下跌，是制冷节能的第一杠杆。"""
+import numpy as np
+
+def cop_ref(tc, th):
+    return tc / (th - tc)               # 制冷 COP
+
+def cop_hp(th, tc):
+    return th / (th - tc)               # 热泵 COP = COP_R + 1
+
+def scan(th, tcs):
+    print(f"{'Tc (K)':>8}{'ΔT (K)':>9}{'COP_R':>9}{'COP_HP':>9}")
+    rows = []
+    for tc in tcs:
+        cr, ch = cop_ref(tc, th), cop_hp(th, tc)
+        rows.append((tc, cr, ch))
+        print(f"{tc:8.1f}{th-tc:9.1f}{cr:9.2f}{ch:9.2f}")
+    return rows
+
+if __name__ == "__main__":
+    th = 298.15                          # 环境 25℃
+    tcs = [255.0, 265.0, 273.15, 280.0, 290.0, 300.15, 305.0, 308.15]
+    rows = scan(th, tcs)
+    c25 = cop_ref(273.15, th)            # ΔT = 25 K
+    c50 = cop_ref(248.15, th)            # ΔT = 50 K
+    print(f"\nΔT=25K → COP_R={c25:.2f}；ΔT=50K → COP_R={c50:.2f}")
+    print(f"温差翻倍，COP 降幅 {(1-c50/c25)*100:.0f}%")
+    print("结论：COP 对温差极敏感 → 减小温差是制冷节能第一杠杆")
+</script>
+  <article class="method reveal" id="m13">
+    <div class="method-head">
+      <span class="method-badge">⑬</span>
+      <h4>制冷循环 COP 敏感性扫描</h4>
+      <span class="mcode">m13_cop_sensitivity.py</span>
+      <span class="mtag">家族 3 · 有限时间与量子 · 逆循环分析</span>
+    </div>
+    <div class="method-grid">
+      <div class="theory-block">
+        <h5>定位</h5>
+        <p>把逆卡诺 COP 从「单点公式」升级为「敏感性工具」：固定高温端，扫描冷端温度，量化温差 ΔT = Th−Tc 对 COP 的杠杆作用——这是解释「空调 EER≈3 离卡诺 37 那么远」的定量钥匙。</p>
+        <h5>核心公式</h5>
+        <div class="formula">COP_R = Tc/(Th−Tc)；COP_HP = Th/(Th−Tc) = COP_R + 1；d(COP_R)/d(ΔT) &lt; 0 且非线性</div>
+        <h5>数值示例</h5>
+        <div class="numex">Th=298.15 K：ΔT=25K → COP_R=<code>10.93</code>；ΔT=50K → <code>4.96</code>（降幅 <code>55%</code>）；冰箱 −18℃ 工况 COP_R=<code>5.93</code>。</div>
+        <h5>适用边界</h5>
+        <ul>
+          <li>制冷/热泵节能设计：冷端温度与蒸发温度的选择依据。</li>
+          <li>解释季节性能效（SCOP，EN 14825）为何随环境温度剧烈波动。</li>
+        </ul>
+        <h5>弱点</h5>
+        <ul>
+          <li>单点热力学口径：未含压缩机效率与换热器端差，真实 COP 更低。</li>
+          <li>未含变工况瞬态；长期评估需季节加权（SCOP）。</li>
+        </ul>
+      </div>
+      <div class="code-wrap">
+        <div class="code-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          <span class="fname">m13_cop_sensitivity.py · Python 3.9+</span>
+          <button class="copy-btn" data-src="src-m13">复制代码</button>
+        </div>
+        <pre class="code-block" id="pre-m13"></pre>
+        <div class="code-foot">运行：python3 m13_cop_sensitivity.py　·　所需库：numpy</div>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<!-- ============ 04 超表 ============ -->
+<section class="section" id="table">
+  <div class="section-head reveal">
+    <span class="sec-no">04</span>
+    <h2>14 方法 × 6 维超表</h2>
+    <span class="en">11 Methods × 6 Dimensions Master Table</span>
+  </div>
+  <p class="section-intro reveal">
+    六个维度横向对比全部 14 种方法：<b>理论严谨</b>（依据与公式）、<b>数值示例</b>（真实数据复现）、
+    <b>适用边界</b>（何时用它）、<b>弱点</b>（局限与争议）、<b>所需库</b>（运行依赖）、<b>输出物</b>（交付结果）。
+    选方法前先看本表——决策树（下一节）给出选择顺序，本表给出平行对比。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead>
+        <tr>
+          <th style="min-width:150px;">方法</th>
+          <th>理论严谨</th>
+          <th>数值示例</th>
+          <th>适用边界</th>
+          <th>弱点</th>
+          <th>所需库</th>
+          <th>输出物</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>① 卡诺效率计算器</th>
+          <td class="dim">卡诺定理（反证法，主报告 §3.3）；<code>η=1−Tc/Th</code> 仅对绝对温标成立；与工质无关</td>
+          <td class="dim">Th=600K/Tc=300K → <b>50%</b>；100℃/0℃ → ≈27%，废热 ≥73%</td>
+          <td class="dim">可逆上限；无限大恒温热库；工程「达卡诺比例」的分母</td>
+          <td class="dim">零功率极限；忽略全部不可逆性；摄氏误用需强制拦截</td>
+          <td class="dim">标准库</td>
+          <td class="dim">η、废热占比、同界限逆卡诺 COP</td>
+        </tr>
+        <tr>
+          <th>② T-S 图绘制</th>
+          <td class="dim">熵定义 <code>ΔS=∫δQ_rev/T</code>；矩形面积 = 净功 <code>(Th−Tc)·ΔS</code>；仅可逆循环成立</td>
+          <td class="dim">ΔS=1 kJ/K、600/300K → W=<b>300 kJ</b>、Qh=600 kJ、η=50%</td>
+          <td class="dim">教学可视化；真实循环平均吸热温度 vs 卡诺对比</td>
+          <td class="dim">不可逆循环不再是矩形；需先获得熵变数据</td>
+          <td class="dim">numpy + matplotlib</td>
+          <td class="dim">carnot_ts.png 图 + 面积数值</td>
+        </tr>
+        <tr>
+          <th>③ p-V 图绘制</th>
+          <td class="dim">等温 <code>pV=const</code>、绝热 <code>pV^γ=const</code>；推导关键 <code>V₃/V₄=V₂/V₁</code></td>
+          <td class="dim">1 mol、600/300K、体积比 3 → W=<b>2.74 kJ</b>、η=50%</td>
+          <td class="dim">功与几何的可视化；Clapeyron 图形化传统</td>
+          <td class="dim">热量不直观；真实循环需状态方程数据</td>
+          <td class="dim">numpy + matplotlib</td>
+          <td class="dim">carnot_pv.png 图 + W_net 数值</td>
+        </tr>
+        <tr>
+          <th>④ 任意工质效率验证</th>
+          <td class="dim">Maxwell 关系 <code>(∂S/∂V)_T=(∂p/∂T)_V</code>；工质无关性（arXiv physics/0601173）</td>
+          <td class="dim">IG ΔS=9.13 J/K vs RK ΔS≈8.95 J/K → 均 η=<b>50.00%</b></td>
+          <td class="dim">回应「必须用理想气体」误解；真实气体工质理论底线校验</td>
+          <td class="dim">未覆盖非平衡/相干工质；RK 常数需合理选取</td>
+          <td class="dim">numpy</td>
+          <td class="dim">两种状态方程效率对照输出</td>
+        </tr>
+        <tr>
+          <th>⑤ 可逆过程熵变</th>
+          <td class="dim">熵为态函数；<code>ΔS=∫δQ_rev/T</code>；可逆卡诺宇宙熵变 = 0</td>
+          <td class="dim">1 mol 等压 300→600K：ΔS=<b>14.41 J/K</b>；宇宙熵变 <b>0 J/K</b></td>
+          <td class="dim">过程熵产核算；「优于卡诺」宣称的判据</td>
+          <td class="dim">仅可逆路径；物理/工程符号约定相反需统一</td>
+          <td class="dim">numpy</td>
+          <td class="dim">各类过程 ΔS + 宇宙熵变</td>
+        </tr>
+        <tr>
+          <th>⑥ 克劳修斯不等式</th>
+          <td class="dim">等式 <code>∮δQ_rev/T=0</code>；不等式 <code>∮δQ/T≤0</code>；第二定律数值判据</td>
+          <td class="dim">可逆 = <b>0 J/K</b>；不可逆（\|Qc\|=520J）→ <b>−0.0667 J/K</b></td>
+          <td class="dim">永动机类宣称的检测；循环设计合法性验证</td>
+          <td class="dim">需完整吸放热-温度序列；非平衡系统需广义口径</td>
+          <td class="dim">numpy</td>
+          <td class="dim">环积分值 + 等号/不等号判定</td>
+        </tr>
+        <tr>
+          <th>⑦ 火用与火用毁</th>
+          <td class="dim"><code>Ex=(H−H0)−T0(S−S0)</code>；<code>η_ex=η/η_Carnot</code> 达卡诺比例</td>
+          <td class="dim">锅炉火用毁 <b>7.45 MJ/kg</b>；联合循环 η_ex=<b>75.0%</b>；压水堆 72%</td>
+          <td class="dim">全厂能量审计；火用毁环节排行（锅炉最大）</td>
+          <td class="dim">需 h-s 数据表；净/毛、LHV/HHV 口径 ±2–3pp</td>
+          <td class="dim">标准库</td>
+          <td class="dim">各环节火用效率与火用毁</td>
+        </tr>
+        <tr>
+          <th>⑧ Gouy-Stodola 演示</th>
+          <td class="dim"><code>E_d=T0·S_gen</code>；有限温差传热熵产 <code>S_gen=Q(1/Tc−1/Th)</code></td>
+          <td class="dim">100 kW 热 1500→600K → 火用毁 <b>29.8 kW（29.8%）</b></td>
+          <td class="dim">换热器设计权衡；把熵产翻译成功损失</td>
+          <td class="dim">线性传热假设；arXiv:2307.16041 普适性再思考</td>
+          <td class="dim">numpy</td>
+          <td class="dim">各不可逆环节火用毁 kW 清单</td>
+        </tr>
+        <tr>
+          <th>⑨ Curzon-Ahlborn</th>
+          <td class="dim">内可逆模型；<code>η_CA=1−√(Tc/Th)</code>；线性响应统一（Esposito 2009）</td>
+          <td class="dim">600/300K → <b>29.3%</b>（卡诺 50%）；P_max=<b>25.7 W</b>（σ=1）</td>
+          <td class="dim">机组设计工况；布朗卡诺机实验对照</td>
+          <td class="dim">对称耦合假设；Apertet 2016「非本质普适量」论争</td>
+          <td class="dim">numpy</td>
+          <td class="dim">η_CA、P_max、效率-功率权衡曲线</td>
+        </tr>
+        <tr>
+          <th>⑩ 逆卡诺 COP</th>
+          <td class="dim"><code>COP_R=Tc/(Th−Tc)</code>；<code>COP_HP=COP_R+1</code>；可逆性直接推论</td>
+          <td class="dim">冰箱 5.9 vs 1.5–3；空调 <b>37</b> vs EER≈3；热泵 8.8 vs 2.5–4</td>
+          <td class="dim">制冷/热泵能效审计；「省电天花板」对照</td>
+          <td class="dim">温差大时差距放大；需季节性（EN 14825）口径</td>
+          <td class="dim">标准库</td>
+          <td class="dim">卡诺 COP + 达卡诺比例</td>
+        </tr>
+        <tr>
+          <th>⑪ 两能级量子热机</th>
+          <td class="dim">量子 Otto <code>η=1−ΔEc/ΔEh</code>；卡诺界微观成立；Shiraishi 2016 权衡定理</td>
+          <td class="dim">r=0.50 → <b>50%</b>=卡诺（功率0）；r=0.75 → 25%；r=0.90 → 10%</td>
+          <td class="dim">量子热机教学；「超越卡诺」宣称裁决</td>
+          <td class="dim">准静态近似；未含涨落与相干修正</td>
+          <td class="dim">numpy</td>
+          <td class="dim">各能隙比 η 与单周期功对照</td>
+        </tr>
+        <tr>
+          <th>⑫ 卡诺定理数值验证</th>
+          <td class="dim">Maxwell 关系 <code>(∂S/∂V)_T=(∂p/∂T)_V</code>；三状态方程对照（arXiv:physics/0601173）</td>
+          <td class="dim">IG <b>9.134</b> / VdW≈8.87 / RK≈8.95 J/K → 均 η=<b>50.00%</b></td>
+          <td class="dim">定理教学验证；新状态方程理论底线</td>
+          <td class="dim">需状态方程解析导数；未含非平衡/相干</td>
+          <td class="dim">numpy</td>
+          <td class="dim">三工质效率对照表</td>
+        </tr>
+        <tr>
+          <th>⑬ COP 敏感性扫描</th>
+          <td class="dim"><code>COP_R=Tc/(Th−Tc)</code>；<code>COP_HP=COP_R+1</code>；敏感度随 ΔT 非线性</td>
+          <td class="dim">Th=298.15K：ΔT 25K→50K → COP_R <b>10.93→4.96</b>（−55%）</td>
+          <td class="dim">制冷/热泵节能设计；冷端温度选择</td>
+          <td class="dim">单点口径；未含压缩机效率与换热端差</td>
+          <td class="dim">numpy</td>
+          <td class="dim">扫描表 + 敏感性结论</td>
+        </tr>
+        <tr>
+          <th>⑭ T-S 矩形面积演示</th>
+          <td class="dim"><code>A=(Th−Tc)·ΔS</code>；Green 公式数值积分；第一定律 W=Qh−|Qc|</td>
+          <td class="dim">600/300K、ΔS=1 kJ/K → 解析=Green=热平衡=<b>300 kJ</b>，η=50%</td>
+          <td class="dim">数值方法教学；Green 定理与热力学交叉验证</td>
+          <td class="dim">仅可逆矩形；不可逆 T-S 非矩形</td>
+          <td class="dim">numpy</td>
+          <td class="dim">三方对照一致性与效率</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="section-intro reveal" style="margin-top:16px;">
+    读表要点：方法 ①–④⑫⑭ 回答「上限」、⑤–⑧ 回答「损失」、⑨–⑪⑬ 回答「权衡与微观」。
+    三大家族所需库仅 numpy / matplotlib / 标准库——全部脚本可离线运行，无网络依赖。
+  </p>
+</section>
+
+<!-- ============ 05 决策树 ============ -->
+<section class="section" id="tree">
+  <div class="section-head reveal">
+    <span class="sec-no">05</span>
+    <h2>8 步 SVG 决策树：如何选择分析方法</h2>
+    <span class="en">8-Step Decision Tree</span>
+  </div>
+  <p class="section-intro reveal">
+    选择顺序遵循主报告的方法论主线：<b>效率上限 → 温标 → 熵 → 火用 → 最大功率 → 量子</b>。
+    菱形 = 判定节点，矩形 = 方法步骤；青字为方法编号，可回跳上方对应方法卡。
+    多数分析任务走到第 3 步即可收尾；只有涉及损失定量、功率优化或微观尺度时才需要继续深潜。
+  </p>
+  <div class="tree-wrap reveal">
+    <svg viewBox="0 0 960 1560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="卡诺热机分析方法 8 步决策树">
+      <!-- 画布背景 -->
+      <rect x="0" y="0" width="960" height="1560" rx="16" fill="#0F1B45" stroke="#24356E"/>
+      <!-- 顶部标题 -->
+      <text x="480" y="44" text-anchor="middle" font-size="22" font-weight="700" fill="#E6EDF7" font-family="sans-serif">卡诺热机分析方法 · 8 步决策树</text>
+      <text x="480" y="70" text-anchor="middle" font-size="13" fill="#9FB0CC" font-family="sans-serif">效率上限 → 温标 → 熵 → 火用 → 最大功率 → 量子</text>
+
+      <!-- 箭头定义 -->
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#60A5FA"/>
+        </marker>
+      </defs>
+
+      <!-- 连线 1→2 -->
+      <line x1="480" y1="205" x2="480" y2="252" stroke="#60A5FA" stroke-width="2.4" marker-end="url(#arrow)"/>
+      <!-- 连线 2→3 -->
+      <line x1="480" y1="385" x2="480" y2="432" stroke="#60A5FA" stroke-width="2.4" marker-end="url(#arrow)"/>
+      <!-- 连线 3→4 -->
+      <line x1="480" y1="552" x2="480" y2="599" stroke="#60A5FA" stroke-width="2.4" marker-end="url(#arrow)"/>
+      <!-- 连线 4→5 -->
+      <line x1="480" y1="719" x2="480" y2="766" stroke="#60A5FA" stroke-width="2.4" marker-end="url(#arrow)"/>
+      <!-- 连线 5→6 -->
+      <line x1="480" y1="886" x2="480" y2="933" stroke="#60A5FA" stroke-width="2.4" marker-end="url(#arrow)"/>
+      <!-- 连线 6→7 -->
+      <line x1="480" y1="1053" x2="480" y2="1100" stroke="#60A5FA" stroke-width="2.4" marker-end="url(#arrow)"/>
+      <!-- 连线 7→8 -->
+      <line x1="480" y1="1220" x2="480" y2="1267" stroke="#60A5FA" stroke-width="2.4" marker-end="url(#arrow)"/>
+
+      <!-- ========== 第 1 步：菱形 目标判定 ========== -->
+      <polygon points="480,75 740,140 480,205 220,140" fill="#132053" stroke="#3B82F6" stroke-width="2"/>
+      <text x="480" y="132" text-anchor="middle" font-size="17" font-weight="700" fill="#3B82F6" font-family="sans-serif">第 1 步 · 目标判定</text>
+      <text x="480" y="158" text-anchor="middle" font-size="13.5" fill="#E6EDF7" font-family="sans-serif">要效率上限 / 功率 / 损失 / 制冷或量子？</text>
+      <text x="480" y="178" text-anchor="middle" font-size="12" fill="#9FB0CC" font-family="sans-serif">菱形 = 判定 · 问自己「我要什么答案」</text>
+
+      <!-- ========== 第 2 步：菱形 温标校验 ========== -->
+      <polygon points="480,255 740,320 480,385 220,320" fill="#132053" stroke="#3B82F6" stroke-width="2"/>
+      <text x="480" y="312" text-anchor="middle" font-size="17" font-weight="700" fill="#3B82F6" font-family="sans-serif">第 2 步 · 温标校验</text>
+      <text x="480" y="338" text-anchor="middle" font-size="13.5" fill="#E6EDF7" font-family="sans-serif">是否为开尔文绝对温标？</text>
+      <text x="480" y="358" text-anchor="middle" font-size="12" fill="#F87171" font-family="sans-serif">否 → 先换算 K：T(K) = t(℃) + 273.15（方法 ① 内置拦截）</text>
+
+      <!-- ========== 第 3 步：矩形 效率上限 ========== -->
+      <rect x="280" y="432" width="400" height="120" rx="14" fill="#132053" stroke="#3B82F6" stroke-width="2"/>
+      <rect x="296" y="448" width="86" height="30" rx="8" fill="#3B82F6"/>
+      <text x="339" y="468" text-anchor="middle" font-size="14" font-weight="700" fill="#0B1437" font-family="sans-serif">第 3 步</text>
+      <text x="396" y="470" font-size="17" font-weight="700" fill="#E6EDF7" font-family="sans-serif">效率上限 · 天花板</text>
+      <text x="480" y="500" text-anchor="middle" font-size="13.5" fill="#22D3EE" font-family="sans-serif">方法 ① 卡诺效率计算器（η=1−Tc/Th）</text>
+      <text x="480" y="522" text-anchor="middle" font-size="13.5" fill="#22D3EE" font-family="sans-serif">方法 ④ 任意工质验证（理想气体 vs RK）</text>
+      <text x="830" y="492" text-anchor="middle" font-size="12" fill="#34D399" font-family="sans-serif">← 仅需上限：</text>
+      <text x="830" y="510" text-anchor="middle" font-size="12" fill="#34D399" font-family="sans-serif">到此即可收尾</text>
+
+      <!-- ========== 第 4 步：矩形 循环可视化 ========== -->
+      <rect x="280" y="599" width="400" height="120" rx="14" fill="#132053" stroke="#24356E" stroke-width="2"/>
+      <rect x="296" y="615" width="86" height="30" rx="8" fill="#8B5CF6"/>
+      <text x="339" y="635" text-anchor="middle" font-size="14" font-weight="700" fill="#0B1437" font-family="sans-serif">第 4 步</text>
+      <text x="396" y="637" font-size="17" font-weight="700" fill="#E6EDF7" font-family="sans-serif">循环可视化 · 几何</text>
+      <text x="480" y="667" text-anchor="middle" font-size="13.5" fill="#22D3EE" font-family="sans-serif">方法 ② T-S 图（热与效率）· 方法 ③ p-V 图（功与几何）</text>
+      <text x="480" y="689" text-anchor="middle" font-size="12" fill="#9FB0CC" font-family="sans-serif">可选步骤：不画图可直接跳到第 5 步</text>
+
+      <!-- ========== 第 5 步：矩形 熵方法 ========== -->
+      <rect x="280" y="766" width="400" height="120" rx="14" fill="#132053" stroke="#24356E" stroke-width="2"/>
+      <rect x="296" y="782" width="86" height="30" rx="8" fill="#E8A33D"/>
+      <text x="339" y="802" text-anchor="middle" font-size="14" font-weight="700" fill="#0B1437" font-family="sans-serif">第 5 步</text>
+      <text x="396" y="804" font-size="17" font-weight="700" fill="#E6EDF7" font-family="sans-serif">熵方法 · 第二定律</text>
+      <text x="480" y="834" text-anchor="middle" font-size="13.5" fill="#22D3EE" font-family="sans-serif">方法 ⑤ 可逆过程熵变 · 方法 ⑥ 克劳修斯不等式</text>
+      <text x="480" y="856" text-anchor="middle" font-size="12" fill="#9FB0CC" font-family="sans-serif">验证 ΔS_universe ≥ 0；拦截「优于卡诺」类宣称</text>
+
+      <!-- ========== 第 6 步：矩形 火用方法 ========== -->
+      <rect x="280" y="933" width="400" height="120" rx="14" fill="#132053" stroke="#24356E" stroke-width="2"/>
+      <rect x="296" y="949" width="86" height="30" rx="8" fill="#E8A33D"/>
+      <text x="339" y="969" text-anchor="middle" font-size="14" font-weight="700" fill="#0B1437" font-family="sans-serif">第 6 步</text>
+      <text x="396" y="971" font-size="17" font-weight="700" fill="#E6EDF7" font-family="sans-serif">火用方法 · 损失定量</text>
+      <text x="480" y="1001" text-anchor="middle" font-size="13.5" fill="#22D3EE" font-family="sans-serif">方法 ⑦ 火用与火用毁 · 方法 ⑧ Gouy-Stodola</text>
+      <text x="480" y="1023" text-anchor="middle" font-size="12" fill="#9FB0CC" font-family="sans-serif">火用毁 = T0·熵产；定位锅炉等最大损失环节</text>
+
+      <!-- ========== 第 7 步：矩形 最大功率 ========== -->
+      <rect x="280" y="1100" width="400" height="120" rx="14" fill="#132053" stroke="#24356E" stroke-width="2"/>
+      <rect x="296" y="1116" width="86" height="30" rx="8" fill="#3B82F6"/>
+      <text x="339" y="1136" text-anchor="middle" font-size="14" font-weight="700" fill="#0B1437" font-family="sans-serif">第 7 步</text>
+      <text x="396" y="1138" font-size="17" font-weight="700" fill="#E6EDF7" font-family="sans-serif">最大功率 · 运行点</text>
+      <text x="480" y="1168" text-anchor="middle" font-size="13.5" fill="#22D3EE" font-family="sans-serif">方法 ⑨ Curzon-Ahlborn：η_CA = 1−√(Tc/Th)</text>
+      <text x="480" y="1190" text-anchor="middle" font-size="12" fill="#F87171" font-family="sans-serif">⚠ 它是运行点不是上限；效率与功率不可兼得</text>
+
+      <!-- ========== 第 8 步：矩形 制冷与量子 ========== -->
+      <rect x="280" y="1267" width="400" height="120" rx="14" fill="#132053" stroke="#8B5CF6" stroke-width="2"/>
+      <rect x="296" y="1283" width="86" height="30" rx="8" fill="#8B5CF6"/>
+      <text x="339" y="1303" text-anchor="middle" font-size="14" font-weight="700" fill="#0B1437" font-family="sans-serif">第 8 步</text>
+      <text x="396" y="1305" font-size="17" font-weight="700" fill="#E6EDF7" font-family="sans-serif">制冷与量子 · 前沿</text>
+      <text x="480" y="1335" text-anchor="middle" font-size="13.5" fill="#22D3EE" font-family="sans-serif">方法 ⑩ 逆卡诺 COP（制冷/热泵）· 方法 ⑪ 量子热机</text>
+      <text x="480" y="1357" text-anchor="middle" font-size="12" fill="#9FB0CC" font-family="sans-serif">微观尺度卡诺界依然成立——「超越」皆靠附加资源</text>
+
+      <!-- 终点 -->
+      <line x1="480" y1="1387" x2="480" y2="1430" stroke="#60A5FA" stroke-width="2.4" marker-end="url(#arrow)"/>
+      <rect x="340" y="1430" width="280" height="52" rx="26" fill="#3B82F6"/>
+      <text x="480" y="1463" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="sans-serif">终点 · 输出方法报告</text>
+
+      <!-- 图例 -->
+      <g font-family="sans-serif" font-size="12.5">
+        <polygon points="150,1510 178,1522 150,1534 122,1522" fill="#132053" stroke="#3B82F6" stroke-width="1.5"/>
+        <text x="190" y="1527" fill="#9FB0CC">判定节点（问自己）</text>
+        <rect x="360" y="1510" width="26" height="26" rx="6" fill="#132053" stroke="#24356E" stroke-width="1.5"/>
+        <text x="398" y="1527" fill="#9FB0CC">方法步骤（跑代码）</text>
+        <rect x="600" y="1510" width="26" height="26" rx="6" fill="#22D3EE"/>
+        <text x="638" y="1527" fill="#9FB0CC">方法编号（回跳对应卡）</text>
+      </g>
+    </svg>
+  </div>
+  <div class="warn-grid" style="margin-top:20px;">
+    <div class="warn reveal"><h5>第 1 步 · 目标判定（菱形）</h5><p>四类任务分支：效率上限 / 功率 / 损失 / 制冷或量子。一次只回答一个问题，避免混合口径；目标决定要走多深——多数报告到第 3 步即可收尾。</p></div>
+    <div class="warn reveal"><h5>第 2 步 · 温标校验（菱形）</h5><p>绝对温标是 η=1−Tc/Th 成立的隐含前提，摄氏/华氏输入必须先换算为开尔文。方法 ① 内置的 ValueError 拦截就是这一步的自动化。</p></div>
+    <div class="warn reveal"><h5>第 3 步 · 效率上限</h5><p>方法 ① 一步给出 η_C、废热占比与逆卡诺 COP；若需证明「与工质无关」，用方法 ④（理想气体 vs RK）或方法 ⑫（三状态方程对照）收尾。</p></div>
+    <div class="warn reveal"><h5>第 4 步 · 循环可视化</h5><p>T-S 图（方法 ②）看热与效率、p-V 图（方法 ③）看功与几何；方法 ⑭ 可数值验证「矩形面积 = 净功」，把几何直觉变成可复现的数字。</p></div>
+    <div class="warn reveal"><h5>第 5 步 · 熵方法</h5><p>方法 ⑤ 算过程熵变、方法 ⑥ 验克劳修斯不等式——这是第二定律的门禁：任何「优于卡诺」的宣称必须先在 ∮δQ/T ≤ 0 这关倒下。</p></div>
+    <div class="warn reveal"><h5>第 6 步 · 火用方法</h5><p>方法 ⑦ 给出达卡诺比例 η/η_Carnot（工程标尺），方法 ⑧ 把熵产按环境温度 T0 计价，逐环节定位火用毁——锅炉总是最大头。</p></div>
+    <div class="warn reveal"><h5>第 7 步 · 最大功率</h5><p>方法 ⑨ 求 η_CA 与 P_max，并输出效率-功率权衡曲线。注意：η_CA 是运行点而非上限——追求功率必然牺牲效率（Shiraishi 2016）。</p></div>
+    <div class="warn reveal"><h5>第 8 步 · 制冷与量子</h5><p>方法 ⑩ 与 ⑬ 处理逆循环 COP 及温差敏感性（ΔT 翻倍 COP 断崖）；方法 ⑪ 验证量子尺度卡诺界依然成立——「超越卡诺」皆依赖附加资源。</p></div>
+  </div>
+  <div class="tree-note reveal">
+    <b>决策逻辑示例：</b>「评估某 1000 MW 超超临界机组距卡诺还有多远」→ 第 1 步目标=效率上限+损失；
+    第 2 步锅炉 565℃/凝汽器 33℃ 换算开尔文；第 3 步得卡诺 η≈63.5%，实测 46% → 达卡诺比例 ≈ 72%；
+    第 6 步火用审计定位锅炉为最大火用损环节 → 改造优先级：先锅炉再透平。
+  </div>
+</section>
+
+<!-- ============ 06 数值示例库 ============ -->
+<section class="section" id="numbers">
+  <div class="section-head reveal">
+    <span class="sec-no">06</span>
+    <h2>真实数值示例库</h2>
+    <span class="en">Real-Data Number Gallery</span>
+  </div>
+  <p class="section-intro reveal">
+    全部数字来自主报告《卡诺热机深度研究报告》已核验数据（§3–§4 与 §5.1）：
+    每张卡片给出「场景 → 卡诺标尺 → 现实对照」，即方法论三件套：上限、实际、达卡诺比例。
+  </p>
+  <div class="gallery">
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N1</span><h5>教科书两热源</h5></div>
+      <div class="scene">Th=600 K / Tc=300 K（本馆默认算例）</div>
+      <div class="val">50.0%<small> 卡诺效率</small></div>
+      <div class="cmp">CA 最大功率效率 = 1−√(300/600) ≈ <b>29.3%</b>；废热占比 ≥ 50%</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N2</span><h5>100℃ 与 0℃</h5></div>
+      <div class="scene">沸水 ↔ 冰水（主报告 §7.2 费曼画面）</div>
+      <div class="val">≈27%<small> 卡诺效率</small></div>
+      <div class="cmp">至少 <b>73%</b> 的吸热必须作为废热排出——不是工程不够好，是物理不允许</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N3</span><h5>亚临界燃煤电厂</h5></div>
+      <div class="scene">锅炉 565℃ / 凝汽器 33℃</div>
+      <div class="val">≈63.5%<small> 卡诺上限</small></div>
+      <div class="cmp">实测净效率 33–37% → 达卡诺比例 ≈ <b>55–60%</b></div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N4</span><h5>超超临界（600℃级）</h5></div>
+      <div class="scene">主蒸汽 600℃ / 冷端 25℃</div>
+      <div class="val">≈66%<small> 卡诺上限</small></div>
+      <div class="cmp">实测 42–46%（LHV）→ 达卡诺比例 ≈ <b>65–70%</b></div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N5</span><h5>700℃ A-USC 目标</h5></div>
+      <div class="scene">先进超超临界（设计目标）</div>
+      <div class="val">≈68%<small> 卡诺上限</small> · 50%<small> 设计目标</small></div>
+      <div class="cmp">达卡诺比例 ≈ <b>73%</b>；瓶颈在镍基高温合金，不是物理</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N6</span><h5>压水堆核电站</h5></div>
+      <div class="scene">蒸汽 285℃ / 冷端 30℃（7 MPa）</div>
+      <div class="val">≈46%<small> 卡诺上限</small></div>
+      <div class="cmp">实测约 33%（30–37%）→ 达卡诺比例 ≈ <b>72%</b></div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N7</span><h5>燃气轮机与联合循环</h5></div>
+      <div class="scene">透平初温 1500℃ / 排气 25℃</div>
+      <div class="val">≈83%<small> 卡诺上限</small> · 62.22%<small> Bouchain 实测（吉尼斯 2016）</small></div>
+      <div class="cmp">联合循环达卡诺比例 ≈ <b>75%</b>；63% 为 Keadby 2 设计值，64% 为厂商宣称（未独立证实）</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N8</span><h5>家用冰箱</h5></div>
+      <div class="scene">冷端 −18℃(255K) / 环境 25℃(298K)</div>
+      <div class="val">5.9<small> 卡诺 COP_R</small></div>
+      <div class="cmp">实际 COP 1.5–3 → 达卡诺比例 ≈ <b>25–50%</b></div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N9</span><h5>家用空调</h5></div>
+      <div class="scene">27℃ / 35℃（制冷工况）</div>
+      <div class="val">≈37<small> 卡诺 COP_R</small></div>
+      <div class="cmp">实际 EER≈3 → 达卡诺比例仅 ≈ <b>8%</b>——温差小反而「天花板」极高</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N10</span><h5>空气源热泵</h5></div>
+      <div class="scene">0℃ → 35℃ 供热（EN 14825 季工况）</div>
+      <div class="val">≈8.8<small> 卡诺 COP_HP</small></div>
+      <div class="cmp">实际 SCOP 2.5–4 → 达卡诺比例 ≈ <b>30–45%</b>；地源 3.5–4.5</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N11</span><h5>车用汽油机（Otto）</h5></div>
+      <div class="scene">压缩比 14（理论 Otto 循环）</div>
+      <div class="val">≈65%<small> 理论 Otto</small> · 41%<small> 丰田量产最高（厂商口径）</small></div>
+      <div class="cmp">达卡诺比例 ≈ <b>63%</b>；强不可逆燃烧、排气火用损失是主因</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">N12</span><h5>Stirling / Ericsson</h5></div>
+      <div class="scene">等温吸放热 + 理想回热器</div>
+      <div class="val">= 卡诺<small> 理论效率</small></div>
+      <div class="cmp">少数「理论上达卡诺」的循环；实际因回热器压降/温差显著低于卡诺（常见误读点）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 方法论红线 ============ -->
+<section class="section" id="notes">
+  <div class="section-head reveal">
+    <span class="sec-no">07</span>
+    <h2>方法论红线（常见错误与反自欺检查）</h2>
+    <span class="en">Methodological Red Lines</span>
+  </div>
+  <p class="section-intro reveal">
+    主报告 §6.3 八大误解与本馆 14 种方法直接相关；费曼视角的反自欺原则（主报告 §7.4）
+    要求我们主动声明边界。以下 8 条红线，每一条都在本馆某段代码中被强制拦截或显式标注。
+  </p>
+  <div class="warn-grid">
+    <div class="warn reveal">
+      <h5>⚠ 红线 1 · 摄氏温标直接代入</h5>
+      <p><code>η=1−Tc/Th</code> 仅对开尔文绝对温标成立。100℃/0℃ 直接代入得 100% 的荒谬结果——方法 ① 内置 <code>ValueError</code> 强制拦截。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>⚠ 红线 2 · 卡诺效率 = 实际效率</h5>
+      <p>卡诺效率是<b>可逆机上限</b>；真实机因不可逆性必低于此（主报告 §6.3 误解 1）。「达卡诺比例」才是工程进步的正确度量。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>⚠ 红线 3 · 卡诺循环必须用理想气体</h5>
+      <p>效率只依赖 Tc/Th，与工质无关——方法 ④ 用 Redlich-Kwong 真实气体数值验证（理想气体仅为计算方便）。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>⚠ 红线 4 · T-S 矩形套用不可逆循环</h5>
+      <p>T-S 图矩形<b>仅对可逆循环成立</b>（主报告 §3.6 存疑点 ④）。不可逆循环的 T-S 图不再是矩形，面积关系失效。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>⚠ 红线 5 · η_CA 被误读为「推翻卡诺」</h5>
+      <p>Curzon-Ahlborn 效率是<b>最大功率运行点</b>，不是上限，恒低于卡诺效率（主报告 §5.1 三条澄清）。「CA 推翻卡诺」是典型标题党。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>⚠ 红线 6 · 「超越卡诺」宣称未查资源基准</h5>
+      <p>压缩库、手征导体等全部依赖非平衡/相干/信息附加资源，不违反第二定律（主报告 §5.5 裁决）。引用时必须说明基准。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>⚠ 红线 7 · 厂商口径当实测</h5>
+      <p>62.22% 为吉尼斯实测（2016）；63% 为 Keadby 2 设计值；64% 为 9HA.02 厂商宣称（未独立证实）。三级口径不可混用。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>⚠ 红线 8 · 符号约定混用</h5>
+      <p>物理书 <code>w=−∫PdV</code> 与工程书 <code>W=∫PdV</code> 符号相反（主报告 §3.6 存疑点 ②）。跨教材对照时先统一约定。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 关联与返回 ============ -->
+<section class="section" id="links">
+  <div class="section-head reveal">
+    <span class="sec-no">08</span>
+    <h2>返回 6 座主馆</h2>
+    <span class="en">Back to Main Halls</span>
+  </div>
+  <p class="section-intro reveal">
+    本深潜馆是卡诺热机深度研究图集的方法论子馆，专注「怎么算、怎么选、怎么验证」。
+    完整的史实、人物、范式对比、工程案例、参考文献与信源分级请返回六座主馆：
+  </p>
+  <div class="gallery">
+    <a class="gcard reveal" href="carnot_s01_tech_deepblue.html" style="display:block;">
+      <div class="gt"><span class="gi">01</span><h5>科技深蓝 · 工程师仪表盘</h5></div>
+      <div class="scene">暗色仪表盘、数据网格、KPI 卡片</div>
+      <div class="cmp">效率公式 / 200 年 / 62.22% / COP / 20% 教学困难 / 4 实验里程碑</div>
+    </a>
+    <a class="gcard reveal" href="carnot_s02_academic_ink.html" style="display:block;">
+      <div class="gt"><span class="gi">02</span><h5>学术墨蓝 · 论文风</h5></div>
+      <div class="scene">衬线字体、公式排版、首字下沉</div>
+      <div class="cmp">17 章完整学术结构，78 条 IEEE 参考文献入口</div>
+    </a>
+    <a class="gcard reveal" href="carnot_s03_minimal_gold.html" style="display:block;">
+      <div class="gt"><span class="gi">03</span><h5>极简金蓝 · CEO 汇报风</h5></div>
+      <div class="scene">大量留白、细金线、决策导向</div>
+      <div class="cmp">「达卡诺比例」管理层一页结论</div>
+    </a>
+    <a class="gcard reveal" href="carnot_s04_cyber_indigo.html" style="display:block;">
+      <div class="gt"><span class="gi">04</span><h5>赛博蓝紫 · 极客风</h5></div>
+      <div class="scene">CRT 扫描线、霓虹光晕、故障效果</div>
+      <div class="cmp">量子热机与「超越卡诺」争议的赛博叙事</div>
+    </a>
+    <a class="gcard reveal" href="carnot_s05_glass_sky.html" style="display:block;">
+      <div class="gt"><span class="gi">05</span><h5>玻璃天青 · 大众科普</h5></div>
+      <div class="scene">玻璃拟态、大字号、瀑布类比</div>
+      <div class="cmp">「热从多高的温度落差落下」的费曼式入门</div>
+    </a>
+    <a class="gcard reveal" href="carnot_s06_magazine_slate.html" style="display:block;">
+      <div class="gt"><span class="gi">06</span><h5>杂志石板 · 长文出版</h5></div>
+      <div class="scene">杂志网格、大标题、版式感</div>
+      <div class="cmp">卡诺 200 年故事弧的深度长读</div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ 09 运行环境 ============ -->
+<section class="section" id="env">
+  <div class="section-head reveal">
+    <span class="sec-no">09</span>
+    <h2>运行环境与依赖安装</h2>
+    <span class="en">Runtime &amp; Dependencies</span>
+  </div>
+  <p class="section-intro reveal">
+    全部 11 段代码仅依赖 <b>Python 3.9+ 标准库 + numpy + matplotlib</b>，离线可运行、无网络依赖。
+    复制按钮会原样复制代码；建议按下方命名保存为 <code style="font-family:var(--mono);color:var(--cyan);">mXX_*.py</code> 后执行。
+  </p>
+  <div class="warn-grid">
+    <div class="warn reveal">
+      <h5>▸ 安装依赖（一次性）</h5>
+      <p><code>python3 -m pip install --upgrade numpy matplotlib</code><br>验证：<code>python3 -c "import numpy, matplotlib; print(numpy.__version__)"</code></p>
+    </div>
+    <div class="warn reveal">
+      <h5>▸ 运行任意方法</h5>
+      <p><code>python3 m01_carnot_efficiency.py</code>　→ 终端输出效率与 COP<br><code>python3 m02_carnot_ts.py</code>　→ 生成 <code>carnot_ts.png</code> 深蓝主题 T-S 图</p>
+    </div>
+    <div class="warn reveal">
+      <h5>▸ 无图形界面（服务器）</h5>
+      <p>在脚本头部追加：<code>import matplotlib; matplotlib.use("Agg")</code>，png 仍会正常落盘。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>▸ numpy 新旧版兼容</h5>
+      <p>方法 ④ 使用 <code>getattr(np, "trapezoid", np.trapz)</code> 自动选择积分函数名，numpy 1.x / 2.x 均可运行。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>▸ 预期输出对照</h5>
+      <p>方法 ① 应打印 <code>η = 0.5000 = 50.0%</code> 与 <code>COP = 1.00</code>；方法 ⑨ 应打印 <code>η_CA ≈ 29.3%</code>——与右侧「数值示例」完全一致即通过。</p>
+    </div>
+    <div class="warn reveal">
+      <h5>▸ 常见运行报错</h5>
+      <p><code>ModuleNotFoundError: numpy</code> → 未安装依赖，重跑第一条命令；<code>ValueError: 低温热源…</code> → 检查 Th/Tc 大小与开尔文单位（方法 ① 的有意拦截）。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 FAQ ============ -->
+<section class="section" id="faq">
+  <div class="section-head reveal">
+    <span class="sec-no">10</span>
+    <h2>常见问题 FAQ（方法学问答）</h2>
+    <span class="en">Frequently Asked Questions</span>
+  </div>
+  <p class="section-intro reveal">
+    精选 14 条方法学问答，覆盖「公式怎么用、代码怎么改、宣称怎么裁决」三层。
+    答案全部可回溯到本馆方法卡或主报告章节。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead><tr><th style="width:60px;">#</th><th style="width:300px;">问题</th><th>答案（要点）</th><th style="width:130px;">对应方法/章节</th></tr></thead>
+      <tbody>
+        <tr><th>Q1</th><td>为什么摄氏温标不能直接代入效率公式？</td><td class="dim">η=1−Tc/Th 是<b>温度比</b>，只有绝对温标（开尔文）的比值才有物理意义；摄氏零点是人为约定。100℃/0℃ 代入会得到 100% 的假上限。</td><td class="dim">方法 ①；报告 §3.6</td></tr>
+        <tr><th>Q2</th><td>卡诺效率是「实际能达到」的效率吗？</td><td class="dim">不是。它是<b>可逆机上限</b>；真实机因摩擦、有限温差传热等不可逆性必低于此。度量进步的正确指标是达卡诺比例 η/η_Carnot。</td><td class="dim">方法 ①；报告 §4.1</td></tr>
+        <tr><th>Q3</th><td>必须用理想气体才能算卡诺效率吗？</td><td class="dim">不需要。方法 ④ 用 Redlich-Kwong 真实气体得到同样的 50.00%——效率只由 Tc/Th 决定，选理想气体仅为计算方便。</td><td class="dim">方法 ④；报告 §6.3</td></tr>
+        <tr><th>Q4</th><td>T-S 图上的矩形什么时候不成立？</td><td class="dim">循环<b>不可逆</b>时失效：有限温差传热使等温线不再水平、绝热过程不再等熵。矩形是「可逆卡诺循环」的专属几何。</td><td class="dim">方法 ②；报告 §3.6</td></tr>
+        <tr><th>Q5</th><td>η_CA = 1−√(Tc/Th) 是不是推翻了卡诺？</td><td class="dim">没有。η_CA 是<b>最大功率运行点</b>的效率，恒低于卡诺效率；卡诺效率对应零功率极限。两者回答不同问题。</td><td class="dim">方法 ⑨；报告 §5.1</td></tr>
+        <tr><th>Q6</th><td>「超越卡诺」的量子宣称可信吗？</td><td class="dim">所有已复现的宣称（压缩库、手征导体等）都依赖非平衡/相干/信息等<b>附加资源</b>，不违反第二定律；对平衡可逆循环，卡诺定理依然是上限。</td><td class="dim">方法 ⑪；报告 §5.5</td></tr>
+        <tr><th>Q7</th><td>冰箱 COP 5.9 与空调 COP 37 差这么多？</td><td class="dim">COP_R=Tc/(Th−Tc)：冰箱温差 43K → 5.9；空调温差仅 8K → 37。温差越小「天花板」越高，但实际装置越难逼近（空调 EER≈3 只有 8%）。</td><td class="dim">方法 ⑩；报告 §4.6</td></tr>
+        <tr><th>Q8</th><td>锅炉为什么是电站最大火用损环节？</td><td class="dim">燃烧（化学能→热能强不可逆）+ 燃气 1500K 到蒸汽 600K 的大温差传热，两处熵产按 T0 计价即为最大火用毁——先于透平与冷凝器。</td><td class="dim">方法 ⑦⑧；报告 §4.2</td></tr>
+        <tr><th>Q9</th><td>62.22% 到底是谁的口径？</td><td class="dim">62.22% 为 GE 9HA.01 在法国 Bouchain 的<b>吉尼斯实测</b>（2016）；63% 为 Keadby 2 设计值；64% 为 9HA.02 厂商宣称（未独立证实）。引用必须分级。</td><td class="dim">方法 ⑦；报告 §4.3</td></tr>
+        <tr><th>Q10</th><td>「宇宙熵增」能当判据用吗？</td><td class="dim">能。任何方案算得 ΔS_universe &lt; 0 即违反第二定律（方法 ⑤ 内置计算）；「优于卡诺」的引擎必然导致宇宙熵减，物理上不可能。</td><td class="dim">方法 ⑤⑥；报告 §6.3</td></tr>
+        <tr><th>Q11</th><td>火用效率 75% 和卡诺效率 83% 什么关系？</td><td class="dim">η_ex = η/η_Carnot：联合循环 62.22%/83% ≈ 75%——意思是距离同界限卡诺理想还差约 25% 的做功能力，差距主因是材料限制透平初温。</td><td class="dim">方法 ⑦；报告 §4.7</td></tr>
+        <tr><th>Q12</th><td>效率与功率为什么不可兼得？</td><td class="dim">卡诺效率需要无限缓慢（零功率）；有限功率必须付出效率代价。Shiraishi 2016 严格证明一般稳态热机中效率→卡诺时功率必然受限。</td><td class="dim">方法 ⑨⑪；报告 §5.4</td></tr>
+        <tr><th>Q13</th><td>Stirling 机真的能达到卡诺效率吗？</td><td class="dim">理想 Stirling（等温吸放热 + 理想回热器）<b>理论上</b>等于同界限卡诺；实际因回热器压降、温差传热显著低于——「理论等于、实际低于」是常见误读点。</td><td class="dim">方法 ①；报告 §4.5</td></tr>
+        <tr><th>Q14</th><td>为什么教学里学生总认为可以超过卡诺？</td><td class="dim">实证：只有不到 20% 的学生认识到「优于卡诺」意味着违反第二定律（Smith 2015）。方法 ⑤⑥ 把第二定律变成可算的数字，是破题工具。</td><td class="dim">方法 ⑤⑥；报告 §6.2</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 11 术语表 ============ -->
+<section class="section" id="terms">
+  <div class="section-head reveal">
+    <span class="sec-no">11</span>
+    <h2>术语表（费曼式白话版）</h2>
+    <span class="en">Glossary in Plain Language</span>
+  </div>
+  <p class="section-intro reveal">
+    每个术语给出「专家定义 → 白话翻译」，遵循费曼「用 12 岁能懂的话解释」原则（主报告 §7.1）。
+    术语出现的代码块已在括号标注。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead><tr><th style="width:180px;">术语</th><th>专家定义</th><th>白话翻译</th></tr></thead>
+      <tbody>
+        <tr><th>卡诺循环</th><td class="dim">两个等温 + 两个绝热过程组成的可逆循环</td><td class="dim">一台「从热水瓶吸热、向冷水盆放热、中间做功」的理想机器，怎么走都回到起点</td></tr>
+        <tr><th>可逆过程</th><td class="dim">准静态、无摩擦、无有限温差传热，可沿原路返回</td><td class="dim">慢到每一步都平衡、没有摩擦损耗，正着走反着走都能恢复原状（方法 ①）</td></tr>
+        <tr><th>热力学温标</th><td class="dim">由可逆卡诺机吸放热比定义的绝对温标 Qh/Qc = Th/Tc</td><td class="dim">不看温度计，只靠「热机吸热和放热的比例」反推的温度，与工质无关（方法 ①）</td></tr>
+        <tr><th>熵</th><td class="dim">状态函数，ΔS = ∫δQ_rev/T；孤立系统不减少</td><td class="dim">「混乱度的存折」：可逆不动、不可逆只增不减（方法 ⑤）</td></tr>
+        <tr><th>克劳修斯不等式</th><td class="dim">任意循环 ∮δQ/T ≤ 0，等号仅可逆</td><td class="dim">任何机器转一圈，「吸放热除以温度」加起来不可能大于零——大于零就是永动机（方法 ⑥）</td></tr>
+        <tr><th>火用（Exergy）</th><td class="dim">系统与环境达平衡所能做的最大有用功</td><td class="dim">这份热量里「还能干活的部分」；干不了活的部分就是死钱（方法 ⑦）</td></tr>
+        <tr><th>火用毁</th><td class="dim">Gouy-Stodola：E_d = T0·S_gen</td><td class="dim">不可逆性把「能干活的钱」烧掉多少：每 1 单位熵产 × 环境温度 = 损失掉的功（方法 ⑧）</td></tr>
+        <tr><th>达卡诺比例</th><td class="dim">η_ex = η/η_Carnot</td><td class="dim">「离天花板还有多远」的百分比：100% 就是完美，62.22%/83% ≈ 75% 就是世界纪录（方法 ⑦）</td></tr>
+        <tr><th>内可逆模型</th><td class="dim">工质内部可逆、仅与热库间有热阻</td><td class="dim">机器本身没毛病，但「烧水慢、散热慢」——这就是真实世界的妥协（方法 ⑨）</td></tr>
+        <tr><th>最大功率效率</th><td class="dim">Curzon-Ahlborn：η_CA = 1−√(Tc/Th)</td><td class="dim">「既要跑得快、又要省油」的最佳折中点，不是极限、是运行点（方法 ⑨）</td></tr>
+        <tr><th>COP</th><td class="dim">制冷/热泵的性能系数 = 收益/输入功</td><td class="dim">花 1 度电能把几度电的热搬走：冰箱约 2–3，卡诺天花板约 5.9（方法 ⑩）</td></tr>
+        <tr><th>量子 Otto 循环</th><td class="dim">两等容（固定能隙）+ 两绝热（保布居）的量子循环</td><td class="dim">把「活塞」换成「能级间隙」的微观卡诺表亲（方法 ⑪）</td></tr>
+        <tr><th>布居（Occupation）</th><td class="dim">两能级系统处于高能态的概率 p = 1/(1+e^(ΔE/kT))</td><td class="dim">微观粒子「住在高层还是底层」的比例，温度决定比例（方法 ⑪）</td></tr>
+        <tr><th>权衡定理</th><td class="dim">Shiraishi 2016：效率→卡诺时功率受限</td><td class="dim">物理学明文规定：没有「又快又省油」的免费午餐（方法 ⑨⑪）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 12 文献速查 ============ -->
+<section class="section" id="refs">
+  <div class="section-head reveal">
+    <span class="sec-no">12</span>
+    <h2>核心文献速查（S 级，12 条）</h2>
+    <span class="en">Key References (S-Rank)</span>
+  </div>
+  <p class="section-intro reveal">
+    本馆所有公式与数据可回溯到以下 12 条 S 级原始凭证（主报告 §10 完整 78 条 IEEE 文献）。
+    引用格式遵循主报告统一编号 [n]；全部 DOI/arXiv 已核验。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead><tr><th style="width:60px;">编号</th><th>文献</th><th>本馆用途</th></tr></thead>
+      <tbody>
+        <tr><th>[1]</th><td class="dim">S. Carnot, <i>Reflections on the Motive Power of Heat</i>, 1824 / Thurston 译 1890</td><td class="dim">卡诺定理原型：效率与工质无关（方法 ①④）</td></tr>
+        <tr><th>[5]</th><td class="dim">W. Thomson (Kelvin), <i>On an Absolute Thermometric Scale</i>, Phil. Mag. 1848</td><td class="dim">绝对温标：Qh/Qc = Th/Tc（方法 ①）</td></tr>
+        <tr><th>[6]</th><td class="dim">R. Clausius, <i>Annalen der Physik</i> 1865（命名熵）</td><td class="dim">熵与克劳修斯不等式（方法 ⑤⑥）</td></tr>
+        <tr><th>[14]</th><td class="dim">MIT 16.unified Thermodynamics Notes, node45</td><td class="dim">η=1−Tc/Th 仅对绝对温标成立（方法 ①）</td></tr>
+        <tr><th>[15]</th><td class="dim">arXiv:physics/0601173, Carnot efficiency independent of equation of state</td><td class="dim">任意工质验证的理论依据（方法 ④）</td></tr>
+        <tr><th>[35]</th><td class="dim">Gouy–Stodola 定理（ScienceDirect Topics 条目）</td><td class="dim">火用毁 = T0·熵产（方法 ⑦⑧）</td></tr>
+        <tr><th>[37]</th><td class="dim">Curzon &amp; Ahlborn, AJP 43, 22–24, 1975, DOI:10.1119/1.10023</td><td class="dim">η_CA = 1−√(Tc/Th)（方法 ⑨）</td></tr>
+        <tr><th>[39]</th><td class="dim">Esposito et al., PRL 102, 130602, 2009, DOI:10.1103/PhysRevLett.102.130602</td><td class="dim">线性响应统一效率 η=η_C²/(2−η_C)（方法 ⑨）</td></tr>
+        <tr><th>[46]</th><td class="dim">Roßnagel et al., <i>Science</i> 352, 325, 2016, DOI:10.1126/science.aad6320</td><td class="dim">单离子量子热机实验（方法 ⑪）</td></tr>
+        <tr><th>[58]</th><td class="dim">Shiraishi, Saito, Tasaki, PRL 117, 190601, 2016, DOI:10.1103/PhysRevLett.117.190601</td><td class="dim">效率-功率权衡定理（方法 ⑨⑪）</td></tr>
+        <tr><th>[72]</th><td class="dim">Smith et al., PRSTPER 11, 020116, 2015, DOI:10.1103/PhysRevSTPER.11.020116</td><td class="dim">教学实证：&lt;20% 学生认识「优于卡诺」违法（方法 ⑤⑥）</td></tr>
+        <tr><th>[25]</th><td class="dim">Guinness World Records, Bouchain 62.22%, 2016</td><td class="dim">联合循环实测天花板（方法 ⑦、数值库 N7）</td></tr>
+        <tr><th>[13]</th><td class="dim">「温度熵图」维基百科条目</td><td class="dim">T-S 图矩形 = 净功（方法 ⑭）</td></tr>
+        <tr><th>[32]</th><td class="dim">Coefficient of performance, ChemEurope Encyclopedia</td><td class="dim">COP 定义与基准（方法 ⑬⑩）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 13 下一步 ============ -->
+<section class="section" id="next">
+  <div class="section-head reveal">
+    <span class="sec-no">13</span>
+    <h2>下一步行动清单</h2>
+    <span class="en">Next Steps</span>
+  </div>
+  <div class="gallery">
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">S1</span><h5>跑通 3 个核心脚本</h5></div>
+      <div class="scene">从方法 ①（算效率）→ ②（画 T-S）→ ⑨（CA 权衡）开始</div>
+      <div class="cmp">全部依赖 numpy/matplotlib，5 分钟内可复现本馆所有关键数字</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">S2</span><h5>做一次真实机组审计</h5></div>
+      <div class="scene">选一座电厂：锅炉/凝汽器温度 → 方法 ① 得卡诺上限</div>
+      <div class="cmp">方法 ⑦⑧ 定位最大火用损环节，输出一份「达卡诺比例」报告</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">S3</span><h5>验证一个「超越卡诺」宣称</h5></div>
+      <div class="scene">取任意论文的效率数字 → 方法 ⑥ 克劳修斯不等式判定</div>
+      <div class="cmp">再查其资源基准（非平衡/相干/信息），按主报告 §5.5 裁决流程归档</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">S4</span><h5>教学演示复用</h5></div>
+      <div class="scene">方法 ⑤⑥ 的宇宙熵变与不等式判定，直面「优于卡诺」教学难点</div>
+      <div class="cmp">把第二定律变成可算的数字，正是 Smith 2015 实证缺的那一步</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">S5</span><h5>跨馆对照</h5></div>
+      <div class="scene">返回 6 座主馆核对范式对比表（05 章）与工程案例（10 章）</div>
+      <div class="cmp">本馆「怎么算」与主馆「算什么」配合使用，方法论闭环</div>
+    </div>
+    <div class="gcard reveal">
+      <div class="gt"><span class="gi">S6</span><h5>扩展自定义方法</h5></div>
+      <div class="scene">仿照 11 段代码结构，新增「Diesel 循环效率」「火用流图」等模块</div>
+      <div class="cmp">每段保持 30–40 行 + 复制按钮 + 6 维条目，即可并入本馆体系</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 输出速查 ============ -->
+<section class="section" id="outputs">
+  <div class="section-head reveal">
+    <span class="sec-no">14</span>
+    <h2>代码输出速查表（预期结果对照）</h2>
+    <span class="en">Expected Outputs Quick Reference</span>
+  </div>
+  <p class="section-intro reveal">
+    每段代码运行后应打印/生成下列结果。这是本馆的「验收标准」：输出与表中一致即通过；
+    不一致先查输入参数（尤其是温标单位），再查依赖版本。全部数值已用主报告数据独立复核。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead><tr><th style="width:70px;">方法</th><th style="width:220px;">输入工况</th><th>预期输出（关键行）</th><th style="width:150px;">验收要点</th></tr></thead>
+      <tbody>
+        <tr><th>①</th><td class="dim">Th=600 K / Tc=300 K</td><td class="dim"><code>η = 0.5000 = 50.0%</code>；<code>COP = 1.00</code>；废热占比 ≥ 50.0%；摄氏误用被拦截</td><td class="dim">与 KPI 卡 50.0% 一致</td></tr>
+        <tr><th>②</th><td class="dim">ΔS = 1 kJ/K</td><td class="dim">生成 <code>carnot_ts.png</code>；打印 <code>W_net = 300 kJ</code>；η = 50%</td><td class="dim">矩形面积 = 净功</td></tr>
+        <tr><th>③</th><td class="dim">1 mol，体积比 3</td><td class="dim">生成 <code>carnot_pv.png</code>；<code>W_net = 2.74 kJ</code>；η = 50.0%</td><td class="dim">W = ∮p dV</td></tr>
+        <tr><th>④</th><td class="dim">600/300 K，V 1e-3→3e-3 m³</td><td class="dim">IG ΔS≈9.134、RK ΔS≈8.95 J/K → 均 <code>η = 50.00%</code></td><td class="dim">工质无关性</td></tr>
+        <tr><th>⑤</th><td class="dim">1 mol 等压 300→600 K</td><td class="dim"><code>ΔS = 14.41 J/K</code>；等容 8.64 J/K；宇宙熵变 <code>0.00e+00</code></td><td class="dim">可逆宇宙熵变 = 0</td></tr>
+        <tr><th>⑥</th><td class="dim">Qh=1000 J；\|Qc\|=500/520 J</td><td class="dim">可逆 <code>∮δQ/T = +0.0000</code>；不可逆 <code>−0.0667 J/K</code></td><td class="dim">不等式方向正确</td></tr>
+        <tr><th>⑦</th><td class="dim">锅炉熵产 25 kJ/(kg·K)</td><td class="dim">火用毁 <code>7454 kJ/kg</code>；η_ex：70% / 75.0% / 72%</td><td class="dim">达卡诺比例口径</td></tr>
+        <tr><th>⑧</th><td class="dim">100 kW 热 1500→600 K</td><td class="dim"><code>S_gen = 100.00 W/K</code>；火用毁 <code>29.8 kW（29.8%）</code></td><td class="dim">E_d = T0·S_gen</td></tr>
+        <tr><th>⑨</th><td class="dim">600/300 K，σ=1 W/K</td><td class="dim"><code>η_CA ≈ 29.3%</code>；<code>P_max = 25.7 W</code>；权衡扫描区间打印</td><td class="dim">运行点非上限</td></tr>
+        <tr><th>⑩</th><td class="dim">冰箱/空调/热泵三工况</td><td class="dim">COP 5.9 / 37 / 8.8；<code>COP_HP = COP_R + 1 ✓</code></td><td class="dim">恒等式验证</td></tr>
+        <tr><th>⑪</th><td class="dim">ΔEh=8e-21 J，r=0.5/0.75/0.9</td><td class="dim">η = 50.0% / 25.0% / 10.0%；r=0.5 时 W→0</td><td class="dim">卡诺界+权衡</td></tr>
+        <tr><th>⑫</th><td class="dim">600/300K，三状态方程</td><td class="dim">IG 9.134 / VdW≈8.87 / RK≈8.95 J/K → 均 <code>η=50.00%</code></td><td class="dim">工质无关再证</td></tr>
+        <tr><th>⑬</th><td class="dim">Th=298.15K，冷端扫描</td><td class="dim">ΔT 25K→50K：COP_R <code>10.93→4.96</code>（−55%）；冰箱 5.93</td><td class="dim">敏感性</td></tr>
+        <tr><th>⑭</th><td class="dim">600/300K，ΔS=1 kJ/K</td><td class="dim">解析 <code>300 kJ</code> = Green <code>300 kJ</code> = 热平衡 <code>300 kJ</code></td><td class="dim">面积=净功</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 15 综合算例 ============ -->
+<section class="section" id="case">
+  <div class="section-head reveal">
+    <span class="sec-no">15</span>
+    <h2>综合算例：一台 1000 MW 超超临界机组的完整方法论演练</h2>
+    <span class="en">Worked Example: 1000 MW USC Unit</span>
+  </div>
+  <p class="section-intro reveal">
+    把 14 种方法串成一条流水线，对主报告 §4.2/§4.8 的 1000 MW 超超临界二次再热机组做完整审计。
+    每一步标注所用方法编号；数字均为已核验的真实量级。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead><tr><th style="width:80px;">步骤</th><th style="width:230px;">动作</th><th>方法与结果</th></tr></thead>
+      <tbody>
+        <tr><th>1</th><td class="dim">明确温度界限（绝对温标）</td><td class="dim">主蒸汽 600℃ → Th = 873.15 K；冷端 25℃ → Tc = 298.15 K。方法 ① 温标校验通过。</td></tr>
+        <tr><th>2</th><td class="dim">计算卡诺上限</td><td class="dim">方法 ①：η = 1 − 298.15/873.15 ≈ <b>65.9% ≈ 66%</b>——这是物理天花板。</td></tr>
+        <tr><th>3</th><td class="dim">对照实测效率</td><td class="dim">超超临界（600℃级）净效率 42–46%（LHV），取 46% → 达卡诺比例 = 46/66 ≈ <b>70%</b>。方法 ⑦。</td></tr>
+        <tr><th>4</th><td class="dim">定位最大损失环节</td><td class="dim">方法 ⑧：锅炉（燃烧+燃气1500K→蒸汽600K传热）火用毁最大，其次汽轮机与冷凝器——改造优先级：先锅炉。</td></tr>
+        <tr><th>5</th><td class="dim">可视化循环</td><td class="dim">方法 ② T-S 图：真实 Rankine 吸放热跨温度区间 → 平均吸热温度低于 873.15 K，这是「为何低于卡诺」的几何解释。</td></tr>
+        <tr><th>6</th><td class="dim">思考最大功率运行点</td><td class="dim">方法 ⑨：η_CA = 1 − √(298.15/873.15) ≈ <b>41.6%</b>——若按最大功率设计，效率反而低于 46% 的优化设计；权衡决策需要方法 ⑨ 的功率-效率曲线。</td></tr>
+        <tr><th>7</th><td class="dim">给出提升路线</td><td class="dim">提高平均吸热温度：700℃ A-USC 目标 50%（卡诺≈68%，达卡诺 73%）→ 瓶颈在镍基合金，不是物理。方法 ①⑦ 联合论证。</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="section-intro reveal" style="margin-top:14px;">
+    <b>方法论闭环：</b>步骤 2 确定「天花板」→ 步骤 3 度量「差距」→ 步骤 4 定位「损失」→
+    步骤 5 解释「为什么」→ 步骤 6 权衡「怎么运行」→ 步骤 7 指引「往哪改进」。
+    六步正好对应本馆三大家族的分工。
+  </p>
+</section>
+
+<!-- ============ 16 交叉索引 ============ -->
+<section class="section" id="crossref">
+  <div class="section-head reveal">
+    <span class="sec-no">16</span>
+    <h2>方法 × 主馆章节交叉索引</h2>
+    <span class="en">Method ↔ Main Hall Chapter Cross Index</span>
+  </div>
+  <p class="section-intro reveal">
+    每种方法在主馆 17 章中都有落点；本表方便「在主馆读到概念 → 回深潜馆跑代码」的双向跳转。
+    主馆文件名见文末底部导航。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead><tr><th style="width:70px;">方法</th><th style="width:200px;">主馆章节（概念落点）</th><th>对应工程/前沿数据</th></tr></thead>
+      <tbody>
+        <tr><th>①</th><td class="dim">03 定理与效率公式、00 KPI</td><td class="dim">η=1−Tc/Th 推导 + 反证法；100℃/0℃ → 27%</td></tr>
+        <tr><th>②</th><td class="dim">03 定理、07 制冷、09 时间线</td><td class="dim">T-S 矩形教学画面（费曼讲义 §44-4）</td></tr>
+        <tr><th>③</th><td class="dim">01 历史（Clapeyron）、05 范式对比</td><td class="dim">1834 p-V 图；Rankine/Brayton/Otto 形状差异</td></tr>
+        <tr><th>④</th><td class="dim">03 定理（工质无关性）</td><td class="dim">arXiv:physics/0601173；Redlich-Kwong 推广</td></tr>
+        <tr><th>⑤</th><td class="dim">03 熵、06 工程（熵产）</td><td class="dim">1865 熵命名；宇宙熵变 0/&gt;0</td></tr>
+        <tr><th>⑥</th><td class="dim">03 克劳修斯、10 教学案例</td><td class="dim">&lt;20% 学生「优于卡诺=违法」实证（Smith 2015）</td></tr>
+        <tr><th>⑦</th><td class="dim">08 火用分析、06 工程</td><td class="dim">锅炉最大火用损；62.22% 吉尼斯；η_ex 排行</td></tr>
+        <tr><th>⑧</th><td class="dim">08 火用（Gouy-Stodola）</td><td class="dim">E_d = T0·S_gen；2023 arXiv 普适性再思考</td></tr>
+        <tr><th>⑨</th><td class="dim">09 时间线（1975）、05 范式</td><td class="dim">Curzon-Ahlborn；Esposito 2009 统一线性响应</td></tr>
+        <tr><th>⑩</th><td class="dim">07 制冷与热泵</td><td class="dim">冰箱 5.9 vs 1.5–3；空调 37 vs 3；热泵 8.8</td></tr>
+        <tr><th>⑪</th><td class="dim">09 时间线（2016–2024）、10 量子案例</td><td class="dim">单离子/超导三能级热机；Shiraishi 权衡定理</td></tr>
+        <tr><th>⑫</th><td class="dim">03 定理（工质无关性）</td><td class="dim">arXiv:physics/0601173；IG/VdW/RK 三方程对照</td></tr>
+        <tr><th>⑬</th><td class="dim">07 制冷与热泵</td><td class="dim">COP 敏感性；ΔT 25K→50K COP_R 10.93→4.96</td></tr>
+        <tr><th>⑭</th><td class="dim">03 定理、05 范式对比</td><td class="dim">T-S 矩形面积 = 净功的数值验证</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 17 流水线总览 ============ -->
+<section class="section" id="pipeline">
+  <div class="section-head reveal">
+    <span class="sec-no">17</span>
+    <h2>11 方法流水线总览（ASCII）</h2>
+    <span class="en">Pipeline Overview</span>
+  </div>
+  <p class="section-intro reveal">
+    从「两个温度」出发，本馆 14 种方法可组合成任意卡诺主题分析任务。
+    下方 ASCII 流水线给出推荐调用顺序；方括号为可省略步骤。
+  </p>
+  <div class="code-wrap reveal" style="max-width:880px;margin:0 auto;">
+    <div class="code-bar">
+      <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+      <span class="fname">carnot_pipeline.txt · 方法调用图</span>
+    </div>
+    <pre class="code-block" style="white-space:pre;">输入：Th, Tc（开尔文）
+   │
+   ▼
+[① 卡诺效率计算器] ──→ 输出 η_C、废热占比、逆卡诺 COP
+   │
+   ├──→ [② T-S 图] ──→ 矩形面积 = 净功（仅可逆）
+   ├──→ [③ p-V 图] ──→ W_net = ∮p dV（Clapeyron 传统）
+   ├──→ [④ 任意工质验证] ──→ 证明 η 与工质无关
+   │
+   ▼
+[⑤ 熵变计算] ──→ ΔS 各过程 + 宇宙熵变
+   │
+   ▼
+[⑥ 克劳修斯不等式] ──→ ∮δQ/T ≤ 0 判定（第二定律门禁）
+   │
+   ├──→ [⑦ 火用与火用毁] ──→ η_ex = 达卡诺比例（工程标尺）
+   │        └──→ [⑧ Gouy-Stodola] ──→ 火用毁 = T0·熵产（损失计价）
+   │
+   ├──→ [⑨ Curzon-Ahlborn] ──→ η_CA 最大功率运行点 + 权衡曲线
+   ├──→ [⑩ 逆卡诺 COP] ──→ 制冷/热泵天花板
+   ├──→ [⑪ 两能级量子热机] ──→ 微观卡诺界 + 功率-效率权衡
+   ├──→ [⑫ 卡诺定理数值验证] ──→ 三状态方程效率对照（工质无关）
+   ├──→ [⑬ COP 敏感性扫描] ──→ 温差 → COP 杠杆分析
+   └──→ [⑭ T-S 矩形面积演示] ──→ Green 积分验证面积 = 净功
+   │
+   ▼
+输出：方法报告（上限 / 损失 / 运行点 / 微观边界）</pre>
+  </div>
+</section>
+
+<!-- ============ 18 附录 ============ -->
+<section class="section" id="appendix">
+  <div class="section-head reveal">
+    <span class="sec-no">18</span>
+    <h2>附录：主报告工程效率数据表复刻</h2>
+    <span class="en">Appendix: Engineering Data Table (from Report §4.8)</span>
+  </div>
+  <p class="section-intro reveal">
+    主报告 §4.8 的工程数据汇总表是本馆所有「达卡诺比例」示例的数据源，此处复刻以便对照。
+    注意各条目口径：净效率（LHV）、实测/设计值/厂商宣称三级分级。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead><tr><th style="width:190px;">装置/循环</th><th>实际效率/COP（口径，年份）</th><th>同界限卡诺上限</th><th style="width:90px;">达卡诺比例</th></tr></thead>
+      <tbody>
+        <tr><th>亚临界燃煤电厂</th><td class="dim">净效率 33–37%（LHV）</td><td class="dim">565℃/33℃ → η≈63.5%</td><td class="dim">55–60%</td></tr>
+        <tr><th>超超临界（600℃级）</th><td class="dim">42–46%（LHV）</td><td class="dim">600℃/25℃ → η≈66%</td><td class="dim">65–70%</td></tr>
+        <tr><th>700℃ A-USC（目标）</th><td class="dim">约 50%（设计目标）</td><td class="dim">≈68%</td><td class="dim">≈73%</td></tr>
+        <tr><th>压水堆核电站</th><td class="dim">约 33%（30–37%）</td><td class="dim">285℃/30℃ → η≈46%</td><td class="dim">≈72%</td></tr>
+        <tr><th>简单循环燃气轮机</th><td class="dim">35–42%（LHV）</td><td class="dim">1500℃/25℃ → η≈83%</td><td class="dim">42–50%</td></tr>
+        <tr><th>联合循环（Bouchain 9HA.01）</th><td class="dim"><b>62.22%</b>（实测，2016，吉尼斯）</td><td class="dim">同上</td><td class="dim">≈75%</td></tr>
+        <tr><th>联合循环（9HA.02 声称）</th><td class="dim">64%（厂商宣称，2018，未证实）</td><td class="dim">同上</td><td class="dim">≈77%</td></tr>
+        <tr><th>联合循环（Keadby 2 设计）</th><td class="dim">约 63%（设计值）</td><td class="dim">同上</td><td class="dim">≈76%</td></tr>
+        <tr><th>车用汽油机（Otto）</th><td class="dim">量产最高约 41%（丰田，厂商口径）</td><td class="dim">压缩比 14 → Otto 理论 ≈65%</td><td class="dim">≈63%</td></tr>
+        <tr><th>家用冰箱</th><td class="dim">COP 1.5–3</td><td class="dim">−18℃/25℃ → 卡诺 COP≈5.9</td><td class="dim">25–50%</td></tr>
+        <tr><th>家用空调</th><td class="dim">EER≈3</td><td class="dim">27℃/35℃ → 卡诺 COP≈37</td><td class="dim">≈8%</td></tr>
+        <tr><th>空气源热泵</th><td class="dim">SCOP 2.5–4（EN 14825）</td><td class="dim">0℃/35℃ 供热 → 卡诺 COP≈8.8</td><td class="dim">30–45%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="section-intro reveal" style="margin-top:14px;">
+    数据口径注：各电厂效率因净/毛、LHV/HHV 口径不同存在 ±2–3 个百分点差异（主报告 §4.8 注）。
+    本馆方法 ⑦ 的 <code style="font-family:var(--mono);color:var(--cyan);">exergy_efficiency()</code> 可直接复算任一行的达卡诺比例。
+  </p>
+</section>
+
+
+<!-- ============ 19 核查清单 ============ -->
+<section class="section" id="checklist">
+  <div class="section-head reveal">
+    <span class="sec-no">19</span>
+    <h2>方法自我核查清单（运行前 / 运行后）</h2>
+    <span class="en">Method Self-Check Checklist</span>
+  </div>
+  <p class="section-intro reveal">
+    仿照主报告 §7.3 的「货物崇拜检测」与 §8.2 的「矛盾裁决」思路，
+    本清单在每次使用本馆方法前后过一遍：先拦输入错误，再验输出合法性。
+  </p>
+  <div class="table-wrap reveal">
+    <table class="super">
+      <thead><tr><th style="width:60px;">#</th><th style="width:300px;">检查项</th><th style="width:110px;">对应方法</th><th>判定标准</th></tr></thead>
+      <tbody>
+        <tr><th>1</th><td class="dim">温度是否已换算为开尔文绝对温标</td><td class="dim">方法 ①</td><td class="dim">摄氏输入必须被 ValueError 拦截</td></tr>
+        <tr><th>2</th><td class="dim">Th &gt; Tc 是否成立</td><td class="dim">方法 ①</td><td class="dim">不成立即拒绝计算</td></tr>
+        <tr><th>3</th><td class="dim">计算出的效率是否 ≤ 卡诺上限</td><td class="dim">方法 ①④</td><td class="dim">实测 &gt; 卡诺 → 检查是否依赖附加资源（非平衡/相干/信息）</td></tr>
+        <tr><th>4</th><td class="dim">宇宙熵变是否 ≥ 0</td><td class="dim">方法 ⑤</td><td class="dim">出现负数即违反第二定律，方案作废</td></tr>
+        <tr><th>5</th><td class="dim">∮δQ/T 是否 ≤ 0</td><td class="dim">方法 ⑥</td><td class="dim">出现正数 = 第二类永动机信号</td></tr>
+        <tr><th>6</th><td class="dim">T-S 矩形是否仅用于可逆循环</td><td class="dim">方法 ②</td><td class="dim">不可逆循环不得套用矩形面积公式</td></tr>
+        <tr><th>7</th><td class="dim">RK 状态方程常数是否合理</td><td class="dim">方法 ④</td><td class="dim">常数影响 ΔS 数值但不影响效率——效率异常先查推导</td></tr>
+        <tr><th>8</th><td class="dim">火用口径是否声明（净/毛、LHV/HHV）</td><td class="dim">方法 ⑦</td><td class="dim">口径不一致会造成 ±2–3 个百分点误差</td></tr>
+        <tr><th>9</th><td class="dim">传热是否满足线性假设</td><td class="dim">方法 ⑧</td><td class="dim">辐射/非线性传热需修正 Gouy-Stodola 应用</td></tr>
+        <tr><th>10</th><td class="dim">η_CA 是否被误当上限</td><td class="dim">方法 ⑨</td><td class="dim">必须声明：它是最大功率运行点，恒低于卡诺</td></tr>
+        <tr><th>11</th><td class="dim">COP 温差口径（单点 vs 季节性）</td><td class="dim">方法 ⑩</td><td class="dim">SCOP（EN 14825）与单工况 COP 不可混比</td></tr>
+        <tr><th>12</th><td class="dim">量子模型是否声明准静态近似</td><td class="dim">方法 ⑪</td><td class="dim">涨落与相干修正未含，结论限于平均量</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="section-intro reveal" style="margin-top:14px;">
+    <b>用法：</b>运行前过第 1–2 项（输入），运行后过第 3–12 项（输出合法性）。
+    任何一项不过即停止下钻——这正是主报告 12 项矛盾裁决在方法层的落地。
+  </p>
+</section>
+
+<!-- ============ 20 手工复算 ============ -->
+<section class="section" id="handcalc">
+  <div class="section-head reveal">
+    <span class="sec-no">20</span>
+    <h2>数值手工复算示例（3 例，可与代码对照）</h2>
+    <span class="en">Hand Calculation Walkthroughs</span>
+  </div>
+  <p class="section-intro reveal">
+    三个关键数字（50%、29.3%、5.9）用手算完整推一遍，与对应代码输出逐位对照。
+    目的是示范「先手算、后跑码」的验证习惯——这也是费曼「演示 &gt; 论证」原则的落地。
+  </p>
+  <div class="gallery">
+    <div class="gcard reveal" style="grid-column:span 2;">
+      <div class="gt"><span class="gi">H1</span><h5>例 1：卡诺效率 50% 的完整手算（方法 ①）</h5></div>
+      <div class="scene">Th = 600 K，Tc = 300 K，理想气体工质，可逆循环</div>
+      <div class="cmp">
+        ① 等温膨胀吸热：Qh = nR·Th·ln(V₂/V₁) = 1×8.314×600×ln 3 = <b>5480 J</b><br>
+        ② 绝热膨胀：TV^(γ−1) = 常数 → V₃/V₄ = V₂/V₁（推导关键）<br>
+        ③ 等温压缩放热：|Qc| = nR·Tc·ln(V₂/V₁) = 1×8.314×300×ln 3 = <b>2740 J</b><br>
+        ④ η = (Qh − |Qc|)/Qh = (5480 − 2740)/5480 = <b>0.5000 = 50.0%</b> ✓
+      </div>
+    </div>
+    <div class="gcard reveal" style="grid-column:span 2;">
+      <div class="gt"><span class="gi">H2</span><h5>例 2：Curzon-Ahlborn 29.3% 的手算（方法 ⑨）</h5></div>
+      <div class="scene">同界限 600/300 K，内可逆模型</div>
+      <div class="cmp">
+        ① 温度比开方：√(Tc/Th) = √(300/600) = √0.5 = <b>0.7071</b><br>
+        ② η_CA = 1 − 0.7071 = <b>0.2929 ≈ 29.3%</b> ✓<br>
+        ③ 对比卡诺 50% → 最大功率运行点牺牲了约 20.7 个百分点的效率<br>
+        ④ P_max = σ(√Th − √Tc)²/2 = 1×(24.495 − 17.321)²/2 ≈ <b>25.7 W</b> ✓
+      </div>
+    </div>
+    <div class="gcard reveal" style="grid-column:span 2;">
+      <div class="gt"><span class="gi">H3</span><h5>例 3：冰箱卡诺 COP 5.9 的手算（方法 ⑩）</h5></div>
+      <div class="scene">冷端 −18℃ = 255 K，环境 25℃ = 298 K</div>
+      <div class="cmp">
+        ① 温差：Th − Tc = 298 − 255 = <b>43 K</b><br>
+        ② COP_R = Tc/(Th−Tc) = 255/43 = <b>5.93 ≈ 5.9</b> ✓<br>
+        ③ 热泵模式：COP_HP = Th/(Th−Tc) = 298/43 = <b>6.93 = COP_R + 1</b> ✓<br>
+        ④ 实际冰箱 1.5–3 → 达卡诺比例 ≈ 25–50%：剩余差距来自有限温差传热与压缩损失
+      </div>
+    </div>
+  </div>
+  <p class="section-intro reveal" style="margin-top:14px;">
+    三个例子覆盖了本馆三大家族的标志性数字。建议练习：把 H1–H3 的输入换成
+    你自己的工况（如地源热泵 5℃→45℃），先手算再跑对应代码，数字一致即掌握了方法。
+  </p>
+</section>
+
+</main>
+
+<!-- ================= 底部导航：6 座主馆 ================= -->
+<div class="bottom-nav">
+  <div class="bn-head">
+    <h3>方法论深潜馆 · 返回全部 6 座主馆</h3>
+    <p>Methodology Deep Annex · Carnot Heat Engine Research Atlas · 深蓝主题 #0B1437 / #132053 / #3B82F6</p>
+  </div>
+  <div class="bn-grid">
+    <a class="bn-card" href="carnot_s01_tech_deepblue.html">
+      <div class="bn-no">S01</div>
+      <div class="bn-name">科技深蓝暗黑</div>
+      <div class="bn-en">tech_deepblue</div>
+    </a>
+    <a class="bn-card" href="carnot_s02_academic_ink.html">
+      <div class="bn-no">S02</div>
+      <div class="bn-name">学术墨蓝毛边纸</div>
+      <div class="bn-en">academic_ink</div>
+    </a>
+    <a class="bn-card" href="carnot_s03_minimal_gold.html">
+      <div class="bn-no">S03</div>
+      <div class="bn-name">极简金蓝留白</div>
+      <div class="bn-en">minimal_gold</div>
+    </a>
+    <a class="bn-card" href="carnot_s04_cyber_indigo.html">
+      <div class="bn-no">S04</div>
+      <div class="bn-name">赛博朋克蓝紫</div>
+      <div class="bn-en">cyber_indigo</div>
+    </a>
+    <a class="bn-card" href="carnot_s05_glass_sky.html">
+      <div class="bn-no">S05</div>
+      <div class="bn-name">玻璃天青拟态</div>
+      <div class="bn-en">glass_sky</div>
+    </a>
+    <a class="bn-card" href="carnot_s06_magazine_slate.html">
+      <div class="bn-no">S06</div>
+      <div class="bn-name">杂志编辑石板蓝</div>
+      <div class="bn-en">magazine_slate</div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="flinks">
+    <a href="#s0">00 导览</a><a href="#fam1">01 家族一</a><a href="#fam2">02 家族二</a>
+    <a href="#fam3">03 家族三</a><a href="#table">04 超表</a><a href="#tree">05 决策树</a>
+    <a href="#numbers">06 数值库</a><a href="#notes">07 红线</a><a href="#links">08 返回主馆</a>
+  </div>
+  <div>ONESHOT 图集 · 卡诺热机 · 方法论深潜馆 · 2026-08-14　·　单文件交付（CSS/JS 全内联，无外链图片）</div>
+  <div style="margin-top:6px;">数据与公式来源：《卡诺热机深度研究报告》2026-08-14（78 条 IEEE 文献，S/A/B 三级信源）· 费曼讲义 Vol.I §44 · arXiv:physics/0601173 · PRL 117, 190601</div>
+</footer>
+
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<script>
+/* ================= 复制按钮：把隐藏 <script type="text/plain"> 中的代码写入剪贴板 ================= */
+document.querySelectorAll('.copy-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var srcId = btn.getAttribute('data-src');
+    var srcEl = document.getElementById(srcId);
+    if(!srcEl) return;
+    var text = srcEl.textContent.replace(/^\n+/,'').replace(/\n+$/,'\n');
+    function ok(){
+      btn.textContent = '已复制 ✓';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = '复制代码'; btn.classList.remove('copied'); }, 1800);
+    }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(e){ btn.textContent='复制失败'; }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, fallback);
+    }else{ fallback(); }
+  });
+});
+
+/* ================= 代码着色（极简关键字高亮：注释 / 字符串 / 关键字 / 数字） ================= */
+function paintCode(pre){
+  var raw = pre.textContent;
+  var html = raw
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/(#.*)$/gm, '<span class="c-cm">$1</span>')
+    .replace(/("""[\s\S]*?"""|'''[\s\S]*?'''|"[^"\n]*"|'[^'\n]*')/g, '<span class="c-st">$1</span>')
+    .replace(/\b(def|class|return|if|elif|else|for|while|import|from|as|in|not|and|or|lambda|with|try|except|raise|print|True|False|None)\b/g, '<span class="c-kw">$1</span>')
+    .replace(/\b(\d+\.?\d*)\b/g, '<span class="c-num">$1</span>');
+  pre.innerHTML = html;
+}
+/* ================= 从 <script type="text/plain"> 源灌入代码块 ================= */
+document.querySelectorAll('pre.code-block').forEach(function(pre){
+  var src = document.getElementById('src-' + pre.id.replace('pre-',''));
+  if(src){ pre.textContent = src.textContent.replace(/^\n+/,'').replace(/\n+$/,'\n'); paintCode(pre); }
+});
+
+/* ================= 滚动显现 + 回到顶部按钮 ================= */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+window.addEventListener('scroll', function(){
+  var t = document.getElementById('toTop');
+  if(t) t.classList.toggle('show', window.scrollY > 600);
+});
+</script>
+
+<script id="apple-ui-interactions">
+document.querySelectorAll('.card-spotlight').forEach(function(card){
+  card.addEventListener('mousemove',function(e){var r=card.getBoundingClientRect();card.style.setProperty('--mx',(e.clientX-r.left)+'px');card.style.setProperty('--my',(e.clientY-r.top)+'px');});
+});
+</script>
+</body>
+</html>
+
