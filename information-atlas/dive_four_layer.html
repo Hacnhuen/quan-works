@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深潜馆 · 四层叙事 | ONESHOT 信息论</title>
+<style>
+:root{--bg-0:#0a0614;--bg-1:#130a22;--bg-2:#1d0f30;--ink:#f4ecff;--ink-dim:#c4a8e0;--line:rgba(170,120,255,.22);--accent:#a06bff;--accent-2:#c9a4ff;--glow:rgba(160,107,255,.4);--glass:rgba(29,15,48,.45);--radius:20px;--maxw:1120px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif;background:var(--bg-0);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1000px 800px at 14% 10%,rgba(160,107,255,.22),transparent 60%),linear-gradient(160deg,var(--bg-0),var(--bg-1) 55%,var(--bg-2))}
+.fluid-bg::before{content:"";position:absolute;width:44vw;height:44vw;left:-6vw;top:-4vw;border-radius:50%;filter:blur(70px);background:radial-gradient(circle,rgba(160,107,255,.42),transparent 70%);animation:f 26s ease-in-out infinite}
+@keyframes f{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.07)}66%{transform:translate(-3vw,2vh) scale(.97)}}
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);background:linear-gradient(180deg,rgba(10,6,20,.9),rgba(10,6,20,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:15px}.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:80px 0 50px;text-align:center}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:22px;background:var(--glass)}
+.hero h1{font-size:clamp(32px,5.4vw,60px);font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#d4baff 60%,#c9a4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:680px;margin:22px auto 0;color:var(--ink-dim);font-size:16px}
+.section{padding:54px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px}.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px}.section-head h2{font-size:clamp(22px,3.2vw,34px);font-weight:750}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:26px;backdrop-filter:blur(16px);box-shadow:0 20px 50px -28px rgba(0,0,0,.85);transition:transform .4s,border-color .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(201,164,255,.45)}
+.layer{border-left:4px solid var(--accent);padding:6px 0 6px 22px;margin-bottom:26px;position:relative}
+.layer .lv{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-2);margin-bottom:8px}
+.layer h3{font-size:21px;font-weight:750;color:#fff;margin-bottom:10px}
+.layer p{color:var(--ink-dim);font-size:14.5px}
+.layer .ex{margin-top:10px;font-size:13.5px;color:var(--accent-2);border-top:1px dashed var(--line);padding-top:10px}
+.callout{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(120deg,rgba(160,107,255,.12),rgba(201,164,255,.05));margin:20px 0;font-size:14px;color:#ece2ff}.callout b{color:#fff}
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal-up.in{opacity:1;transform:none}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:36px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div>
+<header class="topbar"><div class="inner">
+  <div class="brand">ONESHOT · 信息论图集<small>深潜馆 · 四层叙事</small></div>
+  <nav class="nav"><a href="#l1">主张</a><a href="#l2">机制</a><a href="#l3">证据</a><a href="#l4">意义</a><a href="hub_master.html">↗ HUB</a></nav>
+</div></header>
+<div class="wrap">
+  <section class="hero"><span class="kicker">Deep Dive · Four-Layer</span><h1>用一个想法串起全部</h1><p class="lead">深潜馆之四：用"四层叙事"——核心主张 → 机制 → 证据 → 意义——把信息论压缩成一条可一眼看穿的脉络。</p></section>
+
+  <section class="section" id="l1">
+    <div class="section-head"><span class="num">01</span><h2>第一层 · 核心主张</h2></div>
+    <div class="layer"><div class="lv">核心主张</div><h3>"信息"可被度量，且一切通信、计算、学习与物理过程都是信息量的流动</h3>
+      <p>Shannon 把"不确定性的消除"变成比特数。从此，压缩、传输、学习、甚至热力学第二定律，都成了同一个量（互信息 / 熵）在不同约束下的极值问题。</p>
+      <div class="ex">一句话：世界是一台在约束下不断最小化（或最大化）信息不确定性的机器。</div>
+    </div>
+  </section>
+
+  <section class="section" id="l2">
+    <div class="section-head"><span class="num">02</span><h2>第二层 · 机制</h2></div>
+    <div class="layer"><div class="lv">机制</div><h3>两个极值原理撑起全部</h3>
+      <p><b>① 最小化互信息（压缩）：</b>IB 与率失真求 min I(X;T)−β·I(T;Y)，剥离无关、保留相关。<br><b>② 最大化熵（推断）：</b>最大熵原理在约束下选最"平"的分布，对应最小偏置、热力学平衡。</p>
+      <div class="ex">这两个极值方向相反却同源：都来自"在约束下优化信息"的统一变分思想，β / 拉格朗日乘子即约束的"价格"。</div>
+    </div>
+  </section>
+
+  <section class="section" id="l3">
+    <div class="section-head"><span class="num">03</span><h2>第三层 · 证据</h2></div>
+    <div class="layer"><div class="lv">证据</div><h3>从理论到现象的多重印证</h3>
+      <p>• <b>通信：</b>香农公式 C=B·log₂(1+S/N) 被 5G/Polar 码逼近，证明容量上限真实存在。<br>• <b>学习：</b>DNN 信息平面显示 SGD 先拟合后压缩，收敛层贴近 IB 界。<br>• <b>物理：</b>Szilard 机提取 kT ln2 功、Landauer 擦除付费，证明信息是物理量。<br>• <b>个体：</b>Kolmogorov 复杂度给"单个对象的信息"以严格定义。</p>
+      <div class="ex">四类证据（工程、学习、物理、计算）彼此独立却指向同一框架，构成强交叉验证。</div>
+    </div>
+  </section>
+
+  <section class="section" id="l4">
+    <div class="section-head"><span class="num">04</span><h2>第四层 · 意义</h2></div>
+    <div class="layer"><div class="lv">意义</div><h3>信息论是智能与物理的统一语言</h3>
+      <p>当 LLM 用交叉熵训练、用 KL 对齐、用 IB 视角解释"强压弱解"，信息论已悄悄成为 AI 的底层语法。当麦克斯韦妖被 Landauer 收编，信息论也成为物理的语法。未来，"智能"或许就定义为"在约束下高效压缩与利用信息的能力"。</p>
+      <div class="ex">留给读者：如果智能 = 信息瓶颈的极致优化，那么意识是否只是某个 β 下的二阶相变？</div>
+    </div>
+    <div class="callout"><b>四层收束：</b>主张（信息可度量）→ 机制（两极值原理）→ 证据（四域印证）→ 意义（统一语言）。一条脉络，贯穿 6 主馆 + 4 深潜。</div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="num">05</span><h2>四层词条 · 扩展字典</h2></div>
+    <div class="grid g3">
+      <div class="glass card"><span class="tag">Core Claim</span><h3>核心主张</h3><p>信息可度量，一切过程都是信息量流动。</p></div>
+      <div class="glass card"><span class="tag">Mechanism</span><h3>机制</h3><p>最小化互信息 + 最大化熵两极值原理。</p></div>
+      <div class="glass card"><span class="tag">Evidence</span><h3>证据</h3><p>工程/学习/物理/计算四域独立印证。</p></div>
+      <div class="glass card"><span class="tag">Meaning</span><h3>意义</h3><p>信息论是智能与物理的统一语言。</p></div>
+      <div class="glass card"><span class="tag">Layer1</span><h3>第一层</h3><p>主张：信息可被度量。</p></div>
+      <div class="glass card"><span class="tag">Layer2</span><h3>第二层</h3><p>机制：两个极值原理。</p></div>
+      <div class="glass card"><span class="tag">Layer3</span><h3>第三层</h3><p>证据：多域印证。</p></div>
+      <div class="glass card"><span class="tag">Layer4</span><h3>第四层</h3><p>意义：统一语法。</p></div>
+      <div class="glass card"><span class="tag">Converge</span><h3>收束</h3><p>四层合一，贯穿十馆。</p></div>
+      <div class="glass card"><span class="tag">Narrative</span><h3>叙事</h3><p>一条脉络串起全部内容。</p></div>
+    </div>
+  </section>
+</div>
+<footer><span class="pill">ONESHOT v2.0</span><span class="pill">深潜馆 · 四层叙事</span><span class="pill">核心主张 · 机制 · 证据 · 意义</span></footer>
+<script>const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));</script>
+</body>
+</html>
