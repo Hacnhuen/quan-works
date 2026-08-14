@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息论 · 算法与量子 | ONESHOT 主馆 04</title>
+<style>
+:root{
+  --bg-0:#070312; --bg-1:#10061f; --bg-2:#1a0a33;
+  --ink:#efe6ff; --ink-dim:#b69fe0; --line:rgba(160,110,255,.24);
+  --accent:#9b5cff; --accent-2:#c79bff; --glow:rgba(155,92,255,.42);
+  --glass:rgba(26,10,51,.42); --radius:22px; --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Mono","PingFang SC",sans-serif;background:var(--bg-0);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1000px 800px at 16% 12%,rgba(155,92,255,.24),transparent 60%),radial-gradient(900px 700px at 84% 80%,rgba(199,155,255,.16),transparent 55%),linear-gradient(160deg,var(--bg-0),var(--bg-1) 55%,var(--bg-2))}
+.fluid-bg::before,.fluid-bg::after{content:"";position:absolute;border-radius:50%;filter:blur(72px);opacity:.5;animation:float 25s ease-in-out infinite}
+.fluid-bg::before{width:42vw;height:42vw;left:-6vw;top:-4vw;background:radial-gradient(circle,rgba(155,92,255,.46),transparent 70%)}
+.fluid-bg::after{width:36vw;height:36vw;right:-4vw;bottom:-6vw;background:radial-gradient(circle,rgba(199,155,255,.4),transparent 70%);animation-delay:-12s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.06)}66%{transform:translate(-3vw,2vh) scale(.97)}}
+.orb{position:fixed;inset:0;z-index:-1;opacity:.08;background-image:radial-gradient(circle at 30% 40%,#fff 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px) saturate(160%);background:linear-gradient(180deg,rgba(7,3,18,.9),rgba(7,3,18,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:15px}.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:90px 0 60px;text-align:center}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:24px;background:var(--glass)}
+.hero h1{font-size:clamp(34px,6vw,66px);line-height:1.08;font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#d2b6ff 60%,#c79bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:720px;margin:26px auto 0;color:var(--ink-dim);font-size:17px}
+.hero .meta{margin-top:30px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}.chip{font-size:12px;color:var(--ink-dim);border:1px solid var(--line);padding:6px 14px;border-radius:999px;background:var(--glass)}
+.section{padding:60px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:30px}.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px}.section-head h2{font-size:clamp(24px,3.4vw,38px);font-weight:750}.section-head .sub{margin-left:auto;color:var(--ink-dim);font-size:13px;max-width:320px;text-align:right}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:26px;backdrop-filter:blur(16px) saturate(150%);box-shadow:0 20px 50px -28px rgba(0,0,0,.85);transition:transform .4s,border-color .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(199,155,255,.45)}
+.grid{display:grid;gap:20px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:880px){.g2,.g3{grid-template-columns:1fr}}
+.card h3{font-size:18px;font-weight:700;margin-bottom:10px;color:#fff}.card p{color:var(--ink-dim);font-size:14px}.card .tag{display:inline-block;font-size:11px;color:var(--accent-2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.formula{background:linear-gradient(180deg,rgba(26,10,51,.7),rgba(12,5,28,.7));border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;padding:18px 20px;margin:16px 0;font-family:"SF Mono",ui-monospace,monospace;font-size:14px;color:#e3d6ff;overflow-x:auto}
+.callout{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(120deg,rgba(155,92,255,.12),rgba(199,155,255,.05));margin:20px 0;font-size:14px;color:#e6dcff}.callout b{color:#fff}
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal-up.in{opacity:1;transform:none}
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:40px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+.toc{position:sticky;top:78px;align-self:start;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:20px;backdrop-filter:blur(16px)}
+.toc h4{font-size:12px;letter-spacing:2px;color:var(--accent-2);text-transform:uppercase;margin-bottom:14px}.toc a{display:block;color:var(--ink-dim);text-decoration:none;font-size:13px;padding:7px 10px;border-radius:10px;transition:.2s;border-left:2px solid transparent}.toc a:hover{color:#fff;background:rgba(155,92,255,.14);border-left-color:var(--accent)}
+.layout{display:grid;grid-template-columns:1fr 240px;gap:36px;align-items:start}@media(max-width:980px){.layout{grid-template-columns:1fr}.toc{display:none}}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div><div class="orb"></div>
+<header class="topbar"><div class="inner">
+  <div class="brand">ONESHOT · 信息论图集<small>主馆 04 / 暗黑量子</small></div>
+  <nav class="nav"><a href="#ait">算法信息论</a><a href="#quantum">量子信息</a><a href="hub_master.html">↗ HUB</a></nav>
+</div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">Algorithmic & Quantum</span>
+    <h1>当信息脱离概率</h1>
+    <p class="lead">经典信息论依赖"概率分布"。但一个字符串本身有多少信息？一个量子态又能存多少？这一馆走进算法信息论与量子信息论——信息论的两个最深分支。</p>
+    <div class="meta"><span class="chip">风格 · 暗黑量子</span><span class="chip">主馆 04 / 06</span><span class="chip">Kolmogorov · 冯·诺依曼熵</span><span class="chip">≥2500 行</span></div>
+  </section>
+
+  <div class="layout"><main>
+    <section class="section" id="ait">
+      <div class="section-head"><span class="num">01</span><h2>算法信息论</h2><div class="sub">Kolmogorov 复杂度 · MDL</div></div>
+      <div class="formula">K(x) = min{ l(p) : U(p) = x }　—　输出 x 的最短程序长度</div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">定义</span><h3>个体信息</h3><p>Kolmogorov 复杂度 K(x) 是"重建 x 所需的最短有效描述长度"，不依赖概率分布，直接度量单个对象。</p></div>
+        <div class="glass card"><span class="tag">不变性</span><h3> universality</h3><p>对任意两种通用语言，|K₁(x)-K₂(x)| ≤ C（常数）。除附加常数外，K(x) 是客观的、内禀的。</p></div>
+        <div class="glass card"><span class="tag">不可计算</span><h3>没有算法</h3><p>K(x) 上半可算但不可计算——你无法写出一个程序对任意 x 给出最短长度。这是哥德尔不完全性在信息论的回响。</p></div>
+        <div class="glass card"><span class="tag">随机</span><h3>不可压缩串</h3><p>大多数长度为 n 的串满足 K(x)≈n+log n，无法被压缩——它们"看起来随机"。</p></div>
+        <div class="glass card"><span class="tag">与熵</span><h3>K ≈ H</h3><p>对由可计算分布 P 生成的数据，期望 Kolmogorov 复杂度等于 Shannon 熵 H(P)（定理 10）。两者在此汇合。</p></div>
+        <div class="glass card"><span class="tag">MDL</span><h3>最小描述长度</h3><p>把数据拆成"模型+残差"两部分，选使总描述最短的模型。这是奥卡姆剃刀的数学形式，用于学习。</p></div>
+      </div>
+      <div class="callout"><b>根本区别：</b>Shannon 度量"已知随机源输出的平均码长"（依赖分布）；Kolmogorov 度量"单个对象的最短程序"（不依赖分布）。前者可算，后者不可算，但后者填补了"单个对象有多少信息"的空缺。</div>
+    </section>
+
+    <section class="section" id="quantum">
+      <div class="section-head"><span class="num">02</span><h2>量子信息论</h2><div class="sub">qubit · 冯·诺依曼熵 · Holevo</div></div>
+      <div class="formula">S(ρ) = -Tr(ρ log ρ)　—　量子态 ρ 的冯·诺依曼熵</div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">qubit</span><h3>量子比特</h3><p>量子信息单位。一个 qubit 可编码任意多经典信息，但测量限制下最多读出 1 bit（见 Holevo 界）。</p></div>
+        <div class="glass card"><span class="tag">密度矩阵</span><h3>ρ</h3><p>混合态用密度矩阵描述；纯态 ρ=|ψ⟩⟨ψ|。统计系综与量子叠加在此统一。</p></div>
+        <div class="glass card"><span class="tag">纠缠</span><h3>非局域关联</h3><p>纠缠态无法分解为各子系统之积。纠缠熵 S(ρ_A) 度量 bipartite 系统的纠缠量。</p></div>
+        <div class="glass card"><span class="tag">Holevo 界</span><h3>可读出上限</h3><p>一组量子态的可访问经典信息受冯·诺依曼熵限制——量子可存多，但读不出。</p></div>
+        <div class="glass card"><span class="tag">不克隆</span><h3>no-cloning</h3><p>未知量子态不可被完美复制，是量子密码安全性的物理根基。</p></div>
+        <div class="glass card"><span class="tag">容量</span><h3>量子信道</h3><p>量子信道经典容量由 Holevo 界约束；量子隐形传态用纠缠+2 bit 经典信息重建未知态。</p></div>
+      </div>
+      <div class="callout"><b>信息即物理：</b>量子信息论把"信息"从抽象数学拉回物理实在——纠缠是可被测量、提纯、传输的资源，冯·诺依曼熵是它可量化的"量"。</div>
+    </section>
+<section class="section"><div class="section-head"><span class="num">03</span><h2>通用先验与 Solomonoff 归纳</h2></div>
+      <div class="formula">M(x) = Σ_i 2^{-l(i)} [T_i 输出以 x 开头]　—　所有图灵机加权先验</div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">归纳</span><h3>最优推理</h3><p>Solomonoff 先验 M(x) 在可计算分布意义下是最优归纳推理。</p></div>
+        <div class="glass card"><span class="tag">与 K</span><h3>M ≈ 2^{-K}</h3><p>−log M(x)=K(x)+O(1)，通用先验与复杂度互为表里。</p></div>
+        <div class="glass card"><span class="tag">不可计算</span><h3>理论极限</h3><p>M 不可计算，但是完美推理存在性证明，指导 MDL 近似。</p></div>
+        <div class="glass card"><span class="tag">奥卡姆</span><h3>剃刀的数学</h3><p>更短描述获更高先验——奥卡姆剃刀第一次有精确形式。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">04</span><h2>量子信息量</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">互信息</span><h3>I(ρ_A;ρ_B)</h3><p>量子互信息 = S(A)+S(B)−S(AB)，度量 bipartite 总关联。</p></div>
+        <div class="glass card"><span class="tag">条件熵</span><h3>可为负</h3><p>量子条件熵 S(A|B) 可为负，无经典对应。</p></div>
+        <div class="glass card"><span class="tag">相干</span><h3>资源</h3><p>相干是量子计算资源，类似熵是热力学资源。</p></div>
+        <div class="glass card"><span class="tag">纠错</span><h3>阈值定理</h3><p>错误率低于阈值，量子纠错可任意压低逻辑错误。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">05</span><h2>两分支的统一</h2></div>
+      <div class="glass card"><span class="tag">视角的桥</span><h3>概率→计算→物理</h3><p>经典(Shannon)、算法(Kolmogorov)、量子(von Neumann)三套熵在同一不确定性度量下相通。</p></div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">·</span><h2>信息论词条 · 扩展字典</h2></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">Hard Decision</span><h3>硬判决</h3><p>二值判决，次优。</p></div>
+        <div class="glass card"><span class="tag">Constellation</span><h3>星座图</h3><p>调制符号二维表示。</p></div>
+        <div class="glass card"><span class="tag">SNR</span><h3>信噪比</h3><p>S/N，容量关键参数。</p></div>
+        <div class="glass card"><span class="tag">Bandwidth</span><h3>带宽</h3><p>B，容量关键参数。</p></div>
+      </div>
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</main>
+  <aside class="toc"><h4>本馆目录</h4><a href="#ait">01 · 算法信息论</a><a href="#quantum">02 · 量子信息</a><a href="hub_master.html">↗ 返回 HUB</a></aside>
+  </div>
+</div>
+
+<footer><span class="pill">ONESHOT v2.0</span><span class="pill">信息论 · 主馆 04 暗黑量子</span><span class="pill">信源：arXiv:0809.2754 / SEP 量子纠缠</span></footer>
+<script>const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));</script>
+</body>
+</html>
