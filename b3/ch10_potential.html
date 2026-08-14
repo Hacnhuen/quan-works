@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第十章 · 静电场中的能量 · 深度研究馆</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in wrap">
+    <a class="brand" href="index.html">物理论坛<span>· 必修第三册</span></a>
+    <nav class="navlinks">
+      <a href="index.html">总览</a>
+      <a href="ch9_charge_field.html">第九章</a>
+      <a class="on" href="ch10_potential.html">第十章</a>
+      <a href="ch11_circuit.html">第十一章</a>
+      <a href="ch12_energy.html">第十二章</a>
+      <a href="ch13_induction.html">第十三章</a>
+      <a href="verify.html">检验</a>
+      <a href="method.html">认知方法</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">第十章 · 5 节 · 教材页 25–51</div>
+    <h1>静电场中的能量</h1>
+    <p>电场不止有"力"，还有"能"。本章从静电力做功与路径无关这一关键事实出发，定义电势能、电势、电势差，发现<b>E = −∇φ</b> 的场—势对偶，再用电容器把电场能量存起来，最后让带电粒子在电场中加速与偏转——示波器的物理内核。</p>
+    <div class="meta">
+      <i>L0 现象：电场力做功使电荷动能变化</i>
+      <i>L3 模型：等势面、电容器</i>
+      <i>L4 前沿：超级电容</i>
+    </div>
+  </div>
+</section>
+
+<div class="layout wrap">
+  <aside class="side">
+    <h4>认知阶梯</h4>
+    <a class="act" href="#p0">① 现象感知</a>
+    <a href="#p1">② 概念生成</a>
+    <a href="#p2">③ 定性猜想</a>
+    <a href="#p3">④ 定量分析</a>
+    <a href="#p4">⑤ 模型建立</a>
+    <a href="#p5">⑥ 理论形成</a>
+    <a href="#p6">⑦ 预测未知</a>
+    <div class="grp"><h4>交互实验室</h4><a href="#lab1">电势差与场强</a><a href="#lab2">带电粒子偏转</a></div>
+    <div class="grp"><h4>跳转</h4><a href="index.html">↑ 总览</a><a href="ch11_circuit.html">第十一章 →</a></div>
+  </aside>
+
+  <main>
+    <section class="section" id="p0">
+      <h2><span class="num">L0</span> 现象感知：电场也会"做功"</h2>
+      <p class="lead">把电荷放入电场，它会加速——动能增加。这说明电场具有能量。教材以"静电给人们方便也带来麻烦"引入，并从静电力做功的可观察效果切入。</p>
+      <div class="el el-example"><div class="tag">示例 · 页 26</div><p>问题：<b>"静电力可以对电荷做功吗？做功与路径有关吗？"</b>——把电荷在电场中从不同路径从 A 移到 B，观察末速度是否相同，即感知"功可能与路径无关"。</p></div>
+      <div class="note"><b>认知提示</b>力→功→能，是力学中已建立的链条。本章把它迁移到电场：电场力做功，对应电势能变化。先感知"电场能改变电荷动能"，再追问机制。</div>
+    </section>
+
+    <section class="section" id="p1">
+      <h2><span class="num">L1</span> 概念生成：电势能、电势、电势差</h2>
+      <p class="lead">类比重力势能，定义电势能；再仿照电场强度 E=F/q 的比值定义，得到与试探电荷无关的电势 φ；两点电势之差即电势差 U。</p>
+      <div class="el el-concept"><div class="tag">概念 · 电势能 Eₚ（页 26）</div><p>静电力做功与路径无关 → 可引入势能。电荷在某点电势能等于把它从该点移到参考点（通常无穷远或大地）静电力做的功。电场力做正功，电势能减少。</p></div>
+      <div class="el el-formula"><div class="tag">公式 · 电势 φ（页 27）</div><div class="fml">φ = Eₚ / q <span class="cm">，单位 V（伏特）= J/C</span></div><p>比值定义，与试探电荷无关，反映电场本身的能的性质。电势是标量。</p></div>
+      <div class="el el-formula"><div class="tag">公式 · 电势差 U（页 31）</div><div class="fml">U_AB = φ_A − φ_B = W_AB / q</div><p>电场力做功 W_AB = q·U_AB。电势差也叫电压。</p></div>
+      <div class="el el-coro"><div class="tag">推论 · 点电荷电势</div><p>由 Eₚ = kQq/r 得 <b>φ = kQ/r</b>（取无穷远为零势）。多电荷时电势代数叠加（标量，比 E 的矢量叠加简单）。</p></div>
+    </section>
+
+    <section class="section" id="p2">
+      <h2><span class="num">L2</span> 定性猜想：场强与电势差有什么关系？</h2>
+      <p class="lead">力学中"力大处势能变化快"。类比猜想：电场强处，沿场方向的电势降落是否也更快？即 E 与 U 可能存在微分关系。</p>
+      <div class="el el-theorem"><div class="tag">猜想 · 匀强场中的关系</div><p>在匀强电场中，沿场方向移过距离 d，电势差 U = E·d。教材由此猜想：<b>电场强度等于电势沿场方向的变化率</b>。</p></div>
+      <div class="el el-concept"><div class="tag">概念 · 等势面（页 35）</div><p>电势相等的点构成的面。特点：等势面与电场线垂直；沿等势面移动电荷静电力不做功；等差等势面越密处场强越大。</p></div>
+      <div class="note warn"><b>可错性</b>"E 与 U 成正比"是粗略直觉。精确关系是微分（变化率）而非简单正比；非匀强场中只在微小位移近似成立。需定量验证。</div>
+    </section>
+
+    <section class="section" id="p3">
+      <h2><span class="num">L2</span> 定量分析：U = Ed 与电容 C = Q/U</h2>
+      <p class="lead">由 W = qEd = qU 严格推出匀强场 U = Ed；由平行板电场 E = σ/ε₀ 与 φ 关系导出电容公式，完成从猜想到定量。</p>
+      <div class="el el-proof"><div class="tag">证明 · U = Ed（页 35）</div><p>匀强场中电荷从 A 到 B（沿场方向位移 d），W = qEd；又 W = qU_AB，故 <b>U = Ed</b>。一般情形：E 等于电势沿场方向的空间变化率的负值。</p></div>
+      <div class="el el-formula"><div class="tag">公式 · 电容（页 38）</div><div class="fml">C = Q / U <span class="cm">，单位 F（法拉）</span></div><p>平行板电容：<b>C = ε₀S/d</b>（ε₀=8.85×10⁻¹² F/m，真空介电常数；S 极板面积，d 板距）。电容描述"储存电荷本领"，与 Q、U 无关。</p></div>
+      <div class="el el-example"><div class="tag">示例 · 电容储能</div><p>电容器储能 <b>W = ½CU² = Q²/(2C)</b>。这是电场能量的定量表达——能量储存在两极板间的电场中。</p></div>
+      <div class="el el-example"><div class="tag">示例 · 例题（页 44）带电粒子加速</div><p>电荷 q 经电压 U 加速：qU = ½mv² → v = √(2qU/m)。电子经 100 V 加速后 v ≈ 5.9×10⁶ m/s（数值校验见流水线）。</p></div>
+    </section>
+
+    <section class="section" id="p4">
+      <h2><span class="num">L3</span> 模型建立：等势面、电容器、偏转模型</h2>
+      <p class="lead">把"势"与"场"用理想模型固定下来：等势面模型、平行板电容器模型、带电粒子在正交 E、B 中的类平抛/偏转模型。</p>
+      <div class="el el-concept"><div class="tag">概念 · 电容器模型（页 38）</div><p>两个彼此绝缘又靠近的导体构成一个电容器。充电后两板带等量异号电荷，板间为匀强电场。<b>电容器是"电场能量的容器"</b>。</p></div>
+      <div class="el el-concept"><div class="tag">概念 · 带电粒子运动模型（页 44）</div><p>① 加速：qU=½mv²；② 偏转：垂直进入匀强电场，类平抛——轴向匀速、横向匀加速 a=qE/m。这是示波管、加速器的核心模型。</p></div>
+      <div class="el el-coro"><div class="tag">推论 · 场—势对偶</div><p>E 与 φ 互为微分/积分关系：知道其一可求另一。这是电学中最强大的计算工具之一（求 E 难时常先求 φ）。</p></div>
+    </section>
+
+    <section class="section" id="p5">
+      <h2><span class="num">L3</span> 理论形成：静电场作为"力+能"统一理论</h2>
+      <p class="lead">电场强度（动力学描述）与电势（能量描述）两套语言统一于同一静电场；电容器把能量定域在电场中，强化了"场是物质"的观点。</p>
+      <div class="el el-theorem"><div class="tag">定理 · 电场能量定域</div><p>电容器储能 W=½CU² 等价于电场能量密度 w=½ε₀E² 对整个场体积积分。<b>能量不在电荷上，而在电场中。</b></p></div>
+      <div class="el el-coro"><div class="tag">推论 · 理论解释力</div><p>示波器、显像管、粒子加速器、静电透镜——均可由"加速 + 偏转"模型统一解释，无需新假设。理论的自洽性得到应用印证。</p></div>
+    </section>
+
+    <section class="section" id="p6">
+      <h2><span class="num">L4</span> 预测未知：从平行板电容到超级电容</h2>
+      <p class="lead">教材的 C=ε₀S/d 预言：增大面积、减小板距、提高介电常数即可增容。现代超级电容把板距缩到纳米（双电层）、并用赝电容，把"储存电场能"推到功率密度极致。</p>
+      <div class="el el-frontier"><div class="tag">前沿 · 超级电容器（2025）</div><p>基于电极/电解液界面<b>双电层</b>或快速氧化还原反应（赝电容）储能，功率密度可达 10 kW/kg、充放电数十秒、循环超 10 万次，介于普通电容与电池之间，用于风光储能、启停系统、轨道制动回收。</p></div>
+      <div class="el el-frontier"><div class="tag">前沿 · 单电子晶体管与库仑阻塞</div><p>第九章"电荷量子化"与本章"电容"汇合：量子点电容 C 极小时，单电子充放电能 e²/C 显著，出现库仑阻塞——纳米电子学的开关原理。</p></div>
+      <div class="el el-frontier"><div class="tag">前沿 · 开放问题</div><p>能否造出室温稳定、能量密度媲美电池又具电容功率密度的器件？介电常数能否突破材料极限（高 κ 介质）？这是储能物理的活跃前沿。</p></div>
+      <div class="note deep"><b>认知闭环</b>现象（电场做功）→概念（电势能/电势）→猜想（E 与 U 相关）→定量（U=Ed、C=Q/U）→模型（等势面/电容器/偏转）→理论（场—势统一、能量定域）→预测（超级电容、库仑阻塞）。</div>
+    </section>
+
+    <!-- 实验室 -->
+    <div class="lab" id="lab1">
+      <div class="lab-h">交互实验室 · 电势差与场强 U = E·d</div>
+      <canvas id="cv1" width="640" height="220" style="width:100%;background:#0c0f17;border-radius:10px"></canvas>
+      <div class="ctrl"><label>场强 E (V/m)</label><input type="range" id="e1" min="10" max="500" value="200"><span class="val" id="e1v">200</span></div>
+      <div class="ctrl"><label>距离 d (cm)</label><input type="range" id="d1" min="1" max="50" value="20"><span class="val" id="d1v">20</span></div>
+      <div class="readout" id="ro1">U = — V</div>
+    </div>
+    <div class="lab" id="lab2">
+      <div class="lab-h">交互实验室 · 带电粒子横向偏转（类平抛）</div>
+      <canvas id="cv2" width="640" height="260" style="width:100%;background:#0c0f17;border-radius:10px"></canvas>
+      <div class="ctrl"><label>加速电压 U (V)</label><input type="range" id="u2" min="50" max="500" value="200"><span class="val" id="u2v">200</span></div>
+      <div class="ctrl"><label>偏转电场 E (V/m)</label><input type="range" id="ef2" min="50" max="800" value="300"><span class="val" id="ef2v">300</span></div>
+      <div class="readout" id="ro2">末偏转位移 y = — mm</div>
+    </div>
+
+    <div class="pager">
+      <a class="pn" href="ch9_charge_field.html"><span class="lb">◀ 上一章</span>第九章 静电场及其应用</a>
+      <a class="nx" href="ch11_circuit.html"><span class="lb">下一章 ▶</span>第十一章 电路及其应用</a>
+    </div>
+  </main>
+</div>
+<footer class="foot wrap">第十章 · 静电场中的能量 · 信源：人教版物理必修第三册（OCR 逐字拆解，页 25–51）</footer>
+<script src="assets/core.js"></script>
+<script>
+(function(){
+  var cv=document.getElementById('cv1'),ctx=cv.getContext('2d');
+  var e1=document.getElementById('e1'),d1=document.getElementById('d1'),e1v=document.getElementById('e1v'),d1v=document.getElementById('d1v'),ro=document.getElementById('ro1');
+  function draw(){
+    var E=+e1.value, d=+d1.value/100, U=E*d;
+    e1v.textContent=E; d1v.textContent=d1.value; ro.textContent='U = '+U.toFixed(1)+' V';
+    ctx.clearRect(0,0,cv.width,cv.height);
+    var x0=40, x1=40+d/50*(cv.width-80);
+    ctx.strokeStyle='#38bdf8'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x0,150); ctx.lineTo(x1,150); ctx.stroke();
+    ctx.fillStyle='#9fb0c8'; ctx.font='12px monospace';
+    ctx.fillText('+ 极',x0-14,135); ctx.fillText('− 极',x1-14,135);
+    ctx.fillText('E='+E+' V/m',x0,180); ctx.fillText('d='+d1.value+' cm, U='+U.toFixed(1)+' V',x0,200);
+  }
+  [e1,d1].forEach(function(e){e.addEventListener('input',draw);}); draw();
+})();
+(function(){
+  var cv=document.getElementById('cv2'),ctx=cv.getContext('2d');
+  var u2=document.getElementById('u2'),ef2=document.getElementById('ef2'),u2v=document.getElementById('u2v'),ef2v=document.getElementById('ef2v'),ro=document.getElementById('ro2');
+  var m=9.11e-31,q=1.6e-19,L=0.2; // 偏转区长度 0.2m
+  function draw(){
+    var U=+u2.value,E=+ef2.value; u2v.textContent=U; ef2v.textContent=E;
+    var v=Math.sqrt(2*q*U/m); // 入射速度
+    var t=L/v, a=q*E/m, y=0.5*a*t*t;
+    ro.textContent='末偏转位移 y = '+(y*1000).toFixed(2)+' mm  (v='+v.toExponential(2)+' m/s)';
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.strokeStyle='#34d399'; ctx.lineWidth=2; ctx.beginPath();
+    for(var i=0;i<=60;i++){var xx=i/60; var yy=0.5*a*Math.pow(xx*L/v,2); var X=40+xx*(cv.width-80); var Y=130-yy/(0.02)*(cv.height-160); if(i===0)ctx.moveTo(X,Y); else ctx.lineTo(X,Y);}
+    ctx.stroke();
+    ctx.fillStyle='#9fb0c8'; ctx.font='12px monospace'; ctx.fillText('水平匀速 + 横向匀加速（类平抛）',40,160);
+  }
+  [u2,ef2].forEach(function(e){e.addEventListener('input',draw);}); draw();
+})();
+</script>
+</body>
+</html>
