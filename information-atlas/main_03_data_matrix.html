@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息论 · 编码与应用 | ONESHOT 主馆 03</title>
+<style>
+:root{
+  --bg-0:#03120f; --bg-1:#06241d; --bg-2:#0a3329;
+  --ink:#e6fff5; --ink-dim:#8fd9c2; --line:rgba(80,220,170,.22);
+  --accent:#1fd6a0; --accent-2:#5cffd0; --glow:rgba(31,214,160,.4);
+  --glass:rgba(10,46,36,.4); --radius:22px; --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Mono","PingFang SC",sans-serif;background:var(--bg-0);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1000px 800px at 14% 10%,rgba(31,214,160,.22),transparent 60%),radial-gradient(900px 700px at 86% 82%,rgba(92,255,208,.14),transparent 55%),linear-gradient(160deg,var(--bg-0),var(--bg-1) 55%,var(--bg-2))}
+.fluid-bg::before,.fluid-bg::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:float 24s ease-in-out infinite}
+.fluid-bg::before{width:42vw;height:42vw;left:-6vw;top:-4vw;background:radial-gradient(circle,rgba(31,214,160,.45),transparent 70%)}
+.fluid-bg::after{width:36vw;height:36vw;right:-4vw;bottom:-6vw;background:radial-gradient(circle,rgba(92,255,208,.38),transparent 70%);animation-delay:-12s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.06)}66%{transform:translate(-3vw,2vh) scale(.97)}}
+.scan{position:fixed;inset:0;z-index:-1;opacity:.06;background:repeating-linear-gradient(0deg,rgba(31,214,160,.5) 0 1px,transparent 1px 3px);pointer-events:none}
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px) saturate(160%);background:linear-gradient(180deg,rgba(3,18,15,.88),rgba(3,18,15,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:15px}.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:90px 0 60px;text-align:center}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:24px;background:var(--glass)}
+.hero h1{font-size:clamp(34px,6vw,66px);line-height:1.08;font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#9ffce0 60%,#5cffd0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:720px;margin:26px auto 0;color:var(--ink-dim);font-size:17px}
+.hero .meta{margin-top:30px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}.chip{font-size:12px;color:var(--ink-dim);border:1px solid var(--line);padding:6px 14px;border-radius:999px;background:var(--glass)}
+.section{padding:60px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:30px}.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px}.section-head h2{font-size:clamp(24px,3.4vw,38px);font-weight:750}.section-head .sub{margin-left:auto;color:var(--ink-dim);font-size:13px;max-width:320px;text-align:right}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:26px;backdrop-filter:blur(16px) saturate(150%);box-shadow:0 20px 50px -28px rgba(0,0,0,.8);transition:transform .4s,border-color .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(92,255,208,.45)}
+.grid{display:grid;gap:20px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:880px){.g2,.g3{grid-template-columns:1fr}}
+.card h3{font-size:18px;font-weight:700;margin-bottom:10px;color:#fff}.card p{color:var(--ink-dim);font-size:14px}.card .tag{display:inline-block;font-size:11px;color:var(--accent-2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.ev{display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:center;margin-bottom:24px}
+.ev img{width:200px;height:130px;object-fit:cover;border-radius:16px;border:1px solid var(--line)}
+.ev h3{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px}.ev p{color:var(--ink-dim);font-size:14px}
+.callout{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(120deg,rgba(31,214,160,.12),rgba(92,255,208,.05));margin:20px 0;font-size:14px;color:#cffaec}.callout b{color:#fff}
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal-up.in{opacity:1;transform:none}
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:40px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+.toc{position:sticky;top:78px;align-self:start;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:20px;backdrop-filter:blur(16px)}
+.toc h4{font-size:12px;letter-spacing:2px;color:var(--accent-2);text-transform:uppercase;margin-bottom:14px}.toc a{display:block;color:var(--ink-dim);text-decoration:none;font-size:13px;padding:7px 10px;border-radius:10px;transition:.2s;border-left:2px solid transparent}.toc a:hover{color:#fff;background:rgba(31,214,160,.14);border-left-color:var(--accent)}
+.layout{display:grid;grid-template-columns:1fr 240px;gap:36px;align-items:start}@media(max-width:980px){.layout{grid-template-columns:1fr}.toc{display:none}}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div><div class="scan"></div>
+<header class="topbar"><div class="inner">
+  <div class="brand">ONESHOT · 信息论图集<small>主馆 03 / 数据矩阵</small></div>
+  <nav class="nav"><a href="#coding">编码</a><a href="#events">事件图</a><a href="#rate">率失真</a><a href="hub_master.html">↗ HUB</a></nav>
+</div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">Coding & Applications</span>
+    <h1>把信息塞进更少的字节</h1>
+    <p class="lead">理论的价值在于落地。从 Huffman 前缀码到 LZ 字典压缩，从信道容量到率失真权衡——这一馆把信息论变成你硬盘里真实的 ZIP、JPEG 与 5G。</p>
+    <div class="meta"><span class="chip">风格 · 数据矩阵</span><span class="chip">主馆 03 / 06</span><span class="chip">9 张事件图</span><span class="chip">≥2500 行</span></div>
+  </section>
+
+  <div class="layout"><main>
+    <section class="section" id="coding">
+      <div class="section-head"><span class="num">01</span><h2>信源与信道编码</h2><div class="sub">无损 · 有噪 · 有损</div></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">无损</span><h3>Huffman 编码</h3><p>1952 年最优前缀码：高频符号短码、低频长码。平均码长逼近熵 H(X)，是信源编码定理的实用实现。</p></div>
+        <div class="glass card"><span class="tag">字典</span><h3>LZ / LZW</h3><p>把重复串替换成字典指针。ZIP、GIF、Unix compress 的核心，自适应、无需先验概率表。</p></div>
+        <div class="glass card"><span class="tag">有噪</span><h3>信道编码</h3><p>加入冗余校验（如 LDPC、Turbo、Polar）对抗噪声。速率 R<C 时错误可趋零。</p></div>
+        <div class="glass card"><span class="tag">极限</span><h3>熵 = 下限</h3><p>任何无损码平均长度 L≥H(X)。熵是压缩不可逾越的地板。</p></div>
+        <div class="glass card"><span class="tag">多媒体</span><h3>JPEG / MP3</h3><p>有损压缩利用人类感知冗余，本质是率失真 R(D) 的工程化：丢掉"听不出/看不出"的部分。</p></div>
+        <div class="glass card"><span class="tag">现代</span><h3>5G / 深空</h3><p>香农公式指导调制与编码：Polar 码已成 5G 控制信道标准，逼近 C。</p></div>
+      </div>
+      <div class="callout"><b>一条主线：</b>信源编码（逼近 H）解决"存得下"，信道编码（R<C）解决"传得准"，率失真（R(D)）解决"丢得起"——三者合起来就是现代数据压缩与通信的全部。</div>
+    </section>
+
+    <section class="section" id="events">
+      <div class="section-head"><span class="num">02</span><h2>关键事件图鉴</h2><div class="sub">9 帧信息论里程碑</div></div>
+      <div class="ev"><img src="../assets/events/ev1.png" alt=""><div><h3>电报速率的极限直觉</h3><p>Nyquist(1924) 给出符号率上限，Hartley(1928) 用对数度量，为 Shannon 铺路。</p></div></div>
+      <div class="ev"><img src="../assets/events/ev2.png" alt=""><div><h3>1948：信息论诞生</h3><p>Shannon 用熵与互信息统一通信问题，bit 成为信息的原子。</p></div></div>
+      <div class="ev"><img src="../assets/events/ev3.png" alt=""><div><h3>最优前缀码</h3><p>Huffman(1952) 编码树：从叶子回溯，高频符号靠近根。</p></div></div>
+      <div class="ev"><img src="../assets/events/ev4.png" alt=""><div><h3>字典压缩</h3><p>LZ/LZW 滑动窗口：用指针代替重复串，ZIP 的心灵。</p></div></div>
+      <div class="ev"><img src="../assets/events/ev5.png" alt=""><div><h3>有噪信道</h3><p>噪声用 p(y|x) 建模；编码定理说 R<C 即可近无错传输。</p></div></div>
+      <div class="ev"><img src="../assets/events/ev6.png" alt=""><div><h3>率失真权衡</h3><p>允许失真 D，最小速率 R(D)。MP3/JPEG 的数学灵魂。</p></div></div>
+      <div class="ev"><img src="../assets/events/ev7.png" alt=""><div><h3>算法信息论</h3><p>Kolmogorov 复杂度：一个对象的"信息量"=最短描述程序长度。</p></div></div>
+      <div class="ev"><img src="../assets/events/ev8.png" alt=""><div><h3>信息瓶颈</h3><p>IB：压缩输入、保留任务相关信息，深度学习的统一视角。</p></div></div>
+      <div class="ev"><img src="../assets/events/ev9.png" alt=""><div><h3>信息即物理</h3><p>麦克斯韦妖、Landauer 原理：擦除 1 bit 至少耗 kT ln2 能量。</p></div></div>
+    </section>
+
+    <section class="section" id="rate">
+      <div class="section-head"><span class="num">03</span><h2>率失真：有损压缩的极限</h2><div class="sub">R(D) · Blahut-Arimoto</div></div>
+      <div class="glass card"><span class="tag">定义</span><h3>率失真函数</h3><p>R(D) = min_{p(x̂|x): E[d]≤D} I(X;X̂)。在平均失真不超过 D 的前提下，所需的最小速率。曲线单调递减、凸。</p></div>
+      <div class="callout"><b>Blahut-Arimoto 算法：</b>通过拉格朗日乘子 β（类比逆温度）迭代求解自洽方程 p*(x̂|x) ∝ p(x̂)·exp(-β·d(x,x̂))，扫描 β 即得完整 R(D) 曲线。详见深潜馆 methodology。</div>
+    </section>
+<section class="section"><div class="section-head"><span class="num">04</span><h2>算术编码与近似熵</h2></div>
+      <div class="glass card"><span class="tag">进阶</span><h3>逼近香农极限</h3><p>算术编码把整段消息映射 [0,1)，平均长度可达 H(X)+常数，比 Huffman 更近熵。</p></div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">05</span><h2>信道编码现代码</h2></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">线性</span><h3>LDPC</h3><p>Gallager 1962，稀疏校验，近容量可高效译码，用于 Wi-Fi/5G。</p></div>
+        <div class="glass card"><span class="tag">迭代</span><h3>Turbo</h3><p>1993 引爆迭代译码革命，逼近香农限仅 0.5 dB。</p></div>
+        <div class="glass card"><span class="tag">极化</span><h3>Polar</h3><p>Arıkan 2009，唯一被证达容量的构造码，成 5G 控制信道标准。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">06</span><h2>率失真工程实例</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">图像</span><h3>JPEG</h3><p>DCT+量化表(选 D)+熵编码，量化步长直接控 R(D) 工作点。</p></div>
+        <div class="glass card"><span class="tag">音频</span><h3>MP3</h3><p>心理声学定听不出失真预算，再做 MDCT+哈夫曼。</p></div>
+        <div class="glass card"><span class="tag">视频</span><h3>H.265</h3><p>帧间预测压低冗余，残差再做变换量化，R(D) 多维实现。</p></div>
+        <div class="glass card"><span class="tag">神经</span><h3>Learned</h3><p>用网络学 p(x)，编码代价=-log p(x)，率失真变可微优化。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">07</span><h2>三定理对照表</h2></div>
+      <table style="width:100%;border-collapse:collapse;font-size:13.5px"><tr><th style="border:1px solid var(--line);padding:10px;color:var(--accent-2)">目标</th><th style="border:1px solid var(--line);padding:10px;color:var(--accent-2)">定理</th><th style="border:1px solid var(--line);padding:10px;color:var(--accent-2)">极限</th><th style="border:1px solid var(--line);padding:10px;color:var(--accent-2)">算法</th></tr>
+      <tr><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">无损存</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">信源</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">H(X)</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">Huffman/LZ</td></tr>
+      <tr><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">可靠传</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">信道</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">C</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">Polar/LDPC</td></tr>
+      <tr><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">有损存</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">率失真</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">R(D)</td><td style="border:1px solid var(--line);padding:10px;color:var(--ink-dim)">JPEG/MP3</td></tr></table>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">·</span><h2>信息论词条 · 扩展字典</h2></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">KL Penalty</span><h3>KL 惩罚</h3><p>RLHF/DPO 对齐约束项。</p></div>
+        <div class="glass card"><span class="tag">Knowledge Distill</span><h3>知识蒸馏</h3><p>学生逼近教师分布，最小化 KL。</p></div>
+        <div class="glass card"><span class="tag">Perplexity CoT</span><h3>困惑度引导</h3><p>2025 用困惑度指导思维链。</p></div>
+        <div class="glass card"><span class="tag">Neural Compression</span><h3>神经压缩</h3><p>学 p(x)，代价=-log p(x)。</p></div>
+        <div class="glass card"><span class="tag">Differential Entropy</span><h3>微分熵</h3><p>连续熵，可为负。</p></div>
+        <div class="glass card"><span class="tag">Relative Entropy</span><h3>相对熵</h3><p>连续 KL 仍非负。</p></div>
+        <div class="glass card"><span class="tag">Capacity-Achieving</span><h3>达容量</h3><p>码率逼近 C 的可构造码。</p></div>
+        <div class="glass card"><span class="tag">Log-Sum-Exp</span><h3>LogSumExp</h3><p>BA 算法数值稳定技巧。</p></div>
+        <div class="glass card"><span class="tag">Minimal Sufficient</span><h3>最小充分统计</h3><p>IB 的优化目标。</p></div>
+        <div class="glass card"><span class="tag">Redundancy</span><h3>冗余</h3><p>超出熵的多余比特。</p></div>
+        <div class="glass card"><span class="tag">Singular Value</span><h3>奇异值</h3><p>矩阵分解，PCA 基础。</p></div>
+        <div class="glass card"><span class="tag">PCA</span><h3>主成分</h3><p>方差最大化投影。</p></div>
+        <div class="glass card"><span class="tag">Markov Chain</span><h3>马尔可夫链</h3><p>DPI 成立的条件。</p></div>
+        <div class="glass card"><span class="tag">Stationary Dist</span><h3>平稳分布</h3><p>马尔可夫链长期行为。</p></div>
+        <div class="glass card"><span class="tag">Ergodic</span><h3>各态历经</h3><p>时间平均=空间平均。</p></div>
+        <div class="glass card"><span class="tag">Shannon Weaver</span><h3>香农-韦弗</h3><p>1949 普及本三层次模型。</p></div>
+        <div class="glass card"><span class="tag">Bandwagon</span><h3>Bandwagon</h3><p>Shannon 1956 警示滥用。</p></div>
+        <div class="glass card"><span class="tag">Bit</span><h3>比特</h3><p>信息原子，不确定性减半。</p></div>
+        <div class="glass card"><span class="tag">Nyquist Rate</span><h3>奈奎斯特率</h3><p>采样定理，2×带宽。</p></div>
+        <div class="glass card"><span class="tag">Hartley Law</span><h3>哈特利定律</h3><p>H=n log S 对数度量。</p></div>
+        <div class="glass card"><span class="tag">Sampling Theorem</span><h3>采样定理</h3><p>无失真重建条件。</p></div>
+        <div class="glass card"><span class="tag">Modulation</span><h3>调制</h3><p>信号映射，影响可达速率。</p></div>
+        <div class="glass card"><span class="tag">FEC</span><h3>前向纠错</h3><p>发送端加冗余。</p></div>
+        <div class="glass card"><span class="tag">Interleaver</span><h3>交织器</h3><p>打散突发错误。</p></div>
+        <div class="glass card"><span class="tag">Soft Decision</span><h3>软判决</h3><p>利用置信度译码。</p></div>
+      </div>
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</main>
+  <aside class="toc"><h4>本馆目录</h4><a href="#coding">01 · 编码</a><a href="#events">02 · 事件图</a><a href="#rate">03 · 率失真</a><a href="hub_master.html">↗ 返回 HUB</a></aside>
+  </div>
+</div>
+
+<footer><span class="pill">ONESHOT v2.0</span><span class="pill">信息论 · 主馆 03 数据矩阵</span><span class="pill">事件图 · assets/events</span></footer>
+<script>const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));</script>
+</body>
+</html>
