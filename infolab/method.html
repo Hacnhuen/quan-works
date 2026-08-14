@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学习方法论 · 流程化 / 可视化 / 深广化 | InfoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html" class="on">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Methodology</div>
+  <h1>学习方法论：把"读懂"变成"能用"</h1>
+  <p>大多数人学信息论失败，不是因为数学太难，而是因为<strong>方法不成体系</strong>：读完证明就以为掌握了，遇到新问题却想不起用哪个工具。本页给出三套可执行的方法——<em>流程化</em>（六步循环，每个概念都这么过一遍）、<em>可视化</em>（五类图式，把抽象量变成可看的东西）、<em>深广化</em>（螺旋上升，同一概念在五个层级反复加深）。</p>
+  <div class="meta">
+    <i>六步循环 · 五类图式 · 三条螺旋</i><i>含费曼卡模板与间隔重复排程</i><i>可直接套用于任何理论学科</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#diag">00 · 先诊断：你卡在哪一层</a>
+  <a href="#loop">01 · 流程化：六步循环</a>
+  <a href="#card">02 · 费曼卡模板</a>
+  <a href="#visual">03 · 可视化：五类图式</a>
+  <a href="#spiral">04 · 深广化：三条螺旋</a>
+  <a href="#assump">05 · 假设拆解法</a>
+  <a href="#srs">06 · 间隔重复排程</a>
+  <a href="#paths">07 · 四条学习路径</a>
+  <a href="#anti">08 · 反模式清单</a>
+  <div class="grp">
+    <h4>跳转</h4>
+    <a href="index.html">← 总览</a>
+    <a href="l0_intuition.html">从 L0 开始</a>
+    <a href="lab.html">交互实验室</a>
+    <a href="verify.html">AI 检验</a>
+  </div>
+</aside>
+
+<main>
+
+<!-- ===== 00 诊断 ===== -->
+<section class="section" id="diag">
+  <h2><span class="num">00</span>先诊断：你卡在哪一层</h2>
+  <p class="lead">不同的卡点需要完全不同的对策。<strong>用错方法比不用方法更浪费时间。</strong>先对号入座。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>症状</th><th>真实卡点</th><th>对策</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>"熵的公式我背下来了，但不知道它在说什么"</td>
+        <td><b>缺直觉</b></td>
+        <td>回 <a href="l0_intuition.html">L0</a>，去 <a href="lab.html#e1">实验室 01–02</a> 拖滑块，先建立手感再看公式</td>
+      </tr>
+      <tr>
+        <td>"证明每一步我都看懂了，但我自己写不出来"</td>
+        <td><b>缺结构</b></td>
+        <td>用<a href="#loop">六步循环</a>第 4 步：合上书画证明骨架图，只写"每步用了哪个工具"</td>
+      </tr>
+      <tr>
+        <td>"定理会用，但遇到新问题不知道该用哪一个"</td>
+        <td><b>缺索引</b></td>
+        <td>用<a href="#assump">假设拆解法</a>建立"问题特征 → 工具"的映射表</td>
+      </tr>
+      <tr>
+        <td>"能算，但说不清为什么这样算是对的"</td>
+        <td><b>缺解释</b></td>
+        <td>写<a href="#card">费曼卡</a>，强制用白话讲给外行</td>
+      </tr>
+      <tr>
+        <td>"学过就忘，三个月后全还回去了"</td>
+        <td><b>缺复现</b></td>
+        <td>用<a href="#srs">间隔重复</a>排程，重点是<em>重做</em>而非<em>重读</em></td>
+      </tr>
+      <tr>
+        <td>"读论文时每个词都认识，连起来不知所云"</td>
+        <td><b>缺层级</b></td>
+        <td>你在读 L4 的东西但 L2/L3 有洞。用<a href="#spiral">螺旋</a>回填，别硬啃</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note deep">
+    <b>最常见的误诊</b>
+    绝大多数人把"缺结构"和"缺索引"误诊为"缺直觉"，于是不断回头看科普视频——但科普只能治直觉，治不了结构。<strong>如果你已经能看懂证明的每一步，问题就不在直觉，再看十个科普视频也没用。</strong>此时正确的动作是合上书自己重写一遍证明。
+  </div>
+</section>
+
+<!-- ===== 01 六步循环 ===== -->
+<section class="section" id="loop">
+  <h2><span class="num">01</span>流程化：六步循环</h2>
+  <p class="lead">每一个概念、每一条定理，都用同一套流程过一遍。流程的价值不在于它多聪明，而在于<strong>它让你不会漏掉任何一步</strong>——尤其是最容易被跳过的第 4、5 步。</p>
+
+  <div class="el el-concept">
+    <span class="tag">六步循环总览</span>
+    <div class="fml">① 提问   这个量想回答什么问题？不看定义，先说清问题。
+   ↓
+② 极端   在最简单的极端情形下，答案应该是什么？（先猜后学）
+   ↓
+③ 形式   看定义与定理陈述。核对：它与你的猜想一致吗？不一致在哪？
+   ↓
+④ 重建   ★ 合上书，自己画出证明骨架。只写"每步用了哪个已知工具"。
+   ↓
+⑤ 手算   ★ 找一个能手算出具体数字的例子，算到底。
+   ↓
+⑥ 反例   什么时候它不成立？去掉哪个条件会崩？
+   ↓
+   回到 ① 问下一个更深的问题</div>
+    <p><b>★ 标记的两步是绝大多数人跳过的，也正是"看懂"与"会用"的分界线。</b></p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">完整示例 · 用六步循环学"互信息"</span>
+
+    <p><b>① 提问</b>——不看定义先问：<em>"知道 Y 之后，我对 X 的不确定性减少了多少？"</em>这就是互信息想回答的问题。注意这个问法已经暗示了答案的形式：某种"减少量"，即两个不确定性之差。</p>
+
+    <p><b>② 极端</b>——先猜三种极端情形：</p>
+    <ul>
+      <li>X 与 Y 完全独立 → 知道 Y 毫无帮助 → 应该等于 <b>0</b>。</li>
+      <li>Y = X（完全相同）→ 知道 Y 就完全知道 X → 应该等于 <b>H(X)</b>。</li>
+      <li>Y 是 X 的一部分 → 应该介于 0 和 H(X) 之间。</li>
+    </ul>
+    <p>把这三条写下来。<em>这是你后面验证公式的检查表。</em></p>
+
+    <p><b>③ 形式</b>——现在看定义 I(X;Y) = H(X) − H(X|Y)。核对：独立时 H(X|Y)=H(X) 故 I=0 ✓；Y=X 时 H(X|X)=0 故 I=H(X) ✓。猜想全中，说明定义抓的正是你想问的问题。<br>
+    <em>再看等价形式</em> I(X;Y) = D(p(x,y) ‖ p(x)p(y))——这是猜想里没有的，值得停下来想：为什么"减少的不确定性"等于"联合分布离独立有多远"？（因为独立正是"知道 Y 毫无帮助"的精确含义。）</p>
+
+    <p><b>④ 重建</b>——合上书，画出"I ≥ 0"的证明骨架：</p>
+    <div class="fml">I(X;Y) ≥ 0
+  └── 因为 I = D( p(x,y) ‖ p(x)p(y) )      ← 需要：等价形式的展开
+        └── 因为 D(·‖·) ≥ 0                ← 需要：Gibbs 不等式
+              └── 因为 log 是凹的           ← 需要：Jensen 不等式
+等号条件：D=0 ⟺ 两分布相等 ⟺ X 与 Y 独立</div>
+    <p>骨架只有四行，但它记录了<strong>依赖关系</strong>。下次你需要证明别的非负性时，会立刻想到"能不能写成某个 KL"。</p>
+
+    <p><b>⑤ 手算</b>——取 BSC(0.1)，输入 p=0.5：</p>
+    <div class="fml">P(Y=1) = 0.5×0.9 + 0.5×0.1 = 0.5   ⟹ H(Y) = 1
+H(Y|X) = H₂(0.1) = 0.469
+I(X;Y) = 1 − 0.469 = 0.531 bit</div>
+    <p>手算一遍，这个 0.531 就永远刻在脑子里了。（<a href="lab.html#e5">实验室 05</a> 可以拖动验证。）</p>
+
+    <p><b>⑥ 反例</b>——什么时候直觉会失效？<br>
+    <em>"互信息大 = 因果关系强"是错的。</em>温度计读数与体温互信息很大，但温度计不导致体温。互信息是对称的 I(X;Y)=I(Y;X)，而因果不对称——<strong>信息论完全不区分方向</strong>。这是它的根本局限，也是因果推断需要额外工具（do-算子）的原因。<br>
+    再问：三个变量时 I(X;Y;Z) 可以为负（交互信息），此时"共享信息"的直觉彻底失效。</p>
+
+    <p><b>→ 回到 ①：</b>下一个更深的问题是"如果 X 经过处理变成 T，互信息会怎样？"——这就自然走到了数据处理不等式。<em>循环闭合。</em></p>
+  </div>
+
+  <div class="note">
+    <b>时间分配建议</b>
+    ①② 各 3 分钟 · ③ 10 分钟 · ④ <b>15 分钟</b> · ⑤ <b>15 分钟</b> · ⑥ 5 分钟。<br>
+    注意：真正花时间的是 ④⑤ 两步。如果你发现自己 80% 的时间在第 ③ 步（读教材），那就是典型的"被动学习陷阱"。
+  </div>
+</section>
+
+<!-- ===== 02 费曼卡 ===== -->
+<section class="section" id="card">
+  <h2><span class="num">02</span>费曼卡模板</h2>
+  <p class="lead">每个核心概念写一张。<strong>硬性规则：第 2 栏不许出现任何本领域术语。</strong>写不出来就说明你没懂——这比任何测验都灵敏。</p>
+
+  <div class="el el-formula">
+    <span class="tag">空白模板（可直接复制）</span>
+    <pre><code>┌─ 概念名 ────────────────────────────────────────────┐
+│                                                     │
+│ 1. 一句话定义（可以用术语）                          │
+│    ______________________________________________   │
+│                                                     │
+│ 2. 白话复述（★ 禁止任何本领域术语，讲给外行听）       │
+│    ______________________________________________   │
+│    ______________________________________________   │
+│                                                     │
+│ 3. 一个手算例子（必须有具体数字，算到底）             │
+│    ______________________________________________   │
+│                                                     │
+│ 4. 它解决了什么问题？不用它会怎样？                   │
+│    ______________________________________________   │
+│                                                     │
+│ 5. 边界：什么时候不成立 / 最常见的误解                │
+│    ______________________________________________   │
+│                                                     │
+│ 6. 与哪些概念相连？（上游依赖 / 下游应用）            │
+│    上游 ← ______________  下游 → ______________     │
+│                                                     │
+└─────────────────────────────────────────────────────┘</code></pre>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">填好的样例 · KL 散度</span>
+    <div class="tw">
+    <table>
+      <tbody>
+        <tr><td style="width:150px"><b>1. 定义</b></td><td>D(p‖q) = Σ p(x) log₂[p(x)/q(x)]，度量用 q 近似 p 的信息损失。</td></tr>
+        <tr><td><b>2. 白话</b></td><td>你根据一份<em>错误的</em>天气预报来决定每天带不带伞。KL 散度就是：因为预报不准，你平均每天多付出的代价。预报越离谱，代价越大；预报完全准确时代价为零。<span style="color:var(--ok)">（无一术语 ✓）</span></td></tr>
+        <tr><td><b>3. 手算</b></td><td>p=(0.5,0.5)，q=(0.9,0.1)：D = 0.5·log₂(0.5/0.9) + 0.5·log₂(0.5/0.1) = 0.5·(−0.848) + 0.5·(2.322) = <b>0.737 bit</b>。反过来 D(q‖p) = 0.9·log₂1.8 + 0.1·log₂0.2 = 0.763 − 0.232 = <b>0.531 bit</b>。<em>两者不等 → 不对称。</em></td></tr>
+        <tr><td><b>4. 解决什么</b></td><td>给"两个分布差多远"一个<em>有操作意义</em>的数字（多花几个比特），而不是随便定义的距离。没有它，就无法说清"模型有多不准"。</td></tr>
+        <tr><td><b>5. 边界</b></td><td>① 不是距离：不对称、不满足三角不等式，不能叫"KL 距离"。② q(x)=0 而 p(x)&gt;0 时发散为 ∞——所以模型永远不该输出概率 0（label smoothing 的理由）。③ 无上界，数值可以任意大。</td></tr>
+        <tr><td><b>6. 连接</b></td><td>上游 ← Jensen 不等式（证非负）、熵；下游 → 互信息（= 联合与乘积的 KL）、交叉熵损失、最大熵定理、Sanov 定理、变分推断 ELBO、RLHF 的 KL 惩罚。</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b>第 2 栏的自检标准</b>
+    把你写的白话复述念给一个完全不懂这个领域的人听，然后问他："<em>按你的理解，如果我把这个数字调大，会发生什么？</em>"<br>
+    他答得上来 → 你懂了。答不上来或者复述回你的原话 → 你只是换了一组词，没有真正解释。这一步是无法自欺的。
+  </div>
+</section>
+
+<!-- ===== 03 可视化 ===== -->
+<section class="section" id="visual">
+  <h2><span class="num">03</span>可视化：五类图式</h2>
+  <p class="lead">"可视化"不等于"画个好看的图"。每一类图式解决一类特定的理解障碍。<strong>先确定障碍，再选图式。</strong></p>
+
+  <div class="grid g2">
+    <div class="card">
+      <span class="lv lv0">图式 1</span>
+      <h4 style="margin:10px 0 6px">曲线图 · 治"没有量感"</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px">当你知道公式却不知道"这个数大概多大、变化多快"时用。关键是<b>亲手拖动参数</b>，被动看静态图无效。</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>本站实例：</b><a href="lab.html#e2">H₂(p) 顶部平坦两端陡峭</a>——这个形状一旦看过就忘不掉，而看公式一百遍也建立不起来。</p>
+    </div>
+    <div class="card">
+      <span class="lv lv1">图式 2</span>
+      <h4 style="margin:10px 0 6px">集合图 · 治"分不清量之间的关系"</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px">当多个量互相加减容易记混时用。Venn 图把 H(X)、H(Y)、H(X,Y)、H(X|Y)、I(X;Y) 的全部恒等式压缩成一张图。</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>本站实例：</b><a href="l1_foundation.html">L1 的熵 Venn 图</a>。<b>注意陷阱：</b>三变量时"交集"可以为负，Venn 图会骗你。</p>
+    </div>
+    <div class="card">
+      <span class="lv lv2">图式 3</span>
+      <h4 style="margin:10px 0 6px">依赖树 · 治"证明记不住"</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px">把证明画成"结论 ← 依赖了哪些更基础的结论"的树。记结构比记步骤容易一个数量级，而且可迁移。</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>本站实例：</b>六步循环第 ④ 步的 I≥0 骨架；<a href="l4_frontier.html#quantum">L4 的 SSA→DPI→Holevo 依赖链</a>。</p>
+    </div>
+    <div class="card">
+      <span class="lv lv3">图式 4</span>
+      <h4 style="margin:10px 0 6px">区域图 · 治"看不见权衡"</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px">当问题的答案不是一个数而是"哪些组合可行"时用。可达区域的<b>边界</b>就是定理，<b>内部</b>是次优方案。</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>本站实例：</b><a href="lab.html#e8">率失真曲线</a>、<a href="l3_advanced.html">MAC 五边形</a>、<a href="l4_frontier.html#ib">IB 信息平面</a>。三者都是"边界即定理"。</p>
+    </div>
+    <div class="card">
+      <span class="lv lv4">图式 5</span>
+      <h4 style="margin:10px 0 6px">知识图 · 治"学了一堆但连不起来"</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px">节点是概念，边是依赖。学完一章就更新一次自己的图。<b>能画出图 = 真的形成了体系。</b></p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>本站实例：</b><a href="index.html">总览页的 24 节点知识图谱</a>。建议你自己重画一份，与本站的对比——<em>差异之处就是你的理解与本站不同的地方，值得深究。</em></p>
+    </div>
+    <div class="card" style="border-style:dashed">
+      <span class="lv lv2">元规则</span>
+      <h4 style="margin:10px 0 6px">图必须能被"问答"</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0">一张好图应该能回答"如果我把这里改一下会怎样"。<br>只能被"看"不能被"问"的图，是装饰不是工具。这条规则可以筛掉 80% 的漂亮但无用的示意图。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 螺旋 ===== -->
+<section class="section" id="spiral">
+  <h2><span class="num">04</span>深广化：三条螺旋</h2>
+  <p class="lead">"深度"与"广度"不是二选一，而是<strong>交替上升</strong>。同一个概念在五个层级各出现一次，每次都换一个视角——这就是本站 L0→L4 的设计逻辑。</p>
+
+  <div class="el el-concept">
+    <span class="tag">螺旋 A · 同一概念的五次相遇（以"熵"为例）</span>
+    <div class="tw">
+    <table>
+      <thead><tr><th>层</th><th>熵是什么</th><th>新增的东西</th></tr></thead>
+      <tbody>
+        <tr><td><span class="lv lv0">L0</span></td><td>猜谜时平均要问几个是非题</td><td>直觉与量感</td></tr>
+        <tr><td><span class="lv lv1">L1</span></td><td>H(X) = −Σp log p，满足非负、上界 log n、凹性</td><td>形式定义与性质</td></tr>
+        <tr><td><span class="lv lv2">L2</span></td><td>无损压缩的<b>不可逾越下界</b>（第一定理）</td><td>操作意义</td></tr>
+        <tr><td><span class="lv lv3">L3</span></td><td>率失真 R(D) 在 D=0 处的取值；误差指数中的一项</td><td>被推广、被相对化</td></tr>
+        <tr><td><span class="lv lv4">L4</span></td><td>von Neumann 熵的特例；Kolmogorov 复杂度的期望极限；最大熵推断的目标函数；LLM loss 的不可约项</td><td>与其他理论的接口</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><b>关键洞察：</b>每一层都<em>没有推翻</em>前一层，只是把它放进更大的框架。<strong>如果你在某一层感到"之前学的好像错了"，那说明你漏掉了中间的过渡。</strong></p>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">螺旋 B · 同一层内的深度推进（四问法）</span>
+    <p>学完任何一个结论，依次问这四个问题。它们按难度递增，能回答到第几个，就说明你在这一层到了什么位置。</p>
+    <div class="fml">Q1  它说了什么？          ← 复述层（本科考试到这一层）
+Q2  为什么是对的？        ← 证明层（研究生到这一层）
+Q3  为什么是这个形式？    ← 设计层（为什么是 log 不是别的？为什么是这个约束？）
+Q4  换个前提会变成什么？  ← 创造层（博士研究从这里开始）</div>
+    <p><b>示例（以 Shannon 第二定理 C = max I(X;Y) 为例）：</b></p>
+    <ul>
+      <li><b>Q1</b> R &lt; C 时存在码使误差趋 0，R &gt; C 时不可能。</li>
+      <li><b>Q2</b> 随机编码 + 联合典型集译码给出可达性；Fano + DPI 给出逆定理。</li>
+      <li><b>Q3</b> 为什么是 <em>max over p(x)</em>？因为发送方可以自由选择输入分布，这是唯一可优化的自由度。为什么是<em>互信息</em>而不是别的量？因为它恰好等于典型集译码能区分的码字数的指数率。</li>
+      <li><b>Q4</b> 如果码长有限 → 有限块长理论（L3）；如果有多个发送方 → 网络信息论（L3）；如果信道是量子的 → HSW 定理，而且<b>单字母性崩塌</b>（L4）。<em>三个"换前提"各自开出了一个研究领域。</em></li>
+    </ul>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">螺旋 C · 横向广度（同一工具在别处的用法）</span>
+    <p>学会一个工具后，主动去找它在<strong>本领域之外</strong>的化身。这是把知识变成能力的最快方式。</p>
+    <div class="tw">
+    <table>
+      <thead><tr><th>工具</th><th>信息论内</th><th>信息论外</th></tr></thead>
+      <tbody>
+        <tr><td>KL 散度</td><td>互信息、率失真、Sanov</td><td>变分推断 ELBO · RLHF 惩罚项 · 知识蒸馏 · 假设检验的相对熵率 · 统计流形的 Fisher 度量</td></tr>
+        <tr><td>最大熵</td><td>高斯是最坏噪声</td><td>Boltzmann 分布 · 逻辑回归 · CRF · SAC 强化学习 · 蛋白质接触预测 DCA</td></tr>
+        <tr><td>典型集 / AEP</td><td>三大定理的证明引擎</td><td>大偏差理论 · 统计物理的等概率假设 · 集中不等式</td></tr>
+        <tr><td>数据处理不等式</td><td>逆定理的骨架</td><td>隐私放大的界 · 表示学习的信息损失 · 量子态合并</td></tr>
+        <tr><td>率失真</td><td>有损压缩下界</td><td>JPEG / MP3 · 神经网络量化 · 有限带宽下的分布式优化</td></tr>
+        <tr><td>随机编码论证</td><td>可达性证明</td><td>概率方法（Erdős）· 随机图 · 压缩感知的 RIP 证明</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><b>练习建议：</b>每学完一个工具，强迫自己在表里加一行。加不出来说明还没真正吃透它的<em>结构</em>——只记住了它的<em>用途</em>。</p>
+  </div>
+</section>
+
+<!-- ===== 05 假设拆解 ===== -->
+<section class="section" id="assump">
+  <h2><span class="num">05</span>假设拆解法：读任何新论文的通用套路</h2>
+  <p class="lead">这是 <a href="l4_frontier.html#map">L4 §00</a> 使用的方法，也是本站认为<strong>最值得迁移到其他领域</strong>的一条。</p>
+
+  <div class="el el-formula">
+    <span class="tag">四问定位</span>
+    <div class="fml">拿到一篇不懂的论文，先不要读证明，依次回答：
+
+Q1  它放松了经典框架的哪条假设？
+    （信源是概率的？码长无穷？单发单收？无失真？计算无限？）
+
+Q2  放松之后，新的基本量是什么？
+    （从 H(X) 变成了 S(ρ)？K(x)？V（色散）？I(X;T)？）
+
+Q3  经典结论中哪一条随之失效？
+    （单字母性？可加性？强逆？分离定理？）
+
+Q4  作者用什么新工具补上这个洞？
+    （新不等式？新编码方案？新的极限定理？）
+
+回答完这四问，你已经理解了这篇论文 80% 的贡献，
+剩下 20% 才需要读证明细节。</div>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">示例 · 用四问读 Polyanskiy–Poor–Verdú (2010)</span>
+    <ul>
+      <li><b>Q1 放松了哪条假设？</b> 码长 n → ∞。改为有限 n（几百到几千），这才是真实系统的情形。</li>
+      <li><b>Q2 新的基本量？</b> 信道<b>色散</b> V = Var[i(X;Y)]——信息密度的方差。经典理论只用到它的均值（即容量 C）。</li>
+      <li><b>Q3 什么失效了？</b> "R &lt; C 就能可靠传输"失效。有限 n 下最优码率是 C − √(V/n)·Q⁻¹(ε)，比 C 低一个 O(1/√n) 的量。</li>
+      <li><b>Q4 什么新工具？</b> metaconverse（逆定理）+ RCU 界（可达性）+ 中心极限定理给出二阶渐近。<em>把大数律换成中心极限定理</em>——这一句就是整篇论文的技术内核。</li>
+    </ul>
+    <p><b>看出模式了吗：</b>经典结果用<em>大数律</em>（一阶），有限块长用<em>中心极限定理</em>（二阶），误差指数用<em>大偏差</em>（指数阶）。<strong>三套渐近工具对应信息论的三个理论层次</strong>——这个洞察本身，就是四问法的产物。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">示例 · 用四问读 Tishby 的信息瓶颈</span>
+    <ul>
+      <li><b>Q1</b> 放松了"失真函数由人指定"。</li>
+      <li><b>Q2</b> 新基本量：由第三方变量 Y 诱导的失真 d(x,t) = D<sub>KL</sub>[p(y|x)‖p(y|t)]。</li>
+      <li><b>Q3</b> 率失真的"给定 D 求最小 R"变成了双目标权衡，最优解不再唯一而是一整条曲线。</li>
+      <li><b>Q4</b> 自洽方程 + Blahut–Arimoto 式迭代。<em>注意：工具是从 L3 直接借来的，没有发明新数学</em>——这说明该工作的贡献在<b>问题设定</b>而非技术。理解这一点，就能解释为什么它在深度学习上的应用会引发争议：设定的迁移比技术的迁移脆弱得多。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 06 间隔重复 ===== -->
+<section class="section" id="srs">
+  <h2><span class="num">06</span>间隔重复排程</h2>
+  <p class="lead">核心原则：<strong>复习 ≠ 重读。</strong>重读会产生"我懂了"的幻觉（因为文字变熟悉了），而重做会暴露真实水平。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>时间点</th><th>动作</th><th>时长</th><th>判定标准</th></tr></thead>
+    <tbody>
+      <tr><td><b>当天</b></td><td>合上书，默写证明骨架（六步循环第 ④ 步）</td><td>10 分钟</td><td>骨架的每一行都能说出依赖了什么</td></tr>
+      <tr><td><b>第 2 天</b></td><td>重算那个手算例子，不看之前的过程</td><td>10 分钟</td><td>数字对得上</td></tr>
+      <tr><td><b>第 7 天</b></td><td>写 / 复核费曼卡的第 2 栏（白话复述）</td><td>10 分钟</td><td>没有用到术语</td></tr>
+      <tr><td><b>第 21 天</b></td><td>做一道<em>没见过的</em>变式题</td><td>20 分钟</td><td>能独立选对工具</td></tr>
+      <tr><td><b>第 60 天</b></td><td>在知识图上重画该概念的上下游连线</td><td>10 分钟</td><td>连线与实际依赖一致</td></tr>
+      <tr><td><b>触发式</b></td><td>每当在别处（论文 / 项目）遇到它，主动回想一次</td><td>1 分钟</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note deep">
+    <b>为什么是"重做"而不是"重读"</b>
+    这是学习科学中最稳固的实证结论之一（testing effect / retrieval practice）：<strong>提取记忆的行为本身会强化记忆，而重复输入不会。</strong><br>
+    用信息论的语言说：重读一段你已经熟悉的文字，信息增益 I ≈ 0——你没有获得任何新比特，只是获得了"我很熟悉"的错觉。而尝试提取时的每一次失败，都定位了一个真实的信息缺口，那才是高信息量的事件。<em>把这条方法论本身用信息论解释一遍，也是一次很好的螺旋 C 练习。</em>
+  </div>
+</section>
+
+<!-- ===== 07 路径 ===== -->
+<section class="section" id="paths">
+  <h2><span class="num">07</span>四条学习路径</h2>
+  <p class="lead">不同背景与目标，应该走不同的路线。<strong>不要所有人都从 L0 顺读到 L4。</strong></p>
+
+  <div class="grid g2">
+    <div class="card">
+      <span class="lv lv0">路径 A · 零基础 / 中学生</span>
+      <h4 style="margin:10px 0 6px">目标：建立直觉，不求形式</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px"><b>路线：</b>L0 全部 → 实验室 01/02/08 → L1 §01–03（只看概念块，跳过证明）</p>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px"><b>时长：</b>约 6–10 小时</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>完成标志：</b>能向同学解释"为什么一条已知必然发生的消息不含信息"，并能手算 4 个等概率选项的熵是 2 bit。</p>
+    </div>
+    <div class="card">
+      <span class="lv lv1">路径 B · 工科本科 / 备考</span>
+      <h4 style="margin:10px 0 6px">目标：会算、会证、能应付考试与面试</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px"><b>路线：</b>L0 速览 → <b>L1 全部（含所有证明）</b> → L2 §01–06 → 实验室全部 → L2 自检</p>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px"><b>时长：</b>约 40–60 小时</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>完成标志：</b>能白纸默写 Shannon 第一、第二定理的完整陈述与证明骨架；能对任意给定 DMC 手算容量。</p>
+    </div>
+    <div class="card">
+      <span class="lv lv2">路径 C · 机器学习方向</span>
+      <h4 style="margin:10px 0 6px">目标：把信息论当工具用在 ML 研究里</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px"><b>路线：</b>L1 §03–06（熵/KL/互信息，跳过信道编码）→ L2 §02–03（AEP）→ <b>L3 §01–03（率失真 + Blahut–Arimoto）</b> → <b>L4 §03–05（最大熵 / IB / LLM）</b> → 实验室 04/10</p>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px"><b>时长：</b>约 30–40 小时</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>完成标志：</b>能解释交叉熵损失、RLHF 的 KL 惩罚、模型量化三者共享的信息论结构；能独立评价一篇用 IB 解释深度学习的论文。</p>
+    </div>
+    <div class="card">
+      <span class="lv lv3">路径 D · 博士 / 研究方向</span>
+      <h4 style="margin:10px 0 6px">目标：找到能做的题</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px"><b>路线：</b>L1–L2 全部（快速过，补洞）→ <b>L3 全部（重点：有限块长 + 网络信息论）</b> → L4 全部 → <b><a href="l4_frontier.html#open">开放问题清单</a></b> → 选两个圈层的交界处切入 → 用<a href="#assump">假设拆解法</a>读 20 篇该方向近三年论文</p>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0 0 8px"><b>时长：</b>约 150+ 小时（含论文精读）</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>完成标志：</b>能对 O1–O10 中的至少一条说清"目前卡在哪、已有哪些尝试、为什么都失败了"；能提出一条自己的可检验预测（参照 <a href="l4_frontier.html#pred">P1–P3</a> 的格式）。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 反模式 ===== -->
+<section class="section" id="anti">
+  <h2><span class="num">08</span>反模式清单</h2>
+  <p class="lead">以下八条是学习信息论时最常见、代价最高的错误做法。<strong>避开它们比学会任何技巧都重要。</strong></p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>反模式</th><th>为什么有害</th><th>替代做法</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>① 只读不算</b></td>
+        <td>读证明产生"懂了"的幻觉，但提取能力为零。这是最普遍也最致命的一条。</td>
+        <td>每个定理配一个手算例子（六步循环第 ⑤ 步）</td>
+      </tr>
+      <tr>
+        <td><b>② 背公式不问形式</b></td>
+        <td>记住 C = max I(X;Y) 却不知道为什么是 max、为什么是互信息，遇到变体就废。</td>
+        <td>四问法的 Q3：为什么是这个形式？</td>
+      </tr>
+      <tr>
+        <td><b>③ 跳过极限检查</b></td>
+        <td>公式抄错了自己不知道。极限自洽是最便宜的纠错手段。</td>
+        <td>每个公式推到 p→0、n→∞、ε→0.5 看是否退化正确</td>
+      </tr>
+      <tr>
+        <td><b>④ 把类比当结论</b></td>
+        <td>"熵是无序度"这个类比在信息论里会直接误导（信息熵与热力学熵的等同需要 Landauer 才能建立）。</td>
+        <td>类比只用于第一次接触，形式化之后立刻丢弃</td>
+      </tr>
+      <tr>
+        <td><b>⑤ 忽略成立条件</b></td>
+        <td>把 DMC 的结论用到有记忆信道、把点对点的分离定理用到网络——这类错误在工程中代价极高。</td>
+        <td>每条定理单独记一行"什么时候不成立"（费曼卡第 5 栏）</td>
+      </tr>
+      <tr>
+        <td><b>⑥ 只学一侧的争议</b></td>
+        <td>只读 Tishby 不读 Saxe，会形成错误的领域共识判断，且在后续阅读中持续放大。</td>
+        <td>遇到"某某解释了某某"的说法，主动搜索反驳文献</td>
+      </tr>
+      <tr>
+        <td><b>⑦ 用 AI 生成内容却不检验</b></td>
+        <td>LLM 在定理归属、年份、卷号上的幻觉率显著高于在数学推导上的错误率。</td>
+        <td>用 <a href="verify.html">三轨检验</a>；至少跑数值重算这一步（零成本）</td>
+      </tr>
+      <tr>
+        <td><b>⑧ 追求"读完"而非"能用"</b></td>
+        <td>把 Cover &amp; Thomas 从头读到尾，读完什么也做不了。教材是索引不是小说。</td>
+        <td>选一条<a href="#paths">路径</a>，按目标裁剪；宁可深挖三章也不要泛读十章</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note warn">
+    <b>如果只能记住一条</b>
+    <strong>合上书，自己重建一遍。</strong><br>
+    六步循环的第 ④ 步、费曼卡的第 2 栏、间隔重复的全部动作、路径的完成标志——它们本质上是同一件事的四种包装：<em>把知识从"能识别"推进到"能生成"</em>。<br>
+    用本站的语言说：读书时你处在<b>译码端</b>（看到符号，判断认识不认识）；重建时你处在<b>编码端</b>（从意义出发，自己产生符号）。<strong>只有编码端的能力才是真正的掌握</strong>——而这两端的难度差，恰恰就是信息论中"识别"与"生成"的复杂度差距。
+  </div>
+</section>
+
+<div class="pager">
+  <a href="lab.html"><span class="lb">← 上一站</span>交互实验室 · 亲手调参</a>
+  <a class="nx" href="verify.html"><span class="lb">下一站 →</span>AI 检验 · 三轨审查报告</a>
+</div>
+
+<footer class="foot">
+  <p>方法论依据：费曼学习法（Feynman technique）· 提取练习与测验效应（Roediger &amp; Karpicke 2006, <i>Test-Enhanced Learning</i>）· 间隔效应（Ebbinghaus 1885; Cepeda et al. 2006 元分析）· 布鲁姆认知目标分类（Bloom 1956 / Anderson–Krathwohl 2001 修订版，对应本页四问法）· 变式教学与迁移研究。<br>
+  学科层级划分参考 MIT 6.441（Polyanskiy）· Stanford EE376A · 电子科技大学信息论与编码课程大纲。四问法与假设拆解法为本站在这些框架上的整合与具体化。</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<script src="assets/core.js"></script>
+</body>
+</html>
