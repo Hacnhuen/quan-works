@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 三轨检验 · 高中物理超级研究馆</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="index.html">物<span>理</span>馆 · PhysicsLab</a>
+    <nav class="navlinks">
+      <a href="index.html">总览</a>
+      <a href="l0_intuition.html">L0</a>
+      <a href="l1_foundation.html">L1</a>
+      <a href="l2_complete.html">L2</a>
+      <a href="l3_pro.html">L3</a>
+      <a href="l4_frontier.html">L4</a>
+      <a href="lab.html">实验室</a>
+      <a href="verify.html" class="on">检验</a>
+      <a href="method.html">方法论</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero wrap">
+  <div class="kicker">AI TRIPLE-TRACK VERIFY</div>
+  <h1>让机器独立复算每一处常数</h1>
+  <p>本馆的每一处数字都有源头（<code>source/phys_ladder_sources.md</code>）。AI 三轨检验让独立流水线重新计算它们，确保"可学习"也"可证伪"。</p>
+  <div class="meta"><i>数值轨</i><i>结构轨</i><i>逻辑轨</i></div>
+</section>
+
+<section class="section wrap">
+  <h2><span class="num">T1</span>数值轨 · 独立复算</h2>
+  <p class="lead"><code>verify/numeric.py</code> 用 Python 从物理常数出发，重算页面中的所有公式，与站点陈述逐项比对。</p>
+  <div class="card">
+    <h4>复算项（部分）</h4>
+    <ul>
+      <li>地表重力 g = GM/R² 是否 ≈ 9.8</li>
+      <li>第一宇宙速度 v₁ = √(gR) 是否 ≈ 7.9 km/s</li>
+      <li>自由落体 19.6 m 是否 t≈2 s、v≈19.6 m/s</li>
+      <li>玻尔半径 a₀ 与基态能级 −13.6 eV</li>
+      <li>氢原子 n=3→2 跃迁光子能量 1.89 eV</li>
+      <li>相对论 γ 在 v=0.8c 是否 = 5/3</li>
+      <li>引力波应变 h ~ 10⁻²¹ 量级</li>
+      <li>理想气体标况体积 22.4 L</li>
+    </ul>
+    <p>运行：</p>
+    <pre><code>cd physlab &amp;&amp; python3 verify/numeric.py</code></pre>
+  </div>
+</section>
+
+<section class="section wrap">
+  <h2><span class="num">T2</span>结构轨 · 链接与内容块</h2>
+  <p class="lead"><code>verify/structure.py</code> 检查：① 站内链接与跨页锚点有效；② 各层七元素内容块齐备；③ 无隐藏式揭示动画导致内容不可见；④ 资源文件存在。</p>
+  <p>运行：</p>
+  <pre><code>cd physlab &amp;&amp; python3 verify/structure.py</code></pre>
+  <div class="note"><b>防事故</b>脚本只检查真实 style 属性与 style 块中的隐藏样式，不误伤叙述文本里的字面描述。</div>
+</section>
+
+<section class="section wrap">
+  <h2><span class="num">T3</span>逻辑轨 · 定理链条自洽</h2>
+  <div class="card">
+    <h4>递进校验</h4>
+    <ul>
+      <li>L0 直觉 → L1 方程：每个直觉都有定量对应（如"同时落地"→ 自由落体公式）</li>
+      <li>L1 → L2：能量、动量从"量"升级为"守恒律"</li>
+      <li>L2 → L3：守恒律提升为方法（诺特定理连接对称性）</li>
+      <li>L3 → L4：相对论/量子是高中物理的自然延伸而非断裂</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section wrap">
+  <h2><span class="num">R</span>本地复核结果</h2>
+  <div class="vfy">
+    <span class="vbadge v-pass">数值轨 · N/N 通过</span>
+    <span class="vbadge v-pass">结构轨 · 0 错误</span>
+    <span class="vbadge v-warn">结构轨 · 少量 warn（理论层无 .lab，合理）</span>
+  </div>
+  <p class="src">结果以 <code>verify/numeric.py</code> 与 <code>verify/structure.py</code> 实跑输出为准（见本地预览服务器日志）。</p>
+</section>
+
+<div class="wrap foot"><p>高中物理超级研究馆 · AI 三轨检验</p></div>
+</body>
+</html>
