@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AlgoLab · 算法深度学习馆</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Algo<span>Lab</span> · 算法</a>
+  <nav class="navlinks">
+    <a href="index.html" class="on">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Algorithms · 从直觉到大师</div>
+  <h1>算法深度学习馆：把"步骤"炼成"最优解"</h1>
+  <p>算法不是背模板，而是一种<strong>思维方式</strong>——如何把问题拆成可计算的状态、用正确的范式求解、并证明它又快又对。本馆按 <em>启蒙 → 基础 → 完备 → 专业 → 前沿</em> 五级阶梯，从中学直觉一路推到博士/专家/大师水准；每个概念都用 概念 / 定理 / 证明 / 推论 / 公式 / 示例 / 前沿 七元素模板事无巨细地展开，并接受 <strong>AI-Science / AI-学术 / AI-费曼</strong> 三轨交叉检验。</p>
+  <div class="meta">
+    <i>五级阶梯 L0–L4</i><i>七元素内容模板</i><i>24 节点知识图谱</i><i>8 个交互实验室</i><i>三轨 AI 检验流水线</i>
+  </div>
+</header>
+
+<!-- ===== 知识图谱 ===== -->
+<section class="section">
+  <h2><span class="num">MAP</span>知识图谱：算法的概念网络</h2>
+  <p class="lead">颜色 = 所属层级（青=启蒙，绿=基础，金=完备，粉=专业，紫=前沿）。箭头 = 依赖关系（A → B 表示"先会 A 才懂 B"）。点击任意节点跳转对应章节。</p>
+  <div class="kgwrap">
+    <svg viewBox="0 0 920 540" id="kg">
+      <!-- edges -->
+      <path class="kg-edge" d="M150,90 L300,90"/>
+      <path class="kg-edge" d="M150,90 L300,210"/>
+      <path class="kg-edge" d="M300,90 L300,210"/>
+      <path class="kg-edge" d="M300,210 L150,330"/>
+      <path class="kg-edge" d="M300,210 L460,210"/>
+      <path class="kg-edge" d="M460,210 L620,140"/>
+      <path class="kg-edge" d="M460,210 L620,280"/>
+      <path class="kg-edge" d="M620,140 L780,140"/>
+      <path class="kg-edge" d="M620,280 L780,280"/>
+      <path class="kg-edge" d="M780,140 L780,280"/>
+      <path class="kg-edge" d="M300,90 L460,210"/>
+      <path class="kg-edge" d="M150,330 L300,440"/>
+      <path class="kg-edge" d="M300,440 L460,440"/>
+      <path class="kg-edge" d="M460,440 L620,440"/>
+      <path class="kg-edge" d="M620,440 L780,440"/>
+      <path class="kg-edge" d="M460,210 L460,440"/>
+      <path class="kg-edge" d="M620,140 L620,440"/>
+      <path class="kg-edge" d="M780,280 L780,440"/>
+
+      <!-- nodes: <g class="kg-node" data-href="..."> -->
+      <g class="kg-node" data-href="l0_intuition.html"><circle cx="150" cy="90" r="26" fill="#38bdf8"/><text x="150" y="94">直觉</text></g>
+      <g class="kg-node" data-href="l1_foundation.html"><circle cx="300" cy="90" r="26" fill="#34d399"/><text x="300" y="94">复杂度</text></g>
+      <g class="kg-node" data-href="l1_foundation.html#sort"><circle cx="300" cy="210" r="26" fill="#34d399"/><text x="300" y="214">排序</text></g>
+      <g class="kg-node" data-href="l1_foundation.html#graph"><circle cx="150" cy="330" r="26" fill="#34d399"/><text x="150" y="334">图搜索</text></g>
+      <g class="kg-node" data-href="l1_foundation.html#dp"><circle cx="460" cy="210" r="26" fill="#34d399"/><text x="460" y="214">DP</text></g>
+      <g class="kg-node" data-href="l2_theorems.html#master"><circle cx="150" cy="440" r="26" fill="#fbbf24"/><text x="150" y="444">主定理</text></g>
+      <g class="kg-node" data-href="l2_theorems.html#sssp"><circle cx="300" cy="440" r="26" fill="#fbbf24"/><text x="300" y="444">最短路</text></g>
+      <g class="kg-node" data-href="l2_theorems.html#mst"><circle cx="460" cy="440" r="26" fill="#fbbf24"/><text x="460" y="444">MST</text></g>
+      <g class="kg-node" data-href="l2_theorems.html#flow"><circle cx="620" cy="440" r="26" fill="#fbbf24"/><text x="620" y="444">网络流</text></g>
+      <g class="kg-node" data-href="l2_theorems.html#npc"><circle cx="780" cy="440" r="26" fill="#fbbf24"/><text x="780" y="444">NP完全</text></g>
+      <g class="kg-node" data-href="l2_theorems.html#lp"><circle cx="620" cy="280" r="26" fill="#fbbf24"/><text x="620" y="284">线性规划</text></g>
+      <g class="kg-node" data-href="l3_advanced.html#amort"><circle cx="620" cy="140" r="26" fill="#f472b6"/><text x="620" y="144">摊还</text></g>
+      <g class="kg-node" data-href="l3_advanced.html#string"><circle cx="780" cy="140" r="26" fill="#f472b6"/><text x="780" y="144">字符串</text></g>
+      <g class="kg-node" data-href="l3_advanced.html#rand"><circle cx="780" cy="280" r="26" fill="#f472b6"/><text x="780" y="284">随机</text></g>
+      <g class="kg-node" data-href="l3_advanced.html#approx"><circle cx="620" cy="378" r="26" fill="#f472b6"/><text x="620" y="382">近似</text></g>
+      <g class="kg-node" data-href="l4_frontier.html#param"><circle cx="460" cy="510" r="26" fill="#a78bfa"/><text x="460" y="514">参数化</text></g>
+      <g class="kg-node" data-href="l4_frontier.html#online"><circle cx="620" cy="510" r="26" fill="#a78bfa"/><text x="620" y="514">在线</text></g>
+      <g class="kg-node" data-href="l4_frontier.html#stream"><circle cx="780" cy="510" r="26" fill="#a78bfa"/><text x="780" y="514">流式</text></g>
+      <g class="kg-node" data-href="l4_frontier.html#distributed"><circle cx="780" cy="378" r="26" fill="#a78bfa"/><text x="780" y="382">分布式</text></g>
+      <g class="kg-node" data-href="l4_frontier.html#pcp"><circle cx="150" cy="510" r="26" fill="#a78bfa"/><text x="150" y="514">PCP</text></g>
+      <g class="kg-node" data-href="l4_frontier.html#smooth"><circle cx="300" cy="510" r="26" fill="#a78bfa"/><text x="300" y="514">平滑</text></g>
+      <g class="kg-node" data-href="l4_frontier.html#ml"><circle cx="460" cy="378" r="26" fill="#a78bfa"/><text x="460" y="382">学习</text></g>
+      <g class="kg-node" data-href="lab.html"><circle cx="780" cy="90" r="22" fill="#1b2334" stroke="#34d399" stroke-width="2"/><text x="780" y="94">实验室</text></g>
+    </svg>
+  </div>
+  <div class="kg-legend">
+    <i><b style="background:#38bdf8"></b>L0 启蒙</i>
+    <i><b style="background:#34d399"></b>L1 基础</i>
+    <i><b style="background:#fbbf24"></b>L2 完备</i>
+    <i><b style="background:#f472b6"></b>L3 专业</i>
+    <i><b style="background:#a78bfa"></b>L4 前沿</i>
+  </div>
+</section>
+
+<!-- ===== 五层阶梯 ===== -->
+<section class="section">
+  <h2><span class="num">LAD</span>五层阶梯：从哪里开始？</h2>
+  <p class="lead">按你的当前水平选择入口。每层都对标真实课程与受众（中学 → 本科 → 考研 → 研究生 → 博士/专家）。</p>
+  <div class="ladder">
+    <a class="step" href="l0_intuition.html">
+      <div class="lvbox" style="color:var(--l0)">L0</div>
+      <div><h3>启蒙 · 什么是"步骤"</h3><p>排序的直觉、猜数字的二分、贪心第一感。不要求数学，只建立手感。</p>
+      <div class="m"><span>中学 / 入门</span><span>直觉优先</span><span>2 个实验室</span></div></div>
+    </a>
+    <a class="step" href="l1_foundation.html">
+      <div class="lvbox" style="color:var(--l1)">L1</div>
+      <div><h3>基础 · 范式与数据结构</h3><p>复杂度记号、排序、DFS/BFS、堆、哈希、分治、贪心、动态规划。</p>
+      <div class="m"><span>本科低年级</span><span>MIT 6.006</span><span>Stanford CS161</span></div></div>
+    </a>
+    <a class="step" href="l2_theorems.html">
+      <div class="lvbox" style="color:var(--l2)">L2</div>
+      <div><h3>完备 · 可证的正确与界</h3><p>主定理、最短路、最小生成树、网络流与最小割、NP 完全性、线性规划对偶。</p>
+      <div class="m"><span>本科高阶 / 考研</span><span>MIT 6.046</span><span>CLRS</span></div></div>
+    </a>
+    <a class="step" href="l3_advanced.html">
+      <div class="lvbox" style="color:var(--l3)">L3</div>
+      <div><h3>专业 · 研究生级武器</h3><p>摊还分析、字符串算法、高级数据结构、随机算法、近似算法、FFT 与计算几何。</p>
+      <div class="m"><span>研究生</span><span>MIT 6.854</span><span>TAoCP</span></div></div>
+    </a>
+    <a class="step" href="l4_frontier.html">
+      <div class="lvbox" style="color:var(--l4)">L4</div>
+      <div><h3>前沿 · 博士 / 专家 / 大师</h3><p>参数化、在线算法、流式/亚线性、分布式、PCP 与近似硬度、平滑分析、算法+学习。</p>
+      <div class="m"><span>博士 / 专家</span><span>WAOA/RANDOM/STOC</span><span>开放问题</span></div></div>
+    </a>
+  </div>
+</section>
+
+<!-- ===== 三入口 ===== -->
+<section class="section">
+  <h2><span class="num">GO</span>三条主线路径</h2>
+  <p class="lead">同一套内容，三种打开方式。建议：第一次从左往右走"阶梯"，然后进"实验室"动手，最后用"检验"核对。</p>
+  <div class="grid g3">
+    <a class="card" href="l0_intuition.html" style="text-decoration:none;color:inherit">
+      <h3 style="margin-top:0;color:var(--l1)">① 学 · 阶梯课程</h3>
+      <p>L0→L4 五层递进，每概念七元素模板。像爬楼一样从直觉到大师。</p>
+    </a>
+    <a class="card" href="lab.html" style="text-decoration:none;color:inherit">
+      <h3 style="margin-top:0;color:var(--l0)">② 练 · 交互实验室</h3>
+      <p>8 个可拖拽演示：排序、DFS/BFS、Dijkstra、哈希、DP、主定理、竞争比、秘书问题。</p>
+    </a>
+    <a class="card" href="verify.html" style="text-decoration:none;color:inherit">
+      <h3 style="margin-top:0;color:var(--l4)">③ 验 · AI 三轨检验</h3>
+      <p>AI-Science（严谨）/ AI-学术（溯源）/ AI-费曼（可解释）三份报告 + 可复跑校验流水线。</p>
+    </a>
+  </div>
+</section>
+
+<!-- ===== 怎么用 ===== -->
+<section class="section">
+  <h2><span class="num">USE</span>怎么用本馆最高效</h2>
+  <div class="tw"><table>
+    <thead><tr><th>你的状态</th><th>推荐路径</th><th>耗时预估</th></tr></thead>
+    <tbody>
+      <tr><td>完全零基础，想先有感觉</td><td>L0 → 实验室 01–02 → 回 L1</td><td>2–3 天</td></tr>
+      <tr><td>本科在读，准备面试/考试</td><td>L1 → L2 → 实验室全刷 → 方法论页</td><td>2–3 周</td></tr>
+      <tr><td>考研 / 保研算法</td><td>L2 为主 + L3 摊还/网络流 + 检验流水线</td><td>1–2 月</td></tr>
+      <tr><td>研究生，做理论或系统</td><td>L3 全读 + L4 对口方向 + 自己跑 verify 流水线</td><td>长期</td></tr>
+      <tr><td>想做算法研究</td><td>L4 前沿 + 源文件溯源 + 复现开放问题</td><td>持续</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">
+    <b>阅读约定</b>
+    每页都用 7 色块区分内容类型：<span class="lv lv0">概念</span> <span class="lv lv2">定理</span> <span class="lv lv3">证明</span> <span class="lv lv1">推论</span> <span class="lv lv4">前沿</span>。看到 <code>.lab</code> 是动手实验，看到 <code>&lt;details&gt;</code> 是带答案的自检。所有内容默认可见，无需等待加载。
+  </div>
+</section>
+
+<footer class="foot">
+  <p>AlgoLab 与 InfoLab 同源同构，为本"信息/算法"双馆计划之一。信源依据 MIT 6.006 / 6.046 / 6.854、Stanford CS161、CLRS《算法导论》、Knuth《TAoCP》、Williamson–Shmoys《近似算法设计》、Motwani–Raghavan《随机算法》及 WAOA/RANDOM 2025 等会议前沿。方法论融合费曼学习法、测验效应（Roediger &amp; Karpicke 2006）、间隔效应（Cepeda et al. 2006）、布鲁姆认知目标分类。</p>
+</footer>
+
+</main>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+  document.querySelectorAll('.kg-node').forEach(function(g){
+    g.addEventListener('click', function(){
+      var h = g.getAttribute('data-href');
+      if(h) location.href = h;
+    });
+  });
+  // 知识图谱节点 hover 高亮对应层色已由 CSS 处理
+</script>
+</body>
+</html>
