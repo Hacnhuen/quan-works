@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>交互实验室 · 算法 | AlgoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Algo<span>Lab</span> · 算法</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html" class="on">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">Lab · Interactive</div>
+  <h1>交互实验室：亲手调参，看见算法</h1>
+  <p>8 个可拖拽演示，覆盖 L0–L4 的核心直觉与定理。每个数值都能和 <code>verify/numeric.py</code> 对拍，确保"看到的"与"证明的"一致。</p>
+  <div class="meta">
+    <i>排序</i><i>DFS/BFS</i><i>Dijkstra</i><i>哈希</i><i>DP</i><i>主定理</i><i>竞争比</i><i>秘书问题</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#e1">01 · 排序比较计数</a>
+  <a href="#e2">02 · DFS/BFS 遍历</a>
+  <a href="#e3">03 · Dijkstra 最短路</a>
+  <a href="#e4">04 · 哈希负载</a>
+  <a href="#e5">05 · 背包 DP 表</a>
+  <a href="#e6">06 · 主定理</a>
+  <a href="#e7">07 · 在线 Paging</a>
+  <a href="#e8">08 · 秘书问题</a>
+  <div class="grp"><h4>跳转</h4>
+    <a href="index.html">← 总览</a>
+    <a href="verify.html">去 AI 检验 →</a>
+  </div>
+</aside>
+<main>
+
+<!-- 01 排序 -->
+<section class="section" id="e1">
+  <h2><span class="num">01</span>排序：比较次数 vs 下界</h2>
+  <p class="lead">选算法与 n，看实际比较次数与理论下界 ⌈log₂(n!)⌉ 的差距。</p>
+  <div class="lab">
+    <div class="lab-h">SORT COMPARISONS</div>
+    <div class="ctrl"><label>数组长 n</label><input type="range" id="o1-n" min="4" max="128" value="32" step="1"><span class="val" id="o1-nv">32</span></div>
+    <div class="ctrl"><label>算法</label>
+      <select id="o1-a" style="background:#0d1220;color:#cfe3ff;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-family:var(--mono)">
+        <option value="merge">归并 (≈n log n)</option>
+        <option value="quick">快排期望 (≈1.39 n log n)</option>
+        <option value="insert">插入 (≈n²/4 最坏)</option>
+      </select>
+    </div>
+    <div class="readout" id="o1-out"></div>
+  </div>
+</section>
+
+<!-- 02 DFS/BFS -->
+<section class="section" id="e2">
+  <h2><span class="num">02</span>DFS / BFS 遍历顺序</h2>
+  <p class="lead">同一张图，两种遍历的展开顺序不同。BFS 给无权最短路层级。</p>
+  <div class="lab">
+    <div class="lab-h">GRAPH TRAVERSAL</div>
+    <div class="ctrl"><label>方式</label>
+      <select id="o2-m" style="background:#0d1220;color:#cfe3ff;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-family:var(--mono)">
+        <option value="bfs">BFS</option><option value="dfs">DFS</option>
+      </select>
+    </div>
+    <canvas data-h="260" id="o2-cv"></canvas>
+    <div class="readout" id="o2-out"></div>
+  </div>
+</section>
+
+<!-- 03 Dijkstra -->
+<section class="section" id="e3">
+  <h2><span class="num">03</span>Dijkstra 最短路</h2>
+  <p class="lead">6 节点图，逐轮松弛。一旦节点被"取出"即锁定最终距离（A3）。</p>
+  <div class="lab">
+    <div class="lab-h">DIJKSTRA</div>
+    <div class="ctrl"><label>源点</label>
+      <select id="o3-s" style="background:#0d1220;color:#cfe3ff;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-family:var(--mono)">
+        <option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option><option value="4">E</option><option value="5">F</option>
+      </select>
+    </div>
+    <div class="readout" id="o3-out"></div>
+  </div>
+</section>
+
+<!-- 04 哈希 -->
+<section class="section" id="e4">
+  <h2><span class="num">04</span>哈希：负载因子与链长</h2>
+  <p class="lead">拖动元素数 n 与桶数 m，看负载因子 α 与期望链长（A9：成功 1+α/2，失败 1+α）。</p>
+  <div class="lab">
+    <div class="lab-h">HASH LOAD</div>
+    <div class="ctrl"><label>元素数 n</label><input type="range" id="o4-n" min="10" max="500" value="100" step="1"><span class="val" id="o4-nv">100</span></div>
+    <div class="ctrl"><label>桶数 m</label><input type="range" id="o4-m" min="10" max="500" value="100" step="1"><span class="val" id="o4-mv">100</span></div>
+    <div class="readout" id="o4-out"></div>
+  </div>
+</section>
+
+<!-- 05 DP -->
+<section class="section" id="e5">
+  <h2><span class="num">05</span>0/1 背包：DP 表逐格</h2>
+  <p class="lead">填二维表，显示最优值来源（取/不取）。核对 L1 手算例。</p>
+  <div class="lab">
+    <div class="lab-h">0/1 KNAPSACK DP</div>
+    <div class="ctrl"><label>容量 W</label><input type="range" id="o5-w" min="4" max="20" value="7" step="1"><span class="val" id="o5-wv">7</span></div>
+    <div class="readout" id="o5-out"></div>
+  </div>
+</section>
+
+<!-- 06 主定理 -->
+<section class="section" id="e6">
+  <h2><span class="num">06</span>主定理浏览器</h2>
+  <p class="lead">与 L2 同款，a/b/f 三旋钮看情形 1/2/3。</p>
+  <div class="lab">
+    <div class="lab-h">MASTER THEOREM</div>
+    <div class="ctrl"><label>a</label><input type="range" id="o6-a" min="1" max="8" value="2" step="1"><span class="val" id="o6-av">2</span></div>
+    <div class="ctrl"><label>b</label><input type="range" id="o6-b" min="2" max="4" value="2" step="1"><span class="val" id="o6-bv">2</span></div>
+    <div class="ctrl"><label>f(n)</label>
+      <select id="o6-f" style="background:#0d1220;color:#cfe3ff;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-family:var(--mono)">
+        <option value="low">n^{ε−0.3}</option><option value="mid" selected>n^{ε}</option><option value="high">n^{ε+0.3}</option>
+      </select>
+    </div>
+    <div class="readout" id="o6-out"></div>
+  </div>
+</section>
+
+<!-- 07 Paging 竞争比 -->
+<section class="section" id="e7">
+  <h2><span class="num">07</span>在线 Paging：命中率 vs 离线最优</h2>
+  <p class="lead">缓存大小 k，随机访问序列，比较 LRU 与离线最优（Bélády）的缺页次数，验证 k-竞争性。</p>
+  <div class="lab">
+    <div class="lab-h">ONLINE PAGING</div>
+    <div class="ctrl"><label>缓存 k</label><input type="range" id="o7-k" min="2" max="6" value="3" step="1"><span class="val" id="o7-kv">3</span></div>
+    <div class="ctrl"><label>序列长</label><input type="range" id="o7-l" min="20" max="200" value="80" step="1"><span class="val" id="o7-lv">80</span></div>
+    <div class="readout" id="o7-out"></div>
+  </div>
+</section>
+
+<!-- 08 秘书问题 -->
+<section class="section" id="e8">
+  <h2><span class="num">08</span>秘书问题：最优停止</h2>
+  <p class="lead">阈值滑块 r，模拟选中最佳的概率，验证峰值在 r≈n/e（A14，1/e≈0.368）。</p>
+  <div class="lab">
+    <div class="lab-h">SECRETARY PROBLEM</div>
+    <div class="ctrl"><label>观察数 r（前 r 个不选）</label><input type="range" id="o8-r" min="0" max="100" value="37" step="1"><span class="val" id="o8-rv">37</span></div>
+    <div class="ctrl"><label>候选 n</label><input type="range" id="o8-n" min="10" max="200" value="100" step="1"><span class="val" id="o8-nv">100</span></div>
+    <div class="ctrl"><label>模拟次数</label><input type="range" id="o8-s" min="1000" max="20000" value="5000" step="500"><span class="val" id="o8-sv">5000</span></div>
+    <canvas data-h="240" id="o8-cv"></canvas>
+    <div class="readout" id="o8-out"></div>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l4_frontier.html"><span class="lb">← 上一站</span>L4 前沿 · 博士/专家</a>
+  <a class="nx" href="verify.html"><span class="lb">下一站 →</span>AI 检验 · 三轨报告</a>
+</div>
+
+<footer class="foot">
+  <p>实验室数值（排序下界、哈希链长、主定理、竞争比、1/e）均由 <code>verify/numeric.py</code> 复跑核对。图遍历/Dijkstra 使用内置小图实例，结果可手算验证。</p>
+</footer>
+
+</main>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+/* helper */
+function $(id){return document.getElementById(id);}
+function lbf(n){var s=0;for(var k=2;k<=n;k++)s+=ILMath.log2(k);return s;}
+
+/* 01 排序 */
+(function(){
+  var nEl=$('o1-n'),aEl=$('o1-a'),nv=$('o1-nv'),out=$('o1-out');
+  function render(){
+    var n=+nEl.value, a=aEl.value; nv.textContent=n;
+    var lb=Math.ceil(lbf(n));
+    var cmp;
+    if(a==='merge') cmp=n*ILMath.log2(n);
+    else if(a==='quick') cmp=1.3863*n*ILMath.log2(n);
+    else cmp=n*n/4;  // 插入最坏近似
+    var ratio=(cmp/lb);
+    out.innerHTML='n='+n+'　下界 ⌈log₂(n!)⌉=<b>'+lb+'</b><br>'+
+      '选择 '+a+'：比较次数 ≈ <b>'+cmp.toFixed(0)+'</b><br>'+
+      '相对下界倍数 = <b>'+ratio.toFixed(2)+'</b>（越接近 1 越优）';
+  }
+  ILBind(['o1-n','o1-a'],render);
+})();
+
+/* 02 DFS/BFS 小图 */
+(function(){
+  var mEl=$('o2-m'),cv=$('o2-cv'),out=$('o2-out');
+  // 顶点 + 邻接
+  var V=[['A',120,60],['B',260,60],['C',400,60],['D',190,160],['E',330,160],['F',120,230]];
+  var E=[[0,1],[1,2],[0,3],[1,3],[1,4],[3,4],[3,5],[2,4]];
+  function adj(){var g=V.map(function(){return [];});E.forEach(function(e){g[e[0]].push(e[1]);g[e[1]].push(e[0]);});return g;}
+  var G=adj();
+  function bfs(s){var q=[s],seen={},order=[];seen[s]=1;while(q.length){var u=q.shift();order.push(u);G[u].forEach(function(v){if(!seen[v]){seen[v]=1;q.push(v);}});}return order;}
+  function dfs(s){var seen={},order=[];function go(u){seen[u]=1;order.push(u);G[u].forEach(function(v){if(!seen[v])go(v);});}go(s);return order;}
+  function render(){
+    var mode=mEl.value;
+    var order = mode==='bfs'?bfs(0):dfs(0);
+    var plot=new ILPlot(cv,{xr:[0,460],yr:[0,260],xlabel:'',ylabel:''});
+    plot.resize();plot.clear();plot.axes(0,0); // 关网格
+    plot.ctx.clearRect(0,0,plot.w,plot.h);
+    // 画边
+    plot.ctx.strokeStyle='#26304a';plot.ctx.lineWidth=1.4;
+    E.forEach(function(e){var a=V[e[0]],b=V[e[1]];plot.ctx.beginPath();plot.ctx.moveTo(a[1],a[2]);plot.ctx.lineTo(b[1],b[2]);plot.ctx.stroke();});
+    // 画点
+    V.forEach(function(v,i){plot.dot(v[1]/460*plot.w*0.92+plot.pad.l*0 , 0, '#222');});
+    // 手写画点+标签+序号
+    V.forEach(function(v,i){
+      var X=v[1]/460*(plot.w-plot.pad.l-plot.pad.r)+plot.pad.l;
+      var Y=v[2]/260*(plot.h-plot.pad.t-plot.pad.b)+plot.pad.t;
+      var idx=order.indexOf(i);
+      plot.ctx.fillStyle = idx>=0? '#34d399':'#1b2334';
+      plot.ctx.strokeStyle='#0d1220';plot.ctx.lineWidth=2;
+      plot.ctx.beginPath();plot.ctx.arc(X,Y,15,0,Math.PI*2);plot.ctx.fill();plot.ctx.stroke();
+      plot.ctx.fillStyle='#e8edf7';plot.ctx.font='12px ui-monospace,monospace';plot.ctx.textAlign='center';plot.ctx.textBaseline='middle';
+      plot.ctx.fillText(v[0],X,Y);
+      if(idx>=0){plot.ctx.fillStyle='#fbbf24';plot.ctx.fillText('#'+(idx+1),X,Y-24);}
+    });
+    out.innerHTML='模式 <b>'+mode.toUpperCase()+'</b>　遍历顺序：<b>'+order.map(function(i){return V[i][0];}).join(' → ')+'</b>';
+  }
+  ILBind(['o2-m'],render);
+})();
+
+/* 03 Dijkstra */
+(function(){
+  var sEl=$('o3-s'),out=$('o3-out');
+  // 图：邻接表 + 权
+  var nodes=['A','B','C','D','E','F'];
+  var edges=[[0,1,7],[0,2,9],[0,5,14],[1,2,10],[1,3,15],[2,3,11],[2,5,2],[3,4,6],[4,5,9]];
+  function adj(){var g=nodes.map(function(){return [];});edges.forEach(function(e){g[e[0]].push([e[1],e[2]]);g[e[1]].push([e[0],e[2]]);});return g;}
+  function dij(src){var G=adj();var dist=nodes.map(function(){return Infinity;});var done={};dist[src]=0;
+    var order=[];
+    for(var it=0;it<nodes.length;it++){
+      var u=-1,best=Infinity;
+      for(var i=0;i<nodes.length;i++) if(!done[i]&&dist[i]<best){best=dist[i];u=i;}
+      if(u<0)break; done[u]=1; order.push(u);
+      G[u].forEach(function(e){var v=e[0],w=e[1];if(!done[v]&&dist[u]+w<dist[v])dist[v]=dist[u]+w;});
+    }
+    return {dist:dist,order:order};
+  }
+  function render(){
+    var s=+sEl.value; var r=dij(s);
+    out.innerHTML='源点 <b>'+nodes[s]+'</b>　锁定顺序：'+r.order.map(function(i){return nodes[i];}).join(' → ')+'<br>'+
+      '距离表：'+nodes.map(function(n,i){return n+'='+(r.dist[i]===Infinity?'∞':r.dist[i]);}).join('  ');
+  }
+  ILBind(['o3-s'],render);
+})();
+
+/* 04 哈希 */
+(function(){
+  var nEl=$('o4-n'),mEl=$('o4-m'),nv=$('o4-nv'),mv=$('o4-mv'),out=$('o4-out');
+  function render(){
+    var n=+nEl.value,m=+mEl.value;nv.textContent=n;mv.textContent=m;
+    var alpha=n/m;
+    var succ=1+alpha/2, uns=1+alpha;
+    out.innerHTML='n='+n+'　m='+m+'　负载因子 α=<b>'+alpha.toFixed(2)+'</b><br>'+
+      '期望链长：成功查找 <b>'+succ.toFixed(2)+'</b>，不成功 <b>'+uns.toFixed(2)+'</b><br>'+
+      '（A9：成功 1+α/2，不成功 1+α；α 有界时即 O(1)）';
+  }
+  ILBind(['o4-n','o4-m'],render);
+})();
+
+/* 05 背包 DP */
+(function(){
+  var wEl=$('o5-w'),wv=$('o5-wv'),out=$('o5-out');
+  var items=[[2,3],[3,4],[1,1]]; // (value, cost) -> (v,c)
+  function render(){
+    var W=+wEl.value; wv.textContent=W;
+    var dp=Array(items.length+1);for(var i=0;i<=items.length;i++)dp[i]=new Array(W+1).fill(0);
+    for(var i=1;i<=items.length;i++){var v=items[i-1][0],c=items[i-1][1];
+      for(var w=0;w<=W;w++){var skip=dp[i-1][w];var take=w>=c?dp[i-1][w-c]+v:0;dp[i][w]=Math.max(skip,take);}}
+    out.innerHTML='容量 W='+W+'　物品 (值,费)='+JSON.stringify(items)+'<br>'+
+      '最优价值 = <b>'+dp[items.length][W]+'</b><br>'+
+      '（L1 例：W=4 取物品1+3 ⇒ 值 2+1=3，占 3+1=4）';
+  }
+  ILBind(['o5-w'],render);
+})();
+
+/* 06 主定理 */
+(function(){
+  var aEl=$('o6-a'),bEl=$('o6-b'),fEl=$('o6-f'),av=$('o6-av'),bv=$('o6-bv'),out=$('o6-out');
+  function render(){
+    var a=+aEl.value,b=+bEl.value,f=fEl.value;av.textContent=a;bv.textContent=b;
+    var eps=ILMath.log2(a)/ILMath.log2(b);var cas,bound;
+    if(f==='low'){cas='情形1';bound='Θ(n^{'+eps.toFixed(3)+'})';}
+    else if(f==='mid'){cas='情形2';bound='Θ(n^{'+eps.toFixed(3)+'} log n)';}
+    else{cas='情形3';bound='Θ(f(n))';}
+    out.innerHTML='a='+a+' b='+b+' ε='+eps.toFixed(3)+' → <b>'+cas+'</b>：T(n)=<b>'+bound+'</b>';
+  }
+  ILBind(['o6-a','o6-b','o6-f'],render);
+})();
+
+/* 07 Paging */
+(function(){
+  function $(id){return document.getElementById(id);}
+  var kEl=$('o7-k'),lEl=$('o7-l'),kv=$('o7-kv'),lv=$('o7-lv'),out=$('o7-out');
+  function belady(seq,k){var mem=[],faults=0;var next=new Array(seq.length);
+    for(var i=0;i<seq.length;i++){var nx=Infinity;for(var j=i+1;j<seq.length;j++)if(seq[j]===seq[i]){nx=j;break;}next[i]=nx;}
+    for(var i=0;i<seq.length;i++){var p=seq[i];var idx=mem.indexOf(p);
+      if(idx>=0)continue; faults++;
+      if(mem.length<k){mem.push(p);}
+      else{ // 替换未来最远
+        var far=-1,fj=-1;for(var m=0;m<mem.length;m++){var f=-1;for(var j=i+1;j<seq.length;j++)if(seq[j]===mem[m]){f=j;break;}
+          if(f>fj){fj=f;far=m;}}
+        mem[far]=p;
+      }
+    }
+    return faults;
+  }
+  function lru(seq,k){var mem=[],faults=0;
+    for(var i=0;i<seq.length;i++){var p=seq[i];var idx=mem.indexOf(p);
+      if(idx>=0){mem.splice(idx,1);mem.push(p);continue;}
+      faults++;if(mem.length>=k)mem.shift();mem.push(p);}
+    return faults;
+  }
+  function render(){
+    var k=+kEl.value,l=+lEl.value;kv.textContent=k;lv.textContent=l;
+    var seq=[];for(var i=0;i<l;i++)seq.push(1+Math.floor(Math.random()*k*2));
+    var lr=lru(seq,k), opt=belady(seq,k);
+    var ratio=(lr/opt);
+    out.innerHTML='序列长 '+l+'　缓存 k='+k+'<br>LRU 缺页 <b>'+lr+'</b>　离线最优(Bélády) <b>'+opt+'</b><br>'+
+      'LRU/最优 = <b>'+ratio.toFixed(2)+'</b> ≤ k='+k+'（k-竞争性，理论保证）';
+  }
+  ILBind(['o7-k','o7-l'],render);
+})();
+
+/* 08 秘书问题 */
+(function(){
+  var rEl=$('o8-r'),nEl=$('o8-n'),sEl=$('o8-s'),rv=$('o8-rv'),nv=$('o8-nv'),sv=$('o8-sv'),cv=$('o8-cv'),out=$('o8-out');
+  function sim(r,n){var win=0;for(var s=0;s<n;s++){
+      // 生成随机排列
+      var a=[];for(var i=1;i<=n;i++)a.push(i);for(var i=n-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+      var bestSoFar=0,bestRank=n+1,chosen=-1;
+      for(var i=0;i<n;i++){if(a[i]>bestSoFar){bestSoFar=a[i];if(i>=r){chosen=a[i];break;}}}
+      if(chosen===n)win++;
+    }return win/n;}
+  function render(){
+    var rPct=+rEl.value, n=+nEl.value, S=+sEl.value;
+    rv.textContent=rPct;nv.textContent=n;sv.textContent=S;
+    // r = round(rPct/100 * n)
+    var r=Math.floor(rPct/100*n);
+    var p=sim(r,n>200?Math.min(n,200):n, S); // 控制单次成本
+    var plot=new ILPlot(cv,{xr:[0,100],yr:[0,0.6],xlabel:'观察比例 r/n (%)',ylabel:'成功率'});
+    plot.resize();plot.clear();plot.axes(5,5);
+    // 采样曲线
+    for(var rp=0;rp<=100;rp+=2){var rr=Math.floor(rp/100*n);var pp=sim(rr, Math.min(n,200), 1500);plot.dot(rp,pp,'#a78bfa');}
+    plot.line(function(x){ // 1/e 理论渐近：x 为比例，峰值 1/e
+      var t=x/100; return t<=0?0: (t*Math.exp(-(1-t)));
+    },'#fbbf24',1.6);
+    plot.dot(rPct, p, '#34d399');
+    out.innerHTML='n='+n+'　观察数 r='+r+'（'+rPct+'%）<br>选中最佳概率 ≈ <b>'+p.toFixed(3)+
+      '</b>　理论峰值 1/e ≈ <b>'+Math.exp(-1).toFixed(3)+'</b>（当 r/n→1/e）';
+  }
+  ILBind(['o8-r','o8-n','o8-s'],render);
+})();
+</script>
+</body>
+</html>
