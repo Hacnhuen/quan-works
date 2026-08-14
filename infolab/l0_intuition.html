@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L0 启蒙 · 什么是信息 | InfoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html" class="on">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Level 0 · Intuition</div>
+  <h1>L0 启蒙：什么是信息</h1>
+  <p>这一级<strong>不出现一个积分符号</strong>。我们只问一个问题：「知道一件事」到底获得了多少东西？答案会自己长成 <code>−log p</code>。读完你能对任何一个日常事件估算它的信息量。</p>
+  <div class="meta">
+    <i>学段：中学 / 通识</i><i>门槛：对数 + 概率初步</i>
+    <i>预计：60–90 分钟</i><i>核心：惊奇度 · 比特 · 平均</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>L0 目录</h4>
+  <a href="#why">00 · 一个被误解的词</a>
+  <a href="#game">01 · 猜数游戏</a>
+  <a href="#surprise">02 · 惊奇度 = 信息量</a>
+  <a href="#bit">03 · 比特：信息的单位</a>
+  <a href="#avg">04 · 平均惊奇 = 熵</a>
+  <a href="#ball">05 · 称球问题</a>
+  <a href="#life">06 · 生活中的信息量</a>
+  <a href="#quiz0">07 · 自检与作业</a>
+  <div class="grp">
+    <h4>跳转</h4>
+    <a href="index.html">← 总览</a>
+    <a href="l1_foundation.html">L1 基础 →</a>
+    <a href="lab.html">🧪 实验室</a>
+  </div>
+</aside>
+
+<main>
+
+<section class="section" id="why">
+  <h2><span class="num">00</span>一个被误解的词</h2>
+  <p class="lead">日常语言里，「信息」指内容；信息论里，「信息」指<strong>不确定性的减少量</strong>。这是理解一切的前提。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>看这两句话：</p>
+    <ul>
+      <li>「明天太阳从东边升起。」</li>
+      <li>「明天本市下冰雹。」</li>
+    </ul>
+    <p>作为<em>内容</em>，第一句更重要（太阳可是恒星）。但作为<em>信息</em>，第一句几乎为零——你早就知道了，它没有消除任何不确定性。第二句罕见，因此信息量大。</p>
+    <p><strong>关键转向：信息量不取决于内容多重要，只取决于这件事有多出人意料。</strong></p>
+  </div>
+
+  <div class="note">
+    <b>Shannon 的刻意切割</b>
+    1948 年 Shannon 在论文开篇明确声明：通信的语义方面与工程问题无关（"the semantic aspects of communication are irrelevant to the engineering problem"）。他故意把"意义"扔掉，只留下"概率"。正是这一刀，让信息变成可计算的物理量。
+    <div class="src">Shannon, <i>A Mathematical Theory of Communication</i>, BSTJ 27(3), 1948.</div>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿</span>
+    <p>Shannon 扔掉的"语义"，今天正被捡回来：<strong>语义通信（semantic communication）</strong>是 6G 的核心议题之一，目标是只传"接收方需要理解的那部分"，而非全部比特。这是 IEEE ITW 2025 的重点方向。→ <a href="l4_frontier.html#open" style="color:var(--l4)">L4 开放问题</a></p>
+  </div>
+</section>
+
+<section class="section" id="game">
+  <h2><span class="num">01</span>猜数游戏：信息可以被"数"出来</h2>
+  <p class="lead">最快理解信息量的方式，是把它变成"最少问几个是非题"。</p>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题</span>
+    <p>我心里想一个 1–8 之间的整数，你只能问"是/否"问题。<strong>最少几个问题保证猜中？</strong></p>
+    <p>笨办法："是 1 吗？""是 2 吗？"……最差要问 7 次。</p>
+    <p>聪明办法——每次砍掉一半：</p>
+    <pre><code>问1：大于 4 吗？   → 8 个可能 变 4 个
+问2：大于 6 吗？   → 4 个可能 变 2 个
+问3：大于 7 吗？   → 2 个可能 变 1 个  ✓ 确定</code></pre>
+    <p><strong>3 次。</strong>因为 2³ = 8。每个是非题最多砍掉一半可能性。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式</span>
+    <div class="fml">N 个等可能选项 → 需要 log₂N 个是非题
+<span class="cm">8 个选项  → log₂8  = 3 题</span>
+<span class="cm">16 个选项 → log₂16 = 4 题</span>
+<span class="cm">1024 个   → log₂1024 = 10 题</span></div>
+    <p>注意：可能性翻倍，问题只<em>加一</em>。这就是对数出现的原因——它把"乘法的可能性"变成"加法的代价"。</p>
+  </div>
+
+  <div class="note">
+    <b>为什么必须是对数？</b>
+    因为信息应该<strong>可加</strong>。抛两枚硬币，直觉上信息量应是抛一枚的 2 倍。但可能性是 2×2=4（相乘），只有取对数才能把"相乘"变"相加"：log₂4 = 2 = 2×log₂2。<br>
+    Hartley 早在 1928 年就用这个理由确立了对数度量。
+  </div>
+</section>
+
+<section class="section" id="surprise">
+  <h2><span class="num">02</span>惊奇度：不等概率怎么办</h2>
+  <p class="lead">上面假设了"等可能"。但现实中事件概率并不相等——罕见事件应该更"值钱"。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>把 log₂N 改写一下。等可能时每个选项概率 p = 1/N，所以 N = 1/p：</p>
+    <div class="fml">log₂N = log₂(1/p) = −log₂p</div>
+    <p>这个量叫 <strong>自信息</strong>（self-information），也可以叫<em>惊奇度</em>（surprisal）。它只依赖那一个事件自己的概率。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式</span>
+    <div class="fml">I(x) = −log₂ p(x)   <span class="cm">单位：比特 bit</span></div>
+    <table>
+      <tr><th>事件概率 p</th><th>信息量 −log₂p</th><th>感受</th></tr>
+      <tr><td>1（必然）</td><td>0 bit</td><td>毫不意外，白说</td></tr>
+      <tr><td>1/2</td><td>1 bit</td><td>一次硬币</td></tr>
+      <tr><td>1/8</td><td>3 bit</td><td>有点意外</td></tr>
+      <tr><td>1/1000</td><td>≈ 9.97 bit</td><td>相当罕见</td></tr>
+      <tr><td>→ 0（几乎不可能）</td><td>→ ∞</td><td>震惊</td></tr>
+    </table>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：惊奇度曲线</div>
+    <div class="ctrl">
+      <label for="s-p">事件概率 p</label>
+      <input type="range" id="s-p" min="0.005" max="1" step="0.005" value="0.125">
+      <span class="val" id="s-pv">0.125</span>
+    </div>
+    <canvas id="s-cv" data-h="240"></canvas>
+    <div class="readout" id="s-out"></div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论</span>
+    <ul>
+      <li><strong>必然事件信息量为 0。</strong>p=1 时 −log₂1 = 0。所以"太阳东升"确实是 0 bit。</li>
+      <li><strong>越罕见信息量越大</strong>，且是无界的。</li>
+      <li><strong>独立事件信息量相加。</strong>若 x,y 独立，p(x,y)=p(x)p(y)，则 I(x,y) = I(x)+I(y)。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="bit">
+  <h2><span class="num">03</span>比特：信息的单位</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p><strong>1 比特 = 回答一个"五五开"是非题所获得的信息量。</strong></p>
+    <p>"bit" 这个词是 Shannon 在 1948 年论文中采用的，由他的同事 <strong>John Tukey</strong> 提议，是 <em>binary digit</em> 的缩写。这篇论文同时给了计算机时代最基本的计量单位。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式</span>
+    <p>换底就换单位，本质相同：</p>
+    <table>
+      <tr><th>底数</th><th>单位</th><th>换算</th><th>常见场合</th></tr>
+      <tr><td>2</td><td>比特 bit / shannon</td><td>1</td><td>通信、计算机</td></tr>
+      <tr><td>e</td><td>奈特 nat</td><td>1 nat ≈ 1.4427 bit</td><td>数学推导、机器学习</td></tr>
+      <tr><td>10</td><td>哈特莱 hartley / dit</td><td>1 hartley ≈ 3.3219 bit</td><td>早期文献</td></tr>
+    </table>
+    <div class="fml">log₂x = ln x / ln 2 = ln x × 1.442695…</div>
+  </div>
+
+  <div class="note warn">
+    <b>易混：bit（信息量）≠ bit（存储位）</b>
+    存储上的 1 bit 是一个能存 0/1 的格子。信息论的 1 bit 是一个<em>量</em>，可以是小数——比如某事件信息量 2.7 bit。一个存储位<strong>最多</strong>携带 1 bit 信息，当且仅当 0/1 等概率时取到。这个"最多"正是 L1 熵极值定理的内容。
+  </div>
+</section>
+
+<section class="section" id="avg">
+  <h2><span class="num">04</span>平均惊奇 = 熵</h2>
+  <p class="lead">单个事件的信息量会变。要刻画一个"信息源"整体，需要取平均——这就是熵。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>假设天气只有两种，晴 90%、雨 10%。每天你会获得多少信息？</p>
+    <ul>
+      <li>晴天（90% 出现）：−log₂0.9 ≈ 0.152 bit</li>
+      <li>雨天（10% 出现）：−log₂0.1 ≈ 3.322 bit</li>
+    </ul>
+    <p>按出现频率加权平均：</p>
+    <div class="fml">H = 0.9 × 0.152 + 0.1 × 3.322 = 0.137 + 0.332 = <b>0.469 bit/天</b></div>
+    <p>这个加权平均就是 <strong>熵（entropy）</strong>，记作 H。它衡量这个信息源的<em>平均不确定性</em>。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式</span>
+    <div class="fml">H(X) = Σ p(x) · I(x) = − Σ p(x) log₂ p(x)</div>
+    <p>读作："每个事件的信息量，按它出现的概率加权求和。"</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：二元熵函数 H(p)</div>
+    <div class="ctrl">
+      <label for="h-p">P(晴) = p</label>
+      <input type="range" id="h-p" min="0" max="1" step="0.01" value="0.9">
+      <span class="val" id="h-pv">0.90</span>
+    </div>
+    <canvas id="h-cv" data-h="250"></canvas>
+    <div class="readout" id="h-out"></div>
+    <p style="font-size:13.5px;color:var(--ink-3);margin:10px 0 0">
+      拖动看三件事：① p=0 或 1 时 H=0（天气完全确定，毫无信息）；② p=0.5 时 H 最大 =1 bit（最不确定）；③ 曲线对称且是<em>凹</em>的。
+    </p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论</span>
+    <p><strong>熵 = 平均每天最少需要多少比特来记录。</strong></p>
+    <p>上面的天气源熵为 0.469 bit/天。这意味着：记录 1000 天的天气，理论上只需约 <strong>469 比特</strong>，而不是 1000 比特（每天一位）。省下的一半，来自"晴天多得多"这个规律。</p>
+    <p>这个"最少"是不可突破的下界——它就是 <strong>Shannon 第一定理</strong>（无失真信源编码定理）。→ <a href="l2_theorems.html#src" style="color:var(--l2)">L2 第一定理</a></p>
+  </div>
+
+  <div class="note deep">
+    <b>为什么它叫"熵"？</b>
+    这个名字来自热力学。据 Shannon 本人回忆，是 <strong>von Neumann</strong> 建议的，理由半是玩笑："第一，你的不确定性函数在统计力学里已经用了这个名字；第二，更重要的是，<em>没人真正知道熵是什么</em>，所以辩论时你总占上风。"<br>
+    玩笑背后是真的：Shannon 熵与 Boltzmann–Gibbs 熵在数学形式上一致，这条线索最终通向 Landauer 原理与麦克斯韦妖。→ <a href="l4_frontier.html#physics" style="color:var(--l4)">L4 信息与物理</a>
+  </div>
+</section>
+
+<section class="section" id="ball">
+  <h2><span class="num">05</span>称球问题：用熵预判难度</h2>
+  <p class="lead">信息论最爽的用法之一：<strong>还没开始解题，就知道题目解不解得开。</strong></p>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题</span>
+    <p><strong>题目：</strong>12 个球，其中 1 个是次品（不知偏轻还是偏重）。用天平最少称几次能找出它并判断轻重？</p>
+    <p><strong>信息论解法（30 秒）：</strong></p>
+    <ol>
+      <li><b>算需要多少信息。</b>答案可能是"第 i 个球偏轻"或"第 i 个球偏重"，共 12×2 = 24 种等可能结果。<br>
+        需要信息 = log₂24 ≈ <strong>4.585 bit</strong></li>
+      <li><b>算每次称能给多少信息。</b>天平有 3 种结果：左重、右重、平衡。<br>
+        每次最多提供 = log₂3 ≈ <strong>1.585 bit</strong></li>
+      <li><b>相除。</b>4.585 / 1.585 ≈ 2.89 → 至少需要 <strong>3 次</strong>。</li>
+    </ol>
+    <p>而 3 次最多提供 3×1.585 = 4.755 bit > 4.585 bit，<em>信息量够用</em>。所以 3 次可能做到——事实上确实存在 3 次的解法。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论</span>
+    <p>推广：若有 n 个球（不知轻重），需要 log₂(2n) bit，每次称提供 ≤ log₂3 bit，故</p>
+    <div class="fml">最少次数 k ≥ log₂(2n) / log₂3 = log₃(2n)</div>
+    <p>n=12 → k ≥ 2.89 → 3；n=13 → k ≥ 2.95 → 3；n=14 → k ≥ 3.02 → <strong>4 次</strong>。<br>
+    所以 13 个球是 3 次的极限。这个结论不需要试任何一种称法就能得到。</p>
+  </div>
+
+  <div class="note">
+    <b>这就是信息论的威力</b>
+    它给的是<strong>不可能性证明</strong>：不管你多聪明，2 次称球找不出 12 球中的次品。同样地，Shannon 定理告诉你不管编码多巧妙，压缩不可能突破熵、传输不可能突破容量。<em>先划出边界，再谈方法</em>——这是这门学科的思维方式。
+  </div>
+</section>
+
+<section class="section" id="life">
+  <h2><span class="num">06</span>生活中的信息量：一组估算</h2>
+
+  <div class="tw"><table>
+    <tr><th>事件</th><th>概率估计</th><th>信息量</th><th>说明</th></tr>
+    <tr><td>抛硬币得正面</td><td>1/2</td><td>1 bit</td><td>单位定义本身</td></tr>
+    <tr><td>掷骰子得 6</td><td>1/6</td><td>2.585 bit</td><td>log₂6</td></tr>
+    <tr><td>一张扑克是黑桃 A</td><td>1/52</td><td>5.700 bit</td><td>log₂52</td></tr>
+    <tr><td>一个英文字母（等概率假设）</td><td>1/26</td><td>4.700 bit</td><td>上界</td></tr>
+    <tr><td>一个英文字母（实际频率）</td><td>—</td><td>≈ 4.14 bit</td><td>字母频率不均</td></tr>
+    <tr><td>英文文本每字母（考虑上下文）</td><td>—</td><td>≈ 1.0–1.5 bit</td><td>Shannon 1951 实验估计</td></tr>
+    <tr><td>一个汉字（常用 3000 字等概率）</td><td>1/3000</td><td>≈ 11.55 bit</td><td>汉字信息密度高</td></tr>
+    <tr><td>中 500 万彩票（约 1/1750 万）</td><td>5.7×10⁻⁸</td><td>≈ 24.06 bit</td><td>难怪叫"爆炸性消息"</td></tr>
+  </table></div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题</span>
+    <p><strong>英文的冗余度。</strong>Shannon 1951 年做过一个著名实验：让人猜英文句子的下一个字母，据此估计英文的实际熵约 <strong>1.0–1.5 bit/字母</strong>，而 26 个字母等概率时是 4.7 bit。</p>
+    <div class="fml">冗余度 = 1 − 实际熵/最大熵 ≈ 1 − 1.25/4.7 ≈ <b>73%</b></div>
+    <p>这解释了两件日常现象：<br>
+    ① 英文文本可以压缩到约 1/4 大小（ZIP 的物理基础）；<br>
+    ② "Ths sntnc s stll rdbl."（去掉元音仍可读）——冗余让语言抗噪。</p>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿</span>
+    <p>今天的大语言模型本质上就是在做 Shannon 1951 年那个"猜下一个字母"的游戏，只是猜的是 token，而且猜得极好。模型的训练目标<strong>交叉熵损失</strong>正是"平均每 token 的惊奇度"，而 <strong>困惑度 perplexity = 2^(交叉熵)</strong> 就是"模型觉得下一个词有多少种等可能选择"。<br>
+    换句话说：<em>压缩得越好 = 预测得越准 = 理解得越深</em>。→ <a href="l4_frontier.html#llm" style="color:var(--l4)">L4 大模型中的信息论</a></p>
+  </div>
+</section>
+
+<section class="section" id="quiz0">
+  <h2><span class="num">07</span>自检与作业</h2>
+
+  <div class="quiz">
+    <div class="qh">Level 0 自检 · 答完再进 L1</div>
+    <ol>
+      <li>为什么"信息量"要用对数，而不能直接用概率的倒数 1/p？</li>
+      <li>一个必然发生的事件，信息量是多少？为什么？</li>
+      <li>掷一枚均匀骰子，熵是多少 bit？如果骰子灌了铅，6 点出现概率是 1/2，其余各 1/10，熵会变大还是变小？</li>
+      <li>27 个球中有 1 个较重（已知偏重），用天平至少称几次？</li>
+      <li>如果一种语言的冗余度是 0，会发生什么坏事？</li>
+    </ol>
+  </div>
+
+  <details>
+    <summary>参考答案</summary>
+    <div class="dbody">
+      <p><b>1.</b> 因为信息必须<em>可加</em>：两个独立事件的总信息量应等于各自之和。概率是相乘的（p₁p₂），只有对数能把乘法变加法。用 1/p 的话，两枚硬币会得到 4 而不是 2。</p>
+      <p><b>2.</b> 0 bit。−log₂1 = 0。它没有消除任何不确定性。</p>
+      <p><b>3.</b> 均匀骰子 H = log₂6 ≈ <b>2.585 bit</b>。灌铅后 H = −[0.5·log₂0.5 + 5×0.1·log₂0.1] = 0.5 + 5×0.332 = <b>2.161 bit</b>，<em>变小</em>。因为分布变得不均匀，结果更可预测了。均匀分布熵最大——这是 L1 的极值定理。</p>
+      <p><b>4.</b> 已知偏重，只有 27 种可能，需要 log₂27 bit；每次称提供 log₂3 bit。27 = 3³，所以恰好 <b>3 次</b>（每次分三堆各 9 个）。</p>
+      <p><b>5.</b> 冗余度为 0 意味着每个符号都携带满额信息，<em>任何一个字符出错都无法察觉、无法纠正</em>，且任何一段乱码都是合法句子。语言将完全不抗噪。自然语言的高冗余正是它能在嘈杂环境中沟通的原因，这也是 L2 信道编码定理的核心思想：<em>刻意加入冗余来对抗噪声</em>。</p>
+    </div>
+  </details>
+
+  <div class="card">
+    <h4 style="margin-top:0">动手作业</h4>
+    <ol>
+      <li>统计你最近 100 条微信消息里表情符号出现的频率，算出这个"表情源"的熵。</li>
+      <li>用信息论论证：一次能问 4 种回答的"天平"（假设存在），找 12 球次品需要几次？</li>
+      <li>去 <a href="lab.html#e3" style="color:var(--l0)">实验室 03</a> 拖动三元分布的滑块，找出什么时候熵最大，验证你的猜想。</li>
+    </ol>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="index.html"><span class="lb">← 上一站</span>总览 · 知识图谱</a>
+  <a class="nx" href="l1_foundation.html"><span class="lb">下一站 →</span>L1 基础 · 三大度量与四性框架</a>
+</div>
+
+<footer class="foot">
+  <p>L0 信源：Shannon 1948 (BSTJ 27:379–423) · Shannon 1951 "Prediction and Entropy of Printed English" · Hartley 1928 · Britannica: Information theory · Stanford EE376A 教学取向（先直觉后形式）。</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+(function(){
+  // --- 惊奇度曲线 ---
+  var sc=document.getElementById('s-cv');
+  if(sc){
+    var sp=new ILPlot(sc,{xr:[0,1],yr:[0,8],xlabel:'概率 p',ylabel:'信息量 −log₂p (bit)'});
+    ILBind(['s-p'],function(){
+      var p=+document.getElementById('s-p').value;
+      document.getElementById('s-pv').textContent=p.toFixed(3);
+      sp.resize();sp.clear();sp.axes(5,4);
+      sp.line(function(x){return x<=0?NaN:-ILMath.log2(x);},'#38bdf8',2.2);
+      var I=-ILMath.log2(p);
+      sp.vline(p,'#f472b6');
+      sp.dot(p,I,'#f472b6',ILMath.fmt(I,2)+' bit');
+      var cmp = I<0.5?'几乎不意外':I<2?'略有意外':I<4?'比较意外':I<8?'相当罕见':'极其震惊';
+      document.getElementById('s-out').innerHTML=
+        'p = <b>'+p.toFixed(3)+'</b>　→　I(x) = −log₂('+p.toFixed(3)+') = <b>'+ILMath.fmt(I,4)+' bit</b><br>'+
+        '相当于约 <b>'+ILMath.fmt(I,1)+'</b> 个"五五开是非题"　·　感受：'+cmp+'<br>'+
+        '<span style="color:#8592ab">等价说法：这件事平均每 '+ (p>0? ILMath.fmt(1/p,1):'∞') +' 次才发生一回。</span>';
+    });
+  }
+
+  // --- 二元熵 ---
+  var hc=document.getElementById('h-cv');
+  if(hc){
+    var hp=new ILPlot(hc,{xr:[0,1],yr:[0,1.05],xlabel:'P(晴) = p',ylabel:'熵 H(p) (bit)'});
+    ILBind(['h-p'],function(){
+      var p=+document.getElementById('h-p').value;
+      document.getElementById('h-pv').textContent=p.toFixed(2);
+      hp.resize();hp.clear();hp.axes(5,4);
+      hp.line(function(x){return ILMath.h2(x);},'#34d399',2.2);
+      var H=ILMath.h2(p);
+      hp.vline(p,'#fbbf24');
+      hp.dot(p,H,'#fbbf24',ILMath.fmt(H,3)+' bit');
+      var i1=p>0?-ILMath.log2(p):Infinity, i2=p<1?-ILMath.log2(1-p):Infinity;
+      var st = H<0.05?'几乎完全确定':H<0.5?'比较可预测':H<0.9?'有相当不确定性':'最大不确定';
+      document.getElementById('h-out').innerHTML=
+        'P(晴)='+p.toFixed(2)+'　I(晴)='+(isFinite(i1)?ILMath.fmt(i1,3):'∞')+' bit　|　'+
+        'P(雨)='+(1-p).toFixed(2)+'　I(雨)='+(isFinite(i2)?ILMath.fmt(i2,3):'∞')+' bit<br>'+
+        'H(p) = <b>'+ILMath.fmt(H,4)+' bit/天</b>　·　状态：'+st+'<br>'+
+        '<span style="color:#8592ab">记录 1000 天理论最少需 <b style="color:#34d399">'+Math.round(H*1000)+'</b> 比特（朴素记法需 1000 比特）。</span>';
+    });
+  }
+})();
+</script>
+</body>
+</html>
