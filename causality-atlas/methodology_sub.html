@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>方法论深潜馆 · Methodology Deep Annex</title>
+<style>
+  :root{
+    --bg:#0B1437; --card:#132053; --accent:#3B82F6; --ink:#E7ECF5; --muted:#9AA7C7;
+    --gold:#E8A33D; --cyan:#22D3EE; --line:rgba(139,162,199,.18); --radius:14px;
+    --font-sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1000px 600px at 15% -8%,rgba(59,130,246,.16),transparent 60%),var(--bg);
+    color:var(--ink); font-family:var(--font-sans); line-height:1.65; -webkit-font-smoothing:antialiased}
+  body::before{content:""; position:fixed; inset:0; z-index:-1; opacity:.4;
+    background-image:linear-gradient(transparent 95%,rgba(59,130,246,.05) 96%); background-size:42px 42px}
+  .wrap{max-width:1140px; margin:0 auto; padding:0 24px}
+  section{padding:80px 0; border-bottom:1px solid var(--line)}
+  h1{font-size:clamp(30px,4.5vw,46px); font-weight:700; letter-spacing:-.02em}
+  h2{font-size:27px; font-weight:700; margin-bottom:6px}
+  h3{font-size:18px; font-weight:600; margin:22px 0 8px; color:#fff}
+  .sub{color:var(--muted); font-size:15px; margin-top:8px}
+  .eyebrow{font-family:var(--font-mono); font-size:12px; color:var(--gold); letter-spacing:.16em; text-transform:uppercase}
+  .lead{font-size:17px; color:#C9D4EC; max-width:780px}
+  .grid{display:grid; gap:16px; margin-top:22px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  .card{background:linear-gradient(160deg,var(--card),#0E1A40); border:1px solid var(--line);
+    border-radius:var(--radius); padding:20px; transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .card:hover{transform:translateY(-3px); border-color:rgba(59,130,246,.5)}
+  .card h4{font-size:16px; margin-bottom:6px; color:#fff}
+  .card p{font-size:13.5px; color:var(--muted)}
+  .fam{border-top:3px solid var(--accent)} .fam.b{border-top-color:var(--cyan)} .fam.c{border-top-color:var(--gold)}
+  pre{background:#060A18; border:1px solid var(--line); border-radius:12px; padding:18px; overflow:auto;
+    font-family:var(--font-mono); font-size:13px; line-height:1.6; color:#BFE3FF; margin:14px 0}
+  .pre-head{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
+  .copy{background:rgba(59,130,246,.14); border:1px solid rgba(59,130,246,.4); color:#BFE3FF;
+    font-size:12px; padding:5px 12px; border-radius:999px; cursor:pointer}
+  .copy:hover{background:rgba(59,130,246,.3)}
+  table{width:100%; border-collapse:collapse; margin-top:16px; font-size:12.5px}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  th{background:rgba(59,130,246,.1); color:#C9D4EC; font-weight:600}
+  td code{color:var(--gold)}
+  /* 决策树 */
+  .tree{background:#060A18; border:1px solid var(--line); border-radius:var(--radius); padding:24px; margin-top:18px}
+  .tree svg{width:100%; height:auto}
+  .node{fill:#132053; stroke:var(--accent); stroke-width:1.5}
+  .node-t{fill:#E7ECF5; font-family:var(--font-mono); font-size:12px}
+  .edge{stroke:#22D3EE; stroke-width:1.5}
+  .elabel{fill:var(--gold); font-family:var(--font-mono); font-size:11px}
+  .topbar{position:sticky; top:0; z-index:20; backdrop-filter:blur(16px);
+    background:rgba(11,20,55,.75); border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; padding:13px 24px}
+  .brand{font-family:var(--font-mono); font-size:14px; color:#fff}
+  .brand b{color:var(--accent)}
+  .nav a{color:var(--muted); text-decoration:none; font-size:13px; margin-left:15px}
+  .nav a:hover{color:#fff}
+  .overflow-links{display:flex; flex-wrap:wrap; gap:12px; margin-top:24px}
+  .ol{display:inline-flex; align-items:center; gap:8px; background:rgba(59,130,246,.12);
+    border:1px solid rgba(59,130,246,.35); color:#CFE2FF; text-decoration:none; padding:10px 16px;
+    border-radius:999px; font-size:14px; transition:.25s}
+  .ol:hover{background:rgba(59,130,246,.25); transform:translateY(-2px)}
+  @media(max-width:768px){ .g2,.g3{grid-template-columns:1fr} .nav{display:none} }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <div class="brand">Causal<b>Guard</b> · 方法论深潜馆</div>
+  <div class="nav"><a href="#fam">三大家族</a><a href="#methods">12 方法</a>
+  <a href="#tree">选择树</a><a href="#code">代码</a><a href="#annex">互通</a></div>
+</div></div>
+
+<!-- 概览 -->
+<section id="overview"><div class="wrap">
+  <span class="eyebrow">Methodology Deep Annex</span>
+  <h1>方法论深潜馆</h1>
+  <p class="lead">3 大家族 × 12 方法，从传统统计到现代机器学习再到因果图。下方含完整 Python 代码、6 维超表与 8 步方法选择决策树。</p>
+</div></section>
+
+<!-- 三大家族 -->
+<section id="fam"><div class="wrap">
+  <span class="eyebrow">01 · Three Families</span>
+  <h2>三大家族本质差异</h2>
+  <div class="grid g3">
+    <div class="card fam"><h4>A 传统统计</h4><p><code>OLS / PSM / IV / RDD</code>。假设无混杂/强可忽略。强项：理论严谨可解释。死穴：高维失效。</p></div>
+    <div class="card fam b"><h4>B 现代机器学习</h4><p><code>CRF / 深度因果 / CRL</code>。数据驱动+表征学习。强项：高维非线性 CATE。死穴：可解释性差。</p></div>
+    <div class="card fam c"><h4>C 因果图</h4><p><code>DAG / SEM / 因果发现 / 中介</code>。结构已知或可学。强项：识别+反事实+干预。死穴：图错则全错。</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><h4>+ DML 双重机器学习</h4>
+    <p>Neyman 正交 + 交叉拟合，既高维又保理论。本项目形式化引擎对应 C 家族的 DAG/SEM 路径，并在识别层给出最小调整集。</p></div>
+</div></section>
+
+<!-- 12 方法 6 维超表 -->
+<section id="methods"><div class="wrap">
+  <span class="eyebrow">02 · 12 Methods × 6 Dimensions</span>
+  <h2>12 方法 × 6 维超表</h2>
+  <p class="sub">维度：理论严谨 / ATE RMSE / 高维扩展 / 弱点 / 数据集 / 库。</p>
+  <table>
+    <tr><th>方法</th><th>家族</th><th>理论严谨</th><th>ATE RMSE</th><th>高维扩展</th><th>弱点</th><th>典型库</th></tr>
+    <tr><td><code>OLS</code></td><td>A</td><td>高</td><td>中</td><td>低</td><td>混杂敏感</td><td>statsmodels</td></tr>
+    <tr><td><code>PSM</code></td><td>A</td><td>中</td><td>中</td><td>低</td><td>维灾/平衡难</td><td>scikit</td></tr>
+    <tr><td><code>IV</code></td><td>A</td><td>高</td><td>中</td><td>低</td><td>需有效工具</td><td>linearmodels</td></tr>
+    <tr><td><code>RDD</code></td><td>A</td><td>高</td><td>中</td><td>低</td><td>仅断点处</td><td>rdd</td></tr>
+    <tr><td><code>CRF</code></td><td>B</td><td>低</td><td>低</td><td>高</td><td>不可解释</td><td>PyTorch</td></tr>
+    <tr><td><code>深度因果</code></td><td>B</td><td>低</td><td>低</td><td>高</td><td>黑盒</td><td>DoWhy</td></tr>
+    <tr><td><code>CRL</code></td><td>B</td><td>低</td><td>低</td><td>高</td><td>数据饥渴</td><td>TensorFlow</td></tr>
+    <tr><td><code>DAG</code></td><td>C</td><td>高</td><td>—</td><td>中</td><td>图需已知</td><td>CausalGuard</td></tr>
+    <tr><td><code>SEM</code></td><td>C</td><td>高</td><td>—</td><td>中</td><td>假设强</td><td>CausalNex</td></tr>
+    <tr><td><code>因果发现</code></td><td>C</td><td>中</td><td>—</td><td>中</td><td>样本大</td><td>causal-learn</td></tr>
+    <tr><td><code>中介</code></td><td>C</td><td>高</td><td>—</td><td>中</td><td>序贯可忽略</td><td>statsmodels</td></tr>
+    <tr><td><code>DML</code></td><td>D</td><td>高</td><td>低</td><td>高</td><td>需调参</td><td>DoubleML</td></tr>
+  </table>
+</div></section>
+
+<!-- 决策树 -->
+<section id="tree"><div class="wrap">
+  <span class="eyebrow">03 · Decision Tree</span>
+  <h2>8 步因果方法选择决策树</h2>
+  <div class="tree">
+    <svg viewBox="0 0 920 380">
+      <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#22D3EE"/></marker></defs>
+      <line class="edge" x1="150" y1="60" x2="300" y2="40" marker-end="url(#ar2)"/>
+      <line class="edge" x1="150" y1="60" x2="300" y2="120" marker-end="url(#ar2)"/>
+      <line class="edge" x1="470" y1="40" x2="640" y2="20" marker-end="url(#ar2)"/>
+      <line class="edge" x1="470" y1="40" x2="640" y2="80" marker-end="url(#ar2)"/>
+      <line class="edge" x1="470" y1="120" x2="640" y2="140" marker-end="url(#ar2)"/>
+      <line class="edge" x1="470" y1="120" x2="640" y2="200" marker-end="url(#ar2)"/>
+      <line class="edge" x1="300" y1="120" x2="470" y2="120" marker-end="url(#ar2)"/>
+      <rect class="node" x="40" y="42" width="110" height="36" rx="8"/>
+      <text class="node-t" x="50" y="65">①有DAG?</text>
+      <rect class="node" x="300" y="22" width="170" height="36" rx="8"/>
+      <text class="node-t" x="310" y="45">②可识别?</text>
+      <rect class="node" x="300" y="102" width="170" height="36" rx="8"/>
+      <text class="node-t" x="310" y="125">③高维?</text>
+      <rect class="node" x="640" y="2" width="250" height="36" rx="8"/>
+      <text class="node-t" x="650" y="25">④后门→ OLS/PSM；前门→ SEM</text>
+      <rect class="node" x="640" y="62" width="250" height="36" rx="8"/>
+      <text class="node-t" x="650" y="85">⑤不可识别→ 敏感性分析</text>
+      <rect class="node" x="640" y="122" width="250" height="36" rx="8"/>
+      <text class="node-t" x="650" y="145">⑥是→ DML / 深度因果</text>
+      <rect class="node" x="640" y="182" width="250" height="36" rx="8"/>
+      <text class="node-t" x="650" y="205">⑦否→ 传统 IV/RDD</text>
+      <rect class="node" x="300" y="182" width="170" height="36" rx="8"/>
+      <text class="node-t" x="310" y="205">⑧无图→ 因果发现</text>
+      <text class="elabel" x="175" y="46">有</text>
+      <text class="elabel" x="175" y="126">无</text>
+    </svg>
+  </div>
+</div></section>
+
+<!-- 代码 -->
+<section id="code"><div class="wrap">
+  <span class="eyebrow">04 · Code</span>
+  <h2>核心方法 Python 代码</h2>
+
+  <pre id="m1"># ① 后门调整（传统统计 A 家族）
+import statsmodels.formula.api as smf
+# 调整混杂 Z 后估计 T→Y 的 ATE
+model = smf.ols("Y ~ T + Z", data=df).fit()
+ate = model.params["T"]   # 已阻断后门路径</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">OLS 后门调整</span><button class="copy" data-t="m1">复制</button></div>
+
+  <pre id="m2"># ② 工具变量（IV，解决不可观测混杂）
+from linearmodels.iv import IV2SLS
+iv = IV2SLS.from_formula("Y ~ 1 + [T ~ Z_iv]", data=df).fit()
+ate = iv.params["T"]   # Z_iv 只影响 T，不直接影响 Y</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">IV2SLS</span><button class="copy" data-t="m2">复制</button></div>
+
+  <pre id="m3"># ③ 双重机器学习（DML，高维 + 理论保证）
+from sklearn.ensemble import RandomForestRegressor
+from doubleml import DoubleMLPLIV, DoubleMLData
+dml = DoubleMLPLIV(DoubleMLData(df, y_col="Y", d_cols="T", z_cols="Z_iv"),
+                   ml_g=RandomForestRegressor(), ml_m=RandomForestRegressor(),
+                   ml_r=RandomForestRegressor())
+dml.fit(); print(dml.coef)   # Neyman 正交 + 交叉拟合</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">DoubleML</span><button class="copy" data-t="m3">复制</button></div>
+
+  <pre id="m4"># ④ DAG 后门识别（C 家族，CausalGuard 形式化引擎）
+from causalguard import CausalGraph, identify_effect
+g = CausalGraph.from_edges([("Z","T"),("Z","Y"),("T","Y")])
+r = identify_effect(g, "T", "Y")
+r.adjustment_set   # ['Z']  最小充分调整集
+r.estimand         # P(Y|do(T)) = Σ_Z P(Y|T,Z)·P(Z)</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">CausalGuard identify_effect</span><button class="copy" data-t="m4">复制</button></div>
+
+  <pre id="m5"># ⑤ 倾向得分匹配（PSM）
+from sklearn.neighbors import NearestNeighbors
+ps = smf.logit("T ~ Z1 + Z2 + Z3", data=df).fit().predict(df)
+treated = df[df.T==1]; control = df[df.T==0]
+nn = NearestNeighbors(n_neighbors=1).fit(control[["ps"]])
+_, idx = nn.kneighbors(treated[["ps"]])
+ate = (treated.Y - control.iloc[idx.ravel()].Y.reset_index(drop=True)).mean()</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">PSM 一对一匹配</span><button class="copy" data-t="m5">复制</button></div>
+
+  <pre id="m6"># ⑥ 结构方程模型（SEM，C 家族反事实）
+import numpy as np
+def sem_sample(n=20000, seed=0):
+    rng = np.random.default_rng(seed)
+    Z = rng.normal(0,1,n); T = rng.normal(2*Z,1,n); Y = 0.5*T + 2*Z + 0.3*rng.normal(0,1,n)
+    return T, Y
+T, Y = sem_sample()
+ate = Y[T>0].mean() - Y[T<=0].mean()   # 逼近真实 +0.500
+
+# ⑦ 因果发现（无图时从数据学结构）
+from causallearn.search.FGES import fges
+# data: (n_samples, n_vars)  → 输出因果有向无环图
+discovered = fges(data)   # 配合领域知识修正后喂给 identify_effect</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">SEM + 因果发现</span><button class="copy" data-t="m6">复制</button></div>
+
+  <h3 style="margin-top:26px">家族协作范式</h3>
+  <div class="grid g3">
+    <div class="card fam"><h4>C 家族定结构</h4><p>先用 DAG/因果发现确定因果方向，这是后续一切识别的前提。</p></div>
+    <div class="card fam b"><h4>A/D 家族估效应</h4><p>结构既定后，用 OLS/PSM/DML 在识别出的调整集上估计 ATE 或 CATE。</p></div>
+    <div class="card fam c"><h4>B 家族上高维</h4><p>当变量维度爆炸且结构已知，用深度因果/CRL 捕捉非线性异质效应。</p></div>
+  </div>
+  <p class="sub">CausalGuard 形式化引擎落在"定结构+识别"这一环，补上 A/D/B 家族缺的可计算因果图基础。</p>
+</div></section>
+
+<!-- 互通 -->
+<section id="annex" style="border-bottom:none"><div class="wrap">
+  <span class="eyebrow">Interop</span>
+  <h2>返回所有主馆</h2>
+  <div class="overflow-links">
+    <a class="ol" href="causality_s01_tech_deepblue.html">科技深蓝主馆</a>
+    <a class="ol" href="causality_s02_academic_ink.html">学术墨蓝主馆</a>
+    <a class="ol" href="causality_s03_glass_sky.html">玻璃天青主馆</a>
+    <a class="ol" href="applications_sub.html">→ 应用深潜馆</a>
+    <a class="ol" href="causality_hub_master.html">⌂ HUB 总入口</a>
+  </div>
+</div></section>
+
+<script>
+  document.querySelectorAll('.copy').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const t=document.getElementById(b.dataset.t).innerText;
+      navigator.clipboard.writeText(t).then(()=>{ b.textContent='已复制'; setTimeout(()=>b.textContent='复制',1400); });
+    });
+  });
+</script>
+</body>
+</html>
