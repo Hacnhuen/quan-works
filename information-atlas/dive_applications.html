@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深潜馆 · 应用 | ONESHOT 信息论</title>
+<style>
+:root{--bg-0:#04120c;--bg-1:#08211a;--bg-2:#0b3128;--ink:#e9fff5;--ink-dim:#8fd9c2;--line:rgba(70,210,160,.22);--accent:#1fd6a0;--accent-2:#5cffd0;--glow:rgba(31,214,160,.4);--glass:rgba(11,49,40,.45);--radius:20px;--maxw:1120px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif;background:var(--bg-0);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1000px 800px at 14% 10%,rgba(31,214,160,.22),transparent 60%),linear-gradient(160deg,var(--bg-0),var(--bg-1) 55%,var(--bg-2))}
+.fluid-bg::before{content:"";position:absolute;width:44vw;height:44vw;left:-6vw;top:-4vw;border-radius:50%;filter:blur(70px);background:radial-gradient(circle,rgba(31,214,160,.4),transparent 70%);animation:f 26s ease-in-out infinite}
+@keyframes f{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.07)}66%{transform:translate(-3vw,2vh) scale(.97)}}
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);background:linear-gradient(180deg,rgba(4,18,12,.9),rgba(4,18,12,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:15px}.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:80px 0 50px;text-align:center}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:22px;background:var(--glass)}
+.hero h1{font-size:clamp(32px,5.4vw,60px);font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#a6ffe0 60%,#5cffd0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:680px;margin:22px auto 0;color:var(--ink-dim);font-size:16px}
+.section{padding:54px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px}.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px}.section-head h2{font-size:clamp(22px,3.2vw,34px);font-weight:750}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:26px;backdrop-filter:blur(16px);box-shadow:0 20px 50px -28px rgba(0,0,0,.8);transition:transform .4s,border-color .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(92,255,208,.45)}
+.grid{display:grid;gap:20px}.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:880px){.g2{grid-template-columns:1fr}}
+.card h3{font-size:18px;font-weight:700;margin-bottom:10px;color:#fff}.card p{color:var(--ink-dim);font-size:14px}.card .tag{display:inline-block;font-size:11px;color:var(--accent-2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.callout{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(120deg,rgba(31,214,160,.12),rgba(92,255,208,.05));margin:20px 0;font-size:14px;color:#cffaec}.callout b{color:#fff}
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal-up.in{opacity:1;transform:none}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:36px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div>
+<header class="topbar"><div class="inner">
+  <div class="brand">ONESHOT · 信息论图集<small>深潜馆 · 应用</small></div>
+  <nav class="nav"><a href="#llm">LLM</a><a href="#quantum">量子</a><a href="#causal">因果</a><a href="#compress">压缩</a><a href="hub_master.html">↗ HUB</a></nav>
+</div></header>
+<div class="wrap">
+  <section class="hero"><span class="kicker">Deep Dive · Applications</span><h1>信息论用在哪里</h1><p class="lead">深潜馆之二：从大语言模型到量子通信，从因果发现到数据压缩——信息论是当代 AI 与物理的通用语言。</p></section>
+
+  <section class="section" id="llm">
+    <div class="section-head"><span class="num">01</span><h2>大语言模型</h2></div>
+    <div class="grid g2">
+      <div class="glass card"><span class="tag">SFT</span><h3>交叉熵训练</h3><p>最小化 −log p(token|context)，等价于最大化数据对数似然。困惑度 = exp(交叉熵)，是训练进度仪表。</p></div>
+      <div class="glass card"><span class="tag">对齐</span><h3>RLHF / DPO 的 KL</h3><p>奖励 = 任务分 − β·KL(策略‖参考)。β 即信息瓶颈的权衡旋钮，约束策略别跑太远。</p></div>
+      <div class="glass card"><span class="tag">蒸馏</span><h3>最小化 KL</h3><p>知识蒸馏让学生分布逼近教师分布，是 KL 最小化的直接应用。</p></div>
+      <div class="glass card"><span class="tag">IB 视角</span><h3>强压弱解</h3><p>2025 研究：LLM 把输入压缩进"任务空间"但解压不足。IC-ICL、TS-FT 增强解压缩，Acc 显著提升。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="quantum">
+    <div class="section-head"><span class="num">02</span><h2>量子信息</h2></div>
+    <div class="grid g2">
+      <div class="glass card"><span class="tag">容量</span><h3>Holevo 界</h3><p>经典可读出信息 ≤ 冯·诺依曼熵。量子态能存很多，但测量限制下最多取 1 bit/qubit。</p></div>
+      <div class="glass card"><span class="tag">密码</span><h3>不克隆 + 纠缠</h3><p>未知量子态不可复制，纠缠的"专一性"使窃听必留痕迹，构成 QKD 安全基础。</p></div>
+      <div class="glass card"><span class="tag">传输</span><h3>隐形传态</h3><p>共享纠缠 + 2 bit 经典信息，在远端重建未知量子态——信息论版的"传真"。</p></div>
+      <div class="glass card"><span class="tag">纠错</span><h3>量子信道编码</h3><p>面对退相干，量子纠错码用冗余保护逻辑 qubit，对应量子版信道编码定理。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="causal">
+    <div class="section-head"><span class="num">03</span><h2>因果发现</h2></div>
+    <div class="grid g2">
+      <div class="glass card"><span class="tag">转移熵</span><h3>有向信息流</h3><p>TE(X→Y)=I(Y_future;X_past | Y_past) 度量 X 对 Y 的因果贡献，比互信息多了时间方向。</p></div>
+      <div class="glass card"><span class="tag">Granger</span><h3>与 Granger 因果</h3><p>线性高斯下转移熵退化为 Granger 因果；非线性情形转移熵更一般。</p></div>
+      <div class="glass card"><span class="tag">有向信息</span><h3>因果链</h3><p>有向信息 I(Xⁿ→Yⁿ) 衡量 X 序列对 Y 序列的因果影响，用于神经与社交网络。</p></div>
+      <div class="glass card"><span class="tag">do-演算</span><h3>信息论接口</h3><p>Pearl 的 do-演算与互信息结合，可量化干预引入的信息增益，桥接因果与信息。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="compress">
+    <div class="section-head"><span class="num">04</span><h2>压缩与编码</h2></div>
+    <div class="grid g2">
+      <div class="glass card"><span class="tag">无损</span><h3>Huffman / LZ</h3><p>逼近熵 H(X)，是 ZIP、PNG、GIF 的心脏。算术编码更逼近香农极限。</p></div>
+      <div class="glass card"><span class="tag">有损</span><h3>率失真工程</h3><p>JPEG（DCT+量化）、MP3（心理声学）、H.265（帧间预测）均为 R(D) 的实用化。</p></div>
+      <div class="glass card"><span class="tag">信道</span><h3>逼近容量</h3><p>Polar/LDPC/Turbo 码在 R<C 下把误码率压到近乎为零，5G 与深空通信受益。</p></div>
+      <div class="glass card"><span class="tag">神经压缩</span><h3>Learned Compression</h3><p>用神经网络学概率模型 p(x)，熵编码代价 = −log p(x)，把率失真变成可微优化。</p></div>
+    </div>
+    <div class="callout"><b>贯穿线：</b>所有应用都回到同一个坐标——(率, 失真) 或 (保留信息, 丢弃信息)。信息论提供了度量与上限，工程负责逼近。</div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="num">05</span><h2>应用词条 · 扩展字典</h2></div>
+    <div class="grid g3">
+      <div class="glass card"><span class="tag">LLM SFT</span><h3>LLM 训练</h3><p>交叉熵=负对数似然，等价于最大化数据对数似然。</p></div>
+      <div class="glass card"><span class="tag">Perplexity</span><h3>困惑度</h3><p>exp(交叉熵)，训练进度的标准仪表。</p></div>
+      <div class="glass card"><span class="tag">RLHF</span><h3>人类反馈</h3><p>奖励 − β·KL，对齐在有用性与贴近参考间权衡。</p></div>
+      <div class="glass card"><span class="tag">DPO</span><h3>直接偏好</h3><p>隐式 KL 约束，免去显式奖励模型。</p></div>
+      <div class="glass card"><span class="tag">Distillation</span><h3>知识蒸馏</h3><p>学生分布逼近教师，最小化 KL 散度。</p></div>
+      <div class="glass card"><span class="tag">Quantum Channel</span><h3>量子信道</h3><p>容量受 Holevo 界约束，可存多读少。</p></div>
+      <div class="glass card"><span class="tag">QKD</span><h3>量子密钥</h3><p>不可克隆 + 纠缠专一性构成安全基础。</p></div>
+      <div class="glass card"><span class="tag">Transfer Entropy</span><h3>转移熵</h3><p>有向信息流度量，比互信息多时间方向。</p></div>
+      <div class="glass card"><span class="tag">Granger</span><h3>格兰杰因果</h3><p>线性高斯下退化为转移熵。</p></div>
+      <div class="glass card"><span class="tag">do-Calculus</span><h3>do 演算</h3><p>干预推断，与互信息可桥接。</p></div>
+      <div class="glass card"><span class="tag">Neural Compress</span><h3>神经压缩</h3><p>学 p(x)，编码代价=−log p(x)，可微端到端。</p></div>
+      <div class="glass card"><span class="tag">IB Apps</span><h3>IB 应用</h3><p>表征学习、特征选择、量化皆可用 IB 视角。</p></div>
+    </div>
+  </section>
+</div>
+<footer><span class="pill">ONESHOT v2.0</span><span class="pill">深潜馆 · 应用</span><span class="pill">信源：arXiv:2501.00999 / SEP 量子 / MDPI 熵</span></footer>
+<script>const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));</script>
+</body>
+</html>
