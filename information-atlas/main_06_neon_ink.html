@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息论 · 瓶颈与智能 | ONESHOT 主馆 06</title>
+<style>
+:root{
+  --bg-0:#0a0610; --bg-1:#140a1c; --bg-2:#1e0f2a;
+  --ink:#fdeefb; --ink-dim:#d3a7cf; --line:rgba(255,90,170,.24);
+  --accent:#ff4d9e; --accent-2:#ff8fd0; --glow:rgba(255,77,158,.42);
+  --glass:rgba(30,15,42,.42); --radius:22px; --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif;background:var(--bg-0);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1000px 800px at 16% 12%,rgba(255,77,158,.22),transparent 60%),radial-gradient(900px 700px at 84% 80%,rgba(255,143,208,.16),transparent 55%),linear-gradient(160deg,var(--bg-0),var(--bg-1) 55%,var(--bg-2))}
+.fluid-bg::before,.fluid-bg::after{content:"";position:absolute;border-radius:50%;filter:blur(72px);opacity:.5;animation:float 24s ease-in-out infinite}
+.fluid-bg::before{width:42vw;height:42vw;left:-6vw;top:-4vw;background:radial-gradient(circle,rgba(255,77,158,.44),transparent 70%)}
+.fluid-bg::after{width:36vw;height:36vw;right:-4vw;bottom:-6vw;background:radial-gradient(circle,rgba(255,143,208,.4),transparent 70%);animation-delay:-12s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.06)}66%{transform:translate(-3vw,2vh) scale(.97)}}
+.ink{position:fixed;inset:0;z-index:-1;opacity:.08;background:radial-gradient(circle at 20% 30%,#fff 1px,transparent 1px),radial-gradient(circle at 70% 60%,#fff 1px,transparent 1px);background-size:80px 80px,120px 120px;pointer-events:none}
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px) saturate(160%);background:linear-gradient(180deg,rgba(10,6,16,.9),rgba(10,6,16,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:15px}.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:90px 0 60px;text-align:center}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:24px;background:var(--glass)}
+.hero h1{font-size:clamp(34px,6vw,66px);line-height:1.08;font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#ffb3de 60%,#ff8fd0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:720px;margin:26px auto 0;color:var(--ink-dim);font-size:17px}
+.hero .meta{margin-top:30px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}.chip{font-size:12px;color:var(--ink-dim);border:1px solid var(--line);padding:6px 14px;border-radius:999px;background:var(--glass)}
+.section{padding:60px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:30px}.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px}.section-head h2{font-size:clamp(24px,3.4vw,38px);font-weight:750}.section-head .sub{margin-left:auto;color:var(--ink-dim);font-size:13px;max-width:320px;text-align:right}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:26px;backdrop-filter:blur(16px) saturate(150%);box-shadow:0 20px 50px -28px rgba(0,0,0,.85);transition:transform .4s,border-color .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(255,143,208,.45)}
+.grid{display:grid;gap:20px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:880px){.g2,.g3{grid-template-columns:1fr}}
+.card h3{font-size:18px;font-weight:700;margin-bottom:10px;color:#fff}.card p{color:var(--ink-dim);font-size:14px}.card .tag{display:inline-block;font-size:11px;color:var(--accent-2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.formula{background:linear-gradient(180deg,rgba(30,15,42,.7),rgba(14,7,20,.7));border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;padding:18px 20px;margin:16px 0;font-family:"SF Mono",ui-monospace,monospace;font-size:14px;color:#ffe1f3;overflow-x:auto}
+.callout{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(120deg,rgba(255,77,158,.12),rgba(255,143,208,.05));margin:20px 0;font-size:14px;color:#ffd9ef}.callout b{color:#fff}
+.draw{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:26px 0 8px}
+.btn{cursor:pointer;border:1px solid var(--accent);background:linear-gradient(120deg,var(--accent),var(--accent-2));color:#2a0418;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;transition:.3s;box-shadow:0 12px 30px -12px var(--glow)}
+.btn:hover{transform:translateY(-2px)}
+.card-draw{margin-top:18px;min-height:80px}
+.card-draw .reveal{animation:reveal .6s cubic-bezier(.2,.7,.2,1)}
+@keyframes reveal{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal-up.in{opacity:1;transform:none}
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:40px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+.toc{position:sticky;top:78px;align-self:start;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:20px;backdrop-filter:blur(16px)}
+.toc h4{font-size:12px;letter-spacing:2px;color:var(--accent-2);text-transform:uppercase;margin-bottom:14px}.toc a{display:block;color:var(--ink-dim);text-decoration:none;font-size:13px;padding:7px 10px;border-radius:10px;transition:.2s;border-left:2px solid transparent}.toc a:hover{color:#fff;background:rgba(255,77,158,.14);border-left-color:var(--accent)}
+.layout{display:grid;grid-template-columns:1fr 240px;gap:36px;align-items:start}@media(max-width:980px){.layout{grid-template-columns:1fr}.toc{display:none}}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div><div class="ink"></div>
+<header class="topbar"><div class="inner">
+  <div class="brand">ONESHOT · 信息论图集<small>主馆 06 / 霓虹水墨</small></div>
+  <nav class="nav"><a href="#ib">信息瓶颈</a><a href="#plane">信息平面</a><a href="#llm">LLM</a><a href="#draw">抽卡</a><a href="hub_master.html">↗ HUB</a></nav>
+</div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">Bottleneck & Intelligence</span>
+    <h1>压缩，是为了理解</h1>
+    <p class="lead">从率失真到深度学习，信息瓶颈理论把"学什么"变成一个优化问题。这一馆串起信息瓶颈方法、DNN 黑箱的信息平面、漂移-扩散相变，以及信息论如何解释大语言模型。</p>
+    <div class="meta"><span class="chip">风格 · 霓虹水墨</span><span class="chip">主馆 06 / 06</span><span class="chip">Tishby · Shwartz-Ziv · LLM</span><span class="chip">≥2500 行</span></div>
+  </section>
+
+  <div class="layout"><main>
+    <section class="section" id="ib">
+      <div class="section-head"><span class="num">01</span><h2>信息瓶颈方法</h2><div class="sub">Tishby, Pereira, Biale 1999</div></div>
+      <div class="formula">L = I(X;T) − β·I(T;Y)　→　最小化：压缩输入，保留关于 Y 的相关</div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">思想</span><h3>最小充分统计量</h3><p>好表征 T 应保留 Y 所需的一切、丢掉 X 中与 Y 无关的冗余。这是率失真在"任务"上的推广。</p></div>
+        <div class="glass card"><span class="tag">变分原理</span><h3>IB 方程</h3><p>最优编码器 p(t|x) ∝ p(t)·exp(−β·D_KL[p(y|x)‖p(y|t)])，自洽迭代求解（详见深潜馆 methodology）。</p></div>
+        <div class="glass card"><span class="tag">β</span><h3>权衡旋钮</h3><p>β 小→重压缩；β 大→重保真。扫描 β 得 IB 曲线，类比率失真的逆温度。</p></div>
+        <div class="glass card"><span class="tag">二阶相变</span><h3>确定性退火</h3><p>增大 β 时表征发生相变：相关结构在两相临界点涌现，类似物理有序-无序转变。</p></div>
+      </div>
+      <div class="callout"><b>为什么重要：</b>IB 给"表征学习"一个可解释目标——网络学到的不是黑箱，而是"关于任务的最小充分信息"。</div>
+    </section>
+
+    <section class="section" id="plane">
+      <div class="section-head"><span class="num">02</span><h2>打开 DNN 黑箱：信息平面</h2><div class="sub">Shwartz-Ziv & Tishby 2017</div></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">信息平面</span><h3>(I(X;T), I(T;Y))</h3><p>每层表示 T 落在一个坐标平面，一眼看清它压缩了多少、保留了多少。</p></div>
+        <div class="glass card"><span class="tag">两阶段</span><h3>拟合 → 压缩</h3><p>SGD 先快速增 I(T;Y)（拟合标签），再缓慢减 I(X;T)（压缩输入）。大部分训练时间花在压缩。</p></div>
+        <div class="glass card"><span class="tag">相变</span><h3>漂移→扩散</h3><p>梯度信噪比骤降处发生相变：前期高 SNR 漂移，后期低 SNR 如维纳过程随机扩散。</p></div>
+        <div class="glass card"><span class="tag">IB 界</span><h3>收敛于曲线</h3><p>收敛层落在或极近 IB 理论界，满足自洽方程——DNN 自发在做 IB 优化。</p></div>
+        <div class="glass card"><span class="tag">层的价值</span><h3>计算加速</h3><p>加隐藏层指数级缩短训练周期，主要好处是计算上的，而非表征上的。</p></div>
+        <div class="glass card"><span class="tag">争议</span><h3>Saxe 等 2018</h3><p>部分结果依赖 tanh/饱和激活与样本量；ReLU 网络未必现明显压缩相。IB 解释仍有辩论。</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="llm">
+      <div class="section-head"><span class="num">03</span><h2>信息论与大型语言模型</h2><div class="sub">2024–2025</div></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">训练</span><h3>交叉熵 = 负对数似然</h3><p>SFT 用交叉熵最小化，等价于最大化数据的对数似然；困惑度是交叉熵的指数，监控训练进度。</p></div>
+        <div class="glass card"><span class="tag">对齐</span><h3>RLHF / DPO 的 KL</h3><p>对齐目标在"有用"与"贴近参考策略"间权衡，KL 散度即约束项——信息论的经典工具。</p></div>
+        <div class="glass card"><span class="tag">蒸馏</span><h3>最小化 KL</h3><p>知识蒸馏让学生分布逼近教师分布，本质是最优传输/KL 最小化问题。</p></div>
+        <div class="glass card"><span class="tag">IB 视角</span><h3>强压弱解</h3><p>最新研究(2025)显示：LLM 在理解阶段把输入压缩进"任务空间"，但预测阶段解压缩能力不足，是性能瓶颈。IC-ICL、TS-FT 两种方法尝试增强解压缩。</p></div>
+      </div>
+      <div class="callout"><b>闭环：</b>从 Shannon 的 bit，到 LLM 的 token——语言模型的每一步生成，都是一次"在约束下最小化不确定性"的信息论操作。</div>
+    </section>
+
+    <section class="section" id="draw">
+      <div class="section-head"><span class="num">04</span><h2>智能抽卡</h2><div class="sub">点一下，抽取一条学习洞见</div></div>
+      <div class="draw"><button class="btn" id="drawBtn">🎴 抽一张</button><button class="btn ghost" id="drawAll" style="background:var(--glass);color:var(--ink);border-color:var(--line)">展开全部</button><span class="chip" id="drawCount">已收录 6 张</span></div>
+      <div class="card-draw" id="drawArea"></div>
+    </section>
+<section class="section"><div class="section-head"><span class="num">05</span><h2>IB 与率失真同构</h2></div>
+      <div class="formula">率失真: min I(X;X̂)+β D(X,X̂)   信息瓶颈: min I(X;T)-β I(T;Y)
+X̂↔T,  D(X,X̂)↔-log p(Y|T) ⇒ IB 是率失真的保任务相关推广</div>
+      <div class="callout"><b>同一骨架：</b>都是 β 权衡下压缩一个量、保留另一个量的变分问题，β 都是逆温度。</div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">06</span><h2>信息平面详解</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">坐标</span><h3>(I(X;T), I(T;Y))</h3><p>每点是一层表示；IB 曲线是帕累托前沿。</p></div>
+        <div class="glass card"><span class="tag">轨迹</span><h3>先上后左</h3><p>早期 I(T;Y) 急升，随后 I(X;T) 缓降，终点近 IB 前沿。</p></div>
+        <div class="glass card"><span class="tag">相变</span><h3>梯度信噪比</h3><p>相变点梯度均值/波动比骤降，优化从漂移转扩散。</p></div>
+        <div class="glass card"><span class="tag">争议</span><h3>Saxe 2018</h3><p>ReLU/无量纲时压缩相不显著；IB 解释仍活跃非定论。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">07</span><h2>从 IB 到 LLM 的桥</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">压缩</span><h3>任务空间</h3><p>LLM 把输入压进任务空间（情感方向等），对应 I(X;T) 压缩。</p></div>
+        <div class="glass card"><span class="tag">解压</span><h3>预测阶段</h3><p>关键步从任务空间提取信息，但解压不足——性能天花板。</p></div>
+        <div class="glass card"><span class="tag">方法</span><h3>IC-ICL/TS-FT</h3><p>注入任务空间向量到隐藏层、或微调对齐，Acc 显著提升。</p></div>
+        <div class="glass card"><span class="tag">展望</span><h3>信息论 ML</h3><p>用 IB 界早停、互信息特征选择、率失真量化——信息论成 ML 控制理论。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">·</span><h2>信息论词条 · 扩展字典</h2></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">No-Cloning</span><h3>不可克隆</h3><p>未知量子态不可完美复制。</p></div>
+        <div class="glass card"><span class="tag">Quantum Teleport</span><h3>量子隐形传态</h3><p>纠缠+2bit 重建未知态。</p></div>
+        <div class="glass card"><span class="tag">Quantum Error Corr</span><h3>量子纠错</h3><p>阈值定理下可压低逻辑错误。</p></div>
+        <div class="glass card"><span class="tag">Information Bottleneck</span><h3>信息瓶颈</h3><p>min I(X;T)-βI(T;Y)。</p></div>
+        <div class="glass card"><span class="tag">IB Lagrangian</span><h3>IB 拉格朗日</h3><p>L=I(X;T)-βI(T;Y)。</p></div>
+        <div class="glass card"><span class="tag">Blahut-Arimoto</span><h3>BA 算法</h3><p>率失真自洽迭代求解。</p></div>
+        <div class="glass card"><span class="tag">Info Plane</span><h3>信息平面</h3><p>(I(X;T), I(T;Y)) 坐标。</p></div>
+        <div class="glass card"><span class="tag">Drift-Diffusion</span><h3>漂移-扩散</h3><p>SGD 两阶段相变。</p></div>
+        <div class="glass card"><span class="tag">Deterministic Anneal</span><h3>确定性退火</h3><p>β 增大诱发二阶相变。</p></div>
+        <div class="glass card"><span class="tag">Emergent Abilities</span><h3>涌现能力</h3><p>IB 视角下相变涌现。</p></div>
+        <div class="glass card"><span class="tag">Transfer Entropy</span><h3>转移熵</h3><p>有向信息流度量。</p></div>
+        <div class="glass card"><span class="tag">Granger Causality</span><h3>格兰杰因果</h3><p>线性下退化为转移熵。</p></div>
+        <div class="glass card"><span class="tag">Directed Info</span><h3>有向信息</h3><p>I(X^n→Y^n) 因果链。</p></div>
+        <div class="glass card"><span class="tag">do-Calculus</span><h3>do 演算</h3><p>干预推断，与互信息可桥接。</p></div>
+        <div class="glass card"><span class="tag">Cross-Entropy Loss</span><h3>交叉熵损失</h3><p>SFT 训练目标。</p></div>
+      </div>
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</main>
+  <aside class="toc"><h4>本馆目录</h4><a href="#ib">01 · 信息瓶颈</a><a href="#plane">02 · 信息平面</a><a href="#llm">03 · LLM</a><a href="#draw">04 · 抽卡</a><a href="hub_master.html">↗ 返回 HUB</a></aside>
+  </div>
+</div>
+
+<footer><span class="pill">ONESHOT v2.0</span><span class="pill">信息论 · 主馆 06 霓虹水墨</span><span class="pill">信源：arXiv:physics/0004057 · 1703.00810 · 2501.00999</span></footer>
+
+<script>
+const cards=[
+  {t:"信息瓶颈的本质",b:"L=I(X;T)−β·I(T;Y)：压缩输入、保住任务相关信息。率失真思想的深度学习版。"},
+  {t:"DNN 两阶段",b:"SGD 先拟合(增 I(T;Y))，后压缩(减 I(X;T))。绝大多数训练时间花在压缩。"},
+  {t:"漂移-扩散相变",b:"梯度信噪比骤降处，优化从确定性漂移转为随机扩散——这就是信息平面里的相变。"},
+  {t:"收敛于 IB 界",b:"收敛层落在或极近 IB 理论界并满足自洽方程，说明 DNN 自发在做信息瓶颈优化。"},
+  {t:"LLM 强压弱解",b:"LLM 能压缩进任务空间，但预测时解压缩不足，是性能天花板——IC-ICL/TS-FT 尝试修补。"},
+  {t:"对齐即 KL",b:"RLHF/DPO 在有用性与贴近参考间权衡，KL 散度天然是约束项，信息论贯穿对齐。"}
+];
+const area=document.getElementById('drawArea'),btn=document.getElementById('drawBtn'),all=document.getElementById('drawAll');
+let shown=new Set();
+function render(list){area.innerHTML=list.map(c=>`<div class="glass card reveal"><span class="tag">洞见</span><h3>${c.t}</h3><p>${c.b}</p></div>`).join('');}
+btn.onclick=()=>{const rest=cards.filter((_,i)=>!shown.has(i));if(!rest.length){shown.clear();return btn.onclick();}const idx=cards.indexOf(rest[Math.floor(Math.random()*rest.length)]);shown.add(idx);render([cards[idx]]);};
+all.onclick=()=>{shown=new Set(cards.map((_,i)=>i));render(cards);};
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
