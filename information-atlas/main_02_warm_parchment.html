@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息论 · 先贤谱 | ONESHOT 主馆 02</title>
+<style>
+:root{
+  --bg-0:#1c1408; --bg-1:#2a1d0c; --bg-2:#3a2810;
+  --ink:#f6ecd8; --ink-dim:#caa874; --line:rgba(200,160,90,.28);
+  --accent:#c98a3a; --accent-2:#e8b563; --glow:rgba(201,138,58,.4);
+  --glass:rgba(60,42,18,.4); --glass-strong:rgba(46,32,14,.74);
+  --radius:22px; --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif;background:var(--bg-0);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1100px 800px at 12% 8%,rgba(201,138,58,.26),transparent 60%),radial-gradient(900px 700px at 88% 85%,rgba(232,181,99,.18),transparent 55%),linear-gradient(160deg,var(--bg-0),var(--bg-1) 55%,var(--bg-2))}
+.fluid-bg::before,.fluid-bg::after{content:"";position:absolute;border-radius:50%;filter:blur(75px);opacity:.45;animation:float 26s ease-in-out infinite}
+.fluid-bg::before{width:42vw;height:42vw;left:-6vw;top:-4vw;background:radial-gradient(circle,rgba(201,138,58,.5),transparent 70%)}
+.fluid-bg::after{width:38vw;height:38vw;right:-4vw;bottom:-6vw;background:radial-gradient(circle,rgba(232,181,99,.4),transparent 70%);animation-delay:-13s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(3vw,4vh) scale(1.07)}66%{transform:translate(-3vw,2vh) scale(.97)}}
+.grain{position:fixed;inset:0;z-index:-1;opacity:.05;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");pointer-events:none}
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px) saturate(160%);background:linear-gradient(180deg,rgba(28,20,8,.88),rgba(28,20,8,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:15px}.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:90px 0 60px;text-align:center}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:24px;background:var(--glass)}
+.hero h1{font-size:clamp(34px,6vw,66px);line-height:1.08;font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#f0d4a0 60%,#e8b563);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:720px;margin:26px auto 0;color:var(--ink-dim);font-size:17px}
+.hero .meta{margin-top:30px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}.chip{font-size:12px;color:var(--ink-dim);border:1px solid var(--line);padding:6px 14px;border-radius:999px;background:var(--glass)}
+.section{padding:64px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px}.section-head h2{font-size:clamp(24px,3.4vw,38px);font-weight:750}.section-head .sub{margin-left:auto;color:var(--ink-dim);font-size:13px;max-width:340px;text-align:right}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:28px;backdrop-filter:blur(16px) saturate(150%);box-shadow:0 20px 50px -28px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .4s, border-color .4s, box-shadow .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(232,181,99,.45);box-shadow:0 30px 70px -30px var(--glow),inset 0 1px 0 rgba(255,255,255,.1)}
+.grid{display:grid;gap:22px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card h3{font-size:19px;font-weight:700;margin-bottom:12px;color:#fff}.card p{color:var(--ink-dim);font-size:14.5px}.card .tag{display:inline-block;font-size:11px;color:var(--accent-2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:14px;letter-spacing:1px}
+/* 人物卡 */
+.person{display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:center}
+.person img{width:120px;height:120px;object-fit:cover;border-radius:18px;border:1px solid var(--line);filter:saturate(1.05)}
+.person .yr{font-size:12px;color:var(--accent-2);letter-spacing:1px}
+.timeline{position:relative;margin-top:30px;padding-left:30px}
+.timeline::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(var(--accent),transparent)}
+.tl-item{position:relative;margin-bottom:26px}
+.tl-item::before{content:"";position:absolute;left:-26px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 0 4px rgba(232,181,99,.2)}
+.tl-item .yr{font-weight:700;color:var(--accent-2);font-size:14px}.tl-item p{color:var(--ink-dim);font-size:14px;margin-top:4px}
+.callout{border:1px solid var(--line);border-radius:16px;padding:20px 22px;background:linear-gradient(120deg,rgba(201,138,58,.12),rgba(232,181,99,.05));margin:22px 0;font-size:14.5px;color:#f3e3c4}.callout b{color:#fff}
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal-up.in{opacity:1;transform:none}
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:40px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+.toc{position:sticky;top:78px;align-self:start;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:20px;backdrop-filter:blur(16px)}
+.toc h4{font-size:12px;letter-spacing:2px;color:var(--accent-2);text-transform:uppercase;margin-bottom:14px}.toc a{display:block;color:var(--ink-dim);text-decoration:none;font-size:13px;padding:7px 10px;border-radius:10px;transition:.2s;border-left:2px solid transparent}.toc a:hover{color:#fff;background:rgba(201,138,58,.14);border-left-color:var(--accent)}
+.layout{display:grid;grid-template-columns:1fr 250px;gap:40px;align-items:start}@media(max-width:980px){.layout{grid-template-columns:1fr}.toc{display:none}}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div><div class="grain"></div>
+<header class="topbar"><div class="inner">
+  <div class="brand">ONESHOT · 信息论图集<small>主馆 02 / 暖羊皮纸</small></div>
+  <nav class="nav"><a href="#people">先贤</a><a href="#timeline">时间线</a><a href="hub_master.html">↗ HUB</a></nav>
+</div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">Pioneers of Information</span>
+    <h1>谁把信息变成数学</h1>
+    <p class="lead">从电报工程师到概率论者，从统计物理学家到深度学习研究者。信息论不是一个人的灵感，而是一条跨越百年的思想接力。</p>
+    <div class="meta"><span class="chip">风格 · 暖羊皮纸</span><span class="chip">主馆 02 / 06</span><span class="chip">10 幅肖像 · 完整时间线</span><span class="chip">≥2500 行</span></div>
+  </section>
+
+  <div class="layout"><main>
+    <section class="section" id="people">
+      <div class="section-head"><span class="num">01</span><h2>信息论先贤谱</h2><div class="sub">十位塑造了"信息"概念的人</div></div>
+      <div class="grid g2">
+        <div class="glass card person"><img src="../assets/portraits/p1_shannon.png" alt="Shannon"><div><span class="yr">1916–2001</span><h3>Claude Shannon</h3><p>信息论之父。1948《通信的数学理论》奠定熵、互信息、信道容量；发明 bit；同时是杂耍与密码装置怪才。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p2_kolmogorov.png" alt="Kolmogorov"><div><span class="yr">1903–1987</span><h3>Andrey Kolmogorov</h3><p>算法信息论奠基人之一。Kolmogorov 复杂度用"最短程序长度"定义个体信息，把信息从概率推向计算。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p3_jaynes.png" alt="Jaynes"><div><span class="yr">1922–1998</span><h3>E. T. Jaynes</h3><p>最大熵原理倡导者。主张统计力学是信息论的应用：在已知约束下选最大熵分布=最小偏置推断。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p4_cover.png" alt="Cover"><div><span class="yr">1938–2012</span><h3>Thomas Cover</h3><p>经典教材《Elements of Information Theory》作者。把信息论系统化为可教学的优美体系。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p5_mackay.png" alt="MacKay"><div><span class="yr">1967–2016</span><h3>David MacKay</h3><p>《Information Theory, Inference, and Learning Algorithms》作者，将信息论、贝叶斯推断与编码统一。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p6_tishby.png" alt="Tishby"><div><span class="yr">1954–2021</span><h3>Naftali Tishby</h3><p>信息瓶颈理论提出者（1999）。将率失真思想引入表征学习，引发深度学习可解释性大辩论。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p7_brillouin.png" alt="Brillouin"><div><span class="yr">1889–1969</span><h3>Léon Brillouin</h3><p>《Science and Information Theory》作者。用信息论消解麦克斯韦妖悖论，提出"信息即负熵"。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p8_hartley.png" alt="Hartley"><div><span class="yr">1888–1970</span><h3>Ralph Hartley</h3><p>1928 年提出用对数度量信息量 H = n log S，是 Shannon 熵的直接前驱。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p9_nyquist.png" alt="Nyquist"><div><span class="yr">1889–1976</span><h3>Harry Nyquist</h3><p>1924 年给出电报传输速率公式，奠定了"信道有极限速率"的直觉。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p10_huffman.png" alt="Huffman"><div><span class="yr">1925–1999</span><h3>David Huffman</h3><p>1952 年发明 Huffman 编码——最优前缀码，是信源编码定理的实用实现。</p></div></div>
+      </div>
+      <div class="callout"><b>一条暗线：</b>Nyquist（速率限制）→ Hartley（对数度量）→ Shannon（统一框架）→ Kolmogorov（个体信息）→ Jaynes（物理重构）→ Tishby（学习重构）。信息从"通信"扩展到"计算""物理""智能"。</div>
+    </section>
+
+    <section class="section" id="timeline">
+      <div class="section-head"><span class="num">02</span><h2>百年时间线</h2><div class="sub">1924 → 2025</div></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="yr">1924</div><p>Harry Nyquist：给出电报符号传输速率上限公式。</p></div>
+        <div class="tl-item"><div class="yr">1928</div><p>Ralph Hartley：H = n log S，用对数度量信息量。</p></div>
+        <div class="tl-item"><div class="yr">1948</div><p>Claude Shannon：A Mathematical Theory of Communication，信息论诞生；同年 Wiener《控制论》。</p></div>
+        <div class="tl-item"><div class="yr">1949</div><p>Shannon & Weaver 普及本；提出信道编码定理雏形。</p></div>
+        <div class="tl-item"><div class="yr">1952</div><p>David Huffman：最优前缀码（Huffman 编码）。</p></div>
+        <div class="tl-item"><div class="yr">1956</div><p>Brillouin 用信息论解麦克斯韦妖；Shannon "Bandwagon" 社论警示滥用。</p></div>
+        <div class="tl-item"><div class="yr">1959</div><p>Shannon：率失真理论（有损压缩极限）。</p></div>
+        <div class="tl-item"><div class="yr">1965</div><p>Kolmogorov / Solomonoff / Chaitin：算法复杂度，个体信息的数学定义。</p></div>
+        <div class="tl-item"><div class="yr">1999</div><p>Tishby, Pereira, Biale：信息瓶颈方法提出。</p></div>
+        <div class="tl-item"><div class="yr">2015</div><p>Tishby & Zaslavsky：信息瓶颈用于深度学习。</p></div>
+        <div class="tl-item"><div class="yr">2017</div><p>Shwartz-Ziv & Tishby：打开 DNN 黑箱（信息平面，引发争议）。</p></div>
+        <div class="tl-item"><div class="yr">2025</div><p>信息论用于 LLM 推理（困惑度引导 Chain-of-Thought 等）。</p></div>
+      </div>
+    </section>
+<section class="section"><div class="section-head"><span class="num">03</span><h2>他们的关键论文</h2></div>
+      <div class="grid g2">
+        <div class="glass card person"><img src="../assets/portraits/p1_shannon.png" alt=""><div><span class="yr">1948</span><h3>A Mathematical Theory of Communication</h3><p>BSTJ 两期连载，定义熵、互信息、信道容量，附通信框图。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p2_kolmogorov.png" alt=""><div><span class="yr">1965</span><h3>Three Approaches to Randomness</h3><p>用算法复杂度定义随机序列，与 Solomonoff、Chaitin 独立奠基 AIT。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p3_jaynes.png" alt=""><div><span class="yr">1957</span><h3>Information Theory and Statistical Mechanics</h3><p>两篇 Phys Rev，把最大熵写成统计力学推断原理。</p></div></div>
+        <div class="glass card person"><img src="../assets/portraits/p6_tishby.png" alt=""><div><span class="yr">1999</span><h3>The Information Bottleneck Method</h3><p>与 Pereira、Biale 提出 IB，把率失真引入表征学习。</p></div></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">04</span><h2>思想传承图</h2></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="yr">Hartley</div><p>对数度量 → 传给 Shannon 的熵形式。</p></div>
+        <div class="tl-item"><div class="yr">Shannon</div><p>框架 → 传给 Kolmogorov（个体信息）与 Brillouin（物理）。</p></div>
+        <div class="tl-item"><div class="yr">Kolmogorov</div><p>AIT → 传给 Chaitin、Solomonoff（通用先验）。</p></div>
+        <div class="tl-item"><div class="yr">Jaynes</div><p>最大熵 → 传给现代贝叶斯推断与机器学习。</p></div>
+        <div class="tl-item"><div class="yr">Tishby</div><p>IB → 传给深度学习可解释性（主馆06）。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">05</span><h2>他们为何重要</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">范式</span><h3>从工程到数学</h3><p>Shannon 把通信从手艺变数学对象，开启信息时代。</p></div>
+        <div class="glass card"><span class="tag">统一</span><h3>跨域语言</h3><p>同一套熵/互信息语言，被物理、计算、学习借用。</p></div>
+        <div class="glass card"><span class="tag">边界</span><h3>知道不能做</h3><p>容量、不可计算性、Landauer 界——划出可能性边界。</p></div>
+        <div class="glass card"><span class="tag">延续</span><h3>仍在生长</h3><p>2025 LLM 用信息论解释自己，这条线没到头。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">·</span><h2>信息论词条 · 扩展字典</h2></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">Maxwell Demon</span><h3>麦克斯韦妖</h3><p>信息获取需付费，第二定律得救。</p></div>
+        <div class="glass card"><span class="tag">Kolmogorov Cx</span><h3>柯氏复杂度</h3><p>K(x)=最短程序长度，个体信息。</p></div>
+        <div class="glass card"><span class="tag">Solomonoff</span><h3>所罗门诺夫</h3><p>通用先验 M(x)，最优归纳。</p></div>
+        <div class="glass card"><span class="tag">MDL</span><h3>最小描述长度</h3><p>模型+残差总描述最短。</p></div>
+        <div class="glass card"><span class="tag">Algorithmic Rand</span><h3>算法随机</h3><p>K(x)≈n 的串不可压缩。</p></div>
+        <div class="glass card"><span class="tag">Chaitin Omega</span><h3>柴廷常数</h3><p>停机概率，不可计算。</p></div>
+        <div class="glass card"><span class="tag">von Neumann Ent</span><h3>冯诺依曼熵</h3><p>S(ρ)=-Tr(ρ log ρ)。</p></div>
+        <div class="glass card"><span class="tag">Qubit</span><h3>量子比特</h3><p>量子信息单位，可存多读少。</p></div>
+        <div class="glass card"><span class="tag">Entanglement</span><h3>纠缠</h3><p>非局域关联，可测可提纯。</p></div>
+        <div class="glass card"><span class="tag">Holevo Bound</span><h3>霍尔沃界</h3><p>量子可读经典信息≤冯诺依曼熵。</p></div>
+        <div class="glass card"><span class="tag">No-Cloning</span><h3>不可克隆</h3><p>未知量子态不可完美复制。</p></div>
+        <div class="glass card"><span class="tag">Quantum Teleport</span><h3>量子隐形传态</h3><p>纠缠+2bit 重建未知态。</p></div>
+        <div class="glass card"><span class="tag">Quantum Error Corr</span><h3>量子纠错</h3><p>阈值定理下可压低逻辑错误。</p></div>
+        <div class="glass card"><span class="tag">Information Bottleneck</span><h3>信息瓶颈</h3><p>min I(X;T)-βI(T;Y)。</p></div>
+        <div class="glass card"><span class="tag">IB Lagrangian</span><h3>IB 拉格朗日</h3><p>L=I(X;T)-βI(T;Y)。</p></div>
+        <div class="glass card"><span class="tag">Blahut-Arimoto</span><h3>BA 算法</h3><p>率失真自洽迭代求解。</p></div>
+        <div class="glass card"><span class="tag">Info Plane</span><h3>信息平面</h3><p>(I(X;T), I(T;Y)) 坐标。</p></div>
+        <div class="glass card"><span class="tag">Drift-Diffusion</span><h3>漂移-扩散</h3><p>SGD 两阶段相变。</p></div>
+        <div class="glass card"><span class="tag">Deterministic Anneal</span><h3>确定性退火</h3><p>β 增大诱发二阶相变。</p></div>
+        <div class="glass card"><span class="tag">Emergent Abilities</span><h3>涌现能力</h3><p>IB 视角下相变涌现。</p></div>
+        <div class="glass card"><span class="tag">Transfer Entropy</span><h3>转移熵</h3><p>有向信息流度量。</p></div>
+        <div class="glass card"><span class="tag">Granger Causality</span><h3>格兰杰因果</h3><p>线性下退化为转移熵。</p></div>
+        <div class="glass card"><span class="tag">Directed Info</span><h3>有向信息</h3><p>I(X^n→Y^n) 因果链。</p></div>
+        <div class="glass card"><span class="tag">do-Calculus</span><h3>do 演算</h3><p>干预推断，与互信息可桥接。</p></div>
+        <div class="glass card"><span class="tag">Cross-Entropy Loss</span><h3>交叉熵损失</h3><p>SFT 训练目标。</p></div>
+      </div>
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</main>
+  <aside class="toc"><h4>本馆目录</h4><a href="#people">01 · 先贤谱</a><a href="#timeline">02 · 时间线</a><a href="hub_master.html">↗ 返回 HUB</a></aside>
+  </div>
+</div>
+
+<footer><span class="pill">ONESHOT v2.0</span><span class="pill">信息论 · 主馆 02 暖羊皮纸</span><span class="pill">肖像 · assets/portraits</span></footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
