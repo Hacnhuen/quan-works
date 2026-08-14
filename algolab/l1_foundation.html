@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L1 基础 · 算法 | AlgoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Algo<span>Lab</span> · 算法</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html" class="on">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">L1 · Foundation</div>
+  <h1>基础：范式、数据结构与复杂度语言</h1>
+  <p>这一层给算法一套<strong>通用语言</strong>：用 Big-O 描述快慢，用分治/贪心/DP 三类范式组织思路，用堆、哈希、BST 等数据结构承载状态。对标 MIT 6.006 与 Stanford CS161 本科内容。</p>
+  <div class="meta">
+    <i>复杂度记号</i><i>排序</i><i>图搜索</i><i>堆/哈希</i><i>分治/贪心/DP</i><i>本科低年级</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#notation">01 · 复杂度记号</a>
+  <a href="#sort">02 · 排序</a>
+  <a href="#graph">03 · 图搜索 DFS/BFS</a>
+  <a href="#heap">04 · 堆与优先队列</a>
+  <a href="#hash">05 · 哈希</a>
+  <a href="#dc">06 · 分治</a>
+  <a href="#greedy">07 · 贪心</a>
+  <a href="#dp">08 · 动态规划</a>
+  <a href="#lab1">09 · 实验室</a>
+  <a href="#quiz">10 · 自检</a>
+  <div class="grp"><h4>跳转</h4>
+    <a href="l0_intuition.html">← L0 启蒙</a>
+    <a href="l2_theorems.html">去 L2 完备 →</a>
+    <a href="lab.html">交互实验室</a>
+  </div>
+</aside>
+<main>
+
+<section class="section" id="notation">
+  <h2><span class="num">01</span>复杂度记号：怎么"说快慢"</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 渐近记号</span>
+    <p>设 f(n), g(n) 为输入规模 n 的正函数：</p>
+    <div class="fml">O(g)：存在 c,N，使对所有 n≥N 有 f(n) ≤ c·g(n)        （上界，最坏不超）
+Ω(g)：存在 c,N，使对所有 n≥N 有 f(n) ≥ c·g(n)        （下界，至少这么慢）
+Θ(g)：O(g) 且 Ω(g)，即同阶                            （紧界）
+o / ω：严格小于 / 严格大于（极限意义上）</div>
+    <p>还有<strong>平均</strong>与<strong>摊还</strong>分析：前者对所有输入取期望，后者把偶尔的"贵操作"摊到一系列便宜操作上（L3 详述）。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>线性扫描是 Θ(n)；二分搜索是 Θ(log n)；朴素矩阵乘是 Θ(n³)。说"快排是 O(n²)"没错但宽松——它的<em>期望</em>是 Θ(n log n)，最坏才是 O(n²)。表述要区分最坏/期望。</p>
+  </div>
+</section>
+
+<section class="section" id="sort">
+  <h2><span class="num">02</span>排序：三种范式的练兵场</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 比较排序下界（A1）</span>
+    <p>任何只基于"两两比较"的排序算法，最坏情况至少 Ω(n log n) 次比较。证明用决策树：n! 种排列需深度 ≥ ⌈log₂(n!)⌉ = Ω(n log n) 的二叉树。</p>
+  </div>
+  <div class="el el-proof">
+    <span class="tag">证明骨架</span>
+    <p>决策树每个叶子对应一种排列（共 n! 个），二叉树高度 h 满足 2ʰ ≥ n!，故 h ≥ log₂(n!) = n log₂n − O(n) = Ω(n log n)。■</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 归并排序</span>
+    <p>递归 T(n)=2T(n/2)+Θ(n)，由主定理（L2）得 Θ(n log n)，且<strong>最坏也是</strong> n log n——达到下界。快排期望 Θ(n log n) 但最坏 O(n²)。堆排 Θ(n log n) 且原地。</p>
+  </div>
+  <div class="note">
+    <b>非比较排序</b>
+    计数/基数/桶排序可突破 Ω(n log n) 下界，因为它们不只用比较，而利用"键的取值范围"信息——这说明下界是有条件的（A1 的"比较排序"前提）。
+  </div>
+</section>
+
+<section class="section" id="graph">
+  <h2><span class="num">03</span>图搜索：DFS 与 BFS</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 两种遍历</span>
+    <p><strong>BFS（广度优先）</strong>：用队列，逐层扩展，首次到达即最短路（边权=1）。复杂度 O(V+E)。</p>
+    <p><strong>DFS（深度优先）</strong>：用栈/递归，一条路走到底再回溯。用于拓扑排序、强连通分量、环检测。复杂度 O(V+E)。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理</span>
+    <p>在无权图（边权均为 1）上，BFS 从源点首次访问某顶点时的距离，恰为该顶点的最短距离。DFS 可在 O(V+E) 内判定有向图是否存在环并给出拓扑序（当且仅当无环时可拓扑排序）。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>社交网络"六度分隔"可用 BFS 求两人最短关系链；编译器的依赖分析中，环检测与拓扑序用 DFS 更自然。两者都在实验室 03 可拖拽演示。</p>
+  </div>
+</section>
+
+<section class="section" id="heap">
+  <h2><span class="num">04</span>堆与优先队列</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 二叉堆</span>
+    <p>数组实现的完全二叉树，满足"父 ≤ 子"（最小堆）。支持：插入 O(log n)、取最小 O(log n)、建堆 O(n)（自底向上下沉）。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 建堆 O(n)</span>
+    <p>自底向上对每个非叶节点 sink，总代价 Σ_{h} (层数 h 的节点数 × h) = O(n)，而非 naïve 的 O(n log n)。</p>
+  </div>
+  <div class="el el-coro">
+    <span class="tag">推论</span>
+    <p>堆排序 = 建堆 O(n) + n 次取最小 O(log n) = O(n log n) 原地排序。Dijkstra（L2）依赖优先队列，堆实现为 O((V+E) log V)。</p>
+  </div>
+</section>
+
+<section class="section" id="hash">
+  <h2><span class="num">05</span>哈希：O(1) 查找的魔法</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 哈希表</span>
+    <p>用哈希函数 h(key) 把键映射到桶。理想下每个键独立均匀落桶，查找期望 O(1)。冲突用链地址法或开放寻址处理。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 链地址法期望查找（A9）</span>
+    <p>设负载因子 α = n/m（元素数/桶数）。一次成功查找的期望比较次数为 1 + α/2，不成功查找为 1 + α。故平均 O(1+α)；α 有界时即 O(1)。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 生日与碰撞</span>
+    <p>哈希值 64 位，≈1.8×10¹⁹ 个桶。由生日悖论，约 √(2·2⁶⁴)≈2³²≈43 亿次插入后碰撞概率显著上升——这正是"生日攻击"对哈希安全的来源（L4 学习/安全交叉）。</p>
+  </div>
+  <div class="note">
+    <b>最坏不是 O(1)</b>
+    若对手刻意制造碰撞（同桶），链地址法退化到 O(n)。好的哈希需"抗碰撞"或随机化（L3 随机哈希）。
+  </div>
+</section>
+
+<section class="section" id="dc">
+  <h2><span class="num">06</span>分治：把问题劈成两半</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 分治三步</span>
+    <div class="fml">① 分：把规模 n 的问题拆成 a 个 n/b 的子问题
+② 治：递归解决子问题
+③ 合：用 O(nᵏ) 的代价合并结果</div>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 归并排序</span>
+    <p>a=2, b=2, 合并 O(n) ⇒ T(n)=2T(n/2)+Θ(n) ⇒ Θ(n log n)。最大子数组（Kadane 是线性 DP，但分治版也是经典）、最近点对（平面分治 O(n log n)）同属此类。FFT（L3）是分治登峰造极之作。</p>
+  </div>
+</section>
+
+<section class="section" id="greedy">
+  <h2><span class="num">07</span>贪心：何时"只顾眼前"是 safely 最优</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 贪心正确性两性质</span>
+    <p>贪心算法全局最优，当且仅当问题同时满足：<strong>(1) 贪心选择性质</strong>（局部最优选择可纳入某全局最优解）+ <strong>(2) 最优子结构</strong>（子问题最优⇒整体最优）。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 活动选择</span>
+    <p>n 个活动各有起止时间，选最多互不重叠的活动。按"结束时间最早"贪心，每次取与已选不冲突且最早结束的——可证最优。霍夫曼编码（信息论馆 L1）也是贪心。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>矩阵乘法的"最优加括号"看似贪心，其实是 DP（L3 链乘）；而"规范硬币体系"的判定本身是个有趣的小问题。何时贪心成立，至今仍有新的结构刻画研究。</p>
+  </div>
+</section>
+
+<section class="section" id="dp">
+  <h2><span class="num">08</span>动态规划：用空间换"不重复算"</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · DP 两要素</span>
+    <p><strong>重叠子问题</strong> + <strong>最优子结构</strong>。用表格存子问题答案，自底向上或记忆化自顶向下，避免指数级重复。</p>
+  </div>
+  <div class="el el-formula">
+    <span class="tag">公式 · 经典递推</span>
+    <div class="fml">LIS：   dp[i] = 1 + max{ dp[j] | j<i, a[j]<a[i] }         O(n²)，可优化 O(n log n)
+0/1 背包：dp[i][w] = max( dp[i-1][w], dp[i-1][w-vᵢ]+cᵢ )          O(nW)
+编辑距离：dp[i][j] = min( 删, 插, 替 ) + dp[i-1][j-1]            O(nm)  （A13）</div>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 0/1 背包手算</span>
+    <p>容量 W=4，物品 (v,c)=(2,3),(3,4),(1,1)。DP 表填出 dp=4（取物品2+3：价值 3+1=4 占 4+1=5? 错→应取物品1+3：2+1=3占 3+1=4）。正确最优 = 3（物品1+3）。实验室 04 可视化逐格填充。</p>
+  </div>
+  <div class="note deep">
+    <b>DP vs 分治</b>
+    分治的子问题<em>不重叠</em>（各算各的），DP 的子问题<em>大量重叠</em>，所以才需要表格记忆。识别"重叠子结构"是选范式的第一信号。
+  </div>
+</section>
+
+<!-- 实验室 -->
+<section class="section" id="lab1">
+  <h2><span class="num">09</span>实验室 · 复杂度直觉</h2>
+  <p class="lead">拖动 n，对比 O(n)、O(n log n)、O(n²) 的增长——为什么大 n 时二次爆炸。</p>
+  <div class="lab">
+    <div class="lab-h">GROWTH RATES</div>
+    <div class="ctrl">
+      <label>输入规模 n</label>
+      <input type="range" id="g-n" min="2" max="200" value="40" step="1">
+      <span class="val" id="g-nv">40</span>
+    </div>
+    <canvas data-h="260" id="g-cv"></canvas>
+    <div class="readout" id="g-out"></div>
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <h2><span class="num">10</span>自检</h2>
+  <div class="quiz">
+    <div class="qh">QUIZ</div>
+    <ol>
+      <li>O(n log n) 与 Θ(n log n) 的区别？说"快排是 O(n²)"严谨吗？</li>
+      <li>比较排序最坏下界是多少？为什么基数排序能突破它？</li>
+      <li>BFS 与 DFS 各适合解决什么类型的问题？复杂度？</li>
+      <li>贪心要满足哪两个性质才保证全局最优？举一个贪心失败的例子。</li>
+      <li>DP 与分治的根本区别是什么？</li>
+    </ol>
+    <details><summary>答案</summary><div class="dbody">
+      <p>1. O 是上界（不超），Θ 是紧界（同阶）。说快排 O(n²) 严谨但宽松；应为"期望 Θ(n log n)，最坏 O(n²)"。</p>
+      <p>2. Ω(n log n)（决策树）。基数排序非"纯比较"，利用键的位结构，故可 O(nk) 突破。</p>
+      <p>3. BFS：无权最短路/层次遍历（队列），O(V+E)；DFS：拓扑/环检测/连通分量（栈），O(V+E)。</p>
+      <p>4. 贪心选择性质 + 最优子结构。失败例：面额{1,3,4}凑6，贪心3枚 vs 最优2枚。</p>
+      <p>5. DP 子问题重叠需制表记忆；分治子问题不重叠。</p>
+    </div></details>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l0_intuition.html"><span class="lb">← 上一站</span>L0 启蒙 · 直觉</a>
+  <a class="nx" href="l2_theorems.html"><span class="lb">下一站 →</span>L2 完备 · 可证的界</a>
+</div>
+
+<footer class="foot">
+  <p>本页对标 MIT 6.006 / Stanford CS161。定理 A1（比较排序下界）、A9（哈希期望）由 <code>verify/numeric.py</code> 与实验室交互复跑核对。DP 递推（A13 编辑距离）在 L2/L3 深化。</p>
+</footer>
+
+</main>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+  (function(){
+    var nEl=document.getElementById('g-n'), nv=document.getElementById('g-nv'),
+        cv=document.getElementById('g-cv'), out=document.getElementById('g-out');
+    var plot=new ILPlot(cv,{xr:[0,200],yr:[0,40000],xlabel:'n',ylabel:'操作数'});
+    function render(){
+      var n=+nEl.value; nv.textContent=n;
+      var lin=n, nlog=n*ILMath.log2(n), quad=n*n;
+      plot.resize();plot.clear();plot.axes(5,5);
+      plot.line(function(x){return x;}, '#34d399', 2);
+      plot.line(function(x){return x*ILMath.log2(x);}, '#38bdf8', 2);
+      plot.line(function(x){return x*x;}, '#f87171', 2);
+      plot.dot(n,lin,'#34d399'); plot.dot(n,nlog,'#38bdf8'); plot.dot(n,quad,'#f87171');
+      out.innerHTML='n='+n+'　O(n)=<b>'+lin+'</b>　O(n log n)=<b>'+nlog.toFixed(0)+
+        '</b>　O(n²)=<b>'+quad+'</b><br>当 n=200 时 n² 已是 n log n 的 '+(quad/nlog).toFixed(0)+' 倍';
+    }
+    ILBind(['g-n'],render);
+  })();
+</script>
+</body>
+</html>
