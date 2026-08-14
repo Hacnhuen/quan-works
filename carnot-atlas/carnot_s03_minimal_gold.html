@@ -1,0 +1,3941 @@
+<!-- ONESHOT 图集 · 卡诺热机 · 极简金蓝留白 · 2026-08-14 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡诺热机深度研究图集 · 第 3 座主馆 · 极简金蓝留白</title>
+<meta name="description" content="卡诺热机深度研究图集第 3 座主馆：17 章全景——历史、定理、方法论、工程、制冷、火用、时间线、行业案例、5D 评估、工具链、名人思维、社交文案、参考文献与信源分级。极简金蓝留白 · CEO 汇报 / 打印风。">
+<!--
+  ======================================================================
+  生成规范（内容包 §G）：
+  1. 单文件 HTML：CSS/JS 全内联；配图全部 CSS 渐变 + 内联 SVG 占位，禁外链图片
+  2. 行数门禁：主馆 ≥2500 行（含 CSS/JS）
+  3. 禁词：全部“版本编号类”表述禁止出现（清单见内容包 §G-3），本文件零命中
+  4. 章节顺序：16_sources 必须位于 15_references 之后；全 17 章齐备
+  5. 互通：底部链接全部 4 座深潜馆
+  6. 文案：5 平台 × 3 条 = 15 条，每条叠加 ≥2 个传播技能（feynman_translate 必含其一）
+  7. KPI：00 章 6 张卡，数字全部采用内容包 / 主报告真实数据
+  8. 语言：zh-CN 全文
+  9. 文件命名：carnot_s03_minimal_gold.html（第 3 座主馆 · 极简金蓝留白）
+  10. 头部注释：<!-- ONESHOT 图集 · 卡诺热机 · 极简金蓝留白 · 2026-08-14 -->
+  ======================================================================
+-->
+<style>
+/* ==================================================================
+   TOKENS · 设计令牌（minimal_gold 极简金蓝留白）
+   bg #FBF9F4 / card #FFFFFF / accent #1D4ED8 / 次色 #C89F5A + #64748B
+   ================================================================== */
+:root {
+  /* 色板 */
+  --bg:            #FBF9F4;
+  --bg-deep:       #F6F1E6;
+  --card:          #FFFFFF;
+  --ink:           #1F2937;   /* 正文主墨色 */
+  --ink-soft:      #475569;
+  --muted:         #64748B;   /* 次色 · 石板蓝灰 */
+  --accent:        #1D4ED8;   /* 强调 · 主蓝 */
+  --accent-soft:   #EAF0FE;
+  --gold:          #C89F5A;   /* 次色 · 金 */
+  --gold-deep:     #A97F3D;
+  --gold-soft:     #F1E9D8;
+  --line:          #ECE3CF;   /* 细金线（分隔） */
+  --line-soft:     #F2EDE0;
+  --line-blue:     #D7E0F7;
+  --ok:            #3F7C4F;
+  --warn:          #B45309;
+  --danger:        #9A3412;
+
+  /* 字体 */
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+          "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+          "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+
+  /* 度量 */
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow-1: 0 1px 2px rgba(31, 41, 55, .04), 0 12px 32px rgba(31, 41, 55, .05);
+  --shadow-2: 0 2px 4px rgba(31, 41, 55, .05), 0 18px 44px rgba(31, 41, 55, .07);
+  --space-section: 92px;
+  --wrap: 1060px;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+/* ==================================================================
+   RESET & BASE · 基础重置与排版
+   ================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(200, 159, 90, .10), transparent 60%),
+    radial-gradient(900px 480px at 8% 4%, rgba(29, 78, 216, .05), transparent 55%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: var(--accent); text-decoration: none; }
+
+a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+h1, h2, h3, h4 {
+  font-weight: 650;
+  letter-spacing: -.02em;
+  line-height: 1.25;
+  margin: 0;
+}
+
+p { margin: 0 0 1em; }
+p:last-child { margin-bottom: 0; }
+
+small { font-size: .85em; color: var(--muted); }
+
+strong { font-weight: 650; }
+
+hr { border: 0; }
+
+/* ==================================================================
+   LAYOUT · 版心与章节骨架
+   ================================================================== */
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 34px;
+}
+
+.section {
+  padding: calc(var(--space-section) / 1.6) 0 var(--space-section);
+  position: relative;
+}
+
+.section + .section {
+  border-top: 1px solid var(--line-soft);
+}
+
+.section-head {
+  margin-bottom: 40px;
+}
+
+.section-num {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-size: clamp(26px, 3.4vw, 34px);
+  letter-spacing: -.02em;
+}
+
+.section-desc {
+  max-width: 640px;
+  margin-top: 12px;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+/* 细金线分隔（章节标题下的金线） */
+.section-line {
+  display: block;
+  width: 72px;
+  height: 2px;
+  margin-top: 18px;
+  background: linear-gradient(90deg, var(--gold), rgba(200, 159, 90, .25));
+  border-radius: 2px;
+}
+
+.section-line.wide { width: 120px; }
+
+/* 版心内分隔线（卡片组之间的细金线） */
+.rule {
+  height: 1px;
+  margin: 34px 0;
+  background: linear-gradient(90deg, transparent, var(--line) 18%, var(--line) 82%, transparent);
+  border: 0;
+}
+
+/* ==================================================================
+   EYEBROW / KICKER · 眉标
+   ================================================================== */
+.eyebrow {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+}
+
+.muted { color: var(--muted); }
+.mono { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* ==================================================================
+   HERO · 封面区（CEO 汇报首屏）
+   ================================================================== */
+.hero {
+  padding: 116px 0 72px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .26em;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+}
+
+.hero-title {
+  margin: 20px 0 0;
+  font-size: clamp(40px, 6vw, 62px);
+  font-weight: 700;
+  letter-spacing: -.035em;
+  line-height: 1.08;
+}
+
+.hero-title .accent { color: var(--accent); }
+.hero-title .gold { color: var(--gold-deep); }
+
+.hero-sub {
+  margin: 22px 0 0;
+  max-width: 620px;
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--ink-soft);
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.hero-meta .chip { cursor: default; }
+
+.hero-stamp {
+  margin-top: 44px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.hero-stamp b { color: var(--ink-soft); font-weight: 600; }
+
+/* ==================================================================
+   TOC · 目录导航（17 章）
+   ================================================================== */
+.toc {
+  margin: 8px 0 0;
+  padding: 30px 32px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+}
+
+.toc-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 4px 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-grid a {
+  display: block;
+  padding: 7px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  text-decoration: none;
+  transition: background .18s var(--ease), color .18s var(--ease);
+}
+
+.toc-grid a:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.toc-grid .toc-no {
+  display: inline-block;
+  width: 34px;
+  color: var(--gold-deep);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==================================================================
+   CHIP · 标签胶囊
+   ================================================================== */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.5;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.chip-gold {
+  background: var(--gold-soft);
+  color: var(--gold-deep);
+  border: 1px solid rgba(200, 159, 90, .35);
+}
+
+.chip-blue {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid rgba(29, 78, 216, .22);
+}
+
+.chip-slate {
+  background: #F1F5F9;
+  color: var(--muted);
+  border: 1px solid #E2E8F0;
+}
+
+.chip-ink {
+  background: #EEF1F6;
+  color: var(--ink-soft);
+  border: 1px solid #DDE3EC;
+}
+
+.chip-outline {
+  background: transparent;
+  color: var(--gold-deep);
+  border: 1px solid rgba(200, 159, 90, .5);
+}
+
+/* ==================================================================
+   CARD · 卡片（白底 / 细描边 / 克制阴影）
+   ================================================================== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px 32px;
+  box-shadow: var(--shadow-1);
+}
+
+.card + .card { margin-top: 22px; }
+
+.card h3 {
+  font-size: 18px;
+  letter-spacing: -.015em;
+  margin-bottom: 10px;
+}
+
+.card h4 {
+  font-size: 15px;
+  margin-bottom: 8px;
+  letter-spacing: -.01em;
+}
+
+.card .card-kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.card.accent-border { border-top: 2px solid var(--gold); }
+
+.card.blue-border { border-top: 2px solid var(--accent); }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.grid-2 .card + .card, .grid-3 .card + .card, .grid-4 .card + .card { margin-top: 0; }
+
+/* ==================================================================
+   KPI · 大数字仪表卡（6 张）
+   ================================================================== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px 30px 24px;
+  box-shadow: var(--shadow-1);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), rgba(200, 159, 90, .2));
+  opacity: .7;
+}
+
+.kpi-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.kpi-value {
+  font-size: clamp(34px, 4.4vw, 46px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-value.blue { color: var(--accent); }
+.kpi-value.gold { color: var(--gold-deep); }
+
+.kpi-unit {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0;
+  margin-left: 6px;
+}
+
+.kpi-caption {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.kpi-caption b { color: var(--ink); font-weight: 600; }
+
+/* ==================================================================
+   TABLE · 简洁表格（CEO 汇报风：细金线表头、克制的斑马纹）
+   ================================================================== */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-1);
+}
+
+table.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  line-height: 1.6;
+  min-width: 640px;
+}
+
+table.table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: .1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--gold);
+  background: #FDFBF6;
+  white-space: nowrap;
+}
+
+table.table td {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+
+table.table tbody tr:last-child td { border-bottom: 0; }
+
+table.table tbody tr:nth-child(even) { background: #FDFBF6; }
+
+table.table tbody tr:hover { background: #F7F9FE; }
+
+table.table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+table.table .num.blue { color: var(--accent); }
+table.table .num.gold { color: var(--gold-deep); }
+
+table.table .lbl { color: var(--muted); font-size: 12.5px; }
+
+.tbl-note {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.tbl-note b { color: var(--ink-soft); font-weight: 600; }
+
+/* ==================================================================
+   FORMULA · 公式展示
+   ================================================================== */
+.formula {
+  background: linear-gradient(180deg, #FDFBF6, #FAF6EC);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius-sm);
+  padding: 22px 28px;
+  margin: 18px 0;
+  text-align: center;
+}
+
+.formula .fml {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+.formula .fml var {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.formula .fml .ac { color: var(--accent); }
+.formula .fml .gd { color: var(--gold-deep); }
+
+.formula .fml-note {
+  display: block;
+  margin-top: 10px;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: .02em;
+}
+
+sub, sup { line-height: 0; }
+
+/* ==================================================================
+   STEPS · 编号步骤（推导 / 反证法 / 流程）
+   ================================================================== */
+.steps { counter-reset: step; list-style: none; margin: 0; padding: 0; }
+
+.steps .step {
+  position: relative;
+  padding: 0 0 22px 56px;
+}
+
+.steps .step:last-child { padding-bottom: 4px; }
+
+.steps .step::before {
+  counter-increment: step;
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 0; top: 2px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  color: var(--gold-deep);
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.steps .step::after {
+  content: "";
+  position: absolute;
+  left: 17.5px; top: 40px; bottom: 2px;
+  width: 1px;
+  background: var(--line);
+}
+
+.steps .step:last-child::after { display: none; }
+
+.steps .step-title {
+  font-weight: 650;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.steps .step-body {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.steps .step-body .fml-inline {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ==================================================================
+   TIMELINE · 时间线（12 事件）
+   ================================================================== */
+.timeline {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 118px; top: 8px; bottom: 8px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--gold), var(--line) 40%, var(--line) 60%, var(--gold));
+}
+
+.tl-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 0 34px;
+  padding: 0 0 30px;
+}
+
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-year {
+  text-align: right;
+  padding-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+}
+
+.tl-dot {
+  position: absolute;
+  left: 113.5px; top: 12px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--gold);
+  z-index: 1;
+}
+
+.tl-item.milestone .tl-dot { background: var(--gold); }
+
+.tl-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  box-shadow: var(--shadow-1);
+}
+
+.tl-card h4 {
+  font-size: 15.5px;
+  margin-bottom: 4px;
+}
+
+.tl-card .tl-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .12em;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.tl-card p {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.75;
+}
+
+/* 事件图占位（CSS 渐变，禁外链图片） */
+.tl-visual {
+  margin-top: 12px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(100deg, var(--accent-soft), var(--gold-soft) 70%);
+  border: 1px solid var(--line-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+}
+
+.tl-visual.tone-b {
+  background: linear-gradient(100deg, #F1E9D8, #E3F0FD);
+}
+
+.tl-visual.tone-c {
+  background: linear-gradient(100deg, #E3F0FD, #F1E9D8);
+}
+
+/* ==================================================================
+   PERSON · 人物肖像卡（CSS 渐变 + 内联 SVG 头像占位）
+   ================================================================== */
+.person-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(236px, 1fr));
+  gap: 20px;
+}
+
+.person {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+  display: flex;
+  flex-direction: column;
+}
+
+.person-band {
+  height: 74px;
+  background: linear-gradient(115deg, #1D4ED8 0%, #3B6FE8 45%, #C89F5A 100%);
+}
+
+.person-band.t1 { background: linear-gradient(115deg, #1D4ED8, #5B8DEF 60%, #C89F5A); }
+.person-band.t2 { background: linear-gradient(115deg, #C89F5A, #E4C98F 55%, #7FA0E8); }
+.person-band.t3 { background: linear-gradient(115deg, #64748B, #94A3B8 55%, #C89F5A); }
+.person-band.t4 { background: linear-gradient(115deg, #1D4ED8, #2E5BD0 40%, #64748B); }
+.person-band.t5 { background: linear-gradient(115deg, #C89F5A, #B58A44 50%, #1D4ED8); }
+
+.person-avatar {
+  margin: -34px auto 0;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--card);
+  padding: 4px;
+  box-shadow: 0 6px 18px rgba(31, 41, 55, .12);
+}
+
+.person-avatar svg { width: 100%; height: 100%; border-radius: 50%; }
+
+.person-body {
+  padding: 14px 18px 20px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.person-name {
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+
+.person-dates {
+  font-size: 12px;
+  color: var(--gold-deep);
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+
+.person-role {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.person-note {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-top: 10px;
+  line-height: 1.7;
+  flex: 1;
+}
+
+/* ==================================================================
+   QUOTE · 引语（金线框）
+   ================================================================== */
+.quote {
+  position: relative;
+  margin: 22px 0;
+  padding: 22px 26px 22px 30px;
+  background: #FDFBF6;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius-sm);
+}
+
+.quote::before {
+  content: "“";
+  position: absolute;
+  left: 12px; top: -6px;
+  font-size: 40px;
+  color: var(--gold);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.quote p {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  font-style: normal;
+  margin: 0;
+}
+
+.quote .quote-src {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: normal;
+}
+
+/* ==================================================================
+   NOTE · 注释 / 存疑 / 警示
+   ================================================================== */
+.note {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 16px 0;
+}
+
+.note-gold {
+  background: var(--gold-soft);
+  border: 1px solid rgba(200, 159, 90, .4);
+  color: #6B5230;
+}
+
+.note-blue {
+  background: var(--accent-soft);
+  border: 1px solid rgba(29, 78, 216, .25);
+  color: #23386B;
+}
+
+.note-slate {
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  color: #3B4A5E;
+}
+
+.note-warn {
+  background: #FDF3E7;
+  border: 1px solid rgba(180, 83, 9, .35);
+  color: #7C4A0E;
+}
+
+.note b { font-weight: 650; }
+
+/* ==================================================================
+   BADGE · 等级 / 状态徽章（S / A / B；done / todo / retry）
+   ================================================================== */
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.badge-s { background: #1D4ED8; color: #fff; }
+.badge-a { background: #C89F5A; color: #fff; }
+.badge-b { background: #64748B; color: #fff; }
+
+.badge-done  { background: #E7F2EA; color: var(--ok);    border: 1px solid #CBE4D2; }
+.badge-todo  { background: #F1F5F9; color: var(--muted); border: 1px solid #E2E8F0; }
+.badge-retry { background: #FDF3E7; color: var(--warn);  border: 1px solid #F0D9B8; }
+
+/* ==================================================================
+   SOCIAL · 社交文案卡（5 平台 × 3 条）
+   ================================================================== */
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 22px;
+}
+
+.social-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  box-shadow: var(--shadow-1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.platform-badge .pdot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.angle-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  background: #F1F5F9;
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.social-body {
+  font-size: 13.5px;
+  color: var(--ink);
+  line-height: 1.85;
+  flex: 1;
+}
+
+.social-body .hook {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.social-body .hl {
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.social-body .gd {
+  color: var(--gold-deep);
+  font-weight: 650;
+}
+
+.skill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  border-top: 1px dashed var(--line);
+  padding-top: 12px;
+}
+
+.skill-chip {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .03em;
+  color: #3B4A5E;
+  background: #F6F8FB;
+  border: 1px solid #E2E8F0;
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.skill-chip.essential {
+  background: var(--gold-soft);
+  border-color: rgba(200, 159, 90, .45);
+  color: var(--gold-deep);
+}
+
+/* ==================================================================
+   REFERENCE · 参考文献（IEEE 核心 30 条）
+   ================================================================== */
+.ref-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: ref;
+}
+
+.ref-item {
+  counter-increment: ref;
+  position: relative;
+  padding: 10px 0 10px 52px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+.ref-item:last-child { border-bottom: 0; }
+
+.ref-item::before {
+  content: "[" counter(ref) "]";
+  position: absolute;
+  left: 0; top: 10px;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--gold-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.ref-item .ref-authors { color: var(--ink); font-weight: 600; }
+.ref-item .ref-title { font-style: italic; }
+.ref-item .ref-src { color: var(--muted); }
+
+/* ==================================================================
+   SOURCES · 信源分级（S / A / B 三区）
+   ================================================================== */
+.src-zone {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+  margin-top: 26px;
+  box-shadow: var(--shadow-1);
+}
+
+.src-zone-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.src-zone-head.s {
+  background: linear-gradient(90deg, rgba(29, 78, 216, .06), transparent);
+}
+
+.src-zone-head.a {
+  background: linear-gradient(90deg, rgba(200, 159, 90, .10), transparent);
+}
+
+.src-zone-head.b {
+  background: linear-gradient(90deg, rgba(100, 116, 139, .08), transparent);
+}
+
+.src-zone-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.src-zone-count {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.src-zone-desc {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 12px 24px 0;
+}
+
+.src-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+}
+
+.src-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 12.5px;
+}
+
+.src-item:last-child { border-bottom: 0; }
+
+.src-id {
+  font-weight: 650;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  word-break: break-all;
+}
+
+.src-domain { color: var(--ink-soft); flex: 1 1 200px; }
+.src-state { margin-left: auto; }
+
+.trace {
+  font-size: 11.5px;
+  color: var(--muted);
+  padding: 2px 24px 10px;
+}
+
+.trace b { color: var(--gold-deep); font-weight: 650; }
+
+/* ==================================================================
+   SUB LINKS · 底部深潜馆链接（4 座）
+   ================================================================== */
+.sub-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.sub-card {
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: var(--shadow-1);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+.sub-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-2);
+  text-decoration: none;
+}
+
+.sub-card .sub-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+}
+
+.sub-card .sub-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 8px;
+  letter-spacing: -.01em;
+}
+
+.sub-card .sub-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.65;
+}
+
+.sub-card .sub-file {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==================================================================
+   FOOTER · 页脚
+   ================================================================== */
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 48px 0 64px;
+  margin-top: 40px;
+  background: linear-gradient(180deg, transparent, rgba(200, 159, 90, .05));
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 40px;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.footer-inner b { color: var(--ink-soft); font-weight: 600; }
+
+/* ==================================================================
+   REVEAL · 极简入场（subtle，尊重 reduced-motion）
+   ================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .55s var(--ease), transform .55s var(--ease);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ==================================================================
+   UTILITY · 工具类
+   ================================================================== */
+.no-print { }
+
+.mt-0 { margin-top: 0; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mb-0 { margin-bottom: 0; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+
+.text-center { text-align: center; }
+
+.back-top {
+  position: fixed;
+  right: 26px; bottom: 26px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--gold-deep);
+  font-size: 18px;
+  box-shadow: var(--shadow-2);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+  z-index: 50;
+}
+
+.back-top.show { opacity: 1; pointer-events: auto; }
+.back-top:hover { transform: translateY(-2px); }
+
+/* 打印工具条 */
+.printbar {
+  position: fixed;
+  top: 18px; right: 26px;
+  display: flex;
+  gap: 8px;
+  z-index: 60;
+}
+
+.printbar button {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  transition: color .18s var(--ease), border-color .18s var(--ease);
+}
+
+.printbar button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ==================================================================
+   RESPONSIVE · 响应式
+   ================================================================== */
+@media (max-width: 860px) {
+  .hero { padding: 84px 0 48px; }
+  .section { padding: 52px 0 64px; }
+  .timeline::before { left: 26px; }
+  .tl-item { grid-template-columns: 1fr; padding-left: 52px; }
+  .tl-year { text-align: left; padding-top: 0; }
+  .tl-dot { left: 21.5px; top: 18px; }
+  .toc-grid { grid-template-columns: 1fr; }
+  .printbar { display: none; }
+}
+
+/* ==================================================================
+   PRINT · 打印风（CEO 汇报：去阴影、白底、防断页）
+   ================================================================== */
+@media print {
+  body {
+    background: #fff;
+    font-size: 12px;
+  }
+
+  .hero { padding: 24px 0 16px; }
+  .section { padding: 28px 0; break-inside: avoid; }
+  .section + .section { border-top: 0; }
+
+  .card, .kpi, .table-wrap, .src-zone, .social-card, .person, .tl-card, .sub-card {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .printbar, .back-top, .toc, .no-print { display: none; }
+
+  a { color: var(--ink); text-decoration: none; }
+
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ==================================================================
+   REDUCED MOTION · 无障碍
+   ================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+</style>
+
+<style id="apple-ui-layer">
+:root{--apple-accent:#0071e3;--radius-md:18px;--radius-lg:24px;--shadow-sm:0 2px 12px rgba(0,0,0,.08);--shadow-md:0 8px 32px rgba(0,0,0,.12);--ease-apple:cubic-bezier(.32,.72,0,1);--ease-apple-decel:cubic-bezier(0,0,0,1);}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;}
+h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;}
+h2{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:600;letter-spacing:-.02em;}
+.card,.glass-card,.kpi-card,section>div{border-radius:var(--radius-md);box-shadow:var(--shadow-sm);transition:transform .3s var(--ease-apple),box-shadow .3s var(--ease-apple);}
+.card:hover,.glass-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.card-spotlight{position:relative;overflow:hidden;}
+.card-spotlight::before{content:'';position:absolute;width:220px;height:220px;background:radial-gradient(circle,rgba(0,113,227,.10) 0%,transparent 70%);left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s var(--ease-apple);}
+.card-spotlight:hover::before{opacity:1;}
+.btn-primary{display:inline-block;background:linear-gradient(180deg,var(--apple-accent) 0%,color-mix(in srgb,var(--apple-accent) 85%,black) 100%);color:#fff;padding:12px 24px;border:none;border-radius:14px;font-weight:600;box-shadow:var(--shadow-sm);transition:transform .15s var(--ease-apple-decel),box-shadow .2s var(--ease-apple);text-decoration:none;}
+.btn-primary:active{transform:scale(.97);}
+.btn-ghost{display:inline-block;background:transparent;color:var(--apple-accent);border:1px solid var(--apple-accent);padding:11px 23px;border-radius:14px;font-weight:600;text-decoration:none;transition:background .2s var(--ease-apple);}
+.btn-ghost:hover{background:rgba(0,113,227,.08);}
+a{color:var(--apple-accent);text-decoration:none;position:relative;}
+a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--apple-accent);transition:width .3s var(--ease-apple);}
+a:hover::after{width:100%;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+</style>
+
+
+<style id="bg-dynamic-layer">
+.bg-dynamic{position:fixed;inset:0;z-index:-2;opacity:.22;background:linear-gradient(135deg,#f8f5ef 0%,#efeadf 45%,#e3dbc9 100%);will-change:transform,background-position,opacity;transform:translateZ(0);}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.82) 50%,rgba(255,255,255,.55) 100%);}
+
+.bg-dynamic.anim-pan-x{animation:flow-pan-x 60s linear infinite;background-size:200% 100%;}
+.bg-dynamic.anim-pan-y{animation:flow-pan-y 45s linear infinite;background-size:100% 200%;}
+.bg-dynamic.anim-breathe{animation:flow-breathe 20s ease-in-out infinite;}
+.bg-dynamic.anim-rotate{animation:flow-rotate 120s linear infinite;}
+.bg-dynamic.anim-bleed{animation:flow-bleed 30s ease-in-out infinite;background-size:120% 120%;}
+.bg-dynamic.anim-parallax{background-size:150% 150%;animation:flow-pan-x 80s linear infinite,flow-breathe 25s ease-in-out infinite;}
+@keyframes flow-pan-x{0%{background-position:0% 50%;}100%{background-position:100% 50%;}}
+@keyframes flow-pan-y{0%{background-position:50% 0%;}100%{background-position:50% 100%;}}
+@keyframes flow-breathe{0%,100%{transform:scale(1);opacity:.22;}50%{transform:scale(1.08);opacity:.30;}}
+@keyframes flow-rotate{0%{transform:rotate(0deg) scale(1.15);}100%{transform:rotate(360deg) scale(1.15);}}
+@keyframes flow-bleed{0%,100%{background-position:50% 50%;filter:blur(0px);}50%{background-position:52% 48%;filter:blur(1.5px);}}
+@media (prefers-reduced-motion:reduce){.bg-dynamic,.bg-dynamic.anim-pan-x,.bg-dynamic.anim-pan-y,.bg-dynamic.anim-breathe,.bg-dynamic.anim-rotate,.bg-dynamic.anim-bleed,.bg-dynamic.anim-parallax{animation:none!important;}}
+</style>
+
+</head>
+<body>
+<div class="bg-dynamic anim-pan-x"></div>
+<div class="bg-overlay"></div>
+
+
+<!-- ================================================================
+     HERO · 首屏：标题 / 眉标 / 元信息
+     ================================================================ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-eyebrow">ONESHOT 图集 · 卡诺热机 · 第 3 座主馆</div>
+    <h1 class="hero-title">卡诺热机<br><span class="accent">深度研究图集</span> · <span class="gold">极简金蓝留白</span></h1>
+    <p class="hero-sub">
+      从 1824 年巴黎的一份小册子，到 2024 年超导量子电路里的三能级热机——
+      热力学第二定律的效率标尺两百年未被撼动。本图集以 17 章全景铺开卡诺热机的
+      历史、定理、方法论、工程与前沿，全部数据来自 78 篇可溯源文献的深度核验。
+    </p>
+    <div class="hero-meta">
+      <span class="chip chip-gold">78 篇文献</span>
+      <span class="chip chip-blue">17 章全景</span>
+      <span class="chip chip-gold">200 年跨度</span>
+      <span class="chip chip-slate">进阶深度</span>
+      <span class="chip chip-slate">工程师 / 物理学习者 / 能源从业者</span>
+    </div>
+    <div class="hero-stamp">
+      <span>生成日期：<b>2026-08-14</b></span>
+      <span>素材：<b>卡诺热机深度研究报告</b></span>
+      <span>信源：<b>SOURCES_RANKED 三级分级</b></span>
+      <span>风格：<b>极简金蓝留白 · CEO 汇报 / 打印</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ================================================================
+     TOC · 17 章目录
+     ================================================================ -->
+<nav class="wrap" aria-label="章节目录">
+  <div class="toc no-print" id="toc">
+    <div class="toc-title">目录 · 17 章</div>
+    <ol class="toc-grid">
+      <li><a href="#ch-00"><span class="toc-no">00</span>概览 · KPI 六卡</a></li>
+      <li><a href="#ch-01"><span class="toc-no">01</span>历史：热质说 → 熵</a></li>
+      <li><a href="#ch-02"><span class="toc-no">02</span>人物：12 位关键角色</a></li>
+      <li><a href="#ch-03"><span class="toc-no">03</span>定理：η = 1 − Tc/Th</a></li>
+      <li><a href="#ch-04"><span class="toc-no">04</span>方法论：三大理论家族</a></li>
+      <li><a href="#ch-05"><span class="toc-no">05</span>范式对比：四联表</a></li>
+      <li><a href="#ch-06"><span class="toc-no">06</span>工程：蒸汽动力与联合循环</a></li>
+      <li><a href="#ch-07"><span class="toc-no">07</span>制冷与热泵：逆卡诺 COP</a></li>
+      <li><a href="#ch-08"><span class="toc-no">08</span>火用分析：Gouy-Stodola</a></li>
+      <li><a href="#ch-09"><span class="toc-no">09</span>时间线：1824 → 2026</a></li>
+      <li><a href="#ch-10"><span class="toc-no">10</span>行业案例：八个剖面</a></li>
+      <li><a href="#ch-11"><span class="toc-no">11</span>5D 评估：本研究自评</a></li>
+      <li><a href="#ch-12"><span class="toc-no">12</span>科研工具链：八件套</a></li>
+      <li><a href="#ch-13"><span class="toc-no">13</span>名人思维技能卡</a></li>
+      <li><a href="#ch-14"><span class="toc-no">14</span>社交文案：5 平台 × 3 条</a></li>
+      <li><a href="#ch-15"><span class="toc-no">15</span>参考文献：IEEE 核心 30 条</a></li>
+      <li><a href="#ch-16"><span class="toc-no">16</span>信源分级：S / A / B 三区</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main>
+
+<!-- ================================================================
+     CH 00 · 概览 + KPI 六卡
+     ================================================================ -->
+<section class="section" id="ch-00">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 00</span>
+      <h2 class="section-title">概览 · 六个数字读懂卡诺热机</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        卡诺热机是热力学第二定律的基石与效率上限的标尺。以下六张 KPI 卡
+        汇总本图集的核心事实：全部数字均来自内容包关键事实库与主报告，可逐条溯源。
+      </p>
+    </div>
+
+    <!-- KPI 六卡 -->
+    <div class="kpi-grid">
+      <div class="kpi reveal">
+        <div class="kpi-label">效率公式</div>
+        <div class="kpi-value">1 − <span class="mono">T<sub>c</sub>/T<sub>h</sub></span></div>
+        <p class="kpi-caption">
+          卡诺效率仅由两热源的<b>绝对温度</b>决定，<b>与工质无关</b>；
+          是任何热机效率的绝对上限（卡诺定理）。
+        </p>
+      </div>
+      <div class="kpi reveal">
+        <div class="kpi-label">时间跨度</div>
+        <div class="kpi-value blue">200<span class="kpi-unit">年</span></div>
+        <p class="kpi-caption">
+          1824 → 2026：效率公式与卡诺定理<b>两百年未被推翻</b>；
+          现代“超越卡诺”宣称全部依赖附加资源。
+        </p>
+      </div>
+      <div class="kpi reveal">
+        <div class="kpi-label">联合循环实测纪录</div>
+        <div class="kpi-value gold">62.22<span class="kpi-unit">%</span></div>
+        <p class="kpi-caption">
+          Bouchain 9HA.01 联合循环净效率 <b>62.22%</b>（2016 吉尼斯实测），
+          已达同界限卡诺上限（约 83%）的 <b>约 75%</b>。
+        </p>
+      </div>
+      <div class="kpi reveal">
+        <div class="kpi-label">冰箱 COP · 理想 vs 现实</div>
+        <div class="kpi-value">5.9<span class="kpi-unit">vs</span>1.5–3</div>
+        <p class="kpi-caption">
+          卡诺逆循环 COP≈<b>5.9</b>（−18℃/25℃），家用冰箱实际仅 <b>1.5–3</b>——
+          温差越大，现实相对理想下降越明显。
+        </p>
+      </div>
+      <div class="kpi reveal">
+        <div class="kpi-label">教学困难</div>
+        <div class="kpi-value blue">&lt;20<span class="kpi-unit">%</span></div>
+        <p class="kpi-caption">
+          修完热力学课程的学生中，仅 <b>&lt;20%（11/64）</b>认识到
+          “优于卡诺的引擎”即违反热力学第二定律。
+        </p>
+      </div>
+      <div class="kpi reveal">
+        <div class="kpi-label">实验里程碑</div>
+        <div class="kpi-value gold">4<span class="kpi-unit">座标</span></div>
+        <p class="kpi-caption">
+          单离子热机（2016）· 布朗卡诺机（2016）· NV 色心热机（2019）·
+          超导三能级热机（2024）——卡诺思想进入微观尺度。
+        </p>
+      </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- 核心结论 -->
+    <div class="grid-2">
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Five Conclusions</div>
+        <h3>本图集五条核心结论</h3>
+        <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-soft);line-height:2;">
+          <li><b style="color:var(--ink)">原点</b>：卡诺 1824 年基于热质说的论证，经 Clapeyron 图形化、Kelvin 温标化、Clausius 熵化，成为第二定律基石。</li>
+          <li><b style="color:var(--ink)">标尺</b>：“达卡诺比例”η/η_Carnot 衡量工程进步——联合循环已达约 75%，瓶颈在材料而非物理。</li>
+          <li><b style="color:var(--ink)">裁决</b>：所有“超越卡诺”宣称（压缩库、手征导体等）均依赖非平衡/相干/信息附加资源，不违反第二定律。</li>
+          <li><b style="color:var(--ink)">前沿</b>：量子与纳米热机把卡诺循环搬进微观尺度，功率–效率权衡被严格证明（Shiraishi 2016）。</li>
+          <li><b style="color:var(--ink)">教学</b>：最大困难是“效率上限与第二定律脱节”——&lt;20% 学生能识别“优于卡诺”即违法。</li>
+        </ul>
+      </div>
+      <div class="card blue-border reveal">
+        <div class="card-kicker">How To Read</div>
+        <h3>阅读指南</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.95;">
+          本图集共 17 章：前五章讲<b>历史与理论</b>（01–05），中间三章讲
+          <b>工程与度量</b>（06–08），随后是<b>时间线与行业案例</b>（09–10），
+          最后五章是<b>评估、工具、思维、传播与溯源</b>（11–16）。
+          每章至少包含两种组件（KPI / 卡片 / 表格 / 时间线 / 公式 / 注记），
+          关键数字全部标注口径与出处。
+        </p>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.95;margin-top:12px;">
+          <b style="color:var(--gold-deep)">打印友好</b>：本页适配 A4 打印，
+          右上角“打印本馆”按钮可导出 CEO 汇报版。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 01 · 历史：热质说 → 卡诺 → Clapeyron → Kelvin → Clausius
+     ================================================================ -->
+<section class="section" id="ch-01">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 01</span>
+      <h2 class="section-title">历史 · 从热质说到熵的两百年</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        卡诺 1824 年出版生前唯一著作《关于火的动力的思考》，基于热质说论证
+        “仅有热还不够，还必须有冷”。这段思想史充满误引与纠正，本图集逐条核验。
+      </p>
+    </div>
+
+    <!-- 史实卡片 -->
+    <div class="grid-3">
+      <div class="card reveal">
+        <div class="card-kicker">1824 · 起点</div>
+        <h3>卡诺《关于火的动力的思考》</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          1824 年 6 月 12 日出版，基于<b>热质说（caloric theory）</b>：
+          动力来自热质从热体向冷体的输运，而非热质消耗。同年 7 月 26 日
+          Pierre Girard 即在法兰西科学院作长篇书评——<b>“出版后无人注意”并不准确</b>，
+          只是不被主流重视，直到 1834 年 Clapeyron 解析化后才广为人知。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">类比 · 瀑布</div>
+        <h3>瀑布落差类比</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          卡诺原文：热的动力取决于“热质的量与两交换热质物体间的<b>温度差</b>（落差）”，
+          但他明言“尚不知道它是否与该温差成正比”。正文斜体给出卡诺定理原型：
+          <b>热的动力与实现它的工质无关</b>，仅由两物体的温度决定。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">数值 · 常被误引</div>
+        <h3>1.395 的真相</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          常被引用的“1.395 单位动力”实为<b>1000 单位热从 1℃ 降至 0℃</b>（空气工质）的结果，
+          水蒸气 100→99℃ 为 1.112——<b>二者皆非“100→0℃”</b>。
+          卡诺未刊手稿中还有热功当量估算：约 <b>370 kg·m/千卡</b>
+          （与 Mayer 的 365 接近，比 Joule 的约 424 低约 15%）。
+        </p>
+      </div>
+    </div>
+
+    <!-- 演进链条 -->
+    <div class="card accent-border mt-24 reveal">
+      <div class="card-kicker">Lineage · 五步演化</div>
+      <h3>从热质说到第二定律：一条被五次改写的主线</h3>
+      <ol class="steps mt-16">
+        <li class="step">
+          <div class="step-title">1834 · Clapeyron 解析化 + p-V 图</div>
+          <div class="step-body">
+            以解析法重述卡诺理论并给出 p-V 图上的循环图形（《Journal de l'École Polytechnique》XIV 卷，
+            1837 年英译收入 Taylor's Scientific Memoirs）。<b>Kelvin 自述从未见过 1824 原书，
+            是通过 Clapeyron 论文首次了解卡诺理论</b>。
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-title">1848 · Kelvin 绝对温标</div>
+          <div class="step-body">
+            《On an Absolute Thermometric Scale founded on Carnot's Theory》（Phil. Mag.，1848 年 10 月）：
+            以“<b>单位热下落每度做功相等</b>”定义与物质无关的绝对温标，由 Regnault 数据推得
+            绝对零度约 <b>−273℃</b>；脚注仍称热变功“probably impossible”，并记录 Joule 的相反观点。
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-title">1850 · Clausius 修正热守恒</div>
+          <div class="step-body">
+            《Ueber die bewegende Kraft der Wärme》（Ann. Phys. 79: 368–397）首次把卡诺理论
+            与焦耳热功当量结合，<b>修正“热守恒”假设</b>——热不是守恒物质，而是可以被消耗为功。
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-title">1851 · Kelvin 第二定律公理</div>
+          <div class="step-body">
+            《On the Dynamical Theory of Heat》（Trans. Roy. Soc. Edinburgh）公理原文：
+            “It is impossible, by means of inanimate material agency, to derive mechanical effect
+            from any portion of matter by cooling it below the temperature of the coldest of
+            the surrounding objects”——<b>第二类永动机不可能</b>。
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-title">1865 · Clausius 命名“熵”</div>
+          <div class="step-body">
+            以希腊词 <b>τροπή（转变）</b>命名“熵”，并“故意把熵一词造得与能量尽可能相似”。
+            名言：“<b>宇宙的能量恒定；宇宙的熵趋向极大</b>。”
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- 关键年表 -->
+    <div class="table-wrap mt-24 reveal">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>年份</th>
+            <th>事件</th>
+            <th>意义</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">1796.6.1</td>
+            <td>卡诺生于巴黎（父 Lazare Carnot）</td>
+            <td class="lbl">“组织者之子”，1812 年入巴黎综合理工学院，后任军事工程师</td>
+          </tr>
+          <tr>
+            <td class="num">1824.6.12</td>
+            <td>《关于火的动力的思考》出版</td>
+            <td class="lbl">生前唯一著作，卡诺定理的源头</td>
+          </tr>
+          <tr>
+            <td class="num">1824.7.26</td>
+            <td>Girard 在科学院作书评</td>
+            <td class="lbl">证明“无人注意”的说法不实</td>
+          </tr>
+          <tr>
+            <td class="num">1832.8.24</td>
+            <td>卡诺死于霍乱，年仅 36 岁</td>
+            <td class="lbl">未及见到自己的理论被认可</td>
+          </tr>
+          <tr>
+            <td class="num">1834</td>
+            <td>Clapeyron 解析化 + p-V 图</td>
+            <td class="lbl">让卡诺理论进入数学可算的形态</td>
+          </tr>
+          <tr>
+            <td class="num">1843–1850</td>
+            <td>Joule 热功当量系列实验</td>
+            <td class="lbl">钉死热与功的换算当量</td>
+          </tr>
+          <tr>
+            <td class="num">1848.10</td>
+            <td>Kelvin 提出绝对温标</td>
+            <td class="lbl">仍基于卡诺热质论框架，−273℃</td>
+          </tr>
+          <tr>
+            <td class="num">1850</td>
+            <td>Clausius 修正卡诺论证、结合焦耳</td>
+            <td class="lbl">放弃“热守恒”，走向第二定律</td>
+          </tr>
+          <tr>
+            <td class="num">1851.3</td>
+            <td>Kelvin《论热之动力学说》，接受热功等价</td>
+            <td class="lbl">第二类永动机不可能的正式表述</td>
+          </tr>
+          <tr>
+            <td class="num">1865</td>
+            <td>Clausius 命名“熵”（τροπή）</td>
+            <td class="lbl">第二定律获得最简表述：宇宙熵趋向极大</td>
+          </tr>
+          <tr>
+            <td class="num">1890</td>
+            <td>Thurston 英译本（John Wiley，附 Kelvin 1849 评述）</td>
+            <td class="lbl">英语世界首次完整读到卡诺</td>
+          </tr>
+          <tr>
+            <td class="num">1927</td>
+            <td>卡诺未刊手稿出版（Picard 作序）</td>
+            <td class="lbl">“热是运动”等句实出自手稿，非 1824 正文</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 存疑点 -->
+    <div class="note note-warn mt-24 reveal">
+      <b>史实存疑点（如实标注，不掩盖）：</b>
+      ① “1878 年第二版 / 手稿入档”年份仅有二手文献支持，未直接核实一手页面；
+      ② “热是运动”名言出自未刊手稿（1890 英译本附录收录、兄弟 Hippolyte 存入科学院档案），
+      而非 1824 正文；③ Kelvin 1851 论文刊名在不同数据库著录为 Trans./Proc. RSE 两种；
+      ④ 克劳修斯 1854 年“变换等价量”论文二手来源提及，本轮未直接核实，标记未证实。
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 02 · 人物：12 位关键角色（CSS 渐变 + 内联 SVG 头像占位）
+     ================================================================ -->
+<section class="section" id="ch-02">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 02</span>
+      <h2 class="section-title">人物 · 十二位关键角色</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        从 1824 年的卡诺到 2024 年的实验物理学家：十二个人物构成卡诺热机
+        两百年的叙事主干。头像为 CSS 渐变 + 内联 SVG 占位（姓名首字），无任何外链图片。
+      </p>
+    </div>
+
+    <div class="person-grid">
+      <!-- 01 卡诺 -->
+      <article class="person reveal">
+        <div class="person-band t1"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="卡诺头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#1D4ED8" opacity=".85"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#1D4ED8" opacity=".85"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="PingFang SC, sans-serif">卡诺</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">Sadi Carnot</div>
+          <div class="person-dates">1796 – 1832</div>
+          <div class="person-role">工程师 · 奠基者</div>
+          <p class="person-note">《关于火的动力的思考》作者；瀑布落差类比；卡诺定理原型；36 岁早逝，理论 10 年后才被重估。</p>
+        </div>
+      </article>
+      <!-- 02 Clapeyron -->
+      <article class="person reveal">
+        <div class="person-band t2"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Clapeyron 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#C89F5A" opacity=".9"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#C89F5A" opacity=".9"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">CL</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">B. P. É. Clapeyron</div>
+          <div class="person-dates">1799 – 1864</div>
+          <div class="person-role">工程师 · 解析化</div>
+          <p class="person-note">1834 年以解析法重述卡诺理论并绘制 p-V 图；Kelvin 正是经由他首次了解卡诺。</p>
+        </div>
+      </article>
+      <!-- 03 Kelvin -->
+      <article class="person reveal">
+        <div class="person-band t4"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Kelvin 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#64748B" opacity=".9"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#64748B" opacity=".9"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">KT</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">William Thomson · Kelvin</div>
+          <div class="person-dates">1824 – 1907</div>
+          <div class="person-role">物理学家 · 温标</div>
+          <p class="person-note">1848 绝对温标（−273℃）；1851 第二定律公理；以热力学温标让卡诺效率成为绝对标尺。</p>
+        </div>
+      </article>
+      <!-- 04 Clausius -->
+      <article class="person reveal">
+        <div class="person-band t5"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Clausius 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#1D4ED8" opacity=".8"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#1D4ED8" opacity=".8"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">RC</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">Rudolf Clausius</div>
+          <div class="person-dates">1822 – 1888</div>
+          <div class="person-role">物理学家 · 熵</div>
+          <p class="person-note">1850 结合焦耳当量修正热守恒；1865 命名“熵”；名言“宇宙能量恒定，宇宙熵趋向极大”。</p>
+        </div>
+      </article>
+      <!-- 05 Joule -->
+      <article class="person reveal">
+        <div class="person-band t3"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Joule 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#C89F5A" opacity=".85"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#C89F5A" opacity=".85"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">JJ</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">James Prescott Joule</div>
+          <div class="person-dates">1818 – 1889</div>
+          <div class="person-role">实验家 · 当量</div>
+          <p class="person-note">1843–1850 热功当量系列实验，测得当量约 424 kg·m/千卡，为卡诺理论提供数值支柱。</p>
+        </div>
+      </article>
+      <!-- 06 Planck -->
+      <article class="person reveal">
+        <div class="person-band t1"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Planck 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#1D4ED8" opacity=".75"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#1D4ED8" opacity=".75"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">MP</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">Max Planck</div>
+          <div class="person-dates">1858 – 1947</div>
+          <div class="person-role">物理学家 · 公理化</div>
+          <p class="person-note">1903《热力学论》§116：不可能制造除举起重物并冷却热库外无其他效应的发动机。</p>
+        </div>
+      </article>
+      <!-- 07 Curzon -->
+      <article class="person reveal">
+        <div class="person-band t2"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Curzon 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#64748B" opacity=".85"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#64748B" opacity=".85"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">FC</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">F. L. Curzon</div>
+          <div class="person-dates">— 1975 —</div>
+          <div class="person-role">物理学家 · 有限时间</div>
+          <p class="person-note">与 Ahlborn 提出最大功率效率 η_CA = 1 − √(Tc/Th)：上限 ≠ 最优运行点。</p>
+        </div>
+      </article>
+      <!-- 08 Ahlborn -->
+      <article class="person reveal">
+        <div class="person-band t4"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Ahlborn 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#1D4ED8" opacity=".65"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#1D4ED8" opacity=".65"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">BA</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">B. Ahlborn</div>
+          <div class="person-dates">— 1975 —</div>
+          <div class="person-role">物理学家 · 有限时间</div>
+          <p class="person-note">Curzon–Ahlborn 论文共同作者（AJP 43, 22, 1975），开启有限时间热力学分支。</p>
+        </div>
+      </article>
+      <!-- 09 Feynman -->
+      <article class="person reveal">
+        <div class="person-band t5"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Feynman 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#C89F5A" opacity=".95"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#C89F5A" opacity=".95"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">RF</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">Richard Feynman</div>
+          <div class="person-dates">1918 – 1988</div>
+          <div class="person-role">物理学家 · 讲义</div>
+          <p class="person-note">《费曼物理学讲义》Vol. I 第 44 章以“热机→第二定律→可逆机→卡诺效率→温标→熵”为主线。</p>
+        </div>
+      </article>
+      <!-- 10 Roßnagel -->
+      <article class="person reveal">
+        <div class="person-band t3"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Roßnagel 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#64748B" opacity=".8"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#64748B" opacity=".8"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">RN</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">Johannes Roßnagel</div>
+          <div class="person-dates">— 2016 —</div>
+          <div class="person-role">实验物理 · 单离子</div>
+          <p class="person-note">2016 年用捕获 Ca⁺ 单离子实现量子热机并测功（Science 352, 325）。</p>
+        </div>
+      </article>
+      <!-- 11 Martínez -->
+      <article class="person reveal">
+        <div class="person-band t1"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Martínez 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#1D4ED8" opacity=".55"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#1D4ED8" opacity=".55"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">IM</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">Ignacio A. Martínez</div>
+          <div class="person-dates">— 2016 —</div>
+          <div class="person-role">实验物理 · 布朗机</div>
+          <p class="person-note">2016 年用光镊胶体粒子实现布朗卡诺热机（Nature Physics 12, 67），效率接近 CA 理论。</p>
+        </div>
+      </article>
+      <!-- 12 Shannon -->
+      <article class="person reveal">
+        <div class="person-band t2"></div>
+        <div class="person-avatar">
+          <svg viewBox="0 0 72 72" role="img" aria-label="Shannon 头像占位">
+            <circle cx="36" cy="36" r="32" fill="#FBF9F4"/>
+            <circle cx="36" cy="26" r="11" fill="#C89F5A" opacity=".7"/>
+            <path d="M18 58a18 18 0 0 1 36 0z" fill="#C89F5A" opacity=".7"/>
+            <text x="36" y="64" text-anchor="middle" font-size="9" fill="#fff" font-family="sans-serif">CS</text>
+          </svg>
+        </div>
+        <div class="person-body">
+          <div class="person-name">Claude Shannon · 香农</div>
+          <div class="person-dates">1916 – 2001</div>
+          <div class="person-role">信息论 · 类比提及</div>
+          <p class="person-note">费曼 44-1 开篇将卡诺与香农并列：工程为基础物理贡献理论的少数著名案例，二者密切相关。</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- 关系注记 -->
+    <div class="grid-2 mt-24">
+      <div class="card reveal">
+        <div class="card-kicker">Feynman 44-1</div>
+        <h3>工程贡献基础物理的罕见案例</h3>
+        <blockquote class="quote" style="margin:0;margin-top:12px;">
+          <p>热力学这门科学始于伟大的工程师萨迪·卡诺对“如何造出最好、效率最高的热机”这一问题的分析——这是工程学为基础物理理论做出贡献的少数著名案例之一；另一个例子是香农的信息论分析，这两项分析后来被发现密切相关。</p>
+          <span class="quote-src">—— 费曼讲义 Vol. I Ch. 44 开篇（44-1，逐字核验）</span>
+        </blockquote>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Honesty</div>
+        <h3>诚实标注：三个流传说法未证实</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.9;">
+          流传的“费曼用橡皮筋演示卡诺机”“做功的石头模型”“卡诺机是热力学中最重要的概念”
+          均未能在讲义原文中找到对应文字，按反自欺原则标注<b style="color:var(--warn)">未证实</b>。
+          教学中建议以确证的“<b style="color:var(--accent)">工质无关性</b>”替代
+          ——任何工质皆可，选理想气体仅为计算方便（DeVoe 教材 4.3 节原文佐证）。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 03 · 定理：效率公式 + 卡诺定理两表述 + 反证法
+     ================================================================ -->
+<section class="section" id="ch-03">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 03</span>
+      <h2 class="section-title">定理 · 效率公式与卡诺定理</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        η = 1 − Tc/Th：一个只含两个温度的公式，定死了所有热机的效率天花板。
+        本节给出完整推导、卡诺定理的两条表述、反证法证明与常见错误。
+      </p>
+    </div>
+
+    <!-- 核心公式 -->
+    <div class="formula reveal">
+      <span class="fml">η = 1 − <var>T<sub>c</sub></var>/<var>T<sub>h</sub></var> = (<var>T<sub>h</sub></var> − <var>T<sub>c</sub></var>)/<var>T<sub>h</sub></var></span>
+      <span class="fml-note">仅由两热源绝对温度决定 · 与工质无关 · 仅对绝对温标成立（摄氏温标直接代入是常见错误）</span>
+    </div>
+
+    <!-- 推导 -->
+    <div class="grid-2">
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Derivation</div>
+        <h3>完整推导（理想气体路径）</h3>
+        <ol class="steps mt-8">
+          <li class="step">
+            <div class="step-title">等温吸热（Th）</div>
+            <div class="step-body">q = nRT<sub>h</sub>·ln(V₂/V₁)，ΔU = 0；体积比 V₂/V₁ 进入表达式。</div>
+          </li>
+          <li class="step">
+            <div class="step-title">绝热膨胀（Th → Tc）</div>
+            <div class="step-body">q = 0，w = nC<sub>v</sub>·ΔT；绝热过程满足 TV^(γ−1) = 常数。</div>
+          </li>
+          <li class="step">
+            <div class="step-title">等温放热（Tc）</div>
+            <div class="step-body">|q<sub>c</sub>| = nRT<sub>c</sub>·ln(V₃/V₄)；热量符号与路径方向相反。</div>
+          </li>
+          <li class="step">
+            <div class="step-title">绝热压缩（Tc → Th）</div>
+            <div class="step-body">由 (T₂/T₃)^(Cv/R) = V₃/V₂ 与 (T₁/T₄)^(Cv/R) = V₄/V₁，结合 T₁=T₂、T₃=T₄ 得关键关系。</div>
+          </li>
+          <li class="step">
+            <div class="step-title">消元得效率</div>
+            <div class="step-body">绝热体积比 <b>V₃/V₄ = V₂/V₁</b>，两对数项相消，η = (T<sub>h</sub> − T<sub>c</sub>)/T<sub>h</sub>。</div>
+          </li>
+        </ol>
+      </div>
+      <div class="card blue-border reveal">
+        <div class="card-kicker">Independence</div>
+        <h3>工质无关性：不止理想气体</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          标准推导使用理想气体仅为计算方便。用 <b>Redlich–Kwong 气体</b>按同样步骤
+          可推出相同结果（arXiv:physics/0601173），证明结论与状态方程无关——
+          这就是卡诺“热的动力与工质无关”的现代数学形态。
+        </p>
+        <div class="note note-gold mt-16">
+          <b>费曼式理解：</b>不管用什么桶，水从同一高度落下能推的水车功率都一样；
+          同理，不管用什么工质、怎么设计，只要在两个温度之间干活，η = 1 − Tc/Th 就是天花板。
+        </div>
+      </div>
+    </div>
+
+    <!-- 定理两表述 -->
+    <div class="grid-2 mt-24">
+      <div class="card reveal">
+        <div class="card-kicker">Theorem · 表述一</div>
+        <h3>相同两热源之间，没有热机效率能超过可逆（卡诺）热机</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          这是“上限”表述：任何实际热机，无论设计多巧妙，只要工作在 Th 与 Tc 之间，
+          效率必然 ≤ 1 − Tc/Th。<b style="color:var(--accent)">超过即违反第二定律</b>，
+          宇宙总熵将减小——物理上不可能。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Theorem · 表述二</div>
+        <h3>所有可逆热机效率相等，与工质种类无关</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          这是“等价性”表述：可逆是效率的充分必要条件。两条推论——
+          ① 同温度界限间所有可逆热机效率相等；
+          ② 不可逆热机效率恒低于可逆热机——构成第二定律对效率的“天花板”约束。
+        </p>
+      </div>
+    </div>
+
+    <!-- 反证法 -->
+    <div class="card accent-border mt-24 reveal">
+      <div class="card-kicker">Proof · Reductio</div>
+      <h3>反证法：为什么 η_S &gt; η_C 必然导致矛盾</h3>
+      <ol class="steps mt-8">
+        <li class="step">
+          <div class="step-title">假设存在更高效的引擎 S</div>
+          <div class="step-body">设某机 S 的效率 η_S 高于同界限卡诺机 C 的效率 η_C，即 η_S &gt; η_C。</div>
+        </li>
+        <li class="step">
+          <div class="step-title">用 S 反向驱动卡诺机</div>
+          <div class="step-body">让 S 输出功驱动卡诺机 C 逆向运行（同一可逆循环逆向即制冷机/热泵），组成联合装置。</div>
+        </li>
+        <li class="step">
+          <div class="step-title">净功为零、热量却反向搬运</div>
+          <div class="step-body">因为 η_S &gt; η_C，S 产生的功足够驱动反向 C 还绰绰有余；联合装置净功为零，却把热从冷源自发搬到热源。</div>
+        </li>
+        <li class="step">
+          <div class="step-title">违反 Clausius 表述 → 矛盾</div>
+          <div class="step-body">“热不能自发从冷到热”被违反，与第二定律矛盾。故假设不成立，η_S ≤ η_C 得证。</div>
+        </li>
+      </ol>
+      <div class="note note-blue">
+        <b>等价性注记：</b>第二定律的 Kelvin–Planck 表述（第二类永动机不可能）与 Clausius 表述
+        （热不能自发从冷到热）逻辑等价；MDPI Entropy 2022 有论文对该严格等价性提出学术争议，
+        主流教材仍取等价立场。
+      </div>
+    </div>
+
+    <!-- 数值例与常见错误 -->
+    <div class="grid-2 mt-24">
+      <div class="card reveal">
+        <div class="card-kicker">Numbers</div>
+        <h3>数值例：100℃ 与 0℃ 之间</h3>
+        <div class="formula" style="margin-top:12px;">
+          <span class="fml">η = 1 − 273/373 ≈ <span class="gd">27%</span></span>
+          <span class="fml-note">至少 73% 的吸热必须以废热排出——不是工程不够好，是物理不允许</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          T-S 图上可逆卡诺循环呈矩形：两条水平等温线 + 两条竖直线（等熵）。
+          矩形面积 = 净功 W = (T<sub>h</sub> − T<sub>c</sub>)·ΔS；效率 = 面积/上边长 = (T<sub>h</sub>−T<sub>c</sub>)/T<sub>h</sub>。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Pitfalls</div>
+        <h3>常见错误清单</h3>
+        <table class="table" style="font-size:12.5px;">
+          <tbody>
+            <tr><td>① 摄氏温标直接代入公式</td><td class="lbl">必须用绝对温标（K）</td></tr>
+            <tr><td>② T-S 矩形套到不可逆循环</td><td class="lbl">矩形仅对可逆循环成立</td></tr>
+            <tr><td>③ 混淆物理/工程功符号约定</td><td class="lbl">w = −∫PdV（物理）vs W = ∫PdV（工程）</td></tr>
+            <tr><td>④ LibreTexts 13.1 T-S 表 ΔS 符号</td><td class="lbl">疑似笔误（与 MIT/Fermi/Çengel 正号约定相反），全循环 ΔS=0 不受影响</td></tr>
+            <tr><td>⑤ 认为卡诺效率就是实际效率</td><td class="lbl">卡诺是可逆理论上限，真实机必低于此</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 04 · 方法论：三大理论家族
+     ================================================================ -->
+<section class="section" id="ch-04">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 04</span>
+      <h2 class="section-title">方法论 · 三大理论家族</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        研究卡诺热机的理论方法可分三个家族：可逆循环家族、熵与温标家族、
+        有限时间热力学家族。它们依次回答“上限是多少”“如何刻画不可逆”“如何在有限时间下权衡”。
+      </p>
+    </div>
+
+    <div class="grid-3">
+      <!-- 家族一 -->
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Family 01 · 可逆循环</div>
+        <h3>可逆循环家族</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          卡诺循环由四个可逆过程组成：① 等温膨胀（Th 吸热 Qh）→
+          ② 绝热膨胀（Th→Tc）→ ③ 等温压缩（Tc 放热 |Qc|）→
+          ④ 绝热压缩（回到 Th），工质循环一周恢复初态，ΔU = 0。
+        </p>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          可逆性要求（<b>准静态、无摩擦、无有限温差传热</b>）是达到效率上限的前提。
+          理想 Stirling 与 Ericsson 循环（等温吸/放热 + 理想回热器）理论效率等于同界限卡诺效率，
+          是少数理论上达卡诺的循环；实际因回热器压降与温差传热而显著低于卡诺。
+        </p>
+        <div class="note note-gold">
+          <b>误读点：</b>“理论等于、实际低于”的落差是评估真实热机时的常见误读——
+          卡诺效率是标尺，不是目标值。
+        </div>
+      </div>
+      <!-- 家族二 -->
+      <div class="card blue-border reveal">
+        <div class="card-kicker">Family 02 · 熵与温标</div>
+        <h3>熵与温标家族</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          熵定义为可逆过程 ΔS = ∫δQ<sub>rev</sub>/T（状态函数）；
+          克劳修斯等式 <b>∮δQ<sub>rev</sub>/T = 0</b>（可逆循环），
+          不等式 <b>∮δQ/T ≤ 0</b>（任意循环）。
+        </p>
+        <div class="formula" style="margin:14px 0;">
+          <span class="fml">Q<sub>h</sub>/Q<sub>c</sub> = T<sub>h</sub>/T<sub>c</sub></span>
+          <span class="fml-note">热力学温标定义：任意两温度间可逆卡诺机吸放热之比，与理想气体温标等价</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          可逆卡诺循环宇宙熵变 ΔS<sub>universe</sub> = 0；任何不可逆过程 ΔS<sub>universe</sub> &gt; 0。
+          历史细节：Kelvin 1848 定义的是“单位热量每下降 1° 产生等量机械功”的
+          <b>对数型温标</b>，现行线性热力学温标是 1854 年修正后的形式——多数科普省略了这层差异。
+        </p>
+      </div>
+      <!-- 家族三 -->
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Family 03 · 有限时间</div>
+        <h3>有限时间热力学家族</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          Curzon &amp; Ahlborn（1975）“内可逆”模型导出<b>最大功率点效率</b>：
+        </p>
+        <div class="formula" style="margin:14px 0;">
+          <span class="fml">η<sub>CA</sub> = 1 − √(T<sub>c</sub>/T<sub>h</sub>)</span>
+          <span class="fml-note">最大功率工况下的效率，不是上限，恒低于卡诺效率</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          三点澄清：① η_CA 是“最大功率工况效率”<b>非上限</b>；
+          ② 普适性依赖线性响应 + 对称耦合假设——Van den Broeck 在 Onsager 框架重现 η_CA，
+          Esposito 等给出统一线性响应理论 η = η_C²/(2−η_C)（2009），Apertet 等（2016）则论证其并非本质普适量；
+          ③ 国内自 1990 年代即有系统研究（《力学进展》1992）。
+        </p>
+      </div>
+    </div>
+
+    <!-- 权衡定理 -->
+    <div class="grid-2 mt-24">
+      <div class="card reveal">
+        <div class="card-kicker">Trade-off · 2016</div>
+        <h3>功率–效率权衡：卡诺效率与有限功率不可兼得</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          <b>Shiraishi–Saito–Tasaki（2016，PRL）</b>严格证明：一般稳态热机中，
+          效率趋近卡诺值时功率必然受限；
+          <b>Pietzonka &amp; Seifert（2018）</b>给出功率–效率–稳定性三角普适约束；
+          <b>Brandner 等（2015，PRX）</b>给出周期驱动微纳热机的功率上限；
+          量子版本有 <b>Lieb–Robinson 界</b>约束效率–速度关系（2017）。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Challenge? · 裁决</div>
+        <h3>卡诺定理是否被挑战过？</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          现代文献中<b style="color:var(--accent)">没有任何被复现、未被反驳的“违反卡诺定理”结果</b>：
+          Verley 2014（涨落发散、概率趋零，不违反）；Polettini &amp; Esposito 2017（遭 Apertet 2018 公开评注，构成正式论战）；
+          Roßnagel 2014（压缩库等效于更高有效温度）；Ryu 2022（手征导体涉及非平衡/相干资源）。
+          <b style="color:var(--gold-deep)">综合裁决：全部依赖附加资源，对平衡可逆循环卡诺定理依然成立。</b>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 05 · 范式对比：四联表
+     ================================================================ -->
+<section class="section" id="ch-05">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 05</span>
+      <h2 class="section-title">范式对比 · 卡诺与四大动力循环</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        以卡诺循环为基准，横向对比 Rankine、Brayton、Otto/Diesel、Stirling/Ericsson 四大家族：
+        各自用怎样的加热方式、为何低于卡诺、又在哪里服役。
+      </p>
+    </div>
+
+    <!-- 四联表 -->
+    <div class="table-wrap reveal">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>循环</th>
+            <th>效率公式</th>
+            <th>与卡诺差距原因</th>
+            <th>代表场景</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>卡诺</b></td>
+            <td class="num blue">η = 1 − T<sub>c</sub>/T<sub>h</sub></td>
+            <td>理想上限（可逆、等温吸放热）</td>
+            <td>理论标尺</td>
+          </tr>
+          <tr>
+            <td><b>Rankine</b></td>
+            <td class="num">等压加热</td>
+            <td>吸放热跨温度区间</td>
+            <td>蒸汽发电 <b>33–46%</b></td>
+          </tr>
+          <tr>
+            <td><b>Brayton</b></td>
+            <td class="num">压比相关</td>
+            <td>等压燃烧</td>
+            <td>燃气轮机 35–42%，联合 <b>62.22%</b></td>
+          </tr>
+          <tr>
+            <td><b>Otto / Diesel</b></td>
+            <td class="num">η = 1 − 1/r^(γ−1)</td>
+            <td>强不可逆燃烧</td>
+            <td>内燃机 <b>约 41%</b></td>
+          </tr>
+          <tr>
+            <td><b>Stirling / Ericsson</b></td>
+            <td class="num blue">理论 = 卡诺</td>
+            <td>回热器压降 / 温差</td>
+            <td>理论达卡诺</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-note reveal">
+      Otto 循环理论效率 η = 1 − 1/r^(γ−1)（r 为压缩比），Diesel 循环同压比下略低；
+      二者与温度界限无关，与卡诺效率比较需取相同温度范围。比较基准不同，结论会失真。
+    </p>
+
+    <!-- 标尺推论 -->
+    <div class="grid-2 mt-24">
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Scale</div>
+        <h3>卡诺效率作为工程“标尺”</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          卡诺定理的两条推论——① 相同温度界限间所有可逆热机效率相等；
+          ② 不可逆热机效率恒低于可逆热机——构成第二定律对效率的“天花板”。
+          工程上的全部真实循环都可以用<b>“达卡诺比例”η/η_Carnot</b>衡量自己还差多少：
+        </p>
+        <div class="formula" style="margin-top:12px;">
+          <span class="fml">达卡诺比例 = η<sub>actual</sub> / η<sub>Carnot</sub></span>
+          <span class="fml-note">联合循环约 75% · 超超临界约 65–70% · 亚临界燃煤约 55–60% · 空调仅约 8%</span>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Reflection</div>
+        <h3>范式选择的本质</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          四种真实循环都在“逼近卡诺”的同一方向上做取舍：<b>Rankine 用等压加热换取工程可行性</b>
+          （过热/再热/回热提高平均吸热温度）；<b>Brayton 用压比换取紧凑</b>；
+          <b>Otto 用压缩比换取单位体积功率</b>；<b>Stirling 理论上追平卡诺，却输给回热器工程</b>。
+          选择哪种范式，是材料、成本、尺度的工程决策，而不是物理允许与否的裁决。
+        </p>
+        <div class="note note-slate">
+          <b>一个反直觉的事实：</b>燃气轮机单机效率低于蒸汽电厂，但联合循环（燃气 + 余热蒸汽）
+          把 62.22% 推到实测世界纪录——范式组合比单一范式更接近卡诺。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 06 · 工程：蒸汽动力与联合循环（62.22% 与口径分级）
+     ================================================================ -->
+<section class="section" id="ch-06">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 06</span>
+      <h2 class="section-title">工程 · 蒸汽动力与联合循环</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        62.22% 是吉尼斯实测纪录，但 63%、64% 又是什么？——口径分级是本节的钥匙：
+        实测 / 设计值 / 厂商宣称，三者不可混为一谈。
+      </p>
+    </div>
+
+    <!-- 口径分级 KPI 带 -->
+    <div class="kpi-grid">
+      <div class="kpi reveal">
+        <div class="kpi-label">实测 · 吉尼斯</div>
+        <div class="kpi-value gold">62.22<span class="kpi-unit">%</span></div>
+        <p class="kpi-caption">
+          GE 9HA.01 在法国 <b>Bouchain 联合循环电厂</b>净效率
+          <b>62.22%</b>（2016 吉尼斯世界纪录认证）——唯一有第三方背书的数字。
+        </p>
+      </div>
+      <div class="kpi reveal">
+        <div class="kpi-label">设计值</div>
+        <div class="kpi-value blue">63<span class="kpi-unit">%</span></div>
+        <p class="kpi-caption">
+          <b>Keadby 2</b> 联合循环 63% 为设计值（SSE Thermal 公司官网口径）——
+          设计目标 ≠ 实测达成，引用时必须标注。
+        </p>
+      </div>
+      <div class="kpi reveal">
+        <div class="kpi-label">厂商宣称</div>
+        <div class="kpi-value">64<span class="kpi-unit">%</span></div>
+        <p class="kpi-caption">
+          <b>9HA.02</b> 64% 为厂商宣称（2018，Turbomachinery Magazine），
+          未获独立实测证实——按 B 级“未证实”处理。
+        </p>
+      </div>
+    </div>
+
+    <!-- 效率对比大表 -->
+    <div class="table-wrap mt-24 reveal">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>装置 / 循环</th>
+            <th>实际效率（口径，年份）</th>
+            <th>同界限卡诺上限（示例计算）</th>
+            <th>达卡诺比例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>亚临界燃煤电厂</td>
+            <td class="num">33–37%（LHV 净效率）</td>
+            <td class="lbl">锅炉 565℃ / 凝汽器 33℃ → ≈63.5%</td>
+            <td class="num">≈55–60%</td>
+          </tr>
+          <tr>
+            <td>超临界燃煤</td>
+            <td class="num">38–42%</td>
+            <td class="lbl">—</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td>超超临界（600℃ 级）</td>
+            <td class="num blue">42–46%</td>
+            <td class="lbl">主蒸汽 600℃ / 冷端 25℃ → ≈66%</td>
+            <td class="num">≈65–70%</td>
+          </tr>
+          <tr>
+            <td>700℃ A-USC（目标）</td>
+            <td class="num">≈50%（设计目标）</td>
+            <td class="lbl">≈68%</td>
+            <td class="num">≈73%</td>
+          </tr>
+          <tr>
+            <td>压水堆核电站</td>
+            <td class="num">≈33%（30–37%）</td>
+            <td class="lbl">蒸汽 285℃ / 冷端 30℃ → ≈46%</td>
+            <td class="num">≈72%</td>
+          </tr>
+          <tr>
+            <td>简单循环燃气轮机</td>
+            <td class="num">35–42%（LHV）</td>
+            <td class="lbl">初温 1500℃ / 排气 25℃ → ≈83%</td>
+            <td class="num">≈42–50%</td>
+          </tr>
+          <tr>
+            <td>联合循环（Bouchain 9HA.01）</td>
+            <td class="num gold">62.22%（实测，2016，吉尼斯）</td>
+            <td class="lbl">同上 ≈83%</td>
+            <td class="num gold">≈75%</td>
+          </tr>
+          <tr>
+            <td>联合循环（Keadby 2 设计）</td>
+            <td class="num">≈63%（设计值）</td>
+            <td class="lbl">同上</td>
+            <td class="num">≈76%</td>
+          </tr>
+          <tr>
+            <td>联合循环（9HA.02 声称）</td>
+            <td class="num">64%（厂商宣称，2018）</td>
+            <td class="lbl">同上</td>
+            <td class="num">≈77%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-note reveal">
+      <b>口径注：</b>电厂效率因净/毛、LHV/HHV 口径不同存在 ±2–3 个百分点差异；
+      “卡诺上限”列为按 η = 1 − Tc/Th 的示例计算值。
+    </p>
+
+    <!-- 瓶颈与火用 -->
+    <div class="grid-2 mt-24">
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Bottleneck · 材料</div>
+        <h3>为什么联合循环停在 75%？——材料而非物理</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          透平初温约 1500℃ / 排气 25℃ 时卡诺上限约 <b>83%</b>，联合循环已达约 <b>75%</b>。
+          差距主因是<b>镍基高温合金与热障涂层（TBC）</b>对透平初温的材料限制；
+          700℃ 级 A-USC 目标 50% 的瓶颈同样是镍基合金。
+          <b style="color:var(--gold-deep)">卡诺给了上限，材料决定我们能走到多近。</b>
+        </p>
+      </div>
+      <div class="card blue-border reveal">
+        <div class="card-kicker">Exergy · 火用</div>
+        <h3>火用损分布：锅炉是第一大环节</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          对 1000MW 超超临界二次再热机组的火用分析显示，
+          <b>锅炉（燃烧与传热）是最大火用损环节</b>，其次为汽轮机与冷凝器。
+          提升效率的主攻方向因此集中在燃烧与传热环节，而非汽轮机本体。
+        </p>
+        <div class="note note-gold">
+          <b>启示：</b>“提高锅炉参数”与“提高透平初温”是同一件事的两面——
+          都在逼近同一卡诺上限，而物理余量只剩 25 个百分点。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 07 · 制冷与热泵：逆卡诺循环 COP
+     ================================================================ -->
+<section class="section" id="ch-07">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 07</span>
+      <h2 class="section-title">制冷与热泵 · 逆卡诺循环的 COP</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        把卡诺循环反过来跑，就是制冷机与热泵。理想 COP 由温度唯一决定——
+        现实设备的差距，是逆卡诺循环对“温差”最敏感的体现。
+      </p>
+    </div>
+
+    <!-- 逆卡诺公式 -->
+    <div class="grid-2">
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Refrigerator</div>
+        <h3>制冷 COP</h3>
+        <div class="formula" style="margin-top:12px;">
+          <span class="fml">COP<sub>R</sub> = T<sub>c</sub>/(T<sub>h</sub> − T<sub>c</sub>)</span>
+          <span class="fml-note">从冷端搬走的热量 / 消耗的功</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          冰箱冷端 −18℃（255K）/ 环境 25℃（298K）时卡诺 <b>COP≈5.9</b>，
+          家用冰箱实际仅约 <b>1.5–3</b>——现实只有理想的 25–50%。
+        </p>
+      </div>
+      <div class="card blue-border reveal">
+        <div class="card-kicker">Heat Pump</div>
+        <h3>热泵 COP</h3>
+        <div class="formula" style="margin-top:12px;">
+          <span class="fml">COP<sub>HP</sub> = T<sub>h</sub>/(T<sub>h</sub> − T<sub>c</sub>)</span>
+          <span class="fml-note">供给热端的热量 / 消耗的功</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          空气源热泵 SCOP 约 <b>2.5–4</b>（EN 14825 口径），地源约 <b>3.5–4.5</b>；
+          0℃/35℃ 供热工况的卡诺 COP≈8.8——现实约为理想的 30–45%。
+        </p>
+      </div>
+    </div>
+
+    <!-- COP 对比表 -->
+    <div class="table-wrap mt-24 reveal">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>设备</th>
+            <th>实际 COP / EER</th>
+            <th>卡诺理想（示例工况）</th>
+            <th>达卡诺比例</th>
+            <th>来源</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>家用冰箱</td>
+            <td class="num">COP ≈ 1.5–3</td>
+            <td class="lbl">−18℃ / 25℃ → COP ≈ 5.9</td>
+            <td class="num">≈25–50%</td>
+            <td class="lbl">[32]</td>
+          </tr>
+          <tr>
+            <td>家用空调</td>
+            <td class="num gold">EER ≈ 3</td>
+            <td class="lbl">27℃ / 35℃ → 卡诺 COP ≈ 37</td>
+            <td class="num gold">≈8%</td>
+            <td class="lbl">[33]</td>
+          </tr>
+          <tr>
+            <td>空气源热泵</td>
+            <td class="num">SCOP ≈ 2.5–4（EN 14825）</td>
+            <td class="lbl">0℃ / 35℃ 供热 → COP ≈ 8.8</td>
+            <td class="num">≈30–45%</td>
+            <td class="lbl">[34]</td>
+          </tr>
+          <tr>
+            <td>地源热泵</td>
+            <td class="num">SCOP ≈ 3.5–4.5</td>
+            <td class="lbl">温差更小 → 卡诺更高</td>
+            <td class="num">—</td>
+            <td class="lbl">[34]</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-note reveal">
+      <b>硬约束：</b>温差越大，实际 COP 相对卡诺下降越明显——
+      这是逆卡诺循环对 COP 的硬约束，也是“空调外机别暴晒”的物理根源。
+    </p>
+
+    <!-- 现实差距归因 -->
+    <div class="card mt-24 reveal">
+      <div class="card-kicker">Why Reality Lags</div>
+      <h3>为什么现实 COP 只有理想的零头？</h3>
+      <ul style="margin:12px 0 0;padding-left:20px;font-size:13.5px;color:var(--ink-soft);line-height:2.1;">
+        <li><b>有限温差传热</b>：蒸发器/冷凝器必须有温差才能换热，实际吸放热温度比名义工况更差；</li>
+        <li><b>压缩与节流的不可逆</b>：压缩机摩擦、节流阀压降带来熵产；</li>
+        <li><b>除霜、风扇、控制损耗</b>：附属设备耗功全部计入分母；</li>
+        <li><b>全年工况波动</b>：SCOP 按 EN 14825 全年加权，低温工况 COP 更低。</li>
+      </ul>
+      <div class="note note-gold mt-16">
+        <b>费曼式一句话：</b>理想 COP 5.9 的意思是——理想机器搬 5.9 份冷只需要 1 份功；
+        现实机器连一半都到不了，因为“不花代价的温差”在现实里不存在。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 08 · 火用分析：火用毁 = T0·熵产（Gouy-Stodola）
+     ================================================================ -->
+<section class="section" id="ch-08">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 08</span>
+      <h2 class="section-title">火用分析 · 把不可逆损失变成可计量的功损失</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        火用（Exergy）= 系统与死态平衡所能做的最大有用功。
+        火用效率 η_ex = η/η_Carnot 直接度量“距卡诺理想还差多少”。
+      </p>
+    </div>
+
+    <!-- 核心公式 -->
+    <div class="formula reveal">
+      <span class="fml">火用毁 = T<sub>0</sub> · 熵产<span class="ac">（Gouy–Stodola 定理）</span></span>
+      <span class="fml-note">把不可逆过程的熵产，乘以环境温度 T₀，即换算为可计量的功损失</span>
+    </div>
+
+    <!-- 定义卡 -->
+    <div class="grid-3">
+      <div class="card reveal">
+        <div class="card-kicker">Definition</div>
+        <h3>火用的含义</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          火用是“理论上还能榨出的功”：系统与环境（死态）达成平衡前，
+          最多能做多少有用功。能量守恒不告诉我们能量能用几分，
+          <b>火用守恒才告诉我们“可用能”在哪里被烧掉了</b>。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Metric</div>
+        <h3>火用效率</h3>
+        <div class="formula" style="margin-top:10px;">
+          <span class="fml">η<sub>ex</sub> = η / η<sub>Carnot</sub></span>
+          <span class="fml-note">与“达卡诺比例”同构：1 就是理想，越小离卡诺越远</span>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Loss Ranking</div>
+        <h3>1000MW 二次再热机组</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          火用损排序（中国能源报 / CNKI 分析）：<b>锅炉（燃烧与传热）第一</b>，
+          其次汽轮机、冷凝器。同一结论在燃煤、燃气与核电厂反复出现——
+          燃烧环节是系统性火用损大户。
+        </p>
+      </div>
+    </div>
+
+    <!-- 争议与边界 -->
+    <div class="grid-2 mt-24">
+      <div class="card reveal">
+        <div class="card-kicker">Controversy · 2023</div>
+        <h3>Gouy–Stodola 的前沿再思考</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.9;">
+          2023 年有 arXiv 预印本（2307.16041）对 Gouy–Stodola 定理的普适性提出再思考，
+          属前沿争议。主流工程热力学（Bejan 等）仍以火用毁 = T₀·熵产为核心工具，
+          但“火用是否永远是损失的唯一度量”正被重新审视。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">How It Helps</div>
+        <h3>火用分析在决策中的位置</h3>
+        <ul style="margin:0;padding-left:20px;font-size:13.5px;color:var(--ink-soft);line-height:2.1;">
+          <li>诊断：找出火用损最大的环节（锅炉/燃烧/传热）优先改造；</li>
+          <li>定价：给“废热”“废汽”按火用定价，而非按焓定价；</li>
+          <li>比较：跨循环类型（燃煤 vs 燃气 vs 核）用 η_ex 对齐可比性；</li>
+          <li>设计：余热锅炉、再热、回热等技改的收益排序。</li>
+        </ul>
+        <div class="note note-slate mt-16">
+          <b>一句话：</b>能量分析告诉你“能没少”，火用分析告诉你“能不好用了”多少。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 09 · 时间线：1824 → 2026，12 事件
+     ================================================================ -->
+<section class="section" id="ch-09">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 09</span>
+      <h2 class="section-title">时间线 · 两百年的十二个节点</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        1824 出版 → 2024 量子热机实验：十二个事件串起从热质说到量子热力学的
+        完整弧线。每个事件配 CSS 渐变事件图占位（禁外链图片）。
+      </p>
+    </div>
+
+    <div class="timeline">
+      <!-- 1824 -->
+      <div class="tl-item milestone reveal">
+        <div class="tl-year">1824</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">原点 · 出版</span>
+          <h4>卡诺《关于火的动力的思考》出版</h4>
+          <p>1824.6.12 出版；7.26 Girard 书评。基于热质说提出“仅有热还不够，还必须有冷”。</p>
+          <div class="tl-visual">1824 · Réflexions</div>
+        </div>
+      </div>
+      <!-- 1834 -->
+      <div class="tl-item reveal">
+        <div class="tl-year">1834</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">数学化</span>
+          <h4>Clapeyron 解析化 + p-V 图</h4>
+          <p>以解析法重述卡诺理论，给出 p-V 图上的循环图形；1837 年英译收入 Taylor's Scientific Memoirs。</p>
+          <div class="tl-visual tone-b">1834 · p-V Diagram</div>
+        </div>
+      </div>
+      <!-- 1848 -->
+      <div class="tl-item milestone reveal">
+        <div class="tl-year">1848</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">温标</span>
+          <h4>Kelvin 提出绝对温标</h4>
+          <p>以“单位热下落每度做功相等”定义与物质无关的温标；由 Regnault 数据推得绝对零度约 −273℃。</p>
+          <div class="tl-visual tone-c">1848 · Absolute Scale</div>
+        </div>
+      </div>
+      <!-- 1850 -->
+      <div class="tl-item reveal">
+        <div class="tl-year">1850</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">修正</span>
+          <h4>Clausius 修正热守恒</h4>
+          <p>首次把卡诺理论与焦耳热功当量结合，放弃“热守恒”，第二定律呼之欲出。</p>
+          <div class="tl-visual">1850 · Correction</div>
+        </div>
+      </div>
+      <!-- 1851 -->
+      <div class="tl-item milestone reveal">
+        <div class="tl-year">1851</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">公理</span>
+          <h4>Kelvin 第二定律公理</h4>
+          <p>《论热之动力学说》：不可能冷却到周围最冷物体温度以下而获得机械效应——第二类永动机不可能。</p>
+          <div class="tl-visual tone-b">1851 · Axiom</div>
+        </div>
+      </div>
+      <!-- 1865 -->
+      <div class="tl-item milestone reveal">
+        <div class="tl-year">1865</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">命名</span>
+          <h4>Clausius 命名“熵”</h4>
+          <p>以希腊词 τροπή（转变）命名；名言“宇宙的能量恒定；宇宙的熵趋向极大”。</p>
+          <div class="tl-visual tone-c">1865 · Entropy</div>
+        </div>
+      </div>
+      <!-- 1890 -->
+      <div class="tl-item reveal">
+        <div class="tl-year">1890</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">传播</span>
+          <h4>Thurston 英译本</h4>
+          <p>John Wiley 出版，附 Kelvin 1849 评述与手稿附录——英语世界首次完整读到卡诺。</p>
+          <div class="tl-visual">1890 · Translation</div>
+        </div>
+      </div>
+      <!-- 1927 -->
+      <div class="tl-item reveal">
+        <div class="tl-year">1927</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">手稿</span>
+          <h4>卡诺未刊手稿出版</h4>
+          <p>Picard 作序出版《Manuscrits de Sadi Carnot》；“热是运动”等句实出自手稿，非 1824 正文。</p>
+          <div class="tl-visual tone-b">1927 · Manuscripts</div>
+        </div>
+      </div>
+      <!-- 1959 -->
+      <div class="tl-item milestone reveal">
+        <div class="tl-year">1959</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">量子奠基</span>
+          <h4>Scovil–Schulz-DuBois 三能级量子热机</h4>
+          <p>三能级微波激射器作为热机（PRL 2, 262）——量子热力学的奠基文献。</p>
+          <div class="tl-visual tone-c">1959 · Three-level Maser</div>
+        </div>
+      </div>
+      <!-- 1975 -->
+      <div class="tl-item milestone reveal">
+        <div class="tl-year">1975</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">有限时间</span>
+          <h4>Curzon–Ahlborn 最大功率效率</h4>
+          <p>η_CA = 1 − √(Tc/Th)（AJP 43, 22）：效率上限 ≠ 最优运行点，有限时间热力学开启。</p>
+          <div class="tl-visual">1975 · Max Power</div>
+        </div>
+      </div>
+      <!-- 2016 -->
+      <div class="tl-item milestone reveal">
+        <div class="tl-year">2016</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">微观实验</span>
+          <h4>布朗卡诺机 + 单离子热机</h4>
+          <p>Martínez 等光镊胶体布朗卡诺机（Nature Physics）；Roßnagel 等捕获 Ca⁺ 单离子量子热机（Science）——同年双里程碑。</p>
+          <div class="tl-visual tone-b">2016 · Nano Engines</div>
+        </div>
+      </div>
+      <!-- 2024 -->
+      <div class="tl-item milestone reveal">
+        <div class="tl-year">2024</div>
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <span class="tl-tag">超导前沿</span>
+          <h4>超导三能级热机实验</h4>
+          <p>Deng 等用超导量子电路实现三能级热机稳态动力学（arXiv:2401.15833）；磁通比特超强耦合热力学跟进。</p>
+          <div class="tl-visual tone-c">2024 · Superconducting</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note note-gold mt-24 reveal">
+      <b>跨度注：</b>200 年间，卡诺思想从纸面定理→工程标尺→量子器件，
+      但 η = 1 − Tc/Th 一个字符都没变。量子热机的谱系：Scovil 1959 → Geva–Kosloff 1992
+      → Feldmann 1996 → Bender 2000 → 单离子 2016 → 超导三能级 2024。
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 10 · 行业案例：八个剖面
+     ================================================================ -->
+<section class="section" id="ch-10">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 10</span>
+      <h2 class="section-title">行业案例 · 八个剖面</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        从燃煤电厂到量子比特：八个行业案例展示卡诺标尺如何贯穿能源、
+        制冷、交通、前沿物理与教学。
+      </p>
+    </div>
+
+    <!-- 案例卡片 -->
+    <div class="grid-2">
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Case 01 · 燃煤</div>
+        <h3>超超临界燃煤电站</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          600℃ 级超超临界净效率 <b>42–46%</b>（LHV）；700℃ A-USC 目标 <b>50%</b>，
+          瓶颈在镍基合金。<b>锅炉是最大火用损环节</b>——1000MW 二次再热机组分析证实。
+        </p>
+        <span class="chip chip-gold">达卡诺 ≈65–70%</span>
+      </div>
+      <div class="card blue-border reveal">
+        <div class="card-kicker">Case 02 · 联合循环</div>
+        <h3>联合循环电厂 · 世界纪录</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          GE 9HA.01 在法国 Bouchain 电厂净效率 <b>62.22%</b>（2016 吉尼斯实测），
+          已达同界限卡诺上限（约 83%）的约 75%。燃气 + 余热蒸汽的组合范式。
+        </p>
+        <span class="chip chip-blue">实测 · 吉尼斯</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Case 03 · 核能</div>
+        <h3>压水堆核电站</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          热效率约 <b>33%</b>（30–37% 区间），受限于较低蒸汽参数（约 <b>285℃/7MPa</b>）。
+          反应堆堆芯温度上不去，卡诺上限只有约 46%——核电站的“低效率”是物理参数决定的。
+        </p>
+        <span class="chip chip-slate">达卡诺 ≈72%</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Case 04 · 家用制冷</div>
+        <h3>冰箱 / 空调</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          冰箱 COP <b>1.5–3</b> vs 卡诺 5.9；空调 EER≈3 vs 卡诺 37（27℃/35℃ 工况）。
+          空调是“达卡诺比例”最低的家电之一——只有约 8%。
+        </p>
+        <span class="chip chip-gold">温差 = 敌人</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Case 05 · 内燃机</div>
+        <h3>车用汽油机</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          量产汽油机最高热效率约 <b>41%</b>（丰田 Dynamic Force）；马自达宣称 43%、
+          船用二冲程低速柴油机约 50% 均为厂商/行业口径，未经第三方独立认证。
+          压缩比 14 的理论 Otto 效率约 65%。
+        </p>
+        <span class="chip chip-slate">厂商口径分级</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Case 06 · 热泵</div>
+        <h3>空气源热泵</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          SCOP 约 <b>2.5–4</b>（EN 14825），地源约 3.5–4.5。
+          在 0℃/35℃ 供热工况，卡诺 COP≈8.8，现实约为理想的 30–45%——
+          依然是“烧电搬热”最划算的取暖方式。
+        </p>
+        <span class="chip chip-blue">COP &gt; 1 的机器</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Case 07 · 量子前沿</div>
+        <h3>量子热机实验</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          单离子热机（2016）、布朗卡诺机（2016）、NV 色心热机（2019）、
+          冷原子碰撞热机（2021）、超导三能级热机（2024）——卡诺思想进入
+          微观尺度，代价是功率–效率权衡与涨落的现实约束。
+        </p>
+        <span class="chip chip-gold">2016–2024</span>
+      </div>
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Case 08 · 教学</div>
+        <h3>物理教学：最大的顽固困难</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          Smith 2015（PRSTPER）对修完热力学课程的学生测试：
+          仅 <b>&lt;20%（11/64）</b>认识到“优于卡诺的引擎”违反热力学定律；
+          <b>&lt;30%（19/64）</b>能正确推理“卡诺循环后宇宙熵不变”。
+        </p>
+        <span class="chip chip-blue">教学难点实证</span>
+      </div>
+    </div>
+
+    <!-- 汇总数据表 -->
+    <div class="table-wrap mt-24 reveal">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>剖面</th>
+            <th>关键数字</th>
+            <th>口径</th>
+            <th>一句话结论</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>燃煤超超临界</td>
+            <td class="num">42–46%</td>
+            <td class="lbl">LHV 净效率</td>
+            <td>锅炉火用损最大</td>
+          </tr>
+          <tr>
+            <td>联合循环</td>
+            <td class="num gold">62.22%</td>
+            <td class="lbl">实测（2016 吉尼斯）</td>
+            <td>已达卡诺约 75%</td>
+          </tr>
+          <tr>
+            <td>压水堆核电</td>
+            <td class="num">≈33%</td>
+            <td class="lbl">285℃/7MPa 参数</td>
+            <td>卡诺上限仅约 46%</td>
+          </tr>
+          <tr>
+            <td>家用冰箱</td>
+            <td class="num">COP 1.5–3</td>
+            <td class="lbl">vs 卡诺 5.9</td>
+            <td>理想的一半都不到</td>
+          </tr>
+          <tr>
+            <td>车用汽油机</td>
+            <td class="num">≈41%</td>
+            <td class="lbl">丰田厂商宣称</td>
+            <td>强不可逆燃烧拖累</td>
+          </tr>
+          <tr>
+            <td>空气源热泵</td>
+            <td class="num">SCOP 2.5–4</td>
+            <td class="lbl">EN 14825</td>
+            <td>卡诺 8.8 的三四成</td>
+          </tr>
+          <tr>
+            <td>量子热机</td>
+            <td class="num">2016–2024</td>
+            <td class="lbl">5 项实验</td>
+            <td>功率–效率权衡</td>
+          </tr>
+          <tr>
+            <td>物理教学</td>
+            <td class="num blue">&lt;20%</td>
+            <td class="lbl">11/64 学生</td>
+            <td>“优于卡诺即违法”难</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-note reveal">
+      <b>口径注：</b>同一台机组，“净效率”永远低于“毛效率”，LHV 永远低于 HHV 口径——
+      跨源比较前先对齐口径，否则 2–3 个百分点的差异会被误读为技术进步或倒退。
+    </p>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 11 · 5D 评估
+     ================================================================ -->
+<section class="section" id="ch-11">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 11</span>
+      <h2 class="section-title">5D 评估 · 对本次研究本身的自评</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        本图集的数据来自一份深度研究报告。按五个维度评估这份研究本身：
+        深度、广度、严谨性、可读性、时效性——评估是镜子，照向自己。
+      </p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Depth</div>
+        <h3>深度</h3>
+        <p class="kpi-value gold" style="font-size:32px;">78<span class="kpi-unit">篇文献</span></p>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;margin-top:8px;">
+          含 1824 年卡诺原著、1848 年 Kelvin 温标论文等一手文本，覆盖 200 年；
+          含完整公式推导、反证法、口径分级与矛盾裁决。
+        </p>
+      </div>
+      <div class="card blue-border reveal">
+        <div class="card-kicker">Breadth</div>
+        <h3>广度</h3>
+        <p class="kpi-value" style="font-size:32px;">5<span class="kpi-unit">维覆盖</span></p>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;margin-top:8px;">
+          历史 / 理论 / 工程 / 前沿 / 教学五维：从热质说史料到超导量子电路，
+          从锅炉火用分析到 PRSTPER 教育实证。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Rigor</div>
+        <h3>严谨性</h3>
+        <p class="kpi-value gold" style="font-size:32px;">12<span class="kpi-unit">项矛盾裁决</span></p>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;margin-top:8px;">
+          全部 S 级 DOI/arXiv 经 Crossref/arXiv API 逐条核验，检出 2 个错误 DOI、
+          2 处常见文献误引、1 条拒收信源、6 项“未证实”边界。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Readability</div>
+        <h3>可读性</h3>
+        <p class="kpi-value" style="font-size:32px;">费曼式<span class="kpi-unit">白话</span></p>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;margin-top:8px;">
+          公式配类比（瀑布落差、水桶推水车）；专业词配三级降维；
+          “命名 ≠ 理解”检验全部通过——能用 12 岁能懂的话解释。
+        </p>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Timeliness</div>
+        <h3>时效性</h3>
+        <p class="kpi-value" style="font-size:32px;">2026-08</p>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;margin-top:8px;">
+          研究完成于 2026 年 8 月；前沿覆盖至 2024 年超导三能级热机实验、
+          2023 年 Gouy–Stodola 再思考预印本。
+        </p>
+      </div>
+      <div class="card accent-border reveal">
+        <div class="card-kicker">Meta · 收获</div>
+        <h3>方法学收获</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          “双轨获取 × 三级评级 + 溯源链”在本主题执行中实际纠错：
+          检出 2 个错误 DOI、2 处误引（Esposito 年份、Koski 年份）、
+          1 条拒收信源（arXiv 1006.3431 第二类永动机）、6 项未证实边界——
+          <b style="color:var(--gold-deep)">去重评估不是形式，是能实际纠错的机制。</b>
+        </p>
+      </div>
+    </div>
+
+    <!-- 反自欺清单 -->
+    <div class="card mt-24 reveal">
+      <div class="card-kicker">Anti-Self-Deception</div>
+      <h3>六项“我不知道”边界声明（费曼式反自欺）</h3>
+      <ul style="margin:12px 0 0;padding-left:20px;font-size:13.5px;color:var(--ink-soft);line-height:2.1;">
+        <li>费曼讲义 44-2 至 44-6 逐字原文未取得（官网被 Cloudflare 拦截），仅 44-1 开篇经双引语站交叉验证；</li>
+        <li>“1878 年第二版 / 手稿入档”年份只有二手来源；</li>
+        <li>Kelvin 1854 年温标修正论文未直接核验（1848 对数型 vs 1854 线性型的历史差异如实标注）；</li>
+        <li>“Rojas-González”相关人物检索无果；</li>
+        <li>“橡皮筋实验”“石头模型”“卡诺机是最重要概念”三个流传说法未证实；</li>
+        <li>克劳修斯 1854 年“变换等价量”论文未直接核实。</li>
+      </ul>
+      <div class="note note-slate mt-16">
+        <b>评估是镜子：</b>一份研究敢列多少“我不知道”，决定它可信多少。
+        上述六项全部标注，不影响已核验结论的成立。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 12 · 科研工具链：八件套
+     ================================================================ -->
+<section class="section" id="ch-12">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 12</span>
+      <h2 class="section-title">科研工具链 · 八件套</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        本图集的数据核验依赖八件工具：编号核验、DOI 核验、引用图、
+        一手文本、网页阅读、视频下载与平台调研路由器。
+      </p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card reveal">
+        <div class="card-kicker">Tool 01</div>
+        <h3>arXiv API</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          预印本编号核验：2401.15833（超导三能级热机）、1612.07922（Apertet 2016）、
+          1801.01569（Apertet 2018 评注）等全部经 arXiv API 确认存在。
+        </p>
+        <span class="chip chip-blue">编号核验</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Tool 02</div>
+        <h3>Crossref API</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          DOI 注册局核验：全部 S 级 DOI 逐条检索，<b>检出并修正 2 个错误 DOI</b>
+          （如 Geva–Kosloff 1992 的 JCP 编号）。
+        </p>
+        <span class="chip chip-blue">DOI 核验</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Tool 03</div>
+        <h3>Semantic Scholar</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          引用图与学术影响追踪：确认“超越卡诺”论战链
+          Verley 2014 → Polettini–Esposito 2017 → Apertet 2018 的引用关系。
+        </p>
+        <span class="chip chip-slate">引用图</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Tool 04</div>
+        <h3>费曼讲义官网</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          feynmanlectures.caltech.edu Vol. I Ch. 44：一手文本核验，
+          44-1 开篇逐字验证（官网有 Cloudflare 拦截，44-2 之后为结构描述）。
+        </p>
+        <span class="chip chip-gold">一手文本</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Tool 05</div>
+        <h3>Jina Reader · r.jina.ai</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          网页阅读代理：绕过反爬与拦截，把网页转成可读正文，用于二手来源的
+          快速核对与降级验证。
+        </p>
+        <span class="chip chip-slate">网页阅读</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Tool 06</div>
+        <h3>BBDown</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          B 站视频下载：获取科普/课程视频素材（如热力学公开课），
+          用于教学语境与传播文案的素材库建设。
+        </p>
+        <span class="chip chip-blue">B 站下载</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Tool 07</div>
+        <h3>yt-dlp</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          YouTube 下载：海外公开课与实验演示视频（单离子热机实验室讲解等），
+          与 BBDown 构成跨平台视频素材双通道。
+        </p>
+        <span class="chip chip-blue">YouTube</span>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">Tool 08</div>
+        <h3>agent-reach</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          15 平台调研路由器：小红书 / X / B 站 / 知乎 / GitHub 等多端统一检索，
+          本次研究 60+ 次网络检索的主要出口。
+        </p>
+        <span class="chip chip-gold">调研路由器</span>
+      </div>
+    </div>
+
+    <!-- 工作流 -->
+    <div class="card accent-border mt-24 reveal">
+      <div class="card-kicker">Workflow · 双轨获取</div>
+      <h3>八件套如何协作：双轨获取 × 三级评级 + 溯源链</h3>
+      <ol class="steps mt-8">
+        <li class="step">
+          <div class="step-title">轨道 A · 本地扫描</div>
+          <div class="step-body">扫描工作区 SKILL.md / references/——本地轨贡献方法论本身，实体信源全部来自轨道 B。</div>
+        </li>
+        <li class="step">
+          <div class="step-title">轨道 B · 网络获取</div>
+          <div class="step-body">agent-reach 路由 + web_search 多轮检索；覆盖 arXiv / DOI / 机构一手 / 学术期刊 / 验证元源。</div>
+        </li>
+        <li class="step">
+          <div class="step-title">逐条评级落库</div>
+          <div class="step-body">每条信源当场标注 S/A/B 等级与状态，写入 SOURCES_RANKED 清单，B 级标注溯源链（B→A→S）。</div>
+        </li>
+        <li class="step">
+          <div class="step-title">去重评估</div>
+          <div class="step-body">跨源去重（保留 S 级原始凭证）、学术评估（DOI/作者/期刊声誉）、科学一致性评估（与三大定律一致）、费曼视角评估。</div>
+        </li>
+        <li class="step">
+          <div class="step-title">矛盾裁决归档</div>
+          <div class="step-body">12 项矛盾全部裁决并记录（9HA.02 降 B 级、LibreTexts 符号笔误、Koski 年份纠正等）。</div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 13 · 名人思维技能卡（6 张，各含 1 条行动步骤）
+     ================================================================ -->
+<section class="section" id="ch-13">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 13</span>
+      <h2 class="section-title">名人思维技能 · 六种可迁移的思维</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        卡诺热机背后是六种思维模式：可逆、守恒、温标、实验、第一性原理、权衡。
+        每张卡附带一条今天就能用的行动步骤。
+      </p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card accent-border reveal">
+        <div class="card-kicker">思维 01 · 卡诺</div>
+        <h3>可逆性思维</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          任何结论先问“能否反向验证”：效率上限的证明正是让假设的引擎<b>反向运行</b>
+          暴露矛盾。可逆不是物理细节，是检验工具。
+        </p>
+        <div class="note note-gold mt-12">
+          <b>行动：</b>今天做决策前，把方案倒过来推演一遍——若反向也成立，再下结论。
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">思维 02 · 克劳修斯</div>
+        <h3>守恒思维</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          从总量视角看系统：能量守恒 + 熵不守恒。克劳修斯修的不是公式，
+          是<b>账本</b>——把“热守恒”改成“熵增大”，账才平。
+        </p>
+        <div class="note note-slate mt-12">
+          <b>行动：</b>审视手头项目时，先问“总量账本”是什么，再看局部波动。
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">思维 03 · 开尔文</div>
+        <h3>温标思维</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          找到不变量：温标五花八门，但“可逆热机吸放热之比 = 温度之比”不依赖任何工质。
+          <b>找不变量，而不是找标尺本身。</b>
+        </p>
+        <div class="note note-gold mt-12">
+          <b>行动：</b>比较两件事时，先定义“与任何度量工具无关”的基准量。
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">思维 04 · 焦耳</div>
+        <h3>实验思维</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          用实验钉死当量：焦耳 1843–1850 的系列实验把“热与功的关系”从争论变成数字
+          （约 424 kg·m/千卡）。<b>争论不如测量。</b>
+        </p>
+        <div class="note note-slate mt-12">
+          <b>行动：</b>团队争执不下时，设计一个 24 小时能完成的测量，用数据收尾。
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-kicker">思维 05 · 费曼</div>
+        <h3>第一性原理</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          用 12 岁能懂的话解释：卡诺机 = 热水瓶里吸热做一点功、把剩下的热倒进冷水盆。
+          <b>解释不清楚 = 没真懂。</b>
+        </p>
+        <div class="note note-gold mt-12">
+          <b>行动：</b>把今天学到的东西讲给一个外行听，卡住的地方就是你的盲区。
+        </div>
+      </div>
+      <div class="card accent-border reveal">
+        <div class="card-kicker">思维 06 · Curzon–Ahlborn</div>
+        <h3>权衡思维</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.85;">
+          上限 ≠ 最优运行点：卡诺效率要零功率才够得着；最大功率点在
+          η_CA = 1 − √(Tc/Th)。<b>目标是约束下的最优，不是极限本身。</b>
+        </p>
+        <div class="note note-slate mt-12">
+          <b>行动：</b>定目标时区分“理论天花板”和“现实最优点”，按后者排资源。
+        </div>
+      </div>
+    </div>
+
+    <div class="note note-blue mt-24 reveal">
+      <b>六张卡的共同线索：</b>可逆性（检验）、守恒（账本）、温标（不变量）、
+      实验（证据）、第一性（解释）、权衡（最优）——这正是卡诺热机研究
+      两百年来被反复使用的全部思维工具。
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 14 · 社交文案：5 平台 × 3 条 = 15 条（角度不重复，禁版本词）
+     ================================================================ -->
+<section class="section" id="ch-14">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 14</span>
+      <h2 class="section-title">社交文案 · 五平台十五篇</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        微博 / 小红书 / X / B 站 / 知乎 × 各 3 条，角度互不重复。
+        每条文案叠加 ≥2 个传播技能，feynman_translate（费曼翻译术）必含其一。
+      </p>
+    </div>
+
+    <div class="social-grid">
+      <!-- ========== 微博 · 3 条 ========== -->
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>微博 · 01</span>
+          <span class="angle-tag">emotional_hook</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">你以为是材料不够好？不，是物理不允许。</span></p>
+          <p>100℃ 与 0℃ 之间最好的热机，效率上限也就 27%——73% 的热注定变成废热。
+          卡诺 1824 年就算出了这笔账，两百年没人能绕过。什么叫天花板？
+          物理写死的那个才叫天花板。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">emotion_hook</span>
+          <span class="skill-chip">number_anchor</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>微博 · 02</span>
+          <span class="angle-tag">counterintuition</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">反常识：联合循环电厂不是“造得更巧妙”，而是“离卡诺更近”。</span></p>
+          <p>62.22% 的世界纪录听着震撼，但同界限卡诺上限约 83%——纪录只到天花板的 75%。
+          进步的真话是：每逼近一个百分点，背后都是镍基合金和热障涂层的材料苦战。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">counterintuition</span>
+          <span class="skill-chip">number_anchor</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>微博 · 03</span>
+          <span class="angle-tag">viral_quote</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">“仅有热还不够，还必须有冷。”——1824 年，一个 28 岁的工程师写下的句子。</span></p>
+          <p>这句话今天仍然是一切发电厂、冰箱、空调与热泵的底层逻辑。
+          瀑布要落差，热机要温差：物理世界最朴素也最狠的一条规则。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">viral_quote</span>
+          <span class="skill-chip">celebrity_effect</span>
+        </div>
+      </article>
+
+      <!-- ========== 小红书 · 3 条 ========== -->
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>小红书 · 01</span>
+          <span class="angle-tag">mass_translate</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">空调省电的物理天花板，一句话讲完👇</span></p>
+          <p>热机/制冷机的效率上限只有一个公式：效率 = 温差 ÷ 高温。<br>
+          翻译成人话：<span class="hl">房间外越热、房间里越冷，空调就越费电</span>——
+          这不是品牌问题，是物理问题。35℃ 外温下，卡诺理想 COP≈37，现实只有 3 左右。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">mass_translate</span>
+          <span class="skill-chip">scene_immersion</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>小红书 · 02</span>
+          <span class="angle-tag">listicle_efficiency</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">冰箱省电 5 条清单（附物理依据）❄️</span></p>
+          <p>① 别把冰箱塞太满：气流不畅 → 蒸发器温差大 → 更费电；<br>
+          ② 热食放凉再进冰箱：避免局部温差拉大；<br>
+          ③ 门密封条常检查：漏冷 = 白付温差的钱；<br>
+          ④ 理想 COP 5.9，现实 1.5–3：别被参数表骗了；<br>
+          ⑤ 温差越小越省：冰箱放阴凉处，就是赚卡诺的钱。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">listicle_efficiency</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>小红书 · 03</span>
+          <span class="angle-tag">scene_immersion</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">夏天 35℃，你家空调正在被“卡诺定理”按在地上摩擦。</span></p>
+          <p>把空调外机想象成一个搬运工：他要把室内的热搬到室外，搬一单位热的“辛苦费”
+          是 COP 的倒数。35℃ 时物理只允许他 37 倍效率干活，现实空调只能做到 3——
+          剩下 34 倍，全耗在“温差太大”上。<span class="gd">别骂空调，骂温差。</span></p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">scene_immersion</span>
+          <span class="skill-chip">analogy_bridge</span>
+        </div>
+      </article>
+
+      <!-- ========== X · 3 条 ========== -->
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>X · 01</span>
+          <span class="angle-tag">academic_rigor</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">“Beating Carnot” claims，一纸裁决。</span></p>
+          <p>压缩库（Roßnagel 2014, PRL）、手征导体（Ryu 2022, Nat. Commun.）、
+          发散功率（Polettini–Esposito 2017, EPL，遭 Apertet 2018 评注）——
+          全部依赖非平衡/相干/信息附加资源，无一对平衡可逆循环成立。
+          Carnot limit survives. 判例：62.22% 是实测，63% 是设计值，64% 是厂商宣称。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">academic_rigor</span>
+          <span class="skill-chip">number_anchor</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>X · 02</span>
+          <span class="angle-tag">controversy_debate</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">热帖争论：η = 1 − Tc/Th 到底是不是“效率天花板”？</span></p>
+          <p>反方拿 Verley 2014（有限功率达卡诺）说事；正方指出其代价是
+          <span class="hl">涨落发散、实现概率趋零</span>。裁决标准其实很简单：
+          问一句“能量从哪来、熵去哪了”——所有“超越卡诺”都偷换了资源基准。
+          你站哪边？</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">controversy_debate</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>X · 03</span>
+          <span class="angle-tag">number_anchor</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">三个数字，讲完两百年的效率战争：</span></p>
+          <p>1824 → 62.22% → 83%。<br>
+          卡诺写出公式；2016 年联合循环实测 62.22%（吉尼斯）；同界限理论上限 83%。
+          200 年人类只走完 75% 的路——剩下 25% 卡在材料，不是物理。
+          <span class="gd">1 − Tc/Th 一字未改。</span></p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">number_anchor</span>
+          <span class="skill-chip">academic_rigor</span>
+        </div>
+      </article>
+
+      <!-- ========== B 站 · 3 条 ========== -->
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>B 站 · 01</span>
+          <span class="angle-tag">story_arc</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">【卡诺 200 年】一个天才如何用一张纸定义整个能源时代</span></p>
+          <p>起：1824 年巴黎，28 岁工程师出版小册子，无人问津。<br>
+          承：10 年后 Clapeyron 画出 p-V 图，30 年后 Kelvin 与 Clausius 完成改写。<br>
+          转：2016 年，人类用这台“纸上机器”的效率公式，把发电厂逼到 62.22%。<br>
+          合：2024 年，同一个公式出现在超导量子电路里。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">story_arc</span>
+          <span class="skill-chip">emotion_hook</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>B 站 · 02</span>
+          <span class="angle-tag">feynman_translate</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">用瀑布讲懂卡诺热机（3 分钟无公式版）</span></p>
+          <p>画面：瀑布从高处砸进水车——水车能推多少功，取决于水从多高落下。<br>
+          转场：热机 = 让“热”从高温瀑布落到低温水潭，落差（温差）越大，能赚的功越多。<br>
+          结论：效率 = 落差 ÷ 高度 = (Th−Tc)/Th。卡诺的惊人发现是——
+          <span class="hl">不管用什么桶接水，只要落差一样，结果都一样</span>。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">analogy_bridge</span>
+          <span class="skill-chip">video_script</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>B 站 · 03</span>
+          <span class="angle-tag">video_script</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">【分镜脚本】一支视频讲完卡诺：从蒸汽到量子比特</span></p>
+          <p>0:00–0:40 钩子：你家电费单上，一半的物理是一个法国人 1824 年定的；<br>
+          0:40–2:10 瀑布类比 + η 公式动画；<br>
+          2:10–3:30 62.22% 吉尼斯 vs 83% 卡诺上限（BGM 渐强）；<br>
+          3:30–4:30 单离子热机实验片段；<br>
+          4:30–5:00 回扣：1 − Tc/Th 一字未改。<span class="gd">彩蛋：冰箱 COP 5.9 vs 1.5–3。</span></p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">video_script</span>
+          <span class="skill-chip">story_arc</span>
+        </div>
+      </article>
+
+      <!-- ========== 知乎 · 3 条 ========== -->
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>知乎 · 01</span>
+          <span class="angle-tag">technical_thread</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">为什么效率 100% 不可能？一条公式讲透（技术长帖）</span></p>
+          <p>① 定义：η = W/Qh = 1 − Qc/Qh；<br>
+          ② 卡诺定理：可逆机效率最高，η ≤ 1 − Tc/Th；<br>
+          ③ 推论：Tc = 0 才能 100%，但绝对零度不可达到（第三定律）；<br>
+          ④ 反证：η &gt; η_Carnot → 逆驱动卡诺机 → 热自发从冷到热 → 违反 Clausius 表述；<br>
+          ⑤ 工程对照：联合循环 62.22% vs 卡诺 83%，差距在材料。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">technical_thread</span>
+          <span class="skill-chip">academic_rigor</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>知乎 · 02</span>
+          <span class="angle-tag">nostalgia_history</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">从“热质说”到“熵”：一个错误理论如何孕育出正确的公式</span></p>
+          <p>卡诺基于的错误理论（热质说）被推翻，但他留下的公式 200 年不倒。
+          为什么？因为他问对了问题：<span class="hl">“效率与什么无关？”</span>
+          答案——与工质无关。思想史最有魅力的地方：错误的脚手架，
+          也能盖出正确的楼（Clapeyron 的图、Kelvin 的温标、Clausius 的熵，都是同一栋楼）。</p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">nostalgia_history</span>
+          <span class="skill-chip">story_arc</span>
+        </div>
+      </article>
+      <article class="social-card reveal">
+        <div class="social-head">
+          <span class="platform-badge"><span class="pdot"></span>知乎 · 03</span>
+          <span class="angle-tag">personal_decision</span>
+        </div>
+        <div class="social-body">
+          <p><span class="hook">装修买地暖还是空气源热泵？先学会看 COP 再下单</span></p>
+          <p>热泵 SCOP 2.5–4（EN 14825），地源 3.5–4.5——同样的电，
+          热泵能搬 3 倍以上的热。<span class="hl">卡诺公式 COP = Th/(Th−Tc)</span>
+          告诉你两件事：出水温度越低越省（地暖 &lt; 暖气片）；
+          外界越冷越亏（温差大）。<span class="gd">别只看品牌参数表，先看工况温差。</span></p>
+        </div>
+        <div class="skill-row">
+          <span class="skill-chip essential">feynman_translate</span>
+          <span class="skill-chip">personal_decision</span>
+          <span class="skill-chip">listicle_efficiency</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- 文案方法注记 -->
+    <div class="note note-gold mt-24 reveal">
+      <b>角度分配表：</b>微博 = emotional_hook / counterintuition / viral_quote；
+      小红书 = mass_translate / listicle_efficiency / scene_immersion；
+      X = academic_rigor / controversy_debate / number_anchor；
+      B 站 = story_arc / feynman_translate / video_script；
+      知乎 = technical_thread / nostalgia_history / personal_decision。
+      15 条角度互不重复，全部含 feynman_translate 技能标注。
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 15 · 参考文献：IEEE 核心 30 条（全文 78 条见主报告）
+     ================================================================ -->
+<section class="section" id="ch-15">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 15</span>
+      <h2 class="section-title">参考文献 · IEEE 核心 30 条</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        按首次出现顺序列核心 30 条（IEEE 格式）；完整 78 条文献清单
+        见《卡诺热机深度研究报告》§10。
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <ol class="ref-list">
+        <li class="ref-item"><span class="ref-authors">S. Carnot</span>, <span class="ref-title">Reflections on the Motive Power of Heat and on Machines Fitted to Develop That Power</span>, R. H. Thurston, Ed. New York, NY, USA: John Wiley &amp; Sons, 1890. <span class="ref-src">[Online]. Available: Gutenberg eBook 78610</span></li>
+        <li class="ref-item"><span class="ref-authors">J. J. O'Connor and E. F. Robertson</span>, “Sadi Carnot,” <span class="ref-title">MacTutor History of Mathematics Archive</span>, Univ. St Andrews, 2002.</li>
+        <li class="ref-item"><span class="ref-authors">B. P. E. Clapeyron</span>, “Mémoire sur la puissance motrice de la chaleur,” <span class="ref-title">Journal de l'École Polytechnique</span>, vol. XIV, pp. 153–190, 1834.</li>
+        <li class="ref-item"><span class="ref-authors">S. Carnot</span>, <span class="ref-title">Manuscrits de Sadi Carnot</span>, É. Picard, Ed. Paris, France: Gauthier-Villars, 1927.</li>
+        <li class="ref-item"><span class="ref-authors">W. Thomson</span>, “On an absolute thermometric scale founded on Carnot's theory of the motive power of heat,” <span class="ref-title">Philosophical Magazine</span>, vol. 33, Oct. 1848.</li>
+        <li class="ref-item"><span class="ref-authors">R. Clausius</span>, “Ueber verschiedene für die Anwendung bequeme Formen der Hauptgleichungen der mechanischen Wärmetheorie,” <span class="ref-title">Annalen der Physik und Chemie</span>, vol. 125, pp. 353–400, 1865.</li>
+        <li class="ref-item"><span class="ref-authors">W. Thomson</span>, “On the dynamical theory of heat,” <span class="ref-title">Transactions of the Royal Society of Edinburgh</span>, vol. 20, Mar. 1851.</li>
+        <li class="ref-item"><span class="ref-authors">M. Planck</span>, <span class="ref-title">Treatise on Thermodynamics</span>, A. Ogg, Trans. London, U.K.: Longmans, Green &amp; Co., 1903.</li>
+        <li class="ref-item"><span class="ref-authors">J. P. Joule</span>, “On the mechanical equivalent of heat,” <span class="ref-title">Philosophical Transactions of the Royal Society of London</span>, vol. 140, pp. 61–82, 1850.</li>
+        <li class="ref-item">“13.8 Carnot cycle, efficiency, and entropy,” in <span class="ref-title">Principles of Modern Chemistry (Oxtoby et al.)</span>, LibreTexts. <span class="ref-src">[含 T-S 表 ΔS 符号疑似笔误，已校正引用]</span></li>
+        <li class="ref-item">“Carnot's theorem,” <span class="ref-title">SciPedia (Bohrium)</span>, Feynman-style encyclopedia.</li>
+        <li class="ref-item">“Carnot cycle,” <span class="ref-title">SciPedia (Bohrium)</span>.</li>
+        <li class="ref-item">“温度熵图,” <span class="ref-title">维基百科</span>. <span class="ref-src">[T-S 图矩形 = (Th−Tc)·ΔS]</span></li>
+        <li class="ref-item">“Thermodynamic temperature scale and Carnot efficiency,” <span class="ref-title">MIT 16.unified Thermodynamics Notes</span>, node45.</li>
+        <li class="ref-item">“Carnot efficiency independent of equation of state,” <span class="ref-title">arXiv:physics/0601173</span>. <span class="ref-src">[Redlich–Kwong 工质无关性]</span></li>
+        <li class="ref-item">“Second law: Kelvin–Planck and Clausius statements; Carnot's theorem,” <span class="ref-title">MIT 16.unified Thermodynamics Notes</span>, node65.</li>
+        <li class="ref-item">“Proof of equivalence of Carnot principle to the second law…,” <span class="ref-title">Entropy</span>, vol. 24, no. 3, art. 392, 2022. <span class="ref-src">DOI: 10.3390/e24030392</span></li>
+        <li class="ref-item">“Entropy and the second law,” <span class="ref-title">Univ. Manchester Statistical Thermodynamics Notes</span>, node30.</li>
+        <li class="ref-item">“The Clausius inequality,” <span class="ref-title">Colby College Physical Chemistry Notes</span>.</li>
+        <li class="ref-item">“Coal combustion efficiency,” <span class="ref-title">Global Energy Monitor Wiki</span>. <span class="ref-src">[33–37 / 38–42 / 42–46% 口径]</span></li>
+        <li class="ref-item">“Come hele or high water: USC coal power,” <span class="ref-title">GE Vernova</span>, 2018. <span class="ref-src">[700℃ A-USC 50% 目标，镍基合金瓶颈]</span></li>
+        <li class="ref-item">“What is thermal efficiency of nuclear power plants?,” <span class="ref-title">Thermal Engineering</span>. <span class="ref-src">[PWR ≈33%，285℃/7MPa]</span></li>
+        <li class="ref-item">“1000MW 超超临界二次再热机组热力系统火用分析,” <span class="ref-title">中国能源报</span> (via CNKI). <span class="ref-src">[锅炉火用损最大]</span></li>
+        <li class="ref-item">“Gas turbines operating parameters,” <span class="ref-title">Thunder Said Energy</span>. <span class="ref-src">[简单循环 35–42%]</span></li>
+        <li class="ref-item">“General Electric and EDF build world's most efficient combined cycle power plant,” <span class="ref-title">Guinness World Records</span>, Jul. 2016. <span class="ref-src">[Bouchain 62.22% 实测]</span></li>
+        <li class="ref-item">“Interface science of thermal barrier coatings,” <span class="ref-title">Oak Ridge National Laboratory</span>. <span class="ref-src">[TBC 材料瓶颈]</span></li>
+        <li class="ref-item">“Keadby 2,” <span class="ref-title">SSE Thermal</span>. <span class="ref-src">[63% 设计值]</span></li>
+        <li class="ref-item">“Market-challenged GE continues to improve gas turbine efficiency,” <span class="ref-title">Turbomachinery Magazine</span>, 2018. <span class="ref-src">[9HA.02 64% 厂商宣称，未证实]</span></li>
+        <li class="ref-item">“Carnot, Otto, Diesel and Joule cycles,” <span class="ref-title">Engineering ToolBox</span>. <span class="ref-src">[η = 1 − 1/r^(γ−1)]</span></li>
+        <li class="ref-item">“丰田 Dynamic Force 发动机热效率 41%,” <span class="ref-title">汽车之家</span>; “船用柴油机效率,” <span class="ref-title">Marine Insight</span>. <span class="ref-src">[厂商/行业口径]</span></li>
+      </ol>
+      <div class="note note-slate mt-16">
+        <b>延伸：</b>完整 78 条（含 Scovil 1959、Curzon–Ahlborn 1975、Shiraishi 2016、
+        Roßnagel 2016、Martínez 2016、Deng 2024 等前沿文献）见主报告 §10；
+        信源分级详见下一章 16。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     CH 16 · 信源分级：S / A / B 三区（★必须位于 15 之后）
+     ================================================================ -->
+<section class="section" id="ch-16">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Chapter 16</span>
+      <h2 class="section-title">信源分级 · S / A / B 三区</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        按 SOURCES_RANKED 三级分级规范渲染：S 级原始凭证（最高优先）→
+        A 级权威认证 → B 级专业解读（须标注溯源链 B→A→S）。
+        未落库的信源不渲染。
+      </p>
+    </div>
+
+    <!-- 溯源链说明 -->
+    <div class="note note-blue reveal">
+      <b>溯源链约束：</b>信源可信度严格向下游依赖——B 必须能反向溯源到其引用的 A 或 S；
+      无法溯源的 B 不得单独列为权威信源。同一结论存在 S/A/B 时，优先引用 S。
+    </div>
+
+    <!-- ===== S 级 ===== -->
+    <div class="src-zone reveal">
+      <div class="src-zone-head s">
+        <span class="badge badge-s">S</span>
+        <span class="src-zone-title">原始凭证 · 一手文本与原始文献</span>
+        <span class="src-zone-count">22 条 · done 20 / todo 2</span>
+      </div>
+      <div class="src-zone-desc">
+        原始论文、教材 PDF、官方档案、原始 arXiv、吉尼斯官方认证。全部经
+        Crossref / arXiv API 逐条核验。
+      </div>
+      <ul class="src-list">
+        <li class="src-item"><span class="src-id">78610</span><span class="src-domain">历史 / 卡诺 1824 原著英译（Gutenberg，Thurston 1890，含 Kelvin 1849 评述与手稿附录）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">gallica.bnf.fr/ark:/12148/btv1b86266609</span><span class="src-domain">历史 / 卡诺 1824 法文原书（Gallica 数字馆藏）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">50880</span><span class="src-domain">历史 / Planck 1903《热力学论》英译（§116 第二定律逐字核验）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">web.lemoyne.edu/~GIUNTA/kelvin.html</span><span class="src-domain">历史 / Kelvin 1848 绝对温标原始论文（−273℃ 与“probably impossible”脚注）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">web.lemoyne.edu/~Giunta/Clausius.html</span><span class="src-domain">历史 / Clausius 1865 熵命名论文（τροπή）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">zapatopi.net/kelvin</span><span class="src-domain">历史 / Kelvin 1851《论热之动力学说》（archive.org 存档，Kelvin 与 Clausius 公理）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">gilles.montambaux.com Carnot-1824.pdf</span><span class="src-domain">历史 / 卡诺 1824 原书 PDF</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">卡诺未刊手稿</span><span class="src-domain">历史 / 1927 Picard 作序出版；“热是运动”句出自手稿附录 5433–5444 行，热功当量约 370 kg·m/千卡</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">arxiv.org physics/0601173</span><span class="src-domain">理论 / 卡诺效率与状态方程无关（Redlich–Kwong 推导）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">feynmanlectures.caltech.edu/I_44</span><span class="src-domain">教学 / 费曼讲义 Vol. I Ch. 44 热力学定律（44-1 开篇双引语站交叉验证）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">feynmanlectures.caltech.edu/I_45</span><span class="src-domain">教学 / 费曼讲义 Vol. I Ch. 45 热力学例证</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">10.1103/PhysRevSTPER.11.020116</span><span class="src-domain">教学 / Smith 2015 学生困难研究（PRSTPER，arXiv:1508.04104 全文核验）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">physics.csuchico.edu</span><span class="src-domain">教学 / 费曼官方习题册 Part III Ch. 32</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">arxiv.org 2301.13560</span><span class="src-domain">前沿 / 卡诺量子信息引擎最大功率效率（arXiv API 核验）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">arxiv.org 2404.15075</span><span class="src-domain">前沿 / 能量高效量子增强机器</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">10.1119/1.10023</span><span class="src-domain">前沿 / Curzon–Ahlborn 1975 最大功率效率（AJP，Crossref 核验）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">10.1038/nphys3518</span><span class="src-domain">前沿 / Brownian Carnot engine（Martínez 2016，Nature Physics）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">10.1103/PhysRevLett.2.262</span><span class="src-domain">前沿 / Scovil–Schulz-DuBois 1959 三能级量子热机（PRL 2, 262）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">10.1063/1.461951</span><span class="src-domain">前沿 / Geva–Kosloff 1992 自旋 1/2 量子热机（JCP 96, 3054；Crossref 核验修正原误 DOI）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">10.1126/science.aad6320</span><span class="src-domain">前沿 / Roßnagel 2016 单离子热机（Science 352, 325）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">arxiv.org 2401.15833</span><span class="src-domain">前沿 / Deng 2024 超导三能级热机实验</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">guinnessworldrecords.com</span><span class="src-domain">工程 / Bouchain 9HA.01 联合循环 62.22% 实测纪录（2016 吉尼斯官方认证）</span><span class="badge badge-done">done</span></li>
+      </ul>
+    </div>
+
+    <!-- ===== A 级 ===== -->
+    <div class="src-zone reveal">
+      <div class="src-zone-head a">
+        <span class="badge badge-a">A</span>
+        <span class="src-zone-title">权威认证 · 同行评议出版与机构讲义</span>
+        <span class="src-zone-count">13 条 · done 11 / todo 2</span>
+      </div>
+      <div class="src-zone-desc">
+        正规期刊正式卷期、权威机构教材与讲义。期刊声誉核验通过
+        （AJP / PRE / PRL / Nature Physics / Nat. Commun. 等均为正规同行评议刊）。
+      </div>
+      <ul class="src-list">
+        <li class="src-item"><span class="src-id">britannica.com/science/Carnot-cycle</span><span class="src-domain">理论 / 卡诺循环权威定义（Britannica）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">web.mit.edu/16.unified</span><span class="src-domain">理论 / MIT 统一工程热力学讲义（node44/45/65）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">chem.libretexts.org</span><span class="src-domain">理论 / LibreTexts 13.1 卡诺循环完整推导（注意 T-S 表 ΔS 符号疑似笔误）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">theory.physics.manchester.ac.uk</span><span class="src-domain">理论 / 曼彻斯特大学统计热力学讲义</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">colby.edu</span><span class="src-domain">理论 / Colby 学院克劳修斯不等式讲义</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">10.1002/9781119245964.ch3</span><span class="src-domain">工程 / Bejan 先进工程热力学第 3 章（Wiley 在线）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">mdpi.com/1099-4300/24/3/392</span><span class="src-domain">理论 / 卡诺原理与 KP/Clausius 等价性争议（Entropy 2022，学术争议建档）</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">callen §4.5/4.7/4.8</span><span class="src-domain">理论 / Callen 热力学目录核验（ISBN-0-471-86256-8）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">cengel 第 6 章</span><span class="src-domain">理论 / Çengel 热力学第二定律（kau.edu.sa 讲义镜像）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">wanfangdata.com.cn</span><span class="src-domain">工程 / 700℃ A-USC 中国研发会议论文</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">sciencedirect.com</span><span class="src-domain">工程 / 热障涂层与透平材料文献</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">ornl.gov</span><span class="src-domain">工程 / 热障涂层界面科学（ORNL）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">cnki.net</span><span class="src-domain">工程 / 1000MW 超超临界火用分析（中国能源报）</span><span class="badge badge-todo">todo</span></li>
+      </ul>
+    </div>
+
+    <!-- ===== B 级 ===== -->
+    <div class="src-zone reveal">
+      <div class="src-zone-head b">
+        <span class="badge badge-b">B</span>
+        <span class="src-zone-title">专业解读 · 机构报告与词条（须标注溯源）</span>
+        <span class="src-zone-count">14 条 · 均含溯源链</span>
+      </div>
+      <div class="src-zone-desc">
+        公司官网、行业报告、词条与新闻稿。B 级必须能反向溯源到 S/A，
+        无法溯源的 B 不得单独列为权威信源。
+      </div>
+      <ul class="src-list">
+        <li class="src-item"><span class="src-id">chemeurope.com</span><span class="src-domain">历史 / 卡诺“动力之焰”词条</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">bibnum.education.fr</span><span class="src-domain">历史 / 卡诺原著法文分析</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">wolframscience.com</span><span class="src-domain">历史 / 热力学史笔记</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">arxiv.org 1006.3431</span><span class="src-domain">验证 / 第二类永动机“推翻”论文（存疑，反例演示）</span><span class="badge badge-retry">retry</span></li>
+        <li class="src-item"><span class="src-id">gem.wiki</span><span class="src-domain">工程 / 燃煤电厂效率口径（数字跨源差异 ±3pp）</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">ssethermal.com</span><span class="src-domain">工程 / Keadby 2 联合循环 63% 设计值（公司官网口径）</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">thermal-engineering.org</span><span class="src-domain">工程 / 核电站热效率 33%（教材 A 级口径）</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">thundersaidenergy.com</span><span class="src-domain">工程 / 燃机运行参数</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">turbomachinerymag.com</span><span class="src-domain">工程 / 9HA.02 宣称 64%（厂商口径，未获独立证实）</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">engineeringtoolbox.com</span><span class="src-domain">理论 / 奥托柴油循环公式</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">hyperphysics.phy-astr.gsu.edu</span><span class="src-domain">理论 / 热力学教学页（佐治亚州立）</span><span class="badge badge-done">done</span></li>
+        <li class="src-item"><span class="src-id">marineinsight.com</span><span class="src-domain">工程 / 船用柴油机 50%（行业口径，标注厂商口径）</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">autohome.com.cn</span><span class="src-domain">工程 / 丰田 41% 马自达 43%（厂商宣称）</span><span class="badge badge-todo">todo</span></li>
+        <li class="src-item"><span class="src-id">baike.baidu.com</span><span class="src-domain">工程 / 空调能效比 EER</span><span class="badge badge-todo">todo</span></li>
+      </ul>
+    </div>
+
+    <!-- 溯源注记 -->
+    <div class="note note-gold mt-24 reveal">
+      <b>溯源示例（B→A→S）：</b>ssethermal.com（Keadby 2 63% 设计值）→ 溯源至
+      S.guinnessworldrecords（62.22% 实测基准）；turbomachinerymag.com（9HA.02 64%）→
+      溯源至 S.guinnessworldrecords，按口径分级降为“未证实”；
+      gem.wiki 燃煤效率 → 溯源至 A.cnki / A.wanfangdata。
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     FOOTER · 底部：4 座深潜馆 + 版权
+     ================================================================ -->
+<footer class="footer">
+  <div class="wrap">
+
+    <div class="section-head">
+      <span class="section-num">Deep Dive · 深潜馆</span>
+      <h2 class="section-title">继续深潜 · 四座子结构展馆</h2>
+      <span class="section-line wide"></span>
+      <p class="section-desc">
+        主馆是全景地图，深潜馆是单点放大镜。以下四座展馆分别深入
+        方法论、行业应用、评估体系与四层架构。
+      </p>
+    </div>
+
+    <div class="sub-links">
+      <a class="sub-card" href="carnot_methodology_sub.html">
+        <span class="sub-kicker">Methodology · 方法论</span>
+        <span class="sub-name">方法论深潜馆</span>
+        <span class="sub-desc">三大理论家族 × 完整推导与代码，12 方法超表与选择决策树。</span>
+        <span class="sub-file">carnot_methodology_sub.html</span>
+      </a>
+      <a class="sub-card" href="carnot_applications_sub.html">
+        <span class="sub-kicker">Applications · 应用</span>
+        <span class="sub-name">行业应用深潜馆</span>
+        <span class="sub-desc">八个行业案例的完整数据、口径分级与工程决策链。</span>
+        <span class="sub-file">carnot_applications_sub.html</span>
+      </a>
+      <a class="sub-card" href="carnot_evaluation_sub.html">
+        <span class="sub-kicker">Evaluation · 评估</span>
+        <span class="sub-name">评估体系深潜馆</span>
+        <span class="sub-desc">5D 评估雷达、12 项矛盾裁决表与反自欺边界清单。</span>
+        <span class="sub-file">carnot_evaluation_sub.html</span>
+      </a>
+      <a class="sub-card" href="carnot_four_layer_sub.html">
+        <span class="sub-kicker">Four Layer · 四层架构</span>
+        <span class="sub-name">四层架构深潜馆</span>
+        <span class="sub-desc">L3 决策 → L2 工具 → L1 方法 → L0 直觉，四个交叉矩阵与三个关键洞察。</span>
+        <span class="sub-file">carnot_four_layer_sub.html</span>
+      </a>
+    </div>
+
+    <hr class="rule">
+
+    <div class="footer-inner">
+      <span>© 2026 · ONESHOT 图集 · 卡诺热机深度研究图集</span>
+      <span>第 3 座主馆 · <b>极简金蓝留白</b> · 17 章 · 2026-08-14</span>
+      <span>素材：<b>卡诺热机深度研究报告</b>（78 篇文献 · S/A/B 三级分级）</span>
+      <span>单文件 HTML · CSS/JS 全内联 · 配图全部 CSS 渐变 + 内联 SVG</span>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<!-- ================================================================
+     打印工具条 + 返回顶部（打印时隐藏）
+     ================================================================ -->
+<div class="printbar no-print">
+  <button type="button" id="btnPrint">打印本馆</button>
+  <button type="button" id="btnTopHidden" style="display:none;" aria-hidden="true"></button>
+</div>
+
+<button class="back-top no-print" id="backTop" type="button" aria-label="返回顶部" title="返回顶部">↑</button>
+
+<script>
+/* ==================================================================
+   JS · 极简交互层（subtle，尊重 prefers-reduced-motion）
+   1. 滚动进场（reveal）
+   2. 目录滚动高亮（scrollspy）
+   3. 打印按钮
+   4. 返回顶部
+   ================================================================== */
+(function () {
+  "use strict";
+
+  var prefersReduced = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- 1. 滚动进场 ---------- */
+  var revealEls = document.querySelectorAll(".reveal");
+  if (prefersReduced || !("IntersectionObserver" in window)) {
+    revealEls.forEach(function (el) { el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- 2. 目录滚动高亮 ---------- */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll(".toc-grid a"));
+  var sections = tocLinks
+    .map(function (a) {
+      var id = a.getAttribute("href");
+      return document.querySelector(id);
+    })
+    .filter(Boolean);
+
+  if ("IntersectionObserver" in window && sections.length) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.getAttribute("id");
+          tocLinks.forEach(function (a) {
+            if (a.getAttribute("href") === "#" + id) {
+              a.style.background = "#EAF0FE";
+              a.style.color = "#1D4ED8";
+            } else {
+              a.style.background = "transparent";
+              a.style.color = "";
+            }
+          });
+        }
+      });
+    }, { rootMargin: "-20% 0px -65% 0px" });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ---------- 3. 打印按钮 ---------- */
+  var btnPrint = document.getElementById("btnPrint");
+  if (btnPrint) {
+    btnPrint.addEventListener("click", function () {
+      window.print();
+    });
+  }
+
+  /* ---------- 4. 返回顶部 ---------- */
+  var backTop = document.getElementById("backTop");
+  if (backTop) {
+    var onScroll = function () {
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      if (y > 640) {
+        backTop.classList.add("show");
+      } else {
+        backTop.classList.remove("show");
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    backTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: prefersReduced ? "auto" : "smooth" });
+    });
+  }
+})();
+</script>
+
+<script id="apple-ui-interactions">
+document.querySelectorAll('.card-spotlight').forEach(function(card){
+  card.addEventListener('mousemove',function(e){var r=card.getBoundingClientRect();card.style.setProperty('--mx',(e.clientX-r.left)+'px');card.style.setProperty('--my',(e.clientY-r.top)+'px');});
+});
+</script>
+</body>
+</html>
