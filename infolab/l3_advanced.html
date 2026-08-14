@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L3 专业 · 现代信息论 | InfoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html" class="on">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Level 3 · Professional</div>
+  <h1>L3 专业：现代信息论</h1>
+  <p>L2 的结论都是<strong>渐近</strong>的（n→∞）。真实系统块长有限、用户不止一个、信道会变。L3 处理这些"现实修正"：<em>率失真</em>、<em>大偏差与错误指数</em>、<em>有限块长与信道色散</em>、<em>网络信息论的容量区域</em>。这一级的门槛是能读懂 ISIT 论文。</p>
+  <div class="meta">
+    <i>学段：博士</i><i>门槛：测度论 · 凸分析 · 大偏差</i>
+    <i>骨架：MIT 6.441 模块 3/5/6 · UESTC 第 3/5/6 章</i>
+    <i>核心：R(D) · V · 容量区域</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>L3 目录</h4>
+  <a href="#rd">01 · 率失真理论</a>
+  <a href="#rdcalc">02 · R(D) 的闭式解</a>
+  <a href="#ba">03 · Blahut–Arimoto</a>
+  <a href="#largedev">04 · 大偏差与 Sanov</a>
+  <a href="#hypo">05 · 假设检验与 Stein</a>
+  <a href="#expo">06 · 错误指数</a>
+  <a href="#finite">07 · 有限块长与色散</a>
+  <a href="#variational">08 · 变分刻画</a>
+  <a href="#network">09 · 网络信息论</a>
+  <a href="#sw">10 · Slepian–Wolf</a>
+  <a href="#gp">11 · Gelfand–Pinsker</a>
+  <a href="#codes">12 · 现代编码</a>
+  <a href="#quiz3">13 · 自检与作业</a>
+  <div class="grp">
+    <h4>跳转</h4>
+    <a href="l2_theorems.html">← L2 完备</a>
+    <a href="l4_frontier.html">L4 前沿 →</a>
+    <a href="lab.html">🧪 实验室</a>
+  </div>
+</aside>
+
+<main>
+
+<section class="section" id="rd">
+  <h2><span class="num">01</span>率失真理论：允许出错能省多少</h2>
+  <p class="lead">无损压缩的极限是 H(X)。但音频、图像、视频根本不需要无损——<strong>允许一点失真，能省下多少比特？</strong></p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>设失真度量 d: 𝒳 × 𝒳̂ → ℝ⁺，序列失真取平均：d(x<sup>n</sup>, x̂<sup>n</sup>) = (1/n) Σ d(x<sub>i</sub>, x̂<sub>i</sub>)。</p>
+    <p>常用度量：<strong>汉明失真</strong> d(x,x̂)=1{x≠x̂}（错误率）；<strong>平方误差</strong> d(x,x̂)=(x−x̂)²（信号处理）。</p>
+    <div class="fml"><b>率失真函数</b>
+
+R(D) = min<sub>p(x̂|x) : E[d(X,X̂)] ≤ D</sub>  I(X; X̂)</div>
+    <p>注意与容量的<strong>对偶结构</strong>：容量是 <em>max</em> I（信道给定，选输入分布）；率失真是 <em>min</em> I（信源给定，选"测试信道" p(x̂|x)）。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Shannon 第三定理（率失真定理，1959）</span>
+    <ul>
+      <li><strong>可达性：</strong>∀ R &gt; R(D)，存在码使平均失真 ≤ D。</li>
+      <li><strong>逆定理：</strong>∀ R &lt; R(D)，任何码的平均失真 &gt; D。</li>
+    </ul>
+    <p><b>归属：</b>Shannon, <i>Coding Theorems for a Discrete Source With a Fidelity Criterion</i>, IRE Nat. Conv. Rec., part 4, pp.142–163, 1959。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · R(D) 的性质</span>
+    <ol>
+      <li><strong>非增：</strong>D 越大，R(D) 越小（容忍度换比特）。</li>
+      <li><strong>凸：</strong>R(D) 是 D 的凸函数 ⟹ 优化良态，且时间共享无法改进。</li>
+      <li><strong>端点：</strong>R(0) = H(X)（退化为第一定理）；R(D<sub>max</sub>) = 0，其中 D<sub>max</sub> = min<sub>x̂</sub> E[d(X,x̂)]。</li>
+      <li><strong>连续</strong>于 (0, D<sub>max</sub>)。</li>
+    </ol>
+    <p><b>凸性证明思路：</b>设 (R₁,D₁)、(R₂,D₂) 对应测试信道 p₁、p₂。取 p<sub>λ</sub>=λp₁+(1−λ)p₂，失真线性混合，而 I(X;X̂) 关于 p(x̂|x) 是<em>凸</em>的，故 I(p<sub>λ</sub>) ≤ λI(p₁)+(1−λ)I(p₂)。∎</p>
+  </div>
+</section>
+
+<section class="section" id="rdcalc">
+  <h2><span class="num">02</span>R(D) 的两个闭式解</h2>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 伯努利源 + 汉明失真</span>
+    <p>X ~ Bern(p)（设 p ≤ 1/2），汉明失真。则</p>
+    <div class="fml">R(D) = { H(p) − H(D)  ,  0 ≤ D &lt; min(p, 1−p)
+       { 0            ,  D ≥ min(p, 1−p)</div>
+    <p><b>逆定理方向的推导：</b></p>
+    <div class="fml">I(X;X̂) = H(X) − H(X|X̂)
+       = H(p) − H(X ⊕ X̂ | X̂)   <span class="cm">给定 X̂ 时 X 与 X⊕X̂ 一一对应</span>
+       ≥ H(p) − H(X ⊕ X̂)        <span class="cm">条件减少熵</span>
+       ≥ H(p) − H(D)             <span class="cm">Pr{X≠X̂} ≤ D，H 在 [0,½] 递增</span></div>
+    <p><b>可达性：</b>取测试信道为 BSC(D)，可验证取等。∎</p>
+    <p><b>数值：</b>p=0.5、D=0.1 时 R = 1 − H(0.1) = <strong>0.531 bit/符号</strong>。容许 10% 比特出错，就把 1 bit 压到 0.531 bit，<em>省了近一半</em>。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 高斯源 + 平方误差</span>
+    <p>X ~ 𝒩(0, σ²)，d(x,x̂)=(x−x̂)²。则</p>
+    <div class="fml">R(D) = { ½ log₂(σ²/D)  ,  0 &lt; D ≤ σ²
+       { 0             ,  D &gt; σ²
+
+反解得<b>失真—速率函数</b>：D(R) = σ² · 2<sup>−2R</sup></div>
+    <p><b>推导：</b>I(X;X̂) = h(X) − h(X|X̂) = ½log(2πeσ²) − h(X−X̂|X̂) ≥ ½log(2πeσ²) − ½log(2πeD) = ½log(σ²/D)，取等当误差为独立高斯。∎</p>
+    <p><b>工程解读（"6 dB 法则"）：</b>每增加 1 bit/样本，失真降为 1/4，信噪比提升 10·log₁₀4 = <strong>6.02 dB/bit</strong>。<br>
+    这是所有量化器设计的黄金法则：16 bit 音频（CD）理论 SNR 上限 ≈ 96 dB；8 bit 图像 ≈ 48 dB。</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：率失真曲线</div>
+    <div class="ctrl">
+      <label for="r-mode">信源类型</label>
+      <select id="r-mode" class="btn" style="flex:0 0 auto">
+        <option value="bern">伯努利 + 汉明失真</option>
+        <option value="gauss">高斯 + 平方误差</option>
+      </select>
+    </div>
+    <div class="ctrl"><label for="r-p">参数 p 或 σ²</label><input type="range" id="r-p" min="0.05" max="1" step="0.01" value="0.5"><span class="val" id="r-pv">0.50</span></div>
+    <div class="ctrl"><label for="r-d">容许失真 D</label><input type="range" id="r-d" min="0.01" max="1" step="0.01" value="0.1"><span class="val" id="r-dv">0.10</span></div>
+    <canvas id="r-cv" data-h="255"></canvas>
+    <div class="readout" id="r-out"></div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 反向注水（并行高斯源）</span>
+    <p>对 m 个独立高斯分量（方差 σ<sub>i</sub>²），总失真约束 Σ D<sub>i</sub> ≤ D，最优分配为</p>
+    <div class="fml">D<sub>i</sub> = min(λ, σ<sub>i</sub>²),   R<sub>i</sub> = ½ log₂( σ<sub>i</sub>² / D<sub>i</sub> )
+其中 λ 由 Σ min(λ, σ<sub>i</sub>²) = D 确定</div>
+    <p><b>物理意义：</b>方差小于水位 λ 的分量<strong>直接丢弃</strong>（R<sub>i</sub>=0）；方差大的只压到水位。<br>
+    这正是 <strong>JPEG / MP3 的数学原理</strong>：变换到频域后高频分量方差小，被整体丢弃。与信道编码的注水法方向相反，故称<em>反向注水</em>。</p>
+  </div>
+</section>
+
+<section class="section" id="ba">
+  <h2><span class="num">03</span>Blahut–Arimoto：数值求解容量与 R(D)</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>大多数信道没有闭式解。Blahut (1972) 与 Arimoto (1972) 独立提出的交替最大化算法可数值求解，且因问题是凸的而<strong>保证收敛到全局最优</strong>。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式 · 容量的 BA 迭代</span>
+    <div class="fml">给定 p(y|x)，初始化 r⁽⁰⁾(x) 为均匀分布。重复：
+
+① q⁽ᵏ⁾(x|y) = r⁽ᵏ⁾(x)p(y|x) / Σ<sub>x'</sub> r⁽ᵏ⁾(x')p(y|x')
+
+② r⁽ᵏ⁺¹⁾(x) = exp( Σ<sub>y</sub> p(y|x) ln q⁽ᵏ⁾(x|y) ) / 归一化
+
+直到收敛，输出 C = I(r; p)</div>
+    <p><b>原理：</b>把 C = max<sub>r</sub> max<sub>q</sub> J(r,q) 写成双变量泛函的交替最大化。每步不减且有上界，故收敛。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 参考实现</span>
+    <pre><code>import numpy as np
+
+def blahut_arimoto(P, tol=1e-12, max_iter=5000):
+    """P[x][y] = p(y|x)；返回容量(bit)与最优输入分布"""
+    nx, ny = P.shape
+    r = np.ones(nx) / nx
+    for _ in range(max_iter):
+        denom = r @ P                          # p(y)
+        denom = np.where(denom > 0, denom, 1e-300)
+        q = (r[:, None] * P) / denom           # q(x|y)
+        with np.errstate(divide='ignore'):
+            logq = np.where(q > 0, np.log(q), -np.inf)
+        t = np.exp(np.sum(P * logq, axis=1))
+        r_new = t / t.sum()
+        if np.max(np.abs(r_new - r)) &lt; tol:
+            r = r_new; break
+        r = r_new
+    denom = r @ P
+    C = sum(r[x] * P[x, y] * np.log2(P[x, y] / denom[y])
+            for x in range(nx) for y in range(ny)
+            if P[x, y] > 0 and r[x] > 0)
+    return C, r
+
+# 验证 BSC(0.1)：理论 C = 1 - H(0.1) = 0.531004
+P = np.array([[0.9, 0.1],
+              [0.1, 0.9]])
+print(blahut_arimoto(P))
+# (0.5310044064107189, array([0.5, 0.5]))  ✓</code></pre>
+  </div>
+</section>
+
+<section class="section" id="largedev">
+  <h2><span class="num">04</span>大偏差理论：罕见事件有多罕见</h2>
+  <p class="lead">大数定律说样本均值收敛到期望。<strong>大偏差理论说：偏离期望的概率以指数速度衰减，而指数率恰是 KL 散度。</strong></p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · 类型（type）方法</span>
+    <p>序列 x<sup>n</sup> 的<strong>类型</strong> P<sub>x<sup>n</sup></sub> 即其经验分布。三条核心计数结果：</p>
+    <div class="fml">① 类型总数 ≤ (n+1)<sup>|𝒳|</sup>       <span class="cm">← 多项式，关键！</span>
+② |T(P)| ≐ 2<sup>nH(P)</sup>              <span class="cm">类型类大小</span>
+③ Q<sup>n</sup>(T(P)) ≐ 2<sup>−n D(P‖Q)</sup>        <span class="cm">该类型出现概率</span></div>
+    <p><b>为什么"多项式个类型"是关键：</b>指数级衰减 2<sup>−nD</sup> 碾压多项式级数量 (n+1)<sup>|𝒳|</sup>，故 union bound 后<em>主导项由最小的 D 决定</em>——这就是 Sanov 定理的全部内容。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Sanov 定理 (1957)</span>
+    <p>设 X₁,…,X<sub>n</sub> i.i.d. ~ Q，E 为分布集合。则</p>
+    <div class="fml">Q<sup>n</sup>( P<sub>X<sup>n</sup></sub> ∈ E ) ≐ 2<sup>−n D(P* ‖ Q)</sup>
+
+其中 P* = arg min<sub>P ∈ E</sub> D(P ‖ Q)   <span class="cm">称为 I-投影</span></div>
+    <p><b>解读：</b>罕见事件<strong>以"最省力的方式"发生</strong>——系统会选择离真实分布 KL 距离最近的那个"伪装分布"。此即大偏差的"最可能路径"原理，也称条件极限定理。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题</span>
+    <p>公平硬币抛 n 次，出现正面比例 ≥ 0.7 的概率？</p>
+    <div class="fml">Q = (0.5, 0.5)，E = { P : P(正) ≥ 0.7 }
+最近分布 P* = (0.7, 0.3)（在边界上）
+
+D(P*‖Q) = 0.7·log₂(0.7/0.5) + 0.3·log₂(0.3/0.5)
+        = 0.7(0.4854) + 0.3(−0.7370)
+        = 0.3398 − 0.2211 = <b>0.1187 bit</b>
+
+⟹ Pr ≈ 2<sup>−0.1187n</sup>
+   n=100 : 2<sup>−11.87</sup> ≈ 2.7×10<sup>−4</sup>
+   n=1000: 2<sup>−118.7</sup> ≈ 1.7×10<sup>−36</sup></div>
+    <p>精确二项计算 n=100 时约 2.0×10⁻⁵，指数阶吻合（大偏差略去多项式前因子）。</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：大偏差衰减率</div>
+    <div class="ctrl"><label for="d-q">真实概率 q</label><input type="range" id="d-q" min="0.05" max="0.95" step="0.01" value="0.5"><span class="val" id="d-qv">0.50</span></div>
+    <div class="ctrl"><label for="d-t">观测阈值 t</label><input type="range" id="d-t" min="0.05" max="0.95" step="0.01" value="0.7"><span class="val" id="d-tv">0.70</span></div>
+    <canvas id="d-cv" data-h="245"></canvas>
+    <div class="readout" id="d-out"></div>
+  </div>
+</section>
+
+<section class="section" id="hypo">
+  <h2><span class="num">05</span>假设检验：Stein 引理与 Chernoff 指数</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Chernoff–Stein 引理</span>
+    <p>检验 H₀: X ~ P vs H₁: X ~ Q，n 个 i.i.d. 观测。约束第一类错误 α<sub>n</sub> ≤ ε，则第二类错误最优指数为</p>
+    <div class="fml">lim<sub>n→∞</sub> (1/n) log₂ β<sub>n</sub><sup>*</sup> = − D(P ‖ Q)</div>
+    <p>即 β<sub>n</sub> ≐ 2<sup>−nD(P‖Q)</sup>，<strong>与 ε 无关</strong>（只要 0 &lt; ε &lt; 1）。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · KL 散度的第三重意义</span>
+    <table>
+      <tr><th>视角</th><th>D(P‖Q) 的含义</th></tr>
+      <tr><td>编码（L1）</td><td>误用 Q 编码 P 的额外比特代价</td></tr>
+      <tr><td>几何</td><td>分布空间中的（非对称）"距离"</td></tr>
+      <tr><td><strong>统计（L3）</strong></td><td><strong>区分 P 与 Q 的难度指数</strong>——D 越大越容易区分</td></tr>
+    </table>
+    <p>这解释了 KL 为何无处不在：它就是"可区分性"的自然度量。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Chernoff 信息（贝叶斯对称情形）</span>
+    <div class="fml">C*(P,Q) = − min<sub>0≤λ≤1</sub> log₂ [ Σ<sub>x</sub> P(x)<sup>λ</sup> Q(x)<sup>1−λ</sup> ]</div>
+    <p>此即 <strong>Chernoff 信息</strong>，对称，且 ≤ min{D(P‖Q), D(Q‖P)}。λ=1/2 时对应 Bhattacharyya 距离。</p>
+  </div>
+</section>
+
+<section class="section" id="expo">
+  <h2><span class="num">06</span>错误指数：不仅"能不能"，还要"多快"</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>第二定理只说 R &lt; C 时 P<sub>e</sub> → 0，但衰减多快？定义可靠性函数：</p>
+    <div class="fml">E(R) = lim sup<sub>n→∞</sub> − (1/n) log₂ P<sub>e</sub><sup>*</sup>(n, R)
+即  P<sub>e</sub> ≈ 2<sup>−n E(R)</sup></div>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 随机编码指数（Gallager 1965）</span>
+    <div class="fml">E<sub>r</sub>(R) = max<sub>0≤ρ≤1</sub> max<sub>p(x)</sub> [ E₀(ρ, p) − ρR ]
+
+E₀(ρ,p) = − log₂ Σ<sub>y</sub> [ Σ<sub>x</sub> p(x) p(y|x)<sup>1/(1+ρ)</sup> ]<sup>1+ρ</sup></div>
+    <p><b>性质：</b>E(R) &gt; 0 ⟺ R &lt; C；E(R) 递减且凸；R → C 时 E(R) → 0。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 三个区域与一个开放问题</span>
+    <ul>
+      <li><strong>R &lt; R<sub>crit</sub>：</strong>球堆积界 E<sub>sp</sub> 与随机编码界 E<sub>r</sub> 重合，指数已知且紧。</li>
+      <li><strong>R<sub>crit</sub> &lt; R &lt; C：</strong>E<sub>r</sub> 是下界、E<sub>sp</sub> 是上界，两者<strong>存在间隙</strong>——这是信息论<em>至今未解决的经典开放问题</em>。</li>
+      <li><strong>低速率区：</strong>expurgated bound（剔除坏码字）给出更好下界。</li>
+    </ul>
+    <p><b>工程含义：</b>错误率降低 10 倍需块长增加约 3.32/E(R)。E(R) 越小（越接近容量），代价增长越剧烈——这就是"逼近容量的最后 0.1 dB 极其昂贵"的理论根源。</p>
+  </div>
+</section>
+
+<section class="section" id="finite">
+  <h2><span class="num">07</span>有限块长与信道色散：最重要的现代修正</h2>
+  <p class="lead">这是 21 世纪信息论最重要的进展之一，也是本级的核心。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · 问题</span>
+    <p>Shannon 的 C 是 n→∞ 的极限。但 5G URLLC 要求块长 n ≈ 100、时延 &lt; 1 ms。<strong>此时 C 是严重乐观的估计。</strong>需要问：给定块长 n 与容许错误概率 ε，最大速率 R*(n,ε) 是多少？</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 正规逼近（Polyanskiy–Poor–Verdú 2010）</span>
+    <div class="fml">R*(n, ε) = C − √( V / n ) · Q<sup>−1</sup>(ε) + O( log n / n )</div>
+    <ul>
+      <li><strong>C</strong> = 信道容量（一阶项）</li>
+      <li><strong>V</strong> = <em>信道色散</em>，信息密度的方差：V = Var[ i(X;Y) ]，i(x;y) = log₂[p(y|x)/p(y)]</li>
+      <li><strong>Q<sup>−1</sup></strong> = 标准正态上尾函数的反函数</li>
+    </ul>
+    <p><b>归属：</b>Y. Polyanskiy, H. V. Poor, S. Verdú, <i>"Channel Coding Rate in the Finite Blocklength Regime"</i>, IEEE Trans. Inform. Theory, 56(5):2307–2359, 2010。这篇论文重新定义了现代编码理论的基准。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式 · 常见信道的色散</span>
+    <div class="fml">BSC(ε):  C = 1 − H(ε)
+         V = ε(1−ε) · [ log₂((1−ε)/ε) ]²
+
+BEC(α):  C = 1 − α
+         V = α(1−α)
+
+AWGN:    C = ½log₂(1+P/N)
+         V = (P/N)(P/N+2) / (2(P/N+1)²) · (log₂e)²</div>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 有限块长的代价</span>
+    <p>BSC(0.11)，C ≈ 0.5，要求 ε = 10⁻³（Q⁻¹(10⁻³) ≈ 3.09）。</p>
+    <div class="fml">V = 0.11×0.89×[log₂(0.89/0.11)]²
+  = 0.0979 × (3.0164)² = <b>0.8908</b>
+
+n=100  : R* ≈ 0.5 − √(0.8908/100)×3.09 = 0.5 − 0.2917 = <b>0.208</b>  (42% of C)
+n=1000 : R* ≈ 0.5 − 0.0922 = <b>0.408</b>   (82%)
+n=10000: R* ≈ 0.5 − 0.0292 = <b>0.471</b>   (94%)</div>
+    <p><strong>结论：块长 100 时实际可用速率只有容量的 42%。</strong>这就是短包通信（IoT、工业控制、车联网）必须用有限块长理论设计的原因。</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：有限块长速率损失</div>
+    <div class="ctrl"><label for="f-e">BSC 翻转概率 ε</label><input type="range" id="f-e" min="0.01" max="0.45" step="0.01" value="0.11"><span class="val" id="f-ev">0.11</span></div>
+    <div class="ctrl"><label for="f-pe">目标错误概率 10^−k</label><input type="range" id="f-pe" min="1" max="9" step="1" value="3"><span class="val" id="f-pev">3</span></div>
+    <canvas id="f-cv" data-h="255"></canvas>
+    <div class="readout" id="f-out"></div>
+  </div>
+
+  <div class="note deep">
+    <b>为什么是 √(V/n)：三个层级 = 概率论的三个层级</b>
+    信息密度 i(X<sup>n</sup>;Y<sup>n</sup>) = Σ i(X<sub>i</sub>;Y<sub>i</sub>) 是 n 个 i.i.d. 项之和，均值 nC、方差 nV。由中心极限定理，波动量级为 √(nV)，故速率需回撤 √(V/n)·Q⁻¹(ε)。<br><br>
+    <strong>L2 → L3 的分水岭：</strong>L2（AEP、渐近）只用<em>大数定律</em>，看到均值 C；L3（有限块长）用<em>中心极限定理</em>，看到涨落 √(V/n)；大偏差（§04）用<em>尾部估计</em>，看到指数 2<sup>−nD</sup>。
+  </div>
+</section>
+
+<section class="section" id="variational">
+  <h2><span class="num">08</span>变分刻画：把信息量写成优化问题</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Donsker–Varadhan 变分公式 (1975)</span>
+    <div class="fml">D(P ‖ Q) = sup<sub>f</sub> { E<sub>P</sub>[ f(X) ] − log E<sub>Q</sub>[ e<sup>f(X)</sup> ] }</div>
+    <p>上确界取遍所有使期望存在的 f，最优解 f* = log(dP/dQ) + const。</p>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿 · 为什么这个公式今天极其重要</span>
+    <p>DV 公式把 KL 变成<strong>可用神经网络逼近的优化问题</strong>：参数化 f 并做梯度上升，就能估计高维连续分布的 KL 与互信息。由此催生：</p>
+    <ul>
+      <li><strong>MINE</strong>（Belghazi et al. 2018）——直接用 DV 界估计 I(X;Y)</li>
+      <li><strong>InfoNCE / CPC</strong>（van den Oord et al. 2018）——对比学习的理论基础，是 I(X;Y) 的下界</li>
+      <li><strong>SimCLR / MoCo</strong> 等自监督学习——本质在最大化不同视图间的互信息</li>
+      <li><strong>f-GAN</strong>——把 GAN 推广到任意 f-散度</li>
+    </ul>
+    <p><b>但需警惕：</b>McAllester &amp; Stratos (2020) 证明，任何基于 N 个样本的下界，其估计值<em>不能超过 log N</em>。因此高维互信息的神经估计存在本质统计困难，实践中报告的"高互信息"常不可信。这是当前活跃的争议点。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式 · 容量的几何刻画（信息半径）</span>
+    <div class="fml">C = min<sub>q(y)</sub> max<sub>x</sub> D( p(y|x) ‖ q(y) )</div>
+    <p>找一个"中心分布" q*，使所有输入引起的输出分布到它的最大 KL 距离最小。这是 <strong>minimax / Chebyshev 中心</strong>问题，q* 称为容量达成输出分布，且它<em>唯一</em>（即使最优输入分布不唯一）。此视角为 MIT 6.441 所强调。</p>
+  </div>
+</section>
+
+<section class="section" id="network">
+  <h2><span class="num">09</span>网络信息论：多用户的世界</h2>
+  <p class="lead">Shannon 解决了点对点。多发送方/接收方时，答案是<strong>容量区域</strong>（一个集合）而非单个数字，且许多情形至今未解。</p>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 多址接入信道 MAC（已完全解决）</span>
+    <p>两个发送方 X₁、X₂ 同时发给一个接收方 Y。容量区域为满足下式的 (R₁,R₂) 的凸包：</p>
+    <div class="fml">R₁ ≤ I(X₁ ; Y | X₂)
+R₂ ≤ I(X₂ ; Y | X₁)
+R₁ + R₂ ≤ I(X₁, X₂ ; Y)</div>
+    <p><b>归属：</b>Ahlswede (1971), Liao (1972)。这是网络信息论少数被<em>完全解决</em>的问题之一。</p>
+  </div>
+
+  <div class="card">
+    <h4 style="margin-top:0">MAC 容量区域的五边形</h4>
+    <svg viewBox="0 0 460 280" style="width:100%;max-width:460px">
+      <rect width="460" height="280" fill="#0d1220"/>
+      <line x1="60" y1="240" x2="420" y2="240" stroke="#3a4763" stroke-width="1.5"/>
+      <line x1="60" y1="240" x2="60" y2="30" stroke="#3a4763" stroke-width="1.5"/>
+      <polygon points="60,240 60,80 180,80 300,200 300,240" fill="rgba(56,189,248,.18)" stroke="#38bdf8" stroke-width="2"/>
+      <circle cx="180" cy="80" r="4.5" fill="#fbbf24"/>
+      <circle cx="300" cy="200" r="4.5" fill="#fbbf24"/>
+      <text x="196" y="72" fill="#fbbf24" font-size="11" font-family="monospace">角点 A</text>
+      <text x="312" y="196" fill="#fbbf24" font-size="11" font-family="monospace">角点 B</text>
+      <text x="30" y="84" fill="#38bdf8" font-size="10" font-family="monospace" text-anchor="middle">I(X₁;Y|X₂)</text>
+      <text x="300" y="262" fill="#38bdf8" font-size="10" font-family="monospace" text-anchor="middle">I(X₂;Y|X₁)</text>
+      <text x="248" y="150" fill="#34d399" font-size="10" font-family="monospace" transform="rotate(45 248 150)">R₁+R₂ = I(X₁X₂;Y)</text>
+      <text x="440" y="256" fill="#8592ab" font-size="11" font-family="monospace" text-anchor="end">R₂</text>
+      <text x="52" y="24" fill="#8592ab" font-size="11" font-family="monospace" text-anchor="end">R₁</text>
+      <text x="128" y="172" fill="#8592ab" font-size="10" font-family="monospace" text-anchor="middle">可达区域</text>
+    </svg>
+    <p style="font-size:13.5px;margin-top:8px"><strong>两个角点的操作意义：</strong>角点 A 对应"先译码用户 2、消去其贡献、再译码用户 1"的<em>连续干扰消除 SIC</em>；角点 B 反之。两点之间的边由<em>时间共享</em>连接。SIC 正是 NOMA（非正交多址）的核心技术。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 退化广播信道 BC</span>
+    <p>一个发送方向两个接收方广播。若信道<em>退化</em>（X → Y₁ → Y₂ 成马氏链，Y₂ 比 Y₁ 差），容量区域为</p>
+    <div class="fml">R₂ ≤ I(U ; Y₂)
+R₁ ≤ I(X ; Y₁ | U)
+其中 U → X → (Y₁,Y₂)，|𝒰| ≤ min{|𝒳|,|𝒴₁|,|𝒴₂|}+1</div>
+    <p><b>归属：</b>Cover (1972) 提出叠加编码，Bergmans (1973) 证明。<strong>叠加编码</strong>：给差用户的信息放"粗粒度"层，好用户先解粗层再解精细层。</p>
+    <p><b>未解：</b>一般（非退化）广播信道容量区域<strong>至今开放</strong>，已 50 余年；最好的已知内界是 Marton 界。</p>
+  </div>
+
+  <div class="note warn">
+    <b>网络信息论的现状：开放问题比已解问题多</b>
+    <table style="margin-bottom:0">
+      <tr><th>问题</th><th>状态</th></tr>
+      <tr><td>多址接入信道 MAC</td><td>✅ 完全解决（Ahlswede–Liao 1971–72）</td></tr>
+      <tr><td>退化广播信道</td><td>✅ 完全解决（Cover–Bergmans 1972–73）</td></tr>
+      <tr><td>Slepian–Wolf 分布式无损压缩</td><td>✅ 完全解决（1973）</td></tr>
+      <tr><td>Gelfand–Pinsker 有边信息编码</td><td>✅ 完全解决（1980）</td></tr>
+      <tr><td><strong>一般广播信道</strong></td><td>❌ <strong>开放 50+ 年</strong></td></tr>
+      <tr><td><strong>干扰信道</strong></td><td>❌ <strong>开放</strong>（强干扰等特例已解；Han–Kobayashi 为最好内界）</td></tr>
+      <tr><td><strong>中继信道</strong></td><td>❌ <strong>开放</strong>（Cover–El Gamal 1979 的界至今未闭合）</td></tr>
+      <tr><td>多描述编码 / 两路信道</td><td>❌ 开放（两路信道由 Shannon 1961 提出）</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="section" id="sw">
+  <h2><span class="num">10</span>Slepian–Wolf：分开编码，居然不损失</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Slepian–Wolf (1973)</span>
+    <p>两个<strong>相关</strong>信源 X、Y 由两个<em>无法通信</em>的编码器分别压缩，送到同一联合译码器。可达区域为</p>
+    <div class="fml">R<sub>X</sub> ≥ H(X | Y)
+R<sub>Y</sub> ≥ H(Y | X)
+R<sub>X</sub> + R<sub>Y</sub> ≥ H(X, Y)</div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 惊人之处</span>
+    <p><strong>总速率下界 H(X,Y) 与"两个编码器可自由通信"时完全相同！</strong>即<em>分布式编码不损失任何效率</em>（渐近意义下）。</p>
+    <p><b>直觉（随机分箱 random binning）：</b>编码器 X 不知道 Y，但可把所有 x<sup>n</sup> 随机扔进 2<sup>nR<sub>X</sub></sup> 个箱子，只发箱号。译码器收到箱号后，在该箱中找与 y<sup>n</sup> 联合典型的唯一序列。只要箱子够多（R<sub>X</sub> &gt; H(X|Y)），碰撞概率趋于 0。</p>
+    <p><b>应用：</b>无线传感器网络（相邻节点数据高度相关）；分布式视频编码（Wyner–Ziv，把复杂度从编码端转移到解码端，适合低功耗摄像头）。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Berger–Tung（有失真版本）</span>
+    <p>Slepian–Wolf 的率失真推广。Berger (1977) 与 Tung (1978) 给出内界与外界，但<strong>一般情形的确切区域仍未确定</strong>。特例 Wyner–Ziv（译码端有边信息）已解决：R<sub>WZ</sub>(D) = min I(X;X̂|Y)。</p>
+    <p>注意：与无损情形不同，<em>有失真时分布式编码通常严格劣于联合编码</em>（存在率损失）。</p>
+  </div>
+</section>
+
+<section class="section" id="gp">
+  <h2><span class="num">11</span>Gelfand–Pinsker：编码器知道干扰</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Gelfand–Pinsker (1980)</span>
+    <p>信道状态 S 在<strong>编码端非因果已知</strong>（译码端未知）。容量为</p>
+    <div class="fml">C = max<sub>p(u|s), x=f(u,s)</sub> [ I(U ; Y) − I(U ; S) ]</div>
+    <p>U 为辅助随机变量；减去的 I(U;S) 是为"让译码器能识别"付出的代价。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · Costa 的"污纸编码"（Writing on Dirty Paper, 1983）</span>
+    <p>高斯情形：Y = X + S + Z，S ~ 𝒩(0,Q) 编码端已知，Z ~ 𝒩(0,N)，功率约束 P。则</p>
+    <div class="fml">C = ½ log₂( 1 + P/N )   <span class="cm">与干扰功率 Q 完全无关！</span></div>
+    <p><strong>极其反直觉：</strong>只要发送方知道干扰，干扰就能被完全消除，容量与"根本没有干扰"时相同——<em>且不需增加任何功率</em>。</p>
+    <p><b>命名来源：</b>在一张已经写满字的"脏纸"上写信息，只要你能看见那些脏迹，就能让收信人读出你写的内容。</p>
+    <p><b>应用：</b>MIMO 广播信道的最优策略（脏纸编码 DPC 达到容量区域）、数字水印、预编码。这是 4G/5G 多用户 MIMO 的理论基石。</p>
+  </div>
+</section>
+
+<section class="section" id="codes">
+  <h2><span class="num">12</span>现代编码：从存在性到可实现</h2>
+  <p class="lead">Shannon 1948 证明好码存在，用了 61 年才找到可实用且<em>可证明达到容量</em>的构造。</p>
+
+  <div class="tw"><table>
+    <tr><th>年份</th><th>编码</th><th>提出者</th><th>关键性质</th></tr>
+    <tr><td>1950</td><td>Hamming 码</td><td>Hamming</td><td>首个纠错码，纠 1 位错，(7,4) 最经典</td></tr>
+    <tr><td>1955</td><td>卷积码</td><td>Elias</td><td>可用 Viterbi (1967) 最大似然译码</td></tr>
+    <tr><td>1960</td><td>Reed–Solomon</td><td>Reed, Solomon</td><td>纠突发错，CD/DVD/QR 码/深空通信</td></tr>
+    <tr><td>1962</td><td>LDPC 码</td><td>Gallager</td><td>稀疏校验矩阵；<em>被遗忘 30 年</em>，1996 由 MacKay 重新发现</td></tr>
+    <tr><td>1993</td><td>Turbo 码</td><td>Berrou et al.</td><td>首次实用地逼近容量（距 Shannon 限 0.5 dB），引发编码革命</td></tr>
+    <tr><td>2009</td><td><strong>Polar 码</strong></td><td>Arıkan</td><td><strong>首个被严格证明达到容量、且编译码复杂度 O(n log n) 的构造</strong></td></tr>
+  </table></div>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · Polar 码的核心思想：信道极化</span>
+    <p>把 N 个相同信道通过递归的线性变换"重组"，得到 N 个<em>虚拟</em>信道。神奇之处：当 N → ∞ 时，这些虚拟信道<strong>两极分化</strong>——一部分趋于完美无噪（容量 → 1），另一部分趋于完全无用（容量 → 0），中间态的比例趋于 0。</p>
+    <div class="fml">极化后：约 N·C 个信道 → 完美　　约 N(1−C) 个信道 → 无用
+
+策略：在完美信道上传信息比特
+      在无用信道上放"冻结比特"（固定为 0，收发双方已知）
+
+⟹ 速率自然达到 C，且译码用简单的连续消除 SC 算法</div>
+    <p><b>为什么这是里程碑：</b>它不是"构造一个好码"，而是"把坏信道变成好信道"，从根本上换了思路。Arıkan 因此获得 2019 年 IEEE 信息论学会 Shannon 奖之外的多项荣誉，Polar 码被 <strong>5G 标准采纳为控制信道编码</strong>（数据信道用 LDPC）。</p>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿</span>
+    <p>当前编码理论热点：<strong>短码设计</strong>（有限块长理论指导下的 URLLC 编码）、<strong>面向 6G 的编码</strong>（ITW 2025 三大重点之一）、<strong>量子纠错码</strong>（surface code、LDPC-CSS 码）、<strong>用机器学习设计/译码</strong>（神经 BP 译码器、learned codes）、<strong>分布式存储码</strong>（再生码、局部可修复码 LRC）。</p>
+  </div>
+</section>
+
+<section class="section" id="quiz3">
+  <h2><span class="num">13</span>自检与作业</h2>
+
+  <div class="quiz">
+    <div class="qh">Level 3 自检 · 通过后进 L4</div>
+    <ol>
+      <li>说明率失真函数与信道容量的对偶结构。为什么一个是 min 一个是 max？</li>
+      <li>推导高斯源的 D(R) = σ²2<sup>−2R</sup>，并解释"6 dB/bit"法则的工程含义。</li>
+      <li>为什么"类型的个数是多项式的"这一事实对大偏差理论至关重要？</li>
+      <li>信道色散 V 的物理意义是什么？为什么有限块长修正项是 √(V/n) 而不是 V/n？</li>
+      <li>Slepian–Wolf 定理为什么令人惊讶？随机分箱为何有效？</li>
+      <li>污纸编码为什么能让容量与干扰功率无关？这与"编码器已知"这一条件有何关系？</li>
+      <li>列出三个至今开放的网络信息论问题。</li>
+    </ol>
+  </div>
+
+  <details>
+    <summary>参考答案</summary>
+    <div class="dbody">
+      <p><b>1.</b> 容量 C = max<sub>p(x)</sub> I(X;Y)：信道 p(y|x) <em>给定</em>（自然施加的约束），我们能自由选择输入分布，目标是让通过的信息<em>尽可能多</em>。<br>
+      率失真 R(D) = min<sub>p(x̂|x)</sub> I(X;X̂)：信源 p(x) <em>给定</em>，我们设计"测试信道"（即压缩方案），目标是在满足失真约束下让需要传的信息<em>尽可能少</em>。<br>
+      本质：一个是"资源利用最大化"，一个是"成本最小化"，二者构成 Lagrange 对偶关系。</p>
+      <p><b>2.</b> R(D)=½log₂(σ²/D)，令 R = ½log₂(σ²/D) ⟹ 2R = log₂(σ²/D) ⟹ 2<sup>2R</sup> = σ²/D ⟹ D = σ²2<sup>−2R</sup>。<br>
+      每加 1 bit：D 变为 1/4，SNR = σ²/D 提升 4 倍 = 10log₁₀4 = 6.02 dB。<br>
+      工程含义：ADC/量化器每增加 1 位精度，动态范围提升约 6 dB。16 bit CD 音频 ≈ 96 dB SNR。这是硬件设计的基本换算。</p>
+      <p><b>3.</b> 因为要对"落入集合 E 的所有类型"做 union bound：Pr ≤ Σ<sub>P∈E</sub> 2<sup>−nD(P‖Q)</sup> ≤ (n+1)<sup>|𝒳|</sup> · 2<sup>−n min D}</sup>。<br>
+      多项式因子 (n+1)<sup>|𝒳|</sup> 在取 (1/n)log 后趋于 0，<em>完全不影响指数率</em>。若类型数是指数级的，这个论证就会失效。这正是"类型方法"简洁有力的根源。</p>
+      <p><b>4.</b> V = Var[i(X;Y)] 度量<em>信息密度的随机波动</em>。同一个信道，每次使用提供的信息量不是恒定的 C，而是围绕 C 涨落，V 就是涨落的方差。<br>
+      是 √(V/n) 而非 V/n：因为 n 次使用的总信息密度是 n 个 i.i.d. 项之和，由 CLT 其标准差为 √(nV)，摊到每次使用即 √(nV)/n = √(V/n)。这是标准差（而非方差）的量纲。</p>
+      <p><b>5.</b> 惊讶在于：两个编码器<em>完全无法通信</em>、彼此不知道对方数据，总速率却能达到 H(X,Y)——与它们能自由协商时一样好。<br>
+      随机分箱有效的原因：编码器不需要知道"Y 具体是什么"，只需保证"同一箱内不会有两个都与 y<sup>n</sup> 联合典型的序列"。与 y<sup>n</sup> 联合典型的 x<sup>n</sup> 大约有 2<sup>nH(X|Y)</sup> 个，只要箱子数 2<sup>nR<sub>X</sub></sup> &gt; 这个数量，每箱平均不到 1 个，碰撞概率趋于 0。<em>译码端的联合处理替代了编码端的协商。</em></p>
+      <p><b>6.</b> 因为编码器知道 S，可以把码字"预先偏移"以适配 S——本质上是在 S 已知的前提下选择一个与之匹配的辅助变量 U。GP 公式 I(U;Y) − I(U;S) 中，第二项正是为此付出的代价，而高斯情形下 Costa 证明这个代价恰好被第一项的增益抵消。<br>
+      关键在"编码器已知"：若是译码器已知 S，问题平凡（直接减去即可）；若两端都不知道，干扰就是纯粹的噪声，容量会降为 ½log(1+P/(N+Q))。<em>信息的位置决定了它的价值。</em></p>
+      <p><b>7.</b> ①一般（非退化）广播信道容量区域；②干扰信道容量区域（除强/极强干扰等特例）；③中继信道容量（Cover–El Gamal 1979 的内外界至今未闭合）。其他还有：多描述编码、两路信道（Shannon 1961）、一般网络的容量。</p>
+    </div>
+  </details>
+
+  <div class="card">
+    <h4 style="margin-top:0">动手作业</h4>
+    <ol>
+      <li>实现 Blahut–Arimoto，对 Z 信道 [[1,0],[0.3,0.7]] 求容量，并与解析解对比。</li>
+      <li>数值验证 PPV 正规逼近：对 BEC(0.5) 用随机编码模拟不同 n 的最大可达速率，与 C−√(V/n)Q⁻¹(ε) 对比。</li>
+      <li>实现 Polar 码的信道极化过程：画出 N=1024 时各虚拟信道的 Bhattacharyya 参数分布，观察极化现象。</li>
+      <li>读 Polyanskiy–Poor–Verdú (2010) 的第 III 节，复现图 1（BSC 的有限块长界）。</li>
+    </ol>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l2_theorems.html"><span class="lb">← 上一站</span>L2 完备 · 三大定理</a>
+  <a class="nx" href="l4_frontier.html"><span class="lb">下一站 →</span>L4 前沿 · 交叉与开放问题</a>
+</div>
+
+<footer class="foot">
+  <p>L3 信源：Shannon 1959（率失真）· Blahut / Arimoto 1972 · Sanov 1957 · Gallager 1965（错误指数）· Donsker–Varadhan 1975 · <strong>Polyanskiy, Poor &amp; Verdú 2010</strong>（有限块长，IEEE TIT 56(5):2307–2359）· Ahlswede 1971 / Liao 1972（MAC）· Cover 1972 / Bergmans 1973（BC）· Slepian–Wolf 1973 · Berger 1977 / Tung 1978 · Gelfand–Pinsker 1980 · Costa 1983（污纸编码）· Arıkan 2009（Polar 码）· El Gamal &amp; Kim <i>Network Information Theory</i> · MIT 6.441 模块 3/5/6 · UESTC 大纲第 3/5/6 章。</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+(function(){
+  function Q(p){ // 标准正态上尾反函数近似 (Acklam)
+    if(p<=0)return 8; if(p>=1)return -8;
+    var a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.3577518672690,-30.66479806614716,2.506628277459239],
+        b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],
+        c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],
+        d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416];
+    var pl=0.02425,q,r,x;
+    if(p<pl){q=Math.sqrt(-2*Math.log(p));x=(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+    else if(p<=1-pl){q=p-0.5;r=q*q;x=(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+    else{q=Math.sqrt(-2*Math.log(1-p));x=-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+    return -x; // 上尾
+  }
+
+  // 率失真
+  var rc=document.getElementById('r-cv');
+  if(rc){
+    var rp=new ILPlot(rc,{xr:[0,1],yr:[0,3],xlabel:'失真 D',ylabel:'速率 R(D) (bit)'});
+    function rr(){
+      var mode=document.getElementById('r-mode').value,
+          p=+document.getElementById('r-p').value,
+          D=+document.getElementById('r-d').value;
+      document.getElementById('r-pv').textContent=p.toFixed(2);
+      document.getElementById('r-dv').textContent=D.toFixed(2);
+      var f,R,lbl,ymax;
+      if(mode==='bern'){
+        var pp=Math.min(p,1-p);
+        f=function(d){ if(d>=pp)return 0; return Math.max(0,ILMath.h2(p)-ILMath.h2(d)); };
+        ymax=1.1; lbl='Bern('+p.toFixed(2)+') + 汉明失真';
+      }else{
+        f=function(d){ if(d>=p)return 0; return Math.max(0,0.5*ILMath.log2(p/d)); };
+        ymax=3; lbl='𝒩(0,'+p.toFixed(2)+') + 平方误差';
+      }
+      rp.yr=[0,ymax];
+      rp.resize();rp.clear();rp.axes(5,5);
+      rp.line(f,'#f472b6',2.3);
+      R=f(D);
+      rp.vline(D,'#fbbf24');
+      rp.dot(D,R,'#fbbf24',ILMath.fmt(R,3)+' bit');
+      var extra='';
+      if(mode==='bern'){
+        extra='R(0)=H(p)='+ILMath.fmt(ILMath.h2(p),4)+' bit（无损极限）<br>'+
+              '<span style="color:#8592ab">容许 '+(D*100).toFixed(0)+'% 比特出错 → 速率降至 '+ILMath.fmt(R,4)+
+              ' bit，节省 <b>'+ILMath.fmt((1-R/Math.max(ILMath.h2(p),1e-9))*100,1)+'%</b></span>';
+      }else{
+        var snr=10*Math.log10(p/Math.max(D,1e-9));
+        extra='D(R)=σ²·2^(−2R)　当前 SNR = σ²/D = '+ILMath.fmt(p/Math.max(D,1e-9),2)+' = '+ILMath.fmt(snr,2)+' dB<br>'+
+              '<span style="color:#8592ab">6 dB/bit 法则：'+ILMath.fmt(R,2)+' bit → '+ILMath.fmt(R*6.02,1)+' dB</span>';
+      }
+      document.getElementById('r-out').innerHTML=lbl+'<br>R('+D.toFixed(2)+') = <b>'+ILMath.fmt(R,4)+'</b> bit/符号<br>'+extra;
+    }
+    document.getElementById('r-mode').addEventListener('change',rr);
+    ILBind(['r-p','r-d'],rr);
+  }
+
+  // 大偏差
+  var dc=document.getElementById('d-cv');
+  if(dc){
+    var dp=new ILPlot(dc,{xr:[0,1],yr:[0,1.2],xlabel:'阈值 t（经验频率）',ylabel:'衰减指数 D(t‖q) (bit)'});
+    ILBind(['d-q','d-t'],function(){
+      var q=+document.getElementById('d-q').value, t=+document.getElementById('d-t').value;
+      document.getElementById('d-qv').textContent=q.toFixed(2);
+      document.getElementById('d-tv').textContent=t.toFixed(2);
+      function kl(a,b){
+        var s=0;
+        if(a>0) s+=a*ILMath.log2(a/b);
+        if(a<1) s+=(1-a)*ILMath.log2((1-a)/(1-b));
+        return s;
+      }
+      dp.resize();dp.clear();dp.axes(5,4);
+      dp.line(function(x){return kl(x,q);},'#a78bfa',2.3);
+      var D=kl(t,q);
+      dp.vline(q,'#34d399');dp.vline(t,'#fbbf24');
+      dp.dot(t,D,'#fbbf24',ILMath.fmt(D,3));
+      var x=dp.ctx;x.font='10.5px ui-monospace,monospace';x.textAlign='center';
+      x.fillStyle='#34d399';x.fillText('q（真实）',dp.px(q),dp.py(1.16));
+      function pr(n){var e=D*n;return e>300?'≈0':'2^−'+ILMath.fmt(e,1)+' ≈ '+Math.pow(2,-e).toExponential(2);}
+      document.getElementById('d-out').innerHTML=
+        '真实 q='+q.toFixed(2)+'　观测阈值 t='+t.toFixed(2)+'<br>'+
+        'I-投影 D(t‖q) = <b>'+ILMath.fmt(D,4)+' bit</b>（衰减指数）<br>'+
+        'Pr{经验频率 ≈ '+t.toFixed(2)+'}：n=50 → '+pr(50)+'　n=200 → '+pr(200)+'<br>'+
+        '<span style="color:#8592ab">Sanov：罕见事件以"最省力方式"发生，代价由最小 KL 决定。</span>';
+    });
+  }
+
+  // 有限块长
+  var fc=document.getElementById('f-cv');
+  if(fc){
+    var fp=new ILPlot(fc,{xr:[0,2000],yr:[0,1],xlabel:'块长 n',ylabel:'最大可达速率 R*(n,ε)'});
+    ILBind(['f-e','f-pe'],function(){
+      var e=+document.getElementById('f-e').value, k=+document.getElementById('f-pe').value;
+      document.getElementById('f-ev').textContent=e.toFixed(2);
+      document.getElementById('f-pev').textContent=k;
+      var eps=Math.pow(10,-k);
+      var C=1-ILMath.h2(e);
+      var V=e*(1-e)*Math.pow(ILMath.log2((1-e)/e),2);
+      var qi=Q(eps);
+      fp.yr=[0,Math.max(0.2,C*1.25)];
+      fp.resize();fp.clear();fp.axes(5,5);
+      fp.line(function(n){return C;},'#34d399',1.8);
+      fp.line(function(n){return n<10?NaN:Math.max(0,C-Math.sqrt(V/n)*qi);},'#f472b6',2.3);
+      var x=fp.ctx;x.font='11px ui-monospace,monospace';x.textAlign='left';
+      x.fillStyle='#34d399';x.fillText('Shannon 容量 C='+ILMath.fmt(C,3),fp.px(900),fp.py(C)-7);
+      x.fillStyle='#f472b6';x.fillText('R*(n,ε) 有限块长',fp.px(900),fp.py(Math.max(0,C-Math.sqrt(V/900)*qi))+16);
+      function rs(n){return Math.max(0,C-Math.sqrt(V/n)*qi);}
+      document.getElementById('f-out').innerHTML=
+        'BSC('+e.toFixed(2)+')　C = <b>'+ILMath.fmt(C,4)+'</b>　色散 V = <b>'+ILMath.fmt(V,4)+'</b>　ε = 10^−'+k+'（Q⁻¹ = '+ILMath.fmt(qi,3)+'）<br>'+
+        'n=100 → R* = <b>'+ILMath.fmt(rs(100),4)+'</b>（'+ILMath.fmt(rs(100)/C*100,1)+'% of C）　'+
+        'n=1000 → <b>'+ILMath.fmt(rs(1000),4)+'</b>（'+ILMath.fmt(rs(1000)/C*100,1)+'%）<br>'+
+        'n=10000 → <b>'+ILMath.fmt(rs(10000),4)+'</b>（'+ILMath.fmt(rs(10000)/C*100,1)+'%）<br>'+
+        '<span style="color:#8592ab">R* = C − √(V/n)·Q⁻¹(ε)　—— 短包场景下容量 C 是严重乐观的估计。</span>';
+    });
+  }
+})();
+</script>
+</body>
+</html>
