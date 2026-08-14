@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CausalGuard · 因果研究图集 · 学术墨蓝</title>
+<style>
+  :root{
+    --bg:#FAF6EE; --card:#FFFFFF; --accent:#1A2340; --ink:#23262F; --muted:#6B6256;
+    --gold:#9C7A3F; --blue:#1E3A8A; --line:rgba(26,35,64,.14); --radius:14px;
+    --font-serif:"Songti SC","Noto Serif SC","New York",Georgia,"PingFang SC",serif;
+    --font-sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(900px 500px at 90% -5%, rgba(30,58,138,.06), transparent 60%),
+      var(--bg);
+    color:var(--ink); font-family:var(--font-serif); line-height:1.75;
+  }
+  body::before{content:""; position:fixed; inset:0; z-index:-1; opacity:.4; pointer-events:none;
+    background-image:repeating-linear-gradient(0deg,transparent,transparent 38px,rgba(26,35,64,.04) 39px,transparent 40px);
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px}
+  section{padding:84px 0; border-bottom:1px solid var(--line)}
+  h1{font-size:clamp(32px,5vw,52px); font-weight:700; letter-spacing:-.01em; line-height:1.18}
+  h2{font-size:28px; font-weight:700; margin-bottom:8px}
+  h3{font-size:18px; font-weight:700; margin:22px 0 8px}
+  .sub{color:var(--muted); font-size:15.5px; margin-top:8px; font-family:var(--font-sans)}
+  .tag{display:inline-block; font-family:var(--font-mono); font-size:12px; color:var(--blue);
+    border:1px solid var(--line); padding:3px 10px; border-radius:999px; margin-bottom:16px}
+  .eyebrow{font-family:var(--font-mono); font-size:12px; color:var(--gold); letter-spacing:.16em; text-transform:uppercase}
+  .lead{font-size:18px; color:#3a3a3a; max-width:740px}
+  /* KPI */
+  .kpi{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px}
+  .kpi .k{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px; box-shadow:0 2px 10px rgba(26,35,64,.05)}
+  .kpi .num{font-size:32px; font-weight:700; font-family:var(--font-mono); color:var(--accent)}
+  .kpi .num.g{color:var(--gold)} .kpi .num.b{color:var(--blue)}
+  .kpi .lab{font-size:13px; color:var(--muted); margin-top:4px; font-family:var(--font-sans)}
+  .grid{display:grid; gap:16px; margin-top:22px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px;
+    box-shadow:0 2px 10px rgba(26,35,64,.05); transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .card:hover{transform:translateY(-3px)}
+  .card h4{font-size:16px; margin-bottom:6px; color:var(--accent)}
+  .card p{font-size:14px; color:var(--muted); font-family:var(--font-sans)}
+  code{font-family:var(--font-mono)}
+  pre{background:#10142A; color:#D7E3FF; border-radius:12px; padding:18px; overflow:auto;
+    font-family:var(--font-mono); font-size:13px; line-height:1.65; margin:14px 0}
+  .pre-head{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
+  .copy{background:rgba(30,58,138,.1); border:1px solid rgba(30,58,138,.3); color:var(--blue);
+    font-size:12px; padding:5px 12px; border-radius:999px; cursor:pointer; font-family:var(--font-sans)}
+  .copy:hover{background:rgba(30,58,138,.2)}
+  .formula{background:#FBF7EE; border-left:3px solid var(--gold); padding:14px 18px; border-radius:0 10px 10px 0;
+    font-family:var(--font-mono); font-size:15px; margin:14px 0; color:var(--accent)}
+  table{width:100%; border-collapse:collapse; margin-top:16px; font-size:13.5px; font-family:var(--font-sans)}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left}
+  th{background:rgba(30,58,138,.08); color:var(--accent); font-weight:700}
+  td code{color:var(--gold)}
+  .pipe{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; align-items:center}
+  .step{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:9px 13px;
+    font-size:13px; font-family:var(--font-mono)}
+  .step.formal{border-color:var(--gold); color:var(--gold)}
+  .arrow{color:#9C7A3F; font-size:18px}
+  .overflow-links{display:flex; flex-wrap:wrap; gap:12px; margin-top:24px}
+  .ol{display:inline-flex; align-items:center; gap:8px; background:rgba(30,58,138,.08);
+    border:1px solid rgba(30,58,138,.3); color:var(--blue); text-decoration:none; padding:10px 16px;
+    border-radius:999px; font-size:14px; font-family:var(--font-sans); transition:.25s}
+  .ol:hover{background:rgba(30,58,138,.18); transform:translateY(-2px)}
+  /* 名人卡 */
+  .celeb{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px}
+  .celeb .c{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px;
+    border-top:3px solid var(--gold)}
+  .celeb .nm{font-size:16px; font-weight:700; color:var(--accent)}
+  .celeb .mt{font-size:12.5px; color:var(--blue); font-family:var(--font-mono); margin:4px 0 8px}
+  .celeb p{font-size:13px; color:var(--muted); font-family:var(--font-sans)}
+  .step-act{font-size:12.5px; color:var(--gold); font-family:var(--font-sans); margin-top:8px}
+  .topbar{position:sticky; top:0; z-index:20; backdrop-filter:blur(14px);
+    background:rgba(250,246,238,.8); border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; padding:13px 28px}
+  .brand{font-family:var(--font-mono); font-size:14px; color:var(--accent)}
+  .brand b{color:var(--blue)}
+  .nav a{color:var(--muted); text-decoration:none; font-size:13px; margin-left:16px; font-family:var(--font-sans)}
+  .nav a:hover{color:var(--accent)}
+  @media(max-width:768px){ .kpi,.celeb,.g2,.g3{grid-template-columns:1fr} .nav{display:none} }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <div class="brand">Causal<b>Guard</b> · 学术墨蓝</div>
+  <div class="nav"><a href="#overview">概览</a><a href="#docalc">do演算</a><a href="#fallacy">谬误</a>
+  <a href="#pipe">管线</a><a href="#celeb">名人</a><a href="#four">四层</a></div>
+</div></div>
+
+<!-- 00 OVERVIEW + KPI -->
+<section id="overview"><div class="wrap">
+  <span class="tag">STYLE 02 · academic_ink</span>
+  <span class="eyebrow">Causal Research Atlas</span>
+  <h1>因果推断的形式化根基<br/>与 CausalGuard 实践</h1>
+  <p class="lead">从 Pearl 因果阶梯到 do-演算三规则，从 12 类因果谬误到七阶段守护管线——本馆以学术严谨风呈现理论脉络，并锚定到本项目可运行的 Python 实现。</p>
+  <div class="kpi">
+    <div class="k"><div class="num">3</div><div class="lab">do-演算规则（插入/删除/交换）</div></div>
+    <div class="k"><div class="num g">12</div><div class="lab">类因果谬误（F01–F12）</div></div>
+    <div class="k"><div class="num b">7</div><div class="lab">阶段守护管线（S1–S7）</div></div>
+    <div class="k"><div class="num">1995</div><div class="lab">Pearl 提出 do-演算（Biometrika）</div></div>
+    <div class="k"><div class="num g">2009</div><div class="lab">Causality 第二版系统成形</div></div>
+    <div class="k"><div class="num b">2022</div><div class="lab">因果层级定理严格证明</div></div>
+  </div>
+</div></section>
+
+<!-- 01 LADDER -->
+<section id="ladder"><div class="wrap">
+  <span class="eyebrow">01 · Ladder</span>
+  <h2>因果阶梯与层级定理</h2>
+  <p class="sub">Bareinboim et al. (2022) 严格证明：低层级数据无法唯一确定高层级量。LLM 的训练目标 $\log P(x_t\mid x_{<t})$ 是纯关联量——再多语料也训不出因果，必须外挂形式化引擎。</p>
+  <div class="formula">P(y | x)  ≠  P(y | do(x))  ≠  P(y_x | x', y')</div>
+  <div class="grid g3">
+    <div class="card"><h4>Rung 1 · 关联（Seeing）</h4><p>观察世界，记录共现。对应条件概率与所有监督学习的本质。</p></div>
+    <div class="card"><h4>Rung 2 · 干预（Doing）</h4><p>主动改变变量。对应 do-算子与实验/准实验设计。</p></div>
+    <div class="card"><h4>Rung 3 · 反事实（Imagining）</h4><p>"若当时做了别的"。对应 SCM 噪声反演与个人化归因。</p></div>
+  </div>
+  <p class="sub">CausalGuard 的 <code>scm.ate</code> 落在 Rung 2，<code>scm.counterfactual</code> 落在 Rung 3，数值上分别给出 +0.500 与 +0.496。</p>
+</div></section>
+
+<!-- 02 do-CALCULUS -->
+<section id="docalc"><div class="wrap">
+  <span class="eyebrow">02 · do-Calculus</span>
+  <h2>do-演算三规则</h2>
+  <p class="sub">Pearl (1995) 在 Biometrika 提出 do-演算，奠定可识别性理论。三条规则把含 do 的表达式逐步化简为仅含观测分布的 estimand。</p>
+  <h3>规则一 · 插入（Insertion）</h3>
+  <div class="formula">P(y | do(x), do(z), w) = P(y | do(x), z, w)　若 (Y ⊥ Z | X,W)₍G₍x̄z₎₎</div>
+  <h3>规则二 · 删除（Deletion）</h3>
+  <div class="formula">P(y | do(x), do(z), w) = P(y | do(x), w)　若 (Y ⊥ Z | X,W)₍G₍x̄₎₎</div>
+  <h3>规则三 · 交换（Exchange）</h3>
+  <div class="formula">P(y | do(x), do(z), w) = P(y | do(x), w)　若 (Y ⊥ Z | X,W)₍G₍x̄ ⌀ z₎₎</div>
+  <p class="sub">后门准则即规则二的直接应用；当所有含 do 的项被消去，表达式可识别。CausalGuard 的 <code>identify_effect</code> 自动寻找最小调整集并返回 estimand。</p>
+  <h3>可识别性推导示例</h3>
+  <p class="sub">对后门图 X←Z→Y, X→Y，目标是 P(y|do(x))。应用规则二（删除 Z，因 Z 阻断后门且不含于 do）：</p>
+  <div class="formula">P(y|do(x)) = Σ_z P(y|x,z)·P(z)　（后门调整公式）</div>
+  <p class="sub">若 Z 不可观测，但存在完全中介 M（X→M→Y，且无 X→Y 直边、M 不受混杂），则改用前门准则：</p>
+  <div class="formula">P(y|do(x)) = Σ_m P(m|x) · Σ_{x'} P(x') · P(y|x',m)</div>
+  <p class="sub">CausalGuard 自动判定走后门还是前门，并返回对应 estimand 字符串。</p>
+  <pre id="d1">from causalguard import identify_effect, CausalGraph
+g = CausalGraph.from_edges([("Z","T"),("Z","Y"),("T","Y")])
+r = identify_effect(g, "T", "Y")
+r.strategy        # 'backdoor'
+r.adjustment_set  # ['Z']
+r.estimand        # P(Y|do(T)) = Σ_Z P(Y|T,Z)·P(Z)</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">core/scm.py</span>
+    <button class="copy" data-t="d1">复制</button></div>
+</div></section>
+
+<!-- 03 FALLACIES -->
+<section id="fallacy"><div class="wrap">
+  <span class="eyebrow">03 · Fallacies</span>
+  <h2>十二类因果谬误</h2>
+  <p class="sub">完整编码表，每类对应 CausalGuard 的 F 编码检测与文献出处。</p>
+  <table>
+    <tr><th>编码</th><th>谬误</th><th>理论定位</th><th>文献</th></tr>
+    <tr><td><code>F01</code></td><td>相关当因果</td><td>Rung1→Rung2 越级</td><td>Pearl (2009) §3</td></tr>
+    <tr><td><code>F02</code></td><td>忽略混杂</td><td>后门未调整</td><td>Imbens & Rubin (2015)</td></tr>
+    <tr><td><code>F03</code></td><td>因果倒置</td><td>边方向错误</td><td>Pearl (2009)</td></tr>
+    <tr><td><code>F04</code></td><td>幸存者偏差</td><td>选择偏差</td><td></td></tr>
+    <tr><td><code>F05</code></td><td>后此谬误</td><td>时间≠因果</td><td></td></tr>
+    <tr><td><code>F06</code></td><td>辛普森悖论</td><td>聚合反转</td><td></td></tr>
+    <tr><td><code>F07</code></td><td>对撞条件化</td><td>Berkson 偏倚</td><td>Pearl (2009)</td></tr>
+    <tr><td><code>F08</code></td><td>过度泛化</td><td>外部效度</td><td></td></tr>
+    <tr><td><code>F09</code></td><td>单因谬误</td><td>多因忽略</td><td></td></tr>
+    <tr><td><code>F10</code></td><td>无依据反事实</td><td>Rung3 滥用</td><td></td></tr>
+    <tr><td><code>F11</code></td><td>中介被控</td><td>过度控制</td><td></td></tr>
+    <tr><td><code>F12</code></td><td>生态学谬误</td><td>层次混淆</td><td></td></tr>
+  </table>
+</div></section>
+
+<!-- 04 PIPELINE -->
+<section id="pipe"><div class="wrap">
+  <span class="eyebrow">04 · Pipeline</span>
+  <h2>七阶段守护管线</h2>
+  <p class="sub">语义层与形式化层分工。S6 识别与 S7 修复不依赖 LLM，是可信锚点。</p>
+  <div class="pipe">
+    <span class="step">S1 PROMPT_AUDIT</span><span class="arrow">→</span>
+    <span class="step">S2 CAUSAL_PROMPT</span><span class="arrow">→</span>
+    <span class="step">S3 GENERATE</span><span class="arrow">→</span>
+    <span class="step">S4 CLAIM_AUDIT</span><span class="arrow">→</span>
+    <span class="step">S5 GRAPH_BUILD</span><span class="arrow">→</span>
+    <span class="step formal">S6 IDENTIFY</span><span class="arrow">→</span>
+    <span class="step formal">S7 REPAIR</span>
+  </div>
+  <div class="grid g2" style="margin-top:22px">
+    <div class="card"><h4>语义层 S1–S5</h4><p>LLM 抽取文本中的因果主张、构建 DAG 草图。接真实 LLM 后抽取质量显著提升。</p></div>
+    <div class="card"><h4>形式化层 S6–S7</h4><p>do-演算识别 + 反事实修复。纯算法，端点不可用时仍 100% 工作。</p></div>
+  </div>
+</div></section>
+
+<!-- 05 CELEB SKILLS (L3 元认知) -->
+<section id="celeb"><div class="wrap">
+  <span class="eyebrow">05 · L3 Meta-Cognition</span>
+  <h2>六位名人思维方法</h2>
+  <p class="sub">L3 元认知层：不解决具体问题，而是决定用哪种姿态解决。每位附可执行的行动步骤。</p>
+  <div class="celeb">
+    <div class="c"><div class="nm">Pearl</div><div class="mt">因果阶梯思维</div>
+      <p>强制把问题分到关联/干预/反事实。局限：阶梯不可越级。</p>
+      <div class="step-act">行动：遇到因果主张先问"它在第几层？"</div></div>
+    <div class="c"><div class="nm">Feynman</div><div class="mt">费曼学习法</div>
+      <p>选概念→大白话解释→找盲点→类比。局限：复杂证明无法纯类比。</p>
+      <div class="step-act">行动：用 12 岁能懂的话重写 do(x)。</div></div>
+    <div class="c"><div class="nm">Musk</div><div class="mt">第一性原理</div>
+      <p>回到基本事实从头推理。局限：易忽略成熟文献。</p>
+      <div class="step-act">行动：剥离"相关≠因果"的妥协，追问物理事实。</div></div>
+    <div class="c"><div class="nm">Munger</div><div class="mt">多元思维模型</div>
+      <p>跨学科知识网络。局限：模型过多致决策瘫痪。</p>
+      <div class="step-act">行动：因果+经济+心理交叉审视。</div></div>
+    <div class="c"><div class="nm">Dalio</div><div class="mt">二阶思维</div>
+      <p>直接后果+连锁反应。局限：高阶效应误差累积。</p>
+      <div class="step-act">行动：画干预 X→Y→Z 的连锁路径。</div></div>
+    <div class="c"><div class="nm">Taleb</div><div class="mt">反脆弱思维</div>
+      <p>在不确定性中获益。局限：对确定性模型有偏见。</p>
+      <div class="step-act">行动：用反事实做 stress test。</div></div>
+  </div>
+</div></section>
+
+<!-- 06 FOUR-LAYER -->
+<section id="four"><div class="wrap">
+  <span class="eyebrow">06 · Four-Layer Analysis</span>
+  <h2>四层架构交叉分析</h2>
+  <p class="sub">L3 元认知决定 L2 工具 → L1 方法 → L0 评估。不存在"客观最优方法"，思维决定工具，工具决定方法，方法决定评估。</p>
+  <h3>交叉 1 · L3 名人 → L2 工具偏好</h3>
+  <table>
+    <tr><th>名人思维</th><th>偏好工具</th><th>原因</th></tr>
+    <tr><td>Pearl 阶梯</td><td>DoWhy</td><td>原生支持阶梯三层</td></tr>
+    <tr><td>Musk 第一性原理</td><td>CausalNex</td><td>从数据发现结构，不预设</td></tr>
+    <tr><td>Munger 多元模型</td><td>EconML + CausalML</td><td>跨方法对比 CATE</td></tr>
+    <tr><td>Taleb 反脆弱</td><td>CausalML + DoubleML</td><td>反事实做 stress test</td></tr>
+  </table>
+  <h3>交叉 2 · L1 方法 → L0 评估对应</h3>
+  <table>
+    <tr><th>L1 方法</th><th>L0 评估重点</th><th>L0 弱项</th></tr>
+    <tr><td>OLS / PSM</td><td>理论严谨 + 可解释</td><td>高维扩展 + CATE</td></tr>
+    <tr><td>DAG / SEM</td><td>可解释 + 识别</td><td>估计精度</td></tr>
+    <tr><td>DML</td><td>平衡性（理论+高维）</td><td>可解释</td></tr>
+  </table>
+  <div class="formula">洞察：工具链是方法的子集——8 工具仅覆盖 12 方法中的约 8 个，仍有 CRF/深度因果/CRL 缺乏成熟开源工具。</div>
+</div></section>
+
+<!-- 07 REFERENCES -->
+<section id="ref"><div class="wrap">
+  <span class="eyebrow">07 · References</span>
+  <h2>参考文献</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Pearl (2009)</h4><p>Causality. Cambridge University Press. do-演算与 SCM 奠基。</p></div>
+    <div class="card"><h4>Imbens & Rubin (2015)</h4><p>Causal Inference for Statistics, Social, and Biomedical Sciences. RCM 系统化。</p></div>
+    <div class="card"><h4>Shpitser & Pearl (2006)</h4><p>完整 ID 算法（本项目的识别覆盖仅后门+前门，未实现完整 ID）。</p></div>
+    <div class="card"><h4>Bareinboim et al. (2022)</h4><p>因果层级定理严格证明：低层无法唯一确定高层。</p></div>
+  </div>
+</div></section>
+
+<!-- OVERFLOW -->
+<section id="overflow" style="border-bottom:none"><div class="wrap">
+  <span class="eyebrow">Deep Annex</span>
+  <h2>深潜馆入口</h2>
+  <div class="overflow-links">
+    <a class="ol" href="methodology_sub.html">→ 方法论深潜馆 · 3 大家族 × 12 方法</a>
+    <a class="ol" href="applications_sub.html">→ 应用深潜馆 · CausalGuard 源码剖析 + 基准</a>
+    <a class="ol" href="causality_hub_master.html">⌂ 返回 HUB 总入口</a>
+    <a class="ol" href="causality_s01_tech_deepblue.html">科技深蓝主馆</a>
+    <a class="ol" href="causality_s03_glass_sky.html">玻璃天青主馆</a>
+  </div>
+</div></section>
+
+<script>
+  document.querySelectorAll('.copy').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const t=document.getElementById(b.dataset.t).innerText;
+      navigator.clipboard.writeText(t).then(()=>{
+        b.textContent='已复制'; setTimeout(()=>b.textContent='复制',1400);
+      });
+    });
+  });
+</script>
+</body>
+</html>
