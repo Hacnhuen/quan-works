@@ -1,0 +1,38 @@
+/* oneshot 多风格 · glass_sky —— 浅色玻璃通透感 */
+:root{
+  --bg:#eef3fb;
+  --bg-soft:#e4ecf8;
+  --panel:rgba(255,255,255,.72);
+  --panel-2:rgba(255,255,255,.9);
+  --line:#cdd9ee;
+  --line-soft:#dde6f4;
+  --ink:#16233b;
+  --ink-2:#3c4d70;
+  --ink-3:#6b7c9c;
+  --l0:#0ea5e9;  /* 启蒙 天蓝 */
+  --l1:#10b981;  /* 基础 翠 */
+  --l2:#f59e0b;  /* 完备 琥珀 */
+  --l3:#ec4899;  /* 专业 玫 */
+  --l4:#6366f1;  /* 前沿 靛 */
+  --ok:#10b981;
+  --warn:#f59e0b;
+  --bad:#ef4444;
+}
+body{background:linear-gradient(160deg,#e8f0fc 0%,#f3eafc 50%,#e6f7f4 100%);color:var(--ink)}
+*{box-shadow:none}
+.topbar{background:rgba(255,255,255,.7);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-in,.wrap{max-width:1180px}
+.navlinks a{color:var(--ink-2)}
+.navlinks a.on{background:linear-gradient(135deg,var(--l0),var(--l4));color:#fff}
+.hero,.section{border-color:var(--line)}
+.tcard,.person,.figure,.kgwrap{border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(8px)}
+.figure figcaption,.person .meta span{color:var(--ink-3)}
+.kicker{color:var(--l4)}
+.note,.note.warn,.note.deep{background:var(--panel);border:1px solid var(--line);color:var(--ink-2)}
+.note.deep{border-left:3px solid var(--l4)}
+.note.warn{border-left:3px solid var(--warn)}
+.tw table{background:var(--panel)}
+.tw th{background:rgba(14,165,233,.1);color:var(--ink)}
+.tw td{border-color:var(--line);color:var(--ink-2)}
+.el{background:var(--panel);border:1px solid var(--line)}
+pre{background:#f7fafc;border:1px solid var(--line);color:var(--ink)}
