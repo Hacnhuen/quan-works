@@ -1,0 +1,2533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四层架构深度分析馆 · Four Layer Cross Analysis Annex · 教育与AI</title>
+<style>
+/* ============================================================
+   四层架构深度分析馆 · 紫金主题
+   bg #0B1437 / card #132053 / accent #A78BFA (紫金)
+   ============================================================ */
+
+:root{
+  --bg:#0B1437;
+  --bg-2:#0E1A47;
+  --card:#132053;
+  --card-2:#1A2A66;
+  --line:rgba(167,139,250,0.18);
+  --line-strong:rgba(167,139,250,0.42);
+  --ink:#E8ECFF;
+  --ink-dim:#A8B0D8;
+  --ink-mute:#6E78A8;
+  --accent:#A78BFA;          /* 紫 */
+  --accent-2:#8B5CF6;        /* 深紫 */
+  --gold:#F5D67B;            /* 金 */
+  --gold-2:#E0B84A;          /* 深金 */
+  --l3:#F5D67B;              /* L3 元认知 · 金 */
+  --l2:#A78BFA;              /* L2 应用 · 紫 */
+  --l1:#7DD3FC;              /* L1 方法 · 青紫 */
+  --l0:#F0ABFC;              /* L0 评估 · 玫紫 */
+  --good:#86EFAC;
+  --warn:#FCA5A5;
+  --mono:"SF Mono","JetBrains Mono","Menlo","Consolas",monospace;
+  --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",system-ui,sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(167,139,250,0.10), transparent 60%),
+    radial-gradient(900px 500px at 10% 20%, rgba(245,214,123,0.06), transparent 60%),
+    var(--bg);
+  color:var(--ink);
+  line-height:1.7;
+  font-size:15px;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{color:var(--gold)}
+
+/* ---------- 顶部导航 ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,20,55,0.86);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:1280px;margin:0 auto;padding:12px 24px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.brand{
+  font-family:var(--mono);font-weight:700;font-size:13px;
+  letter-spacing:.08em;color:var(--gold);
+  white-space:nowrap;
+}
+.brand span{color:var(--accent)}
+.nav-scroll{
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  margin-left:auto;
+}
+.nav-pill{
+  font-family:var(--mono);font-size:11.5px;
+  padding:6px 11px;border-radius:999px;
+  border:1px solid var(--line);
+  color:var(--ink-dim);white-space:nowrap;
+  transition:all .2s;
+}
+.nav-pill:hover{
+  border-color:var(--accent);color:var(--gold);
+  background:rgba(167,139,250,0.10);
+}
+.nav-pill.annex{
+  border-color:rgba(245,214,123,0.4);
+  color:var(--gold);
+}
+.nav-pill.cur{
+  background:linear-gradient(135deg,var(--accent),var(--gold));
+  color:#0B1437;border-color:transparent;font-weight:700;
+}
+
+/* ---------- 容器 ---------- */
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--line)}
+
+/* ---------- Hero ---------- */
+.hero{padding:72px 0 48px;border-bottom:1px solid var(--line);position:relative}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.18em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:14px;
+}
+.hero h1{
+  font-size:clamp(28px,4.4vw,52px);font-weight:800;line-height:1.18;
+  background:linear-gradient(120deg,#E8ECFF 0%,var(--gold) 45%,var(--accent) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:18px;letter-spacing:-.01em;
+}
+.hero h1 .sub{display:block;font-size:.42em;font-weight:600;
+  color:var(--ink-dim);letter-spacing:.04em;margin-top:8px;
+  -webkit-text-fill-color:var(--ink-dim);}
+.hero p.lead{
+  max-width:780px;font-size:17px;color:var(--ink-dim);
+}
+.hero-meta{
+  margin-top:26px;display:flex;gap:10px;flex-wrap:wrap;
+}
+.tag{
+  font-family:var(--mono);font-size:11.5px;
+  padding:5px 11px;border-radius:6px;
+  border:1px solid var(--line);color:var(--ink-dim);
+  background:rgba(19,32,83,0.6);
+}
+.tag.gold{border-color:rgba(245,214,123,0.4);color:var(--gold)}
+.tag.purple{border-color:rgba(167,139,250,0.4);color:var(--accent)}
+
+/* ---------- 章节标题 ---------- */
+.sec-head{margin-bottom:36px}
+.sec-num{
+  font-family:var(--mono);font-size:12px;letter-spacing:.2em;
+  color:var(--gold);text-transform:uppercase;
+}
+.sec-head h2{
+  font-size:clamp(24px,3vw,36px);font-weight:800;margin-top:8px;
+  letter-spacing:-.01em;
+}
+.sec-head h2 .accent{color:var(--accent)}
+.sec-head h2 .gold{color:var(--gold)}
+.sec-head .desc{color:var(--ink-dim);max-width:860px;margin-top:12px;font-size:15.5px}
+
+/* ---------- 四层总览 ---------- */
+.overview-stack{
+  display:grid;gap:14px;margin-top:8px;
+}
+.layer-row{
+  display:grid;grid-template-columns:90px 1fr 220px;gap:18px;align-items:stretch;
+  padding:20px 22px;border-radius:14px;
+  background:linear-gradient(135deg,var(--card),var(--card-2));
+  border:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.layer-row::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+}
+.layer-row.l3::before{background:linear-gradient(var(--l3),transparent)}
+.layer-row.l2::before{background:linear-gradient(var(--l2),transparent)}
+.layer-row.l1::before{background:linear-gradient(var(--l1),transparent)}
+.layer-row.l0::before{background:linear-gradient(var(--l0),transparent)}
+.layer-tag{
+  font-family:var(--mono);font-weight:800;font-size:30px;
+  display:flex;align-items:center;justify-content:center;
+  border-right:1px dashed var(--line);
+}
+.l3 .layer-tag{color:var(--l3)}
+.l2 .layer-tag{color:var(--l2)}
+.l1 .layer-tag{color:var(--l1)}
+.l0 .layer-tag{color:var(--l0)}
+.layer-body h3{font-size:19px;font-weight:700;margin-bottom:6px}
+.layer-body .role{
+  font-family:var(--mono);font-size:12px;color:var(--gold);
+  letter-spacing:.08em;margin-bottom:8px;
+}
+.layer-body p{color:var(--ink-dim);font-size:14px}
+.layer-side{
+  display:flex;flex-direction:column;justify-content:center;gap:6px;
+  padding-left:16px;border-left:1px dashed var(--line);
+}
+.layer-side .k{font-family:var(--mono);font-size:11px;color:var(--ink-mute);letter-spacing:.06em}
+.layer-side .v{font-size:13px;color:var(--ink)}
+.flow-arrow{
+  text-align:center;font-family:var(--mono);color:var(--gold);
+  font-size:18px;margin:-6px 0;opacity:.7;
+}
+
+/* ---------- L3 思想家卡片 ---------- */
+.thinker-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(540px,1fr));gap:20px;
+}
+.thinker{
+  background:linear-gradient(160deg,var(--card),var(--card-2));
+  border:1px solid var(--line);border-radius:16px;
+  padding:24px 26px;position:relative;overflow:hidden;
+}
+.thinker::after{
+  content:"";position:absolute;top:-30px;right:-30px;width:120px;height:120px;
+  border-radius:50%;background:radial-gradient(circle,rgba(245,214,123,0.12),transparent 70%);
+}
+.thinker-head{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;
+}
+.thinker-no{
+  font-family:var(--mono);font-size:12px;color:var(--gold);
+  border:1px solid rgba(245,214,123,0.4);padding:2px 8px;border-radius:5px;
+}
+.thinker h3{font-size:21px;font-weight:800;color:var(--ink)}
+.thinker h3 .en{color:var(--accent);font-weight:600;font-size:15px;margin-left:6px}
+.thinker-theory{
+  font-family:var(--mono);font-size:12.5px;color:var(--gold);
+  margin:8px 0 16px;letter-spacing:.04em;
+}
+.thinker-theory .zh{color:var(--ink-dim);margin-left:8px}
+.fact-grid{display:grid;gap:14px}
+.fact{border-top:1px dashed var(--line);padding-top:12px}
+.fact-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.fact-label .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--gold);
+}
+.fact p{font-size:13.5px;color:var(--ink-dim)}
+.fact ul{margin:6px 0 0 18px;color:var(--ink-dim);font-size:13.5px}
+.fact ul li{margin:3px 0}
+.fact .step{
+  display:flex;gap:10px;align-items:flex-start;margin:5px 0;font-size:13.5px;color:var(--ink-dim);
+}
+.fact .step .n{
+  font-family:var(--mono);font-size:11px;color:var(--gold);
+  border:1px solid rgba(245,214,123,0.4);width:20px;height:20px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.lim{color:var(--warn) !important}
+
+/* ---------- L2 工具卡片 ---------- */
+.tool-class{
+  margin-bottom:30px;
+}
+.tool-class-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
+}
+.tool-class-badge{
+  font-family:var(--mono);font-weight:800;font-size:14px;
+  padding:6px 14px;border-radius:8px;color:#0B1437;
+}
+.tca{background:linear-gradient(135deg,var(--gold),var(--gold-2))}
+.tcb{background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+.tcc{background:linear-gradient(135deg,#7DD3FC,#60A5FA)}
+.tool-class-title{font-size:17px;font-weight:700}
+.tool-class-title .en{color:var(--ink-mute);font-weight:500;font-size:13px;margin-left:8px}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.tool{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:18px 20px;transition:all .2s;
+}
+.tool:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tool-name{font-size:16px;font-weight:700;margin-bottom:4px}
+.tool-name .zh{color:var(--ink-dim);font-weight:500;font-size:13px;margin-left:6px}
+.tool-cat{font-family:var(--mono);font-size:11px;color:var(--gold);margin-bottom:8px}
+.tool p{font-size:13px;color:var(--ink-dim)}
+.tool .stack{
+  margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;
+}
+.tool .stack span{
+  font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:4px;
+  background:rgba(167,139,250,0.12);color:var(--accent);border:1px solid var(--line);
+}
+
+.feynman-box{
+  margin-top:24px;padding:24px 26px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(245,214,123,0.10),rgba(167,139,250,0.10));
+  border:1px solid rgba(245,214,123,0.3);
+}
+.feynman-box .badge{
+  font-family:var(--mono);font-size:11px;color:var(--gold);
+  letter-spacing:.1em;margin-bottom:8px;
+}
+.feynman-box h3{font-size:20px;margin-bottom:10px}
+.feynman-box p{color:var(--ink-dim);font-size:14px;max-width:880px}
+.feynman-flow{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;
+  font-family:var(--mono);font-size:12px;
+}
+.feynman-flow .node{
+  padding:6px 12px;border-radius:6px;border:1px solid var(--line);
+  background:var(--card);
+}
+.feynman-flow .arr{color:var(--gold)}
+
+/* ---------- L1 方法家族 ---------- */
+.family-block{
+  margin-bottom:28px;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+}
+.family-bar{
+  padding:14px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.fa .family-bar{background:linear-gradient(90deg,rgba(245,214,123,0.16),transparent)}
+.fb .family-bar{background:linear-gradient(90deg,rgba(167,139,250,0.16),transparent)}
+.fc .family-bar{background:linear-gradient(90deg,rgba(125,211,252,0.16),transparent)}
+.family-name{font-size:17px;font-weight:800}
+.family-name .en{color:var(--ink-mute);font-weight:500;font-size:13px;margin-left:8px}
+.family-era{font-family:var(--mono);font-size:11px;color:var(--gold)}
+.method-list{padding:18px 22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.method{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+}
+.method-code{font-family:var(--mono);font-size:11px;color:var(--gold);margin-bottom:4px}
+.method-name{font-size:15px;font-weight:700;margin-bottom:6px}
+.method p{font-size:12.5px;color:var(--ink-dim)}
+.method .meta{
+  margin-top:8px;font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);
+  display:flex;gap:10px;
+}
+
+.family-svg-wrap{
+  margin-top:30px;padding:28px;border-radius:16px;
+  background:var(--card);border:1px solid var(--line);
+}
+.family-svg-wrap h4{
+  font-size:16px;margin-bottom:6px;color:var(--gold);
+  font-family:var(--mono);letter-spacing:.04em;
+}
+.family-svg-wrap .hint{font-size:12.5px;color:var(--ink-mute);margin-bottom:18px}
+.family-svg{width:100%;height:auto;display:block}
+
+/* ---------- L0 评估 ---------- */
+.d5-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:30px}
+.d5-card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;
+  position:relative;overflow:hidden;
+}
+.d5-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+}
+.d5-1::before{background:var(--l0)}
+.d5-2::before{background:var(--gold)}
+.d5-3::before{background:var(--accent)}
+.d5-4::before{background:var(--l1)}
+.d5-5::before{background:var(--good)}
+.d5-code{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.1em}
+.d5-name{font-size:17px;font-weight:700;margin:6px 0 4px}
+.d5-name .en{color:var(--ink-mute);font-size:12px;font-weight:500;margin-left:6px}
+.d5-count{font-family:var(--mono);font-size:12px;color:var(--accent);margin-bottom:10px}
+.d5-subs{display:flex;flex-direction:column;gap:6px}
+.d5-sub{
+  font-size:12.5px;color:var(--ink-dim);padding-left:14px;position:relative;
+}
+.d5-sub::before{
+  content:"";position:absolute;left:0;top:9px;width:6px;height:1px;background:var(--gold);
+}
+
+.case-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.case{
+  background:linear-gradient(160deg,var(--card),var(--card-2));
+  border:1px solid var(--line);border-radius:12px;padding:18px;
+}
+.case-icon{font-family:var(--mono);font-size:22px;color:var(--gold);margin-bottom:8px}
+.case h4{font-size:16px;margin-bottom:8px}
+.case p{font-size:12.5px;color:var(--ink-dim)}
+.case .row{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--mono);font-size:11px}
+.case .row .k{color:var(--ink-mute)}
+.case .row .v{color:var(--accent)}
+
+/* ---------- 矩阵 ---------- */
+.matrix-block{margin-bottom:32px}
+.matrix-title{
+  font-size:18px;font-weight:700;margin-bottom:6px;
+  display:flex;align-items:center;gap:10px;
+}
+.matrix-title .mn{
+  font-family:var(--mono);font-size:12px;color:var(--gold);
+  border:1px solid rgba(245,214,123,0.4);padding:2px 9px;border-radius:5px;
+}
+.matrix-sub{font-size:13px;color:var(--ink-dim);margin-bottom:14px}
+.matrix-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table.matrix{
+  width:100%;border-collapse:collapse;font-size:13px;min-width:680px;
+}
+table.matrix th,table.matrix td{
+  padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+}
+table.matrix th{
+  background:var(--card-2);font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.04em;color:var(--gold);position:sticky;top:0;
+}
+table.matrix td.row-h{
+  font-family:var(--mono);font-size:12px;color:var(--accent);background:rgba(19,32,83,0.5);
+  font-weight:600;white-space:nowrap;
+}
+table.matrix tr:hover td{background:rgba(167,139,250,0.06)}
+table.matrix .pill{
+  display:inline-block;font-family:var(--mono);font-size:10.5px;
+  padding:2px 7px;border-radius:4px;border:1px solid var(--line);
+}
+.pill.p{background:rgba(167,139,250,0.14);color:var(--accent)}
+.pill.g{background:rgba(245,214,123,0.14);color:var(--gold)}
+.pill.c{background:rgba(125,211,252,0.14);color:var(--l1)}
+.pill.r{background:rgba(240,171,252,0.14);color:var(--l0)}
+.pill.s{background:rgba(134,239,172,0.14);color:var(--good)}
+
+/* ---------- 洞察 ---------- */
+.insight-grid{display:grid;gap:18px}
+.insight{
+  padding:26px 28px;border-radius:16px;
+  background:linear-gradient(135deg,var(--card),var(--card-2));
+  border:1px solid var(--line);position:relative;overflow:hidden;
+}
+.insight::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(var(--gold),var(--accent));
+}
+.insight-no{
+  font-family:var(--mono);font-size:12px;color:var(--gold);
+  letter-spacing:.12em;margin-bottom:8px;
+}
+.insight h3{font-size:20px;font-weight:800;margin-bottom:12px}
+.insight h3 .hl{color:var(--gold)}
+.insight p{color:var(--ink-dim);font-size:14.5px;max-width:920px}
+.insight .chain{
+  margin-top:14px;font-family:var(--mono);font-size:12.5px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.insight .chain .node{
+  padding:5px 11px;border-radius:6px;background:var(--bg-2);border:1px solid var(--line);
+}
+.insight .chain .arr{color:var(--gold)}
+
+/* ---------- 页脚 ---------- */
+footer{padding:48px 0 40px;border-top:1px solid var(--line)}
+.foot-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-bottom:30px;
+}
+.foot-col h5{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:12px;
+}
+.foot-col a{
+  display:block;font-size:13px;color:var(--ink-dim);padding:5px 0;
+}
+.foot-col a:hover{color:var(--accent)}
+.foot-bottom{
+  padding-top:24px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-mute);
+}
+
+/* ---------- 5D 评分卡 ---------- */
+.score-overview{margin-bottom:22px}
+.score-legend{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  padding:14px 18px;border-radius:10px;background:var(--card);border:1px solid var(--line);
+}
+.legend-title{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.1em}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-dim)}
+.legend-item .dot{width:10px;height:10px;border-radius:50%}
+
+.score-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin-bottom:30px}
+table.score-table{width:100%;border-collapse:collapse;font-size:13px;min-width:820px}
+table.score-table th,table.score-table td{
+  padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+}
+table.score-table th{
+  background:var(--card-2);font-family:var(--mono);font-size:11.5px;color:var(--gold);letter-spacing:.04em;
+}
+table.score-table td.row-h{
+  font-family:var(--mono);font-size:12px;color:var(--accent);background:rgba(19,32,83,0.5);font-weight:600;white-space:nowrap;
+}
+table.score-table tr:hover td{background:rgba(167,139,250,0.06)}
+.score{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;font-family:var(--mono);font-size:12px;font-weight:700;
+}
+.score.s5{background:rgba(134,239,172,0.2);color:var(--good);border:1px solid rgba(134,239,172,0.5)}
+.score.s4{background:rgba(245,214,123,0.2);color:var(--gold);border:1px solid rgba(245,214,123,0.5)}
+.score.s3{background:rgba(167,139,250,0.2);color:var(--accent);border:1px solid rgba(167,139,250,0.5)}
+.score.s2{background:rgba(252,165,165,0.2);color:var(--warn);border:1px solid rgba(252,165,165,0.5)}
+.score.s1{background:rgba(248,113,113,0.2);color:#F87171;border:1px solid rgba(248,113,113,0.5)}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.scard{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+}
+.scard-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.scard-code{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid rgba(245,214,123,0.4);padding:2px 8px;border-radius:5px}
+.scard-name{font-size:15px;font-weight:700}
+.scard-row{display:grid;grid-template-columns:34px 1fr 26px 1.4fr;gap:8px;align-items:center;margin:7px 0;font-size:12px}
+.scard-row .dim{font-family:var(--mono);font-size:10.5px;color:var(--gold)}
+.scard-row .bar{height:6px;background:rgba(167,139,250,0.12);border-radius:3px;overflow:hidden}
+.scard-row .bar .fill{display:block;height:100%;border-radius:3px}
+.scard-row .v{font-family:var(--mono);font-weight:700;text-align:center;color:var(--ink)}
+.scard-row .note{color:var(--ink-mute);font-size:11.5px}
+.scard-sum{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--ink-dim)}
+
+/* ---------- 典型路径 ---------- */
+.path-grid{display:grid;gap:18px}
+.path-card{
+  padding:24px 26px;border-radius:16px;
+  background:linear-gradient(135deg,var(--card),var(--card-2));
+  border:1px solid var(--line);position:relative;overflow:hidden;
+}
+.path-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+}
+.path-1::before{background:linear-gradient(var(--l3),var(--gold))}
+.path-2::before{background:linear-gradient(var(--l2),var(--accent))}
+.path-3::before{background:linear-gradient(var(--l1),var(--l0))}
+.path-4::before{background:linear-gradient(var(--gold),var(--accent))}
+.path-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.path-no{font-family:var(--mono);font-size:12px;color:var(--gold);border:1px solid rgba(245,214,123,0.4);padding:2px 9px;border-radius:5px}
+.path-title{font-size:18px;font-weight:800}
+.path-title .scene{color:var(--accent);font-weight:600;font-size:14px;margin-left:8px}
+.path-chain{display:flex;align-items:stretch;gap:0;margin:16px 0;flex-wrap:wrap}
+.path-node{
+  flex:1;min-width:150px;padding:14px 16px;border:1px solid var(--line);background:rgba(11,20,55,0.5);
+  position:relative;
+}
+.path-node .pn-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;margin-bottom:4px}
+.path-node .pn-name{font-size:13.5px;font-weight:700;margin-bottom:4px}
+.path-node .pn-desc{font-size:11.5px;color:var(--ink-dim)}
+.path-arr{
+  display:flex;align-items:center;justify-content:center;width:34px;color:var(--gold);
+  font-family:var(--mono);font-size:18px;
+}
+.path-note{font-size:13px;color:var(--ink-dim);margin-top:10px;padding-top:12px;border-top:1px dashed var(--line)}
+.path-note .hl{color:var(--gold);font-weight:600}
+
+/* ---------- FAQ ---------- */
+.faq-list{display:flex;flex-direction:column;gap:12px}
+.faq-item{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:0;overflow:hidden;transition:border-color .2s;
+}
+.faq-item[open]{border-color:rgba(245,214,123,0.4)}
+.faq-item summary{
+  padding:16px 20px;cursor:list-item;font-size:15px;font-weight:600;
+  list-style:none;display:flex;align-items:center;gap:10px;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::before{
+  content:"Q";font-family:var(--mono);font-size:11px;color:var(--gold);
+  border:1px solid rgba(245,214,123,0.4);width:22px;height:22px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.faq-item[open] summary::before{content:"A";background:var(--gold);color:#0B1437;border-color:transparent}
+.faq-body{padding:0 20px 18px 52px}
+.faq-body p{font-size:13.5px;color:var(--ink-dim);line-height:1.75}
+
+/* ---------- 信源对照 ---------- */
+.src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.src-card{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+  border-top:3px solid var(--gold);
+}
+.src-file{font-family:var(--mono);font-size:12px;color:var(--gold);margin-bottom:6px;word-break:break-all}
+.src-layers{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:10px}
+.src-card p{font-size:12.5px;color:var(--ink-dim);line-height:1.7}
+
+/* ---------- 四馆分工 ---------- */
+.annex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px}
+.annex-card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;
+  position:relative;
+}
+.annex-card.cur-annex{
+  border-color:rgba(245,214,123,0.5);
+  background:linear-gradient(160deg,rgba(245,214,123,0.08),var(--card));
+}
+.annex-tag{
+  font-family:var(--mono);font-size:10.5px;color:var(--gold);
+  border:1px solid rgba(245,214,123,0.4);padding:2px 8px;border-radius:5px;display:inline-block;margin-bottom:10px;
+}
+.cur-annex .annex-tag{background:var(--gold);color:#0B1437;border-color:transparent}
+.annex-name{font-size:16px;font-weight:800;margin-bottom:4px}
+.annex-file{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-bottom:8px;word-break:break-all}
+.annex-cut{font-size:12.5px;color:var(--gold);margin-bottom:10px;font-weight:600}
+.annex-card p{font-size:12.5px;color:var(--ink-dim);line-height:1.7}
+
+.annex-flow{
+  padding:24px 26px;border-radius:14px;background:var(--card);border:1px solid var(--line);
+}
+.annex-flow-title{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.1em;margin-bottom:16px}
+.annex-flow-chain{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.afc-node{
+  text-align:center;font-size:14px;font-weight:700;padding:12px 18px;border:1px solid var(--line);
+  border-radius:10px;background:rgba(11,20,55,0.5);min-width:110px;
+}
+.afc-node small{display:block;font-size:11px;color:var(--ink-mute);font-weight:500;margin-top:4px}
+.afc-node.cur{border-color:var(--gold);background:rgba(245,214,123,0.12);color:var(--gold)}
+.afc-arr{color:var(--gold);font-family:var(--mono);font-size:18px}
+.annex-flow-note{text-align:center;font-size:12.5px;color:var(--ink-mute);margin-top:14px}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:880px){
+  .layer-row{grid-template-columns:60px 1fr;}
+  .layer-side{grid-column:1/-1;border-left:none;border-top:1px dashed var(--line);padding-left:0;padding-top:12px;flex-direction:row;flex-wrap:wrap;gap:16px}
+  .layer-tag{font-size:22px}
+  .thinker-grid{grid-template-columns:1fr}
+  .topbar-inner{padding:10px 16px}
+  .wrap{padding:0 16px}
+  section{padding:48px 0}
+  .hero{padding:48px 0 36px}
+}
+
+/* ---------- 微动效 ---------- */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+<style id="apple-ui-layer">
+:root{--font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue",system-ui,sans-serif;--font-mono:"SF Mono","JetBrains Mono",Menlo,monospace;--apple-accent:#A78BFA;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);--ease-apple:cubic-bezier(0.4,0,0.2,1);}
+*{transition:all .3s var(--ease-apple);}
+body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased;}
+.card{border-radius:var(--radius-md);box-shadow:var(--shadow-md);transition:box-shadow .3s var(--ease-apple),transform .3s var(--ease-apple);}
+.card:hover{transform:translateY(-2px);}
+.btn,.btn-primary{border-radius:var(--radius-sm);transition:all .15s cubic-bezier(0,0,0.2,1);}
+.btn:active,.btn-primary:active{transform:scale(.97);}
+.glass-nav{backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);}
+html{scroll-behavior:smooth;}
+section{scroll-snap-align:start;}
+pre,code{font-family:var(--font-mono);}
+.card-spotlight{position:relative;overflow:hidden;}
+.card-spotlight::before{content:'';position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(167,139,250,.12) 0%,transparent 70%);left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s var(--ease-apple);}
+.card-spotlight:hover::before{opacity:1;}
+</style>
+<style id="bg-dynamic-layer">
+.bg-dynamic{position:fixed;inset:0;z-index:-2;background-image:url('images/four_layer_education_ai_four_layer_architecture_cross_matrix_cognitive___landscape_16_9.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.25;will-change:transform,background-position,opacity;transform:translateZ(0);backface-visibility:hidden;}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,20,55,.6) 0%,rgba(11,20,55,.85) 50%,rgba(11,20,55,.6) 100%);}
+@keyframes flow-pan-y{0%{background-position:50% 0%;}100%{background-position:50% 100%;}}
+.bg-dynamic.anim-pan-y{animation:flow-pan-y 50s linear infinite;background-size:100% 200%;}
+@media (prefers-reduced-motion:reduce){.bg-dynamic,.bg-dynamic.anim-pan-y{animation:none!important;}}
+body > *:not(.bg-dynamic):not(.bg-overlay){position:relative;z-index:1;}
+</style>
+</head>
+<body>
+<div class="bg-dynamic anim-pan-y"></div>
+<div class="bg-overlay"></div>
+
+<!-- ===================== 顶部导航 ===================== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">四层架构深潜馆 <span>· Four Layer Cross Analysis</span></div>
+    <nav class="nav-scroll" aria-label="主馆与深潜馆导航">
+      <a class="nav-pill" href="eduai_s01_tech_deepblue.html">S01 深蓝科技</a>
+      <a class="nav-pill" href="eduai_s02_academic_ink.html">S02 学术墨韵</a>
+      <a class="nav-pill" href="eduai_s03_minimal_gold.html">S03 极简金</a>
+      <a class="nav-pill" href="eduai_s04_cyber_indigo.html">S04 赛博靛</a>
+      <a class="nav-pill" href="eduai_s05_glass_sky.html">S05 玻璃天</a>
+      <a class="nav-pill" href="eduai_s06_magazine_slate.html">S06 杂志灰岩</a>
+      <a class="nav-pill annex" href="methodology_sub.html">方法论深潜</a>
+      <a class="nav-pill annex" href="applications_sub.html">应用深潜</a>
+      <a class="nav-pill annex" href="evaluation_sub.html">评估深潜</a>
+      <span class="nav-pill cur">四层交叉</span>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== Hero ===================== -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-eyebrow">Annex 04 · Cross Analysis · 教育与 AI</div>
+    <h1>四层架构深度分析馆
+      <span class="sub">Four Layer Cross Analysis Annex — 元认知 → 应用 → 方法 → 评估</span>
+    </h1>
+    <p class="lead">
+      本馆把"教育与 AI"拆成四层：最顶层是<span style="color:var(--gold)">决定怎么想</span>的元认知，
+      第二层是<span style="color:var(--accent)">决定用什么</span>的应用工具，第三层是<span style="color:var(--l1)">决定评估什么</span>的方法家族，
+      最底层是<span style="color:var(--l0)">度量代价</span>的评估矩阵。四层之间不是并列，而是自上而下的因果链：
+      思想家决定了工具偏好，工具实现了方法子集，方法决定了评估重点。本馆以紫金配色，区别于其余三座深潜馆。
+    </p>
+    <div class="hero-meta">
+      <span class="tag gold">6 位教育思想家</span>
+      <span class="tag purple">8 件工具 + 费曼定位</span>
+      <span class="tag">12 方法 / 3 家族</span>
+      <span class="tag">5D × 21 子指标</span>
+      <span class="tag">4 交叉矩阵</span>
+      <span class="tag gold">3 关键洞察</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 四层总览 ===================== -->
+<section id="overview">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">Overview · 四层总览</div>
+      <h2>从<span class="gold">怎么想</span>到<span class="accent">度量什么</span>：一条因果链</h2>
+      <p class="desc">
+        四层架构的核心命题是：教育 AI 不存在"客观最优方法"。底层评估指标之所以重要，是因为中层方法付出了代价；
+        中层方法之所以被选中，是因为上层工具实现了它的子集；上层工具之所以被选择，是因为顶层思想家规定了偏好。
+        因此本馆从 L3 读到 L0，每一层都是上一层的"投影"。
+      </p>
+    </div>
+
+    <div class="overview-stack">
+      <div class="layer-row l3">
+        <div class="layer-tag">L3</div>
+        <div class="layer-body">
+          <h3>元认知层 · Meta-Cognition</h3>
+          <div class="role">决定「怎么想」 · 6 位教育思想家</div>
+          <p>Bloom / Vygotsky / Piaget / Mazur / Mitra / Anderson —— 他们不发明工具，而是规定"什么算理解"、"什么是好的教学"。</p>
+        </div>
+        <div class="layer-side">
+          <div><div class="k">规模</div><div class="v">6 位思想家</div></div>
+          <div><div class="k">产出</div><div class="v">思维方法 + 行动步骤</div></div>
+        </div>
+      </div>
+      <div class="flow-arrow">▼ 决定工具选择偏好</div>
+
+      <div class="layer-row l2">
+        <div class="layer-tag">L2</div>
+        <div class="layer-body">
+          <h3>应用层 · Application</h3>
+          <div class="role">决定「用什么」 · 8 件工具 + 费曼定位</div>
+          <p>Khanmigo / ChatGPT Edu / Duolingo Max / MathGPT / 智谱清言 / Gemini Education / MagicSchool / Coursera Coach。费曼不是方法，而是 L1→L3 的翻译器。</p>
+        </div>
+        <div class="layer-side">
+          <div><div class="k">规模</div><div class="v">8 件工具 + 1 解释器</div></div>
+          <div><div class="k">分类</div><div class="v">类A 平台 / 类B 专项 / 类C 研究</div></div>
+        </div>
+      </div>
+      <div class="flow-arrow">▼ 实现方法的子集</div>
+
+      <div class="layer-row l1">
+        <div class="layer-tag">L1</div>
+        <div class="layer-body">
+          <h3>方法层 · Method</h3>
+          <div class="role">决定「评估什么」 · 12 方法 / 3 家族</div>
+          <p>家族A 传统教学设计 / 家族B 学习科学 / 家族C 计算教育学。工具只覆盖其中约 8 个，方法永远领先于工具。</p>
+        </div>
+        <div class="layer-side">
+          <div><div class="k">规模</div><div class="v">12 方法 / 3 家族</div></div>
+          <div><div class="k">演进</div><div class="v">传统 → 学习科学 → 计算</div></div>
+        </div>
+      </div>
+      <div class="flow-arrow">▼ 规定评估重点</div>
+
+      <div class="layer-row l0">
+        <div class="layer-tag">L0</div>
+        <div class="layer-body">
+          <h3>评估层 · Evaluation</h3>
+          <div class="role">度量「代价」 · 5D × 21 子指标 + 5 行业案例</div>
+          <p>理论严谨性 / 实践效果 / 计算效率 / 可解释性 / 适用范围。21 个子指标揭示"没有免费午餐"。</p>
+        </div>
+        <div class="layer-side">
+          <div><div class="k">规模</div><div class="v">5D × 21 子指标</div></div>
+          <div><div class="k">案例</div><div class="v">K12 / 高校 / 职教 / 特教 / 企业</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== L3 元认知层 ===================== -->
+<section id="l3">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--l3)">Layer L3 · 元认知 · Meta-Cognition</div>
+      <h2>6 位教育思想家：<span class="gold">决定怎么想</span></h2>
+      <p class="desc">
+        元认知层不讨论"用什么 App"，而是讨论"什么算理解、什么是好教学、什么是有效学习"。
+        6 位思想家各自给出一个判断标准。每位含五个维度：思维方法 / 核心定义 / 与教育 AI 的交叉点 / 局限 / 行动步骤。
+        这是整条因果链的源头——下面三层的选择，都可以追溯到这里。
+      </p>
+    </div>
+
+    <div class="thinker-grid">
+
+      <!-- ===== 1. Bloom ===== -->
+      <article class="thinker">
+        <div class="thinker-head">
+          <span class="thinker-no">01</span>
+          <h3>Benjamin Bloom <span class="en">布卢姆</span></h3>
+        </div>
+        <div class="thinker-theory">Mastery Learning · 掌握学习 <span class="zh">/ 2 Sigma 标杆</span></div>
+        <div class="fact-grid">
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>思维方法</div>
+            <p>把"学会"从模糊感受变成可证成的状态：当学生在每个单元上达到既定掌握标准（通常 80–90% 正确率）后才进入下一单元，用"分步诊断 + 补救教学"替代群体同步推进。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>核心定义</div>
+            <p>掌握学习主张：只要给予足够时间与合适补救，绝大多数学生都能学会绝大多数内容。其 1984 年的 <strong>2 Sigma</strong> 结论——一对一辅导加掌握学习比群体授课提升约 2 个标准差——成为后续一切"AI 辅导"的隐性标杆。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>与教育 AI 的交叉点</div>
+            <ul>
+              <li>AI tutor 是"一对一大规模"的唯一可行实现路径，理论上能逼近 2 Sigma 而人力成本不爆炸。</li>
+              <li>掌握标准被翻译成知识追踪中的"掌握概率阈值"（如 BKT 中 P(known)≥0.95）。</li>
+              <li>补救教学对应 RAG 检索 + 个性化讲解生成。</li>
+            </ul>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>局限</div>
+            <p class="lim">2 Sigma 来自小样本、短期、且对照设计有争议；"掌握"定义依赖试卷质量，试卷差则掌握失真；只覆盖认知，未触及元认知与动机。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>行动步骤</div>
+            <div class="step"><span class="n">1</span><div>把课程拆成可独立测量的微单元，每个单元配诊断题与补救资源。</div></div>
+            <div class="step"><span class="n">2</span><div>用 AI 自动判定掌握状态并触发补救，而非固定课时推进。</div></div>
+            <div class="step"><span class="n">3</span><div>把 2 Sigma 当作"上限参照系"，而非承诺——必须设对照组复测。</div></div>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>实践锚点</div>
+            <ul>
+              <li>Khan Academy 的掌握学习系统：单元诊断 + 补救视频，最接近 Bloom 原意的大规模实现。</li>
+              <li>Carnegie Learning 的 Cognitive Tutor：把掌握标准翻译成 BKT 概率阈值。</li>
+              <li>2 Sigma 至今未被大规模复现，AI tutor 是其"逼近"而非"超越"的唯一候选。</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== 2. Vygotsky ===== -->
+      <article class="thinker">
+        <div class="thinker-head">
+          <span class="thinker-no">02</span>
+          <h3>Lev Vygotsky <span class="en">维果茨基</span></h3>
+        </div>
+        <div class="thinker-theory">ZPD · 最近发展区 <span class="zh">/ 脚手架理论</span></div>
+        <div class="fact-grid">
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>思维方法</div>
+            <p>学习不是孤立头脑中的事，而是发生在"学生能独立完成"与"在帮助下能完成"之间的窄带——最近发展区。教学的有效性等于命中这个窄带的能力。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>核心定义</div>
+            <p>ZPD 定义为：学习者在他能力边缘上、借助更有能力的他者（教师或同伴）能完成但不能独立完成的任务区间。脚手架（scaffolding）是临时支撑，随能力增长逐步撤除。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>与教育 AI 的交叉点</div>
+            <ul>
+              <li>AI tutor 的核心承诺就是"永远命中 ZPD"——比人类教师更精确地探测能力边缘。</li>
+              <li>脚手架策略对应 prompt 的渐隐：先给提示、再给方向、最后只给问题。</li>
+              <li>Coursera Coach 的提示梯度是 ZPD 的工程化实现。</li>
+            </ul>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>局限</div>
+            <p class="lim">ZPD 边界难以实时测量，多数系统用"答对率"近似，但答对率滞后于真实能力；脚手架撤除时机高度依赖教师判断，AI 易过早或过晚。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>行动步骤</div>
+            <div class="step"><span class="n">1</span><div>建立能力边缘探针：用变难度题目序列估计 ZPD 上界。</div></div>
+            <div class="step"><span class="n">2</span><div>设计 3–5 级脚手架，每级只揭示下一步而非答案。</div></div>
+            <div class="step"><span class="n">3</span><div>记录"撤架事件"作为掌握信号，而非仅看答对率。</div></div>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>实践锚点</div>
+            <ul>
+              <li>Reading Recovery 项目：早期阅读干预中脚手架理论的经典落地。</li>
+              <li>Coursera Coach 的提示梯度：三级提示（提示→方向→问题）是 ZPD 的工程化。</li>
+              <li>Reciprocal Teaching：预测—提问—澄清—总结四步，脚手架的对话化实现。</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== 3. Piaget ===== -->
+      <article class="thinker">
+        <div class="thinker-head">
+          <span class="thinker-no">03</span>
+          <h3>Jean Piaget <span class="en">皮亚杰</span></h3>
+        </div>
+        <div class="thinker-theory">Constructivism · 认知发展建构主义 <span class="zh">/ 图式-同化-顺应</span></div>
+        <div class="fact-grid">
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>思维方法</div>
+            <p>儿童不是"小大人"，认知经过阶段式发展；知识不是被注入的，而是学习者通过与环境互动主动建构的。错误不是要消除的噪音，而是揭示当前图式的窗口。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>核心定义</div>
+            <p><strong>图式</strong>（schema）是认知结构；<strong>同化</strong>（assimilation）把新信息纳入旧图式；<strong>顺应</strong>（accommodation）改变图式以容纳新信息。认知发展就是同化与顺应不断失衡又重新平衡的过程。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>与教育 AI 的交叉点</div>
+            <ul>
+              <li>适应性学习的设计基础：AI 应诊断"图式冲突点"而非仅判对错。</li>
+              <li>Duolingo Max 的"错得有道理"反馈，是对顺应过程的外部化。</li>
+              <li>阶段发展观提醒 AI 不要向低龄学习者灌输抽象符号。</li>
+            </ul>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>局限</div>
+            <p class="lim">阶段论被后续研究证明过于刚性，低估了儿童具体领域能力；图式难以形式化，AI 难以直接"看到"图式冲突，只能从行为推断。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>行动步骤</div>
+            <div class="step"><span class="n">1</span><div>把错误答案作为诊断信号，要求 AI 解释"学生可能持有的图式"。</div></div>
+            <div class="step"><span class="n">2</span><div>设计引发认知冲突的任务，而非直接纠错。</div></div>
+            <div class="step"><span class="n">3</span><div>按学习者阶段匹配表征方式（具象→半抽象→抽象）。</div></div>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>实践锚点</div>
+            <ul>
+              <li>Duolingo Max 的 Explain My Answer：把错误外化为图式冲突，是顺应过程的外部化。</li>
+              <li>Dalton School 等建构主义学校：课程围绕探究而非知识点组织。</li>
+              <li>CPM（College Preparatory Mathematics）：以问题情境驱动图式重构的教材设计。</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== 4. Mazur ===== -->
+      <article class="thinker">
+        <div class="thinker-head">
+          <span class="thinker-no">04</span>
+          <h3>Eric Mazur <span class="en">马祖尔</span></h3>
+        </div>
+        <div class="thinker-theory">Peer Instruction · 同伴教学 <span class="zh">/ 概念翻转 + 同伴讨论</span></div>
+        <div class="fact-grid">
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>思维方法</div>
+            <p>讲授的价值不在传递信息（信息可课前获取），而在解决"以为懂了其实没懂"。用概念题触发学生先独立答、再与同伴讨论、再重答，让错误概念在社交碰撞中暴露。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>核心定义</div>
+            <p>Peer Instruction 流程：课前预习 → 课堂概念题独立作答 → 同伴讨论 → 再次作答 → 教师讲解。核心是把课堂时间从"讲"转到"想"与"辩"。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>与教育 AI 的交叉点</div>
+            <ul>
+              <li>AI 助教可编排概念题、自动配对同伴、汇总讨论中的迷思概念。</li>
+              <li>异步场景下，AI 可扮演"虚拟同伴"参与第二轮讨论。</li>
+              <li>概念题库的自动生成与难度标定是 PI 大规模化的瓶颈，AI 直接填补。</li>
+            </ul>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>局限</div>
+            <p class="lim">同伴讨论质量依赖群体构成，弱配对会固化错误；AI 虚拟同伴易"太聪明"或"太顺从"，难复现真实认知冲突；概念题设计门槛高。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>行动步骤</div>
+            <div class="step"><span class="n">1</span><div>为每节课准备 2–3 道能揭示迷思的概念题（非计算题）。</div></div>
+            <div class="step"><span class="n">2</span><div>用 AI 实时统计第一次作答分布，决定是否进入讨论环节。</div></div>
+            <div class="step"><span class="n">3</span><div>讨论后重答正确率若未提升，由教师而非 AI 收尾讲解。</div></div>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>实践锚点</div>
+            <ul>
+              <li>Harvard 物理课 PI 实验：Mazur 最初在电磁学课堂验证，重答正确率显著提升。</li>
+              <li>Perusall 社交批注平台：把同伴讨论异步化，是 PI 的在线变体。</li>
+              <li>ConcepTests 题库：PI 大规模化的核心资源，AI 可参与生成与标定。</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== 5. Mitra ===== -->
+      <article class="thinker">
+        <div class="thinker-head">
+          <span class="thinker-no">05</span>
+          <h3>Sugata Mitra <span class="en">米特拉</span></h3>
+        </div>
+        <div class="thinker-theory">SOLE · 自我组织学习环境 <span class="zh">/ 最小干预 + 大问题</span></div>
+        <div class="fact-grid">
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>思维方法</div>
+            <p>学习可以发生在没有教师的空间里。"墙洞实验"显示儿童能自主学会使用计算机并彼此教学。教师角色从知识源转为"大问题提出者"与"鼓励者"。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>核心定义</div>
+            <p>SOLE 三要素：一个<strong>大问题</strong>（无标准答案）、一群<strong>自我组织</strong>的学生、一段<strong>最小干预</strong>的时间。"granny cloud"是远程提供鼓励而非解答的志愿者网络。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>与教育 AI 的交叉点</div>
+            <ul>
+              <li>AI 天然适合扮演"granny cloud"——提供鼓励、追问、不直接给答案。</li>
+              <li>大问题的生成与质量评估可由 AI 辅助教师完成。</li>
+              <li>SOLE 是对"AI tutor 必须给解答"假设的反例：好的 AI 应学会"不给"。</li>
+            </ul>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>局限</div>
+            <p class="lim">墙洞实验的可复现性受质疑；SOLE 在低基础学力群体中可能放大差距；"最小干预"易被误用为"不干预"，AI 难以判断何时该介入。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>行动步骤</div>
+            <div class="step"><span class="n">1</span><div>设计开放大问题，明确"无标准答案"的评判标准。</div></div>
+            <div class="step"><span class="n">2</span><div>把 AI 配置为"只追问不解答"模式，限定其角色边界。</div></div>
+            <div class="step"><span class="n">3</span><div>用小组产出而非个体答对率作为评估单位。</div></div>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>实践锚点</div>
+            <ul>
+              <li>印度墙洞实验（Hole in the Wall）：儿童在无教师环境下自学计算机的原始观察。</li>
+              <li>SOLE Central：Mitra 后续在多国复现的 SOLE 实施项目。</li>
+              <li>Granny Cloud 志愿网络：远程提供鼓励而非解答的"云端奶奶"，AI 可填补其规模缺口。</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== 6. Anderson ===== -->
+      <article class="thinker">
+        <div class="thinker-head">
+          <span class="thinker-no">06</span>
+          <h3>John Anderson <span class="en">安德森</span></h3>
+        </div>
+        <div class="thinker-theory">ACT-R · 认知架构 <span class="zh">/ 陈述性 + 程序性记忆</span></div>
+        <div class="fact-grid">
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>思维方法</div>
+            <p>把认知建模成可计算的架构：陈述性记忆存"是什么"，程序性记忆存"怎么做"，二者通过产生式规则连接。学习即规则的形成与强化。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>核心定义</div>
+            <p>ACT-R（Adaptive Control of Thought–Rational）含模块化缓冲区与产生式系统，能预测反应时与错误模式。它直接催生了认知导师（Cognitive Tutor），是计算教育学的源头之一。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>与教育 AI 的交叉点</div>
+            <ul>
+              <li>认知 tutoring 的计算基础：ACT-R 把"懂没懂"变成可追踪的状态变量。</li>
+              <li>BKT/DKT 可视为 ACT-R 知识追踪部分的概率化放宽。</li>
+              <li>LLM 缺乏 ACT-R 式的明确记忆分层，可解释性反而更差。</li>
+            </ul>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>局限</div>
+            <p class="lim">ACT-R 擅长建模技能性任务，对开放性思维建模弱；规则手工编写成本高；LLM 的"涌现能力"难以塞回产生式框架。</p>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>行动步骤</div>
+            <div class="step"><span class="n">1</span><div>对技能型任务保留 ACT-R 式规则追踪，对开放任务改用 LLM。</div></div>
+            <div class="step"><span class="n">2</span><div>把 LLM 的输出与 ACT-R 预测的反应时/错误模式对照验证。</div></div>
+            <div class="step"><span class="n">3</span><div>用 ACT-R 的可解释性弥补 LLM 黑箱，二者互补。</div></div>
+          </div>
+          <div class="fact">
+            <div class="fact-label"><span class="dot"></span>实践锚点</div>
+            <ul>
+              <li>Carnegie Learning Cognitive Tutor：ACT-R 在代数教学中的直接工程化，部署规模最大的认知 tutor。</li>
+              <li>ACT-R 模型库：覆盖代数、编程、感知运动多领域的可复用认知模型。</li>
+              <li>LISP Tutor：Anderson 早期的规则追踪系统，是 BKT 概念的源头之一。</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== L2 应用层 ===================== -->
+<section id="l2">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--l2)">Layer L2 · 应用 · Application</div>
+      <h2>8 件工具 + 费曼认知定位：<span class="accent">决定用什么</span></h2>
+      <p class="desc">
+        L2 是离用户最近的一层。8 件工具按职责分三类：类 A 全流程平台、类 B 专项工具、类 C 辅助研究。
+        它们不是 L1 方法的完整实现，而是 L1 的工程化"切片"。费曼解读不归入 L1 方法，而是 L2 的解释器——
+        它把 L1 的数学翻译成 L3 的思维语言。
+      </p>
+    </div>
+
+    <!-- 类A -->
+    <div class="tool-class">
+      <div class="tool-class-head">
+        <span class="tool-class-badge tca">类 A</span>
+        <span class="tool-class-title">全流程平台 <span class="en">End-to-End Platform</span></span>
+      </div>
+      <div class="tool-grid">
+        <div class="tool">
+          <div class="tool-cat">A · Platform</div>
+          <div class="tool-name">Khanmigo <span class="zh">可汗学院 AI</span></div>
+          <p>覆盖数学、科学、人文的全学科 AI 助教，强调"引导而非给答案"，与 Khan Academy 知识图谱深度绑定。</p>
+          <div class="stack"><span>RAG</span><span>知识追踪</span><span>掌握学习</span></div>
+        </div>
+        <div class="tool">
+          <div class="tool-cat">A · Platform</div>
+          <div class="tool-name">ChatGPT Edu <span class="zh">校园版</span></div>
+          <p>面向高校的合规部署，含管理后台、数据隔离与更长上下文，定位为"校园基础设施级"通用助手。</p>
+          <div class="stack"><span>LLM</span><span>RAG</span><span>权限治理</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 类B -->
+    <div class="tool-class">
+      <div class="tool-class-head">
+        <span class="tool-class-badge tcb">类 B</span>
+        <span class="tool-class-title">专项工具 <span class="en">Domain-Specific</span></span>
+      </div>
+      <div class="tool-grid">
+        <div class="tool">
+          <div class="tool-cat">B · Language</div>
+          <div class="tool-name">Duolingo Max <span class="zh">多邻国高阶</span></div>
+          <p>语言学习专项，含 Roleplay 情景对话与 Explain My Answer，背后是 IRT + SM-2 间隔重复算法。</p>
+          <div class="stack"><span>IRT</span><span>SM-2</span><span>游戏化</span></div>
+        </div>
+        <div class="tool">
+          <div class="tool-cat">B · Math</div>
+          <div class="tool-name">MathGPT <span class="zh">数学解题</span></div>
+          <p>数学专项工具，强调分步推导与可验证中间步骤，定位为"会算还会讲"的解题器。</p>
+          <div class="stack"><span>步骤验证</span><span>符号计算</span><span>DKT</span></div>
+        </div>
+        <div class="tool">
+          <div class="tool-cat">B · Chinese</div>
+          <div class="tool-name">智谱清言教育版 <span class="zh">国产中文</span></div>
+          <p>面向中文教育场景的合规大模型，强教材对齐与本地化知识图谱，适配 K12 课标。</p>
+          <div class="stack"><span>国产模型</span><span>课标对齐</span><span>本地化</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 类C -->
+    <div class="tool-class">
+      <div class="tool-class-head">
+        <span class="tool-class-badge tcc">类 C</span>
+        <span class="tool-class-title">辅助研究 <span class="en">Research Assistant</span></span>
+      </div>
+      <div class="tool-grid">
+        <div class="tool">
+          <div class="tool-cat">C · Research</div>
+          <div class="tool-name">Gemini Education <span class="zh">谷歌教育</span></div>
+          <p>多模态研究助手，强长上下文与跨模态检索，定位为"读论文 + 看图 + 整理文献"的研究侧工具。</p>
+          <div class="stack"><span>多模态</span><span>长上下文</span><span>文献检索</span></div>
+        </div>
+        <div class="tool">
+          <div class="tool-cat">C · Teacher</div>
+          <div class="tool-name">MagicSchool AI <span class="zh">教师减负</span></div>
+          <p>面向教师工作流：备课、出题、写 IEP、生成 rubric，把教师从重复文档工作中释放。</p>
+          <div class="stack"><span>教案生成</span><span>IEP</span><span>rubric</span></div>
+        </div>
+        <div class="tool">
+          <div class="tool-cat">C · Coach</div>
+          <div class="tool-name">Coursera Coach <span class="zh">课程教练</span></div>
+          <p>嵌入课程上下文的辅导助手，强 ZPD 提示梯度与课程进度感知，提示而非解答。</p>
+          <div class="stack"><span>ZPD</span><span>课程图谱</span><span>脚手架</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 费曼定位 -->
+    <div class="feynman-box">
+      <div class="badge">Feynman Position · 费曼认知定位</div>
+      <h3>费曼不是 L1 方法，而是 L2 的「解释器」</h3>
+      <p>
+        费曼式解读的核心是"如果你不能解释给大一新生听，你就没真懂"。这把它定位在 L2：它不发明 BKT、不创造 ZPD，
+        而是把 L1 的数学（掌握概率、能力估计、间隔重复）翻译成 L3 的思维语言（"什么算懂"、"为什么这样设计"）。
+        它是 L1 与 L3 之间的桥，缺了它，工具的实现细节对教师是不透明的黑箱；多了它，工具的每一个参数都能讲出"为什么"。
+      </p>
+      <div class="feynman-flow">
+        <span class="node" style="color:var(--l1)">L1 数学</span>
+        <span class="arr">→</span>
+        <span class="node" style="color:var(--gold)">费曼解释器</span>
+        <span class="arr">→</span>
+        <span class="node" style="color:var(--l3)">L3 思维</span>
+        <span class="arr">→</span>
+        <span class="node" style="color:var(--accent)">教师可执行判断</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== L1 方法层 ===================== -->
+<section id="l1">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--l1)">Layer L1 · 方法 · Method</div>
+      <h2>12 方法 / 3 家族：<span class="accent">决定评估什么</span></h2>
+      <p class="desc">
+        L1 是方法本体。3 个家族对应教育研究的三次浪潮：传统教学设计关注"如何把知识教对"，
+        学习科学关注"学习者如何建构"，计算教育学关注"如何用数据度量学习"。家族之间不是替代，而是叠加。
+        L2 的 8 件工具只实现了其中约 8 个方法——方法永远领先于工具。
+      </p>
+    </div>
+
+    <!-- 家族A -->
+    <div class="family-block fa">
+      <div class="family-bar">
+        <span class="family-name">家族 A · 传统教学设计 <span class="en">Traditional Instructional Design</span></span>
+        <span class="family-era">1950s–1980s · 行为主义→认知主义</span>
+      </div>
+      <div class="method-list">
+        <div class="method">
+          <div class="method-code">A-01</div>
+          <div class="method-name">Bloom 掌握学习</div>
+          <p>分步诊断 + 补救，达到掌握标准才进入下一单元。是 2 Sigma 的来源。</p>
+          <div class="meta"><span>阈值法</span><span>人工补救</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">A-02</div>
+          <div class="method-name">直接教学 <span style="font-size:11px;color:var(--ink-mute)">Direct Instruction</span></div>
+          <p>脚本化、快节奏、显性教学，强调教师主导与高频反馈。被低估的"高效但不出圈"方法。</p>
+          <div class="meta"><span>脚本化</span><span>显性</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">A-03</div>
+          <div class="method-name">精熟学习 <span style="font-size:11px;color:var(--ink-mute)">Mastery Learning</span></div>
+          <p>Bloom 掌握学习的工程化变体，强调反馈—纠正循环与形成性测验的系统化。</p>
+          <div class="meta"><span>形成性</span><span>纠正循环</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">A-04</div>
+          <div class="method-name">Gagné 九事件 <span style="font-size:11px;color:var(--ink-mute)">Nine Events</span></div>
+          <p>九段教学事件序列：注意→目标→回忆→呈现→指导→表现→反馈→评估→迁移。</p>
+          <div class="meta"><span>序列化</span><span>事件驱动</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 家族B -->
+    <div class="family-block fb">
+      <div class="family-bar">
+        <span class="family-name">家族 B · 学习科学 <span class="en">Learning Sciences</span></span>
+        <span class="family-era">1980s–2000s · 建构主义→社会文化</span>
+      </div>
+      <div class="method-list">
+        <div class="method">
+          <div class="method-code">B-05</div>
+          <div class="method-name">建构主义探究 <span style="font-size:11px;color:var(--ink-mute)">Inquiry</span></div>
+          <p>以真实问题驱动，学生在探究中建构知识。源自 Piaget，强调图式冲突。</p>
+          <div class="meta"><span>问题驱动</span><span>图式冲突</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">B-06</div>
+          <div class="method-name">Peer Instruction</div>
+          <p>概念题 + 同伴讨论 + 重答，源自 Mazur，把课堂从"讲"翻转为"辩"。</p>
+          <div class="meta"><span>概念翻转</span><span>同伴讨论</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">B-07</div>
+          <div class="method-name">SOLE</div>
+          <p>自我组织学习环境，源自 Mitra。大问题 + 最小干预 + 自我组织。</p>
+          <div class="meta"><span>大问题</span><span>最小干预</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">B-08</div>
+          <div class="method-name">PBL <span style="font-size:11px;color:var(--ink-mute)">项目式学习</span></div>
+          <p>以长期项目为载体，跨学科整合知识与技能，强调产出与反思。</p>
+          <div class="meta"><span>项目载体</span><span>跨学科</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 家族C -->
+    <div class="family-block fc">
+      <div class="family-bar">
+        <span class="family-name">家族 C · 计算教育学 <span class="en">Computational Education</span></span>
+        <span class="family-era">1990s–至今 · 数据驱动</span>
+      </div>
+      <div class="method-list">
+        <div class="method">
+          <div class="method-code">C-09</div>
+          <div class="method-name">BKT <span style="font-size:11px;color:var(--ink-mute)">贝叶斯知识追踪</span></div>
+          <p>四参数隐马尔可夫模型，估计"掌握概率"。认知 tutor 的核心引擎。</p>
+          <div class="meta"><span>HMM</span><span>四参数</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">C-10</div>
+          <div class="method-name">DKT <span style="font-size:11px;color:var(--ink-mute)">深度知识追踪</span></div>
+          <p>用 RNN 端到端学习知识状态，突破 BKT 的独立技能假设，但可解释性下降。</p>
+          <div class="meta"><span>RNN</span><span>端到端</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">C-11</div>
+          <div class="method-name">IRT <span style="font-size:11px;color:var(--ink-mute)">项目反应理论</span></div>
+          <p>同时估计学习者能力与题目参数，Duolingo 难度自适应的理论基础。</p>
+          <div class="meta"><span>能力—难度</span><span>参数估计</span></div>
+        </div>
+        <div class="method">
+          <div class="method-code">C-12</div>
+          <div class="method-name">EDM <span style="font-size:11px;color:var(--ink-mute)">教育数据挖掘</span></div>
+          <p>从学习日志中发现模式与迷思，是上述追踪方法的"上游"数据科学。</p>
+          <div class="meta"><span>日志挖掘</span><span>模式发现</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 三家族关系图 -->
+    <div class="family-svg-wrap">
+      <h4>三家族演进关系图 · Family Evolution Map</h4>
+      <div class="hint">传统教学设计 → 学习科学 → 计算教育学：从"教对"到"建构"到"度量"，三次浪潮叠加而非替代。</div>
+      <svg class="family-svg" viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三家族演进关系图">
+        <defs>
+          <linearGradient id="gA" x1="0" x2="1">
+            <stop offset="0" stop-color="#F5D67B"/>
+            <stop offset="1" stop-color="#E0B84A"/>
+          </linearGradient>
+          <linearGradient id="gB" x1="0" x2="1">
+            <stop offset="0" stop-color="#A78BFA"/>
+            <stop offset="1" stop-color="#8B5CF6"/>
+          </linearGradient>
+          <linearGradient id="gC" x1="0" x2="1">
+            <stop offset="0" stop-color="#7DD3FC"/>
+            <stop offset="1" stop-color="#60A5FA"/>
+          </linearGradient>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#F5D67B"/>
+          </marker>
+        </defs>
+        <!-- 时间轴 -->
+        <line x1="40" y1="280" x2="960" y2="280" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+        <text x="40" y="305" fill="#6E78A8" font-size="11" font-family="monospace">1950s</text>
+        <text x="320" y="305" fill="#6E78A8" font-size="11" font-family="monospace">1980s</text>
+        <text x="640" y="305" fill="#6E78A8" font-size="11" font-family="monospace">2000s</text>
+        <text x="900" y="305" fill="#6E78A8" font-size="11" font-family="monospace">至今</text>
+
+        <!-- 家族A -->
+        <rect x="50" y="50" width="240" height="80" rx="12" fill="url(#gA)" opacity="0.18" stroke="#F5D67B" stroke-width="1.5"/>
+        <text x="70" y="78" fill="#F5D67B" font-size="14" font-weight="700" font-family="monospace">家族 A · 传统教学设计</text>
+        <text x="70" y="100" fill="#A8B0D8" font-size="11">Bloom掌握 · 直接教学</text>
+        <text x="70" y="116" fill="#A8B0D8" font-size="11">精熟学习 · Gagné九事件</text>
+
+        <!-- 家族B -->
+        <rect x="360" y="50" width="240" height="80" rx="12" fill="url(#gB)" opacity="0.18" stroke="#A78BFA" stroke-width="1.5"/>
+        <text x="380" y="78" fill="#A78BFA" font-size="14" font-weight="700" font-family="monospace">家族 B · 学习科学</text>
+        <text x="380" y="100" fill="#A8B0D8" font-size="11">建构探究 · Peer Instruction</text>
+        <text x="380" y="116" fill="#A8B0D8" font-size="11">SOLE · PBL</text>
+
+        <!-- 家族C -->
+        <rect x="670" y="50" width="240" height="80" rx="12" fill="url(#gC)" opacity="0.18" stroke="#7DD3FC" stroke-width="1.5"/>
+        <text x="690" y="78" fill="#7DD3FC" font-size="14" font-weight="700" font-family="monospace">家族 C · 计算教育学</text>
+        <text x="690" y="100" fill="#A8B0D8" font-size="11">BKT · DKT · IRT</text>
+        <text x="690" y="116" fill="#A8B0D8" font-size="11">EDM</text>
+
+        <!-- 演进箭头 -->
+        <line x1="290" y1="90" x2="355" y2="90" stroke="#F5D67B" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="600" y1="90" x2="665" y2="90" stroke="#F5D67B" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- 关系标注 -->
+        <text x="322" y="80" fill="#F5D67B" font-size="10" font-family="monospace">关注转向</text>
+        <text x="632" y="80" fill="#F5D67B" font-size="10" font-family="monospace">数据化</text>
+
+        <!-- 跨家族继承线 -->
+        <path d="M170,130 C170,180 480,180 480,130" fill="none" stroke="rgba(245,214,123,0.4)" stroke-width="1" stroke-dasharray="4 4"/>
+        <text x="300" y="178" fill="#F5D67B" font-size="10" font-family="monospace" opacity="0.7">Bloom→Peer Instruction 的诊断题</text>
+
+        <path d="M480,130 C480,210 790,210 790,130" fill="none" stroke="rgba(125,211,252,0.4)" stroke-width="1" stroke-dasharray="4 4"/>
+        <text x="600" y="208" fill="#7DD3FC" font-size="10" font-family="monospace" opacity="0.8">Mastery→BKT 的掌握概率</text>
+
+        <path d="M790,130 C790,240 250,240 170,130" fill="none" stroke="rgba(167,139,250,0.3)" stroke-width="1" stroke-dasharray="2 4"/>
+        <text x="430" y="258" fill="#A78BFA" font-size="10" font-family="monospace" opacity="0.7">EDM 反哺传统教学设计的诊断设计</text>
+
+        <!-- 纵轴标注 -->
+        <text x="20" y="60" fill="#6E78A8" font-size="10" font-family="monospace" transform="rotate(-90 20 60)">关注「教对」</text>
+        <text x="20" y="100" fill="#6E78A8" font-size="10" font-family="monospace" transform="rotate(-90 20 100)">关注「建构」</text>
+        <text x="20" y="140" fill="#6E78A8" font-size="10" font-family="monospace" transform="rotate(-90 20 140)">关注「度量」</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== L0 评估层 ===================== -->
+<section id="l0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--l0)">Layer L0 · 评估 · Evaluation</div>
+      <h2>5D × 21 子指标 + 5 行业案例：<span class="accent">度量代价</span></h2>
+      <p class="desc">
+        L0 是整条链的镜子。5 个维度共 21 个子指标，每个子指标都在揭示某个方法的"代价"：
+        高理论严谨性的方法往往计算效率低，高可解释性的方法往往适用范围窄。没有方法在 21 个子指标上全胜——
+        这就是"没有免费午餐"。5 个行业案例展示同一套指标在不同场景下的权重差异。
+      </p>
+    </div>
+
+    <div class="d5-grid">
+      <div class="d5-card d5-1">
+        <div class="d5-code">D1</div>
+        <div class="d5-name">理论严谨性 <span class="en">Theoretical Rigor</span></div>
+        <div class="d5-count">4 子指标</div>
+        <div class="d5-subs">
+          <div class="d5-sub">D1-1 理论根基是否有公认框架</div>
+          <div class="d5-sub">D1-2 假设是否显式可检验</div>
+          <div class="d5-sub">D1-3 是否可形式化（数学/逻辑）</div>
+          <div class="d5-sub">D1-4 与认知科学是否一致</div>
+        </div>
+      </div>
+      <div class="d5-card d5-2">
+        <div class="d5-code">D2</div>
+        <div class="d5-name">实践效果 <span class="en">Practical Effect</span></div>
+        <div class="d5-count">5 子指标</div>
+        <div class="d5-subs">
+          <div class="d5-sub">D2-1 是否有对照实验证据</div>
+          <div class="d5-sub">D2-2 效应量是否显著（Cohen's d）</div>
+          <div class="d5-sub">D2-3 效果是否长期保持</div>
+          <div class="d5-sub">D2-4 是否跨人群可复现</div>
+          <div class="d5-sub">D2-5 是否有真实课堂部署</div>
+        </div>
+      </div>
+      <div class="d5-card d5-3">
+        <div class="d5-code">D3</div>
+        <div class="d5-name">计算效率 <span class="en">Computational Efficiency</span></div>
+        <div class="d5-count">4 子指标</div>
+        <div class="d5-subs">
+          <div class="d5-sub">D3-1 推理延迟是否 &lt;1s</div>
+          <div class="d5-sub">D3-2 是否支持边缘/本地部署</div>
+          <div class="d5-sub">D3-3 单生成本是否可承受</div>
+          <div class="d5-sub">D3-4 数据需求量是否现实</div>
+        </div>
+      </div>
+      <div class="d5-card d5-4">
+        <div class="d5-code">D4</div>
+        <div class="d5-name">可解释性 <span class="en">Interpretability</span></div>
+        <div class="d5-count">4 子指标</div>
+        <div class="d5-subs">
+          <div class="d5-sub">D4-1 决策路径是否可追踪</div>
+          <div class="d5-sub">D4-2 是否能输出"为什么"</div>
+          <div class="d5-sub">D4-3 教师能否审计干预</div>
+          <div class="d5-sub">D4-4 是否符合教育问责要求</div>
+        </div>
+      </div>
+      <div class="d5-card d5-5">
+        <div class="d5-code">D5</div>
+        <div class="d5-name">适用范围 <span class="en">Applicability</span></div>
+        <div class="d5-count">4 子指标</div>
+        <div class="d5-subs">
+          <div class="d5-sub">D5-1 跨学科可迁移性</div>
+          <div class="d5-sub">D5-2 跨学段可迁移性</div>
+          <div class="d5-sub">D5-3 跨语言/文化可迁移性</div>
+          <div class="d5-sub">D5-4 跨线上线下可迁移性</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:20px">
+      <div class="sec-num">5 行业案例 · Industry Cases</div>
+      <h2 style="font-size:24px">同一套指标，<span class="accent">不同权重</span></h2>
+    </div>
+    <div class="case-grid">
+      <div class="case">
+        <div class="case-icon">K12</div>
+        <h4>K12 基础教育</h4>
+        <p>重可解释性与家长问责，理论严谨性其次。教师审计能力是部署硬门槛。</p>
+        <div class="row"><span class="k">权重最高</span><span class="v">D4 可解释性</span></div>
+        <div class="row"><span class="k">典型方法</span><span class="v">BKT / Mastery</span></div>
+      </div>
+      <div class="case">
+        <div class="case-icon">UNI</div>
+        <h4>高校教学</h4>
+        <p>重理论严谨性与跨学科迁移，可接受较高延迟。研究侧工具占比高。</p>
+        <div class="row"><span class="k">权重最高</span><span class="v">D1 理论严谨</span></div>
+        <div class="row"><span class="k">典型方法</span><span class="v">Peer Instruction</span></div>
+      </div>
+      <div class="case">
+        <div class="case-icon">VOC</div>
+        <h4>职业教育</h4>
+        <p>重实践效果与计算效率，需快速出分、低成本。理论框架可宽松。</p>
+        <div class="row"><span class="k">权重最高</span><span class="v">D2 实践效果</span></div>
+        <div class="row"><span class="k">典型方法</span><span class="v">PBL / EDM</span></div>
+      </div>
+      <div class="case">
+        <div class="case-icon">SEN</div>
+        <h4>特殊教育</h4>
+        <p>重可解释性与个体适配，单生成本可放宽。IEP 生成是核心场景。</p>
+        <div class="row"><span class="k">权重最高</span><span class="v">D4 可解释性</span></div>
+        <div class="row"><span class="k">典型方法</span><span class="v">ZPD 脚手架</span></div>
+      </div>
+      <div class="case">
+        <div class="case-icon">ENT</div>
+        <h4>企业培训</h4>
+        <p>重实践效果与计算效率，强调 ROI 与规模化。可解释性要求低。</p>
+        <div class="row"><span class="k">权重最高</span><span class="v">D2 实践效果</span></div>
+        <div class="row"><span class="k">典型方法</span><span class="v">IRT / DKT</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 12 方法 5D 评分卡 ===================== -->
+<section id="scorecards">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--gold)">Scorecards · 12 方法 5D 评分卡</div>
+      <h2>L1 × L0 交叉详评：<span class="accent">每个方法的代价明细</span></h2>
+      <p class="desc">
+        评分卡是矩阵 M3 的展开。每个方法在 5D 上给出 1–5 分（5 为强项），并附一句代价说明。
+        读法：不要横向比"谁总分高"，而要纵向看"哪个维度的代价你承担得起"。总分仅供参考，场景匹配才是目的。
+        评分依据来自信源中的实验数据、部署案例与认知科学文献，部分为综合判断。
+      </p>
+    </div>
+
+    <div class="score-overview">
+      <div class="score-legend">
+        <span class="legend-title">评分图例</span>
+        <span class="legend-item"><span class="dot" style="background:var(--good)"></span>5 强项</span>
+        <span class="legend-item"><span class="dot" style="background:var(--gold)"></span>4 较强</span>
+        <span class="legend-item"><span class="dot" style="background:var(--accent)"></span>3 中等</span>
+        <span class="legend-item"><span class="dot" style="background:var(--warn)"></span>2 较弱</span>
+        <span class="legend-item"><span class="dot" style="background:#F87171"></span>1 弱项</span>
+      </div>
+    </div>
+
+    <div class="score-scroll">
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>D1 理论严谨</th>
+            <th>D2 实践效果</th>
+            <th>D3 计算效率</th>
+            <th>D4 可解释</th>
+            <th>D5 适用范围</th>
+            <th>代价摘要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-h">A-01 Bloom 掌握学习</td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s3">3</span></td>
+            <td>人工补救成本高，规模化依赖 AI 才能逼近 2 Sigma</td>
+          </tr>
+          <tr>
+            <td class="row-h">A-02 直接教学</td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s4">4</span></td>
+            <td>脚本化牺牲教师自主，被研究低估但效率高</td>
+          </tr>
+          <tr>
+            <td class="row-h">A-03 精熟学习</td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s3">3</span></td>
+            <td>形成性测验密集，测验质量决定一切</td>
+          </tr>
+          <tr>
+            <td class="row-h">A-04 Gagné 九事件</td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s5">5</span></td>
+            <td>事件序列普适但单事件效应量小</td>
+          </tr>
+          <tr>
+            <td class="row-h">B-05 建构主义探究</td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s5">5</span></td>
+            <td>效果难量化，依赖教师引导质量</td>
+          </tr>
+          <tr>
+            <td class="row-h">B-06 Peer Instruction</td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s2">2</span></td>
+            <td>依赖群体质量，弱配对会固化错误</td>
+          </tr>
+          <tr>
+            <td class="row-h">B-07 SOLE</td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s5">5</span></td>
+            <td>复现性弱，效果证据不足但跨场景强</td>
+          </tr>
+          <tr>
+            <td class="row-h">B-08 PBL</td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s5">5</span></td>
+            <td>长期效果强但短期难测，形式化弱</td>
+          </tr>
+          <tr>
+            <td class="row-h">C-09 BKT</td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s2">2</span></td>
+            <td>独立技能假设过强，跨技能迁移弱</td>
+          </tr>
+          <tr>
+            <td class="row-h">C-10 DKT</td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s3">3</span></td>
+            <td>黑箱不可解释，教育问责难落地</td>
+          </tr>
+          <tr>
+            <td class="row-h">C-11 IRT</td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s4">4</span></td>
+            <td><span class="score s3">3</span></td>
+            <td>冷启动需大量标定数据，跨语言重标</td>
+          </tr>
+          <tr>
+            <td class="row-h">C-12 EDM</td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s3">3</span></td>
+            <td><span class="score s5">5</span></td>
+            <td><span class="score s2">2</span></td>
+            <td><span class="score s4">4</span></td>
+            <td>模式发现为主，理论根基与可解释双弱</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 评分卡详解 -->
+    <div class="card-grid">
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">A-01</span><span class="scard-name">Bloom 掌握学习</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">2 Sigma 立论扎实</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">对照实验证据强</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">补救教学人力重</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">掌握标准可审计</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">依赖教材分解质量</span></div>
+        <p class="scard-sum">最接近"教育 AI 上限"的方法，代价全在规模化的人力。AI tutor 是其唯一可行的大规模实现。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">A-02</span><span class="scard-name">直接教学</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">脚本理论清晰</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">效应量长期最高</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">脚本可批量执行</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">脚本黑箱教师难改</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">基础学科跨段好</span></div>
+        <p class="scard-sum">被建构主义话语压制但实证最强的"沉默王者"。AI 化的关键是把脚本变成可编辑的提示模板。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">A-03</span><span class="scard-name">精熟学习</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">掌握学习工程化</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">形成性测验有效</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">测验频繁成本高</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">纠正循环可追溯</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">开放学科难分解</span></div>
+        <p class="scard-sum">Bloom 掌握学习的可操作变体，AI 自动出题与批改是其规模化的关键依赖。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">A-04</span><span class="scard-name">Gagné 九事件</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">事件序列有依据</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">整体效应量中等</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">事件可模板化</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">每步可审计</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">跨学科跨学段</span></div>
+        <p class="scard-sum">MagicSchool 等 AI 备课工具的隐性骨架，普适但单事件贡献小，适合做"脚手架的脚手架"。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">B-05</span><span class="scard-name">建构主义探究</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">认知科学一致</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">效果难统一量化</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">依赖教师高介入</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">过程可见但难记录</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">跨学科迁移强</span></div>
+        <p class="scard-sum">Piaget 范式的核心方法，AI 应作为"图式冲突放大器"而非答案提供者。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">B-06</span><span class="scard-name">Peer Instruction</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">概念翻转有理论</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">物理课堂证据强</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">需实时统计配对</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">迷思概念可见</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">依赖群体与课堂</span></div>
+        <p class="scard-sum">Mazur 的旗舰方法，AI 化的最大缺口在"虚拟同伴"的真实认知冲突难复现。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">B-07</span><span class="scard-name">SOLE</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">理论根基较薄</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">复现性受质疑</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">资源需求低</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">大问题可记录</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">跨文化跨场景</span></div>
+        <p class="scard-sum">Mitra 的反主流方法，AI 化的理想角色是"不给答案的 granny"，但主流工具均偏向解答。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">B-08</span><span class="scard-name">PBL 项目式学习</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">形式化弱</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">长期保持效果好</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">需教师深度介入</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">过程难审计</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">跨学科天然</span></div>
+        <p class="scard-sum">长期收益最强的建构方法，AI 适合做项目脚手架与过程反思引导，而非内容生成。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">C-09</span><span class="scard-name">BKT 贝叶斯知识追踪</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">HMM 形式化清晰</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">认知 tutor 证据</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">参数估计需数据</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">概率可解释</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">独立技能假设</span></div>
+        <p class="scard-sum">认知 tutor 的核心引擎，可解释性是它对抗 DKT 的唯一护城河。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">C-10</span><span class="scard-name">DKT 深度知识追踪</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">端到端理论薄</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">预测精度高</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">推理快</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">黑箱不可解释</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">迁移需重训</span></div>
+        <p class="scard-sum">效率换可解释的典型，教育问责场景慎用，研究预测场景首选。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">C-11</span><span class="scard-name">IRT 项目反应理论</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">心理测量根基</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">Duolingo 验证</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">在线估计快</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">参数可读</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">冷启动需标定</span></div>
+        <p class="scard-sum">Duolingo Max 的理论基础，能力—难度对偶使其在语言学习场景近乎最优。</p>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head"><span class="scard-code">C-12</span><span class="scard-name">EDM 教育数据挖掘</span></div>
+        <div class="scard-row"><span class="dim">D1</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">数据驱动理论弱</span></div>
+        <div class="scard-row"><span class="dim">D2</span><span class="bar"><span class="fill" style="width:60%;background:var(--accent)"></span></span><span class="v">3</span><span class="note">模式发现有效</span></div>
+        <div class="scard-row"><span class="dim">D3</span><span class="bar"><span class="fill" style="width:100%;background:var(--good)"></span></span><span class="v">5</span><span class="note">日志处理快</span></div>
+        <div class="scard-row"><span class="dim">D4</span><span class="bar"><span class="fill" style="width:40%;background:var(--warn)"></span></span><span class="v">2</span><span class="note">模式难解释</span></div>
+        <div class="scard-row"><span class="dim">D5</span><span class="bar"><span class="fill" style="width:80%;background:var(--gold)"></span></span><span class="v">4</span><span class="note">跨学科可用</span></div>
+        <p class="scard-sum">上述追踪方法的"上游"数据科学，强在发现迷思、弱在理论根基，适合做诊断而非教学。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4 交叉矩阵 ===================== -->
+<section id="matrices">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">Cross Matrices · 4 交叉矩阵</div>
+      <h2>四层之间的<span class="gold">四个投影</span></h2>
+      <p class="desc">
+        每个矩阵都是两层之间的映射关系。矩阵 1 与 4 以 L3 思想家为一端，
+        矩阵 2 与 3 以 L1 方法为枢纽。读法：行选源头，列看落点，单元格是"为什么这样映射"的简注。
+      </p>
+    </div>
+
+    <!-- 矩阵1 -->
+    <div class="matrix-block">
+      <div class="matrix-title"><span class="mn">M1</span>L3 思想家 → L2 工具选择偏好</div>
+      <div class="matrix-sub">每位思想家天然偏好某种工具形态——这是因果链的第一段：怎么想决定用什么。</div>
+      <div class="matrix-scroll">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>L3 思想家</th>
+              <th>偏好工具</th>
+              <th>映射理由</th>
+              <th>偏好强度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-h">Bloom · 掌握学习</td>
+              <td>Khanmigo</td>
+              <td>掌握标准 + 补救教学直接对应 Khanmigo 的知识图谱与引导式反馈，最接近 2 Sigma 的工程化。</td>
+              <td><span class="pill g">强</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Vygotsky · ZPD</td>
+              <td>Coursera Coach</td>
+              <td>提示梯度（先提示→方向→问题）是 ZPD 脚手架的工程化，撤架时机由课程图谱感知。</td>
+              <td><span class="pill p">强</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Piaget · 建构主义</td>
+              <td>Duolingo Max</td>
+              <td>"Explain My Answer"外化图式冲突，错得有道理的反馈对应顺应过程。</td>
+              <td><span class="pill c">中</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Mazur · Peer Instruction</td>
+              <td>概念翻转平台</td>
+              <td>需概念题库 + 同伴配对 + 重答统计，目前无单一工具完全覆盖，Khanmigo 部分支持。</td>
+              <td><span class="pill r">弱（缺口）</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Mitra · SOLE</td>
+              <td>SOLE 环境</td>
+              <td>需"只追问不解答"模式，主流工具均偏向给答案，存在系统性缺口。</td>
+              <td><span class="pill r">弱（缺口）</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Anderson · ACT-R</td>
+              <td>ACT-R 认知 tutor</td>
+              <td>产生式规则 + 知识追踪是 ACT-R 的直接工程化，Cognitive Tutor 是其历史实现。</td>
+              <td><span class="pill g">强</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 矩阵2 -->
+    <div class="matrix-block">
+      <div class="matrix-title"><span class="mn">M2</span>L2 工具 → L1 方法实现映射</div>
+      <div class="matrix-sub">8 件工具各自实现了哪些 L1 方法的子集——工具是方法的工程切片，不是完整方法。</div>
+      <div class="matrix-scroll">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>L2 工具</th>
+              <th>实现的 L1 方法</th>
+              <th>核心算法/机制</th>
+              <th>未覆盖方法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-h">Khanmigo</td>
+              <td>Bloom 掌握学习 + BKT</td>
+              <td>RAG + 知识追踪，掌握阈值触发补救</td>
+              <td>Peer Instruction · SOLE</td>
+            </tr>
+            <tr>
+              <td class="row-h">ChatGPT Edu</td>
+              <td>Gagné 九事件（部分）+ EDM</td>
+              <td>通用 LLM + RAG，无内建追踪</td>
+              <td>BKT · DKT · IRT</td>
+            </tr>
+            <tr>
+              <td class="row-h">Duolingo Max</td>
+              <td>IRT + SM-2 + 建构探究</td>
+              <td>项目反应理论估难度，SM-2 排复习</td>
+              <td>PBL · 直接教学</td>
+            </tr>
+            <tr>
+              <td class="row-h">MathGPT</td>
+              <td>DKT + 步骤验证</td>
+              <td>符号计算验证中间步，深度追踪错点</td>
+              <td>Peer Instruction · SOLE</td>
+            </tr>
+            <tr>
+              <td class="row-h">智谱清言教育版</td>
+              <td>直接教学 + 课标对齐</td>
+              <td>国产模型 + 本地化知识图谱</td>
+              <td>DKT · IRT · SOLE</td>
+            </tr>
+            <tr>
+              <td class="row-h">Gemini Education</td>
+              <td>EDM + 多模态检索</td>
+              <td>长上下文 + 跨模态，研究侧</td>
+              <td>BKT · 掌握学习</td>
+            </tr>
+            <tr>
+              <td class="row-h">MagicSchool AI</td>
+              <td>Gagné 九事件 + 直接教学</td>
+              <td>教案/IEP/rubric 生成，教师侧</td>
+              <td>DKT · IRT · PBL</td>
+            </tr>
+            <tr>
+              <td class="row-h">Coursera Coach</td>
+              <td>ZPD 脚手架 + 掌握学习</td>
+              <td>课程图谱 + 提示梯度</td>
+              <td>SOLE · Peer Instruction</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 矩阵3 -->
+    <div class="matrix-block">
+      <div class="matrix-title"><span class="mn">M3</span>L1 方法 → L0 评估对应</div>
+      <div class="matrix-sub">每个方法在 5D 上有天然强项与代价——评估重点由此决定，而非平均用力。</div>
+      <div class="matrix-scroll">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>L1 方法</th>
+              <th>评估重点（强项）</th>
+              <th>主要代价（弱项）</th>
+              <th>关键子指标</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-h">Bloom 掌握学习</td>
+              <td>D2 实践效果（2 Sigma）</td>
+              <td>D3 计算效率（人工补救重）</td>
+              <td><span class="pill g">D2-2 效应量</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">直接教学</td>
+              <td>D2 实践效果 · D5 适用范围</td>
+              <td>D4 可解释性（脚本黑箱）</td>
+              <td><span class="pill s">D2-4 跨人群</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">精熟学习</td>
+              <td>D1 理论严谨 · D2 实践</td>
+              <td>D3 计算效率（测验密集）</td>
+              <td><span class="pill g">D1-1 框架</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Gagné 九事件</td>
+              <td>D5 适用范围 · D4 可解释</td>
+              <td>D2 实践效果（效应量小）</td>
+              <td><span class="pill c">D5-1 跨学科</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">建构主义探究</td>
+              <td>D5 适用范围 · D1 认知一致</td>
+              <td>D2 实践效果（难量化）</td>
+              <td><span class="pill r">D5-3 跨文化</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Peer Instruction</td>
+              <td>D2 实践效果 · D4 可解释</td>
+              <td>D5 适用范围（依赖群体）</td>
+              <td><span class="pill g">D2-1 对照实验</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">SOLE</td>
+              <td>D5 适用范围 · D4 可解释</td>
+              <td>D2 实践效果（复现弱）</td>
+              <td><span class="pill r">D2-4 复现</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">PBL</td>
+              <td>D5 适用范围 · D2 长期</td>
+              <td>D3 计算效率 · D1 形式化</td>
+              <td><span class="pill s">D2-3 长期</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">BKT</td>
+              <td>D1 理论严谨 · D4 可解释</td>
+              <td>D3 数据需求 · D5 独立技能假设</td>
+              <td><span class="pill g">D1-3 形式化</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">DKT</td>
+              <td>D3 计算效率 · D2 实践</td>
+              <td>D4 可解释性（黑箱）</td>
+              <td><span class="pill p">D3-1 延迟</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">IRT</td>
+              <td>D1 理论严谨 · D3 效率</td>
+              <td>D5 冷启动（需标定）</td>
+              <td><span class="pill g">D1-3 形式化</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">EDM</td>
+              <td>D3 效率 · D5 跨学科</td>
+              <td>D4 可解释性 · D1 理论</td>
+              <td><span class="pill p">D3-4 数据</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 矩阵4 -->
+    <div class="matrix-block">
+      <div class="matrix-title"><span class="mn">M4</span>L3 思想家 → L0 评估偏好</div>
+      <div class="matrix-sub">思想家不仅决定工具，还决定"用什么尺子量"——这是因果链的闭合：L3 投影到 L0。</div>
+      <div class="matrix-scroll">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>L3 思想家</th>
+              <th>看重的 D 维度</th>
+              <th>理由</th>
+              <th>可接受弱项</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-h">Bloom</td>
+              <td>D2 实践效果</td>
+              <td>2 Sigma 是其全部立论基础，效应量是唯一硬证据。</td>
+              <td><span class="pill p">D3 效率可让步</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Vygotsky</td>
+              <td>D5 适用范围</td>
+              <td>ZPD 强调个体差异，方法必须跨学段/人群迁移才有效。</td>
+              <td><span class="pill c">D3 效率可让步</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Piaget</td>
+              <td>D1 理论严谨（认知一致）</td>
+              <td>建构主义要求方法与认知发展阶段一致，理论根基不可妥协。</td>
+              <td><span class="pill p">D2 短期效果可让步</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Mazur</td>
+              <td>D2 实践效果 + D4 可解释</td>
+              <td>同伴教学依赖课堂可见的迷思概念，可解释与对照实验缺一不可。</td>
+              <td><span class="pill r">D5 跨学科可让步</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Mitra</td>
+              <td>D5 适用范围</td>
+              <td>SOLE 面向资源稀缺场景，跨文化/线上线下迁移是核心。</td>
+              <td><span class="pill p">D1 严谨可让步</span></td>
+            </tr>
+            <tr>
+              <td class="row-h">Anderson</td>
+              <td>D1 理论严谨 + D3 效率</td>
+              <td>ACT-R 是可计算架构，形式化与计算效率是其存在理由。</td>
+              <td><span class="pill c">D5 开放任务可让步</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 3 关键洞察 ===================== -->
+<section id="insights">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">Key Insights · 3 关键洞察</div>
+      <h2>四层架构告诉我们的<span class="gold">三件事</span></h2>
+      <p class="desc">
+        洞察不是结论的复述，而是矩阵交叉后浮出的非显然命题。以下三点构成对"教育 AI 最优方法"迷思的系统性反驳。
+      </p>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight">
+        <div class="insight-no">INSIGHT 01</div>
+        <h3>L3 决定 L2，L2 决定 L1，L1 决定 L0 —— <span class="hl">不存在客观最优方法</span></h3>
+        <p>
+          矩阵 M1 与 M4 共同显示：思想家不仅决定工具偏好，还决定评估尺子。Bloom 用 2 Sigma 量实践效果，
+          Anderson 用形式化量计算效率，Mitra 用跨文化量适用范围。这意味着"哪个方法最好"这个问题没有脱离立场的答案——
+          换一个思想家，最优解就换一个。所谓"AI 教育最优方法"的讨论，若不先声明 L3 立场，就是空中楼阁。
+        </p>
+        <div class="chain">
+          <span class="node" style="color:var(--l3)">L3 怎么想</span>
+          <span class="arr">→</span>
+          <span class="node" style="color:var(--l2)">L2 用什么</span>
+          <span class="arr">→</span>
+          <span class="node" style="color:var(--l1)">L1 评估什么</span>
+          <span class="arr">→</span>
+          <span class="node" style="color:var(--l0)">L0 量什么</span>
+        </div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-no">INSIGHT 02</div>
+        <h3>L2 工具链是 L1 方法的<span class="hl">子集</span> —— 工具落后于方法</h3>
+        <p>
+          矩阵 M2 显示，8 件工具共实现 12 方法中的约 8 个，且每个工具只实现方法的"切片"而非全貌。
+          Peer Instruction 与 SOLE 在主流工具中存在系统性缺口——Mazur 与 Mitra 的思想在 L2 几乎找不到对应工具。
+          这意味着当下"教育 AI"的想象被工具链锁死在 Bloom 与 Anderson 的范式里，建构主义与社会文化路径被工程化困难掩盖。
+          工具不是方法的天花板，而是方法的地板——它定义了"现在能做什么"，但不定义"应该做什么"。
+        </p>
+        <div class="chain">
+          <span class="node" style="color:var(--l1)">12 方法</span>
+          <span class="arr">⊃</span>
+          <span class="node" style="color:var(--l2)">8 工具切片</span>
+          <span class="arr">·</span>
+          <span class="node" style="color:var(--warn)">缺 PI / SOLE</span>
+        </div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-no">INSIGHT 03</div>
+        <h3>L0 评估是 L1 方法的<span class="hl">镜子</span> —— 没有免费午餐</h3>
+        <p>
+          矩阵 M3 揭示每个方法都有强项与代价的对称：BKT 强形式化但弱跨学科，DKT 强效率但弱可解释，PBL 强长期但弱形式化。
+          21 个子指标上没有任何方法全胜。这不是缺陷，而是方法分工的必然结果——
+          评估层不该用来"排名方法"，而该用来"匹配场景"。K12 选 D4 高的方法，企业培训选 D2 高的方法，不是因为这些方法"更好"，
+          而是因为该场景对某个维度的代价更敏感。把 L0 当排名表，是对四层架构最大的误读。
+        </p>
+        <div class="chain">
+          <span class="node" style="color:var(--gold)">强项</span>
+          <span class="arr">↔</span>
+          <span class="node" style="color:var(--warn)">代价</span>
+          <span class="arr">·</span>
+          <span class="node" style="color:var(--l0)">21 指标无全胜</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 四条典型链路 ===================== -->
+<section id="paths">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--accent)">Worked Paths · 四条典型链路</div>
+      <h2>从 L3 到 L0 的<span class="gold">四条完整实例</span></h2>
+      <p class="desc">
+        把四个矩阵串起来读，会看到四条典型的"因果链"。每条链从一个思想家出发，经过工具选择、方法实现，
+        最终落到评估重点。这四条链不是穷举，而是覆盖 K12、高校、企业、特殊/欠发达四类场景的代表性路径。
+        读法：横向看一条链如何自上而下传递，纵向对比不同链为何在同一层做出不同选择。
+      </p>
+    </div>
+
+    <div class="path-grid">
+
+      <!-- 路径1 -->
+      <div class="path-card path-1">
+        <div class="path-head">
+          <span class="path-no">PATH 01</span>
+          <span class="path-title">掌握学习链 <span class="scene">· K12 数学补救</span></span>
+        </div>
+        <div class="path-chain">
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l3)">L3</div>
+            <div class="pn-name">Bloom 掌握学习</div>
+            <div class="pn-desc">2 Sigma 标杆，分步诊断 + 补救</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l2)">L2</div>
+            <div class="pn-name">Khanmigo</div>
+            <div class="pn-desc">RAG + 知识追踪，引导非解答</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l1)">L1</div>
+            <div class="pn-name">Bloom 掌握 + BKT</div>
+            <div class="pn-desc">掌握阈值 P(known)≥0.95</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l0)">L0</div>
+            <div class="pn-name">D2 实践效果</div>
+            <div class="pn-desc">对照实验复测 2 Sigma</div>
+          </div>
+        </div>
+        <div class="path-note">
+          <span class="hl">链路要点：</span>Bloom 的 2 Sigma 是这条链的"宪法"——L2 工具必须能大规模做诊断+补救，
+          L1 方法必须能形式化"掌握"，L0 评估必须能量效应量。任何一层偏离（如 Khanmigo 直接给答案）都会让整条链失效。
+          K12 数学补救是此链最自然的场景：知识可分解、试卷可标准化、补救可脚本化。
+        </div>
+      </div>
+
+      <!-- 路径2 -->
+      <div class="path-card path-2">
+        <div class="path-head">
+          <span class="path-no">PATH 02</span>
+          <span class="path-title">ZPD 脚手架链 <span class="scene">· 高校通识课辅导</span></span>
+        </div>
+        <div class="path-chain">
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l3)">L3</div>
+            <div class="pn-name">Vygotsky ZPD</div>
+            <div class="pn-desc">能力边缘 + 脚手架渐隐</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l2)">L2</div>
+            <div class="pn-name">Coursera Coach</div>
+            <div class="pn-desc">课程图谱 + 提示梯度</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l1)">L1</div>
+            <div class="pn-name">ZPD 脚手架 + 掌握</div>
+            <div class="pn-desc">提示→方向→问题三级渐隐</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l0)">L0</div>
+            <div class="pn-name">D5 适用范围</div>
+            <div class="pn-desc">跨学段/人群迁移能力</div>
+          </div>
+        </div>
+        <div class="path-note">
+          <span class="hl">链路要点：</span>Vygotsky 不追求 2 Sigma 式的硬效应量，而追求"命中能力边缘"的迁移性。
+          L2 工具的核心是提示梯度而非答案正确率，L1 方法的核心是撤架时机而非掌握阈值，
+          L0 评估的核心是跨人群可迁移而非单点效应量。高校通识课学生异质性强，是此链的理想场景。
+        </div>
+      </div>
+
+      <!-- 路径3 -->
+      <div class="path-card path-3">
+        <div class="path-head">
+          <span class="path-no">PATH 03</span>
+          <span class="path-title">ACT-R 计算链 <span class="scene">· 企业技能培训</span></span>
+        </div>
+        <div class="path-chain">
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l3)">L3</div>
+            <div class="pn-name">Anderson ACT-R</div>
+            <div class="pn-desc">陈述性 + 程序性记忆</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l2)">L2</div>
+            <div class="pn-name">认知 Tutor / IRT 平台</div>
+            <div class="pn-desc">规则追踪 + 难度自适应</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l1)">L1</div>
+            <div class="pn-name">BKT / IRT</div>
+            <div class="pn-desc">概率追踪 + 能力难度对偶</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l0)">L0</div>
+            <div class="pn-name">D1 严谨 + D3 效率</div>
+            <div class="pn-desc">形式化 + 实时推理</div>
+          </div>
+        </div>
+        <div class="path-note">
+          <span class="hl">链路要点：</span>Anderson 的 ACT-R 是唯一把认知"计算化"的思想家，此链全程强调可形式化与可计算。
+          L2 工具不追求自然语言对话，而追求规则级追踪；L1 方法用 BKT/IRT 而非建构主义；
+          L0 评估重 D1 理论严谨与 D3 计算效率，而非 D2 短期效应。企业技能培训目标明确、可分解，是此链理想场景。
+        </div>
+      </div>
+
+      <!-- 路径4 -->
+      <div class="path-card path-4">
+        <div class="path-head">
+          <span class="path-no">PATH 04</span>
+          <span class="path-title">SOLE 反主流链 <span class="scene">· 欠发达/特殊教育</span></span>
+        </div>
+        <div class="path-chain">
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l3)">L3</div>
+            <div class="pn-name">Mitra SOLE</div>
+            <div class="pn-desc">大问题 + 最小干预</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l2)">L2</div>
+            <div class="pn-name">SOLE 环境（缺口）</div>
+            <div class="pn-desc">granny cloud · 只追问</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l1)">L1</div>
+            <div class="pn-name">SOLE</div>
+            <div class="pn-desc">自我组织 + 小组产出</div>
+          </div>
+          <div class="path-arr">→</div>
+          <div class="path-node">
+            <div class="pn-tag" style="color:var(--l0)">L0</div>
+            <div class="pn-name">D5 适用范围</div>
+            <div class="pn-desc">跨文化/资源稀缺场景</div>
+          </div>
+        </div>
+        <div class="path-note">
+          <span class="hl">链路要点：</span>这是四条链中工具层存在"缺口"的一条——主流工具均偏向解答，无成熟 SOLE 环境。
+          此链不追求 D2 硬效应量（复现性弱），而追求 D5 跨文化迁移。AI 在此链的角色是反主流的"不给答案者"。
+          欠发达地区与特殊教育场景因教师稀缺，反而最契合 SOLE 的最小干预哲学，是此链的自然落点。
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 常见误读 FAQ ===================== -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--gold)">FAQ · 常见误读</div>
+      <h2>关于四层架构的<span class="accent">六个常见误读</span></h2>
+      <p class="desc">
+        四层架构容易被读成"排名表"或"工具清单"。以下六个 FAQ 直接回应最常见的误读，
+        每条都从矩阵或评分卡中取证据。误读的本质都是把某一层独立出来当"主角"，而忽略因果链。
+      </p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Q1 · "BKT 是不是比 DKT 差，所以应该被淘汰？"</summary>
+        <div class="faq-body">
+          <p>这是典型的"用 L0 排名 L1"误读。评分卡显示 BKT 在 D1 理论严谨与 D4 可解释上得 5 分，DKT 在 D3 计算效率上得 5 分——
+          二者是不同场景的强项，不是同一赛道的高低。教育问责场景（K12、特教）需要可审计，BKT 不可替代；
+          研究预测场景需要精度与速度，DKT 更优。矩阵 M3 明确标注 BKT 的代价是 D5 跨技能迁移弱，DKT 的代价是 D4 黑箱。
+          淘汰任一方都会让某类场景失去可行方法。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Q2 · "ChatGPT Edu 是不是已经覆盖了所有教育 AI 需求？"</summary>
+        <div class="faq-body">
+          <p>这是"把 L2 当 L1"的误读。矩阵 M2 显示 ChatGPT Edu 仅实现 Gagné 九事件的部分与 EDM，未覆盖 BKT、DKT、IRT、Peer Instruction、SOLE。
+          通用 LLM 缺乏内建知识追踪，无法回答"这个学生掌握了吗"——而这恰恰是 Bloom 与 Anderson 范式的核心问题。
+          通用助手擅长"回答问题"，不擅长"追踪状态"。把它当万能工具，等于让 L3 的多样性塌缩成单一范式。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Q3 · "2 Sigma 是不是证明 AI 一定有效？"</summary>
+        <div class="faq-body">
+          <p>这是"把 L3 立论当 L2 承诺"的误读。Bloom 的 2 Sigma 来自小样本、短期、对照设计有争议的研究，
+          且实现条件是一对一辅导 + 掌握学习，不是任何 AI 工具。Khanmigo 等工具是"逼近 2 Sigma"的候选，不是"已超越"。
+          路径 1 明确指出，L0 评估必须设对照组复测，而非假设有效。把 2 Sigma 当承诺而非上限，是对 Bloom 最大的误读。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Q4 · "建构主义是不是比直接教学更先进？"</summary>
+        <div class="faq-body">
+          <p>这是"用 L3 话语权当 L2 效果"的误读。评分卡显示直接教学在 D2 实践效果上得 5 分（效应量长期最高），
+          而建构主义探究得 3 分（难量化）。建构主义在话语上占优，但实证上直接教学更强。
+          矩阵 M4 解释了为何两者并存：Piaget 看 D1 认知一致，Bloom 看 D2 实践效果——它们在不同 D 维度上强。
+          "先进"是一个未声明立场的空词，本馆要求先声明 L3 立场再谈优劣。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Q5 · "四层是不是必须从 L0 倒推 L3？"</summary>
+        <div class="faq-body">
+          <p>这是"把因果链读反"的误读。本馆的核心命题（洞察 1）是 L3 决定 L2，L2 决定 L1，L1 决定 L0，
+          方向自上而下。L0 是镜子，不是方向盘。从 L0 倒推会把"可测量"等同于"重要"，陷入费曼所批评的
+          "测量容易测量的东西"。正确的读法是：先确定 L3 立场，再选 L2 工具，再匹配 L1 方法，最后用 L0 验证。
+          评分卡是用来"匹配场景"的，不是用来"排名方法"的。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Q6 · "费曼解读为什么不归入 L1 方法？"</summary>
+        <div class="faq-body">
+          <p>这是"把解释器当方法"的误读。费曼解读的核心是"把 L1 数学翻译成 L3 思维"，它不发明 BKT、不创造 ZPD，
+          而是让两者对教师可理解。L2 应用层明确将其定位为"解释器"而非方法：它不产生新的追踪算法，
+          只让现有算法的参数讲出"为什么"。若把它当方法，会模糊四层边界，让"解释"与"实现"混淆，
+          反而失去可解释性——这正是 ACT-R 与 DKT 的分界所在。</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 信源对照 ===================== -->
+<section id="sources">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">Sources · 信源对照</div>
+      <h2>四份本地信源如何<span class="accent">映射到四层</span></h2>
+      <p class="desc">
+        本馆内容抽取自四份本地信源文件。下表标注每份信源主要贡献了哪一层，以及关键概念的迁移路径。
+        信源之间无矛盾，但侧重不同：费曼分析提供 L3 的反自省视角，研究报告提供 L2 的工具案例，
+        框架提供 L0 的评估标准，LLM 教育应用提供 L1/L2 的技术实现。
+      </p>
+    </div>
+
+    <div class="src-grid">
+      <div class="src-card">
+        <div class="src-file">feynman-ai-education-analysis.md</div>
+        <div class="src-layers">主要贡献：L3 元认知 + 费曼定位</div>
+        <p>费曼式分析提供"命名≠理解""反自欺""不确定性是力量"三个 L3 元认知原则，直接支撑费曼解释器定位。
+        其"货物崇拜"批评对应矩阵 M2 中"工具切片≠完整方法"的判断。2 Sigma 的批判性审视来自此信源。</p>
+      </div>
+      <div class="src-card">
+        <div class="src-file">ai-education-research-report.md</div>
+        <div class="src-layers">主要贡献：L2 工具案例 + L0 行业场景</div>
+        <p>研究报告提供 Khan Academy、Duolingo、Carnegie Learning、Squirrel AI、作业帮等工具案例，
+        支撑 L2 八工具的定位与 L0 五行业案例的权重设定。其"算法偏见/数据隐私/系统可靠性"挑战对应 D4 可解释性维度。</p>
+      </div>
+      <div class="src-card">
+        <div class="src-file">framework.md</div>
+        <div class="src-layers">主要贡献：L0 评估标准 + 研究方法</div>
+        <p>框架定义"权威性/时效性/实用性/完整性"信息质量标准与"理论深度/实践验证/技术实现/效果评估"研究深度标准，
+        直接迁移为 L0 的 5D 维度结构。其"多源交叉验证"原则支撑评分卡的"不排名、只匹配"读法。</p>
+      </div>
+      <div class="src-card">
+        <div class="src-file">llm-education-applications.md</div>
+        <div class="src-layers">主要贡献：L1 方法实现 + L2 技术组件</div>
+        <p>LLM 教育应用研究提供 RAG、知识图谱、推荐算法、评估引擎等技术组件，支撑 L2 工具的"实现切片"标注
+        与 L1 计算教育学家族（BKT/DKT/IRT/EDM）的算法描述。其"模型幻觉/准确性"挑战对应 D1 理论严谨维度。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 四馆分工 ===================== -->
+<section id="annex-map">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--accent)">Annex Map · 四馆分工</div>
+      <h2>四座深潜馆如何<span class="gold">分工协作</span></h2>
+      <p class="desc">
+        教育与 AI 主题下设四座深潜馆，各自承担不同切面。本馆（四层交叉）是唯一横跨四层的"纵向"馆，
+        其余三馆各聚焦一层。读者可按需选择入口：要比较方法选方法论馆，要看工具选应用馆，要查指标选评估馆，
+        要理解四层因果链则读本馆。四馆共用同一套信源，但切片不同，互为参照而非重复。
+      </p>
+    </div>
+
+    <div class="annex-grid">
+      <div class="annex-card cur-annex">
+        <div class="annex-tag">本馆</div>
+        <div class="annex-name">四层交叉深潜馆</div>
+        <div class="annex-file">four_layer_sub.html</div>
+        <div class="annex-cut">切面：L3→L2→L1→L0 纵向因果链</div>
+        <p>唯一横跨四层的馆。提供 4 交叉矩阵、4 典型链路、3 关键洞察。当你要回答"为什么选这个工具"或"这个方法该用什么指标量"时，读本馆。</p>
+      </div>
+      <div class="annex-card">
+        <div class="annex-tag">姊妹馆</div>
+        <div class="annex-name">方法论深潜馆</div>
+        <div class="annex-file">methodology_sub.html</div>
+        <div class="annex-cut">切面：L1 方法层横向展开</div>
+        <p>聚焦 12 方法 3 家族的横向比较，深入每个方法的算法细节与历史脉络。本馆 L1 章节是其浓缩，要查方法本身去此馆。</p>
+      </div>
+      <div class="annex-card">
+        <div class="annex-tag">姊妹馆</div>
+        <div class="annex-name">应用深潜馆</div>
+        <div class="annex-file">applications_sub.html</div>
+        <div class="annex-cut">切面：L2 应用层工具详解</div>
+        <p>聚焦 8 件工具的功能、部署、案例与定价。本馆 L2 章节是其索引，要查工具实操去此馆。</p>
+      </div>
+      <div class="annex-card">
+        <div class="annex-tag">姊妹馆</div>
+        <div class="annex-name">评估深潜馆</div>
+        <div class="annex-file">evaluation_sub.html</div>
+        <div class="annex-cut">切面：L0 评估层指标体系</div>
+        <p>聚焦 5D × 21 子指标的测量方法与行业基准。本馆 L0 章节与评分卡是其摘要，要查指标定义与基准值去此馆。</p>
+      </div>
+    </div>
+
+    <div class="annex-flow">
+      <div class="annex-flow-title">推荐阅读路径</div>
+      <div class="annex-flow-chain">
+        <span class="afc-node">方法论馆<br><small>懂方法</small></span>
+        <span class="afc-arr">→</span>
+        <span class="afc-node">应用馆<br><small>看工具</small></span>
+        <span class="afc-arr">→</span>
+        <span class="afc-node cur">本馆<br><small>串因果</small></span>
+        <span class="afc-arr">→</span>
+        <span class="afc-node">评估馆<br><small>量代价</small></span>
+      </div>
+      <p class="annex-flow-note">四馆可独立阅读，但按"方法→应用→交叉→评估"顺序读，能完整建立四层心智模型。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 页脚 ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <h5>6 个主馆</h5>
+        <a href="eduai_s01_tech_deepblue.html">S01 深蓝科技馆</a>
+        <a href="eduai_s02_academic_ink.html">S02 学术墨韵馆</a>
+        <a href="eduai_s03_minimal_gold.html">S03 极简金馆</a>
+        <a href="eduai_s04_cyber_indigo.html">S04 赛博靛馆</a>
+        <a href="eduai_s05_glass_sky.html">S05 玻璃天馆</a>
+        <a href="eduai_s06_magazine_slate.html">S06 杂志灰岩馆</a>
+      </div>
+      <div class="foot-col">
+        <h5>4 个深潜馆</h5>
+        <a href="methodology_sub.html">方法论深潜馆</a>
+        <a href="applications_sub.html">应用深潜馆</a>
+        <a href="evaluation_sub.html">评估深潜馆</a>
+        <a href="four_layer_sub.html" style="color:var(--gold)">四层交叉深潜馆（本馆）</a>
+      </div>
+      <div class="foot-col">
+        <h5>本馆四层</h5>
+        <a href="#l3">L3 元认知 · 6 思想家</a>
+        <a href="#l2">L2 应用 · 8 工具 + 费曼</a>
+        <a href="#l1">L1 方法 · 12 方法 3 家族</a>
+        <a href="#l0">L0 评估 · 5D × 21 子指标</a>
+      </div>
+      <div class="foot-col">
+        <h5>4 交叉矩阵</h5>
+        <a href="#matrices">M1 思想家→工具</a>
+        <a href="#matrices">M2 工具→方法</a>
+        <a href="#matrices">M3 方法→评估</a>
+        <a href="#matrices">M4 思想家→评估</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>Four Layer Cross Analysis Annex · 紫金主题 · 教育与 AI</span>
+      <span>信源：feynman-analysis / research-report / framework / llm-education-applications</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   微动效：滚动渐入 + 顶部导航高亮
+   ============================================================ */
+(function(){
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var targets = document.querySelectorAll('.layer-row, .thinker, .tool, .method, .d5-card, .case, .insight, .matrix-block, .family-block');
+  if(prefersReduced){
+    targets.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    targets.forEach(function(el){ el.classList.add('reveal'); });
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+      targets.forEach(function(el){ io.observe(el); });
+    } else {
+      targets.forEach(function(el){ el.classList.add('in'); });
+    }
+  }
+
+  // 顶部导航点击平滑滚动（HTML scroll-behavior 已处理，此处仅做高亮）
+  var pills = document.querySelectorAll('.nav-pill');
+  pills.forEach(function(p){
+    p.addEventListener('click', function(){
+      pills.forEach(function(x){ if(x !== p) x.classList.remove('cur'); });
+    });
+  });
+
+  // 矩阵行点击轻微高亮
+  document.querySelectorAll('table.matrix tbody tr').forEach(function(tr){
+    tr.addEventListener('click', function(){
+      this.style.transition = 'background .3s';
+      var cur = this.style.background;
+      this.style.background = 'rgba(245,214,123,0.12)';
+      setTimeout(function(){ tr.style.background = cur; }, 600);
+    });
+  });
+})();
+</script>
+<script id="apple-ui-interactions">
+document.querySelectorAll('.card-spotlight').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`);});});
+</script>
+
+</body>
+</html>
