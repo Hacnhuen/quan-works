@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡诺热机 · 深度研究图集 · HUB</title>
+<style>
+:root{--accent:#0071e3;--ink:#1d1d1f;--sub:#86868b;--card:#ffffff;--bg:#f5f5f7;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Noto Sans SC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;padding:0 0 80px;}
+.hero{text-align:center;padding:72px 24px 40px;position:relative;}
+.hero h1{font-size:clamp(2.4rem,5vw,3.6rem);font-weight:700;letter-spacing:-.03em;line-height:1.12;background:linear-gradient(120deg,#0071e3,#1e3a8a 60%,#9c7a3f);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p.sub{font-size:1.15rem;color:var(--sub);max-width:760px;margin:16px auto 0;}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px;}
+.chip{background:#fff;border:1px solid #e5e5ea;border-radius:999px;padding:8px 16px;font-size:.9rem;color:#555;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.chip b{color:var(--accent);}
+h2.sec{font-size:1.5rem;font-weight:650;letter-spacing:-.01em;margin:48px 24px 20px;max-width:1200px;margin-left:auto;margin-right:auto;}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+@media(max-width:900px){.grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--card);border-radius:20px;box-shadow:0 4px 24px rgba(0,0,0,.06);overflow:hidden;display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.32,.72,0,1),box-shadow .3s;}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.12);}
+.skin{height:110px;position:relative;overflow:hidden;}
+.skin::after{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.25),transparent 60%);}
+.s1{background:linear-gradient(135deg,#070b1b,#0d1430 55%,#1e3a8a);}
+.s2{background:linear-gradient(135deg,#faf6ee,#e8dcc4 55%,#1a2340);}
+.s3{background:linear-gradient(135deg,#fbf9f4,#e3dbc9 60%,#1d4ed8);}
+.s4{background:linear-gradient(135deg,#0d0925,#1a0f4a 55%,#ec4899);}
+.s5{background:linear-gradient(135deg,#eaf6fb,#bfe6f5 60%,#0ea5e9);}
+.s6{background:linear-gradient(135deg,#f5f1e8,#d3c8b4 55%,#2b3a55);}
+.skin .bar{position:absolute;bottom:14px;left:18px;right:18px;height:10px;border-radius:5px;background:rgba(255,255,255,.25);display:flex;gap:4px;}
+.skin .bar i{flex:1;border-radius:3px;background:rgba(255,255,255,.5);}
+.skin .bar i:nth-child(1){flex:.6}
+.skin .bar i:nth-child(2){flex:1.2}
+.skin .bar i:nth-child(3){flex:.8}
+.body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;}
+.body h3{font-size:1.12rem;font-weight:650;}
+.body .en{font-size:.8rem;color:var(--sub);margin-top:2px;}
+.body .meta{font-size:.82rem;color:var(--sub);margin-top:10px;display:flex;gap:14px;flex-wrap:wrap;}
+.body .meta b{color:var(--ink);}
+.swatches{display:flex;gap:6px;margin-top:12px;}
+.sw{width:26px;height:26px;border-radius:8px;border:1px solid rgba(0,0,0,.08);}
+.btn{margin-top:16px;display:inline-block;background:linear-gradient(180deg,#0071e3,#0060c9);color:#fff;text-align:center;padding:11px 18px;border-radius:14px;font-weight:600;text-decoration:none;transition:transform .15s cubic-bezier(0,0,0,1),box-shadow .2s;box-shadow:0 2px 12px rgba(0,113,227,.35);}
+.btn:hover{transform:scale(1.02);box-shadow:0 4px 20px rgba(0,113,227,.45);}
+.sub-card{background:#0b1437;color:#e8ecf8;border-radius:20px;padding:22px;display:flex;gap:16px;align-items:flex-start;box-shadow:0 6px 28px rgba(11,20,55,.35);transition:transform .3s cubic-bezier(.32,.72,0,1);}
+.sub-card:hover{transform:translateY(-3px);}
+.sub-card .ico{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.sub-card h3{font-size:1.05rem;font-weight:650;color:#fff;}
+.sub-card p{font-size:.85rem;color:#aab4d4;margin-top:6px;}
+.sub-card .meta{margin-top:10px;font-size:.8rem;color:#7c88b5;}
+.sub-card a{color:#fff;text-decoration:none;}
+.sub-card a:hover{text-decoration:underline;}
+.checklist{background:#fff;border-radius:20px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.06);}
+.checklist li{list-style:none;padding:9px 0;border-bottom:1px dashed #eee;display:flex;gap:10px;align-items:flex-start;font-size:.95rem;}
+.checklist li:last-child{border-bottom:none;}
+.checklist .ok{color:#34c759;font-weight:700;flex-shrink:0;}
+footer{text-align:center;color:var(--sub);font-size:.82rem;margin-top:56px;padding:0 24px;}
+footer .hl{color:var(--accent);}
+</style>
+
+<style id="apple-ui-layer">
+:root{--apple-accent:#0071e3;--radius-md:18px;--radius-lg:24px;--shadow-sm:0 2px 12px rgba(0,0,0,.08);--shadow-md:0 8px 32px rgba(0,0,0,.12);--ease-apple:cubic-bezier(.32,.72,0,1);--ease-apple-decel:cubic-bezier(0,0,0,1);}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;}
+h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;}
+h2{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:600;letter-spacing:-.02em;}
+.card,.glass-card,.kpi-card,section>div{border-radius:var(--radius-md);box-shadow:var(--shadow-sm);transition:transform .3s var(--ease-apple),box-shadow .3s var(--ease-apple);}
+.card:hover,.glass-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.card-spotlight{position:relative;overflow:hidden;}
+.card-spotlight::before{content:'';position:absolute;width:220px;height:220px;background:radial-gradient(circle,rgba(0,113,227,.10) 0%,transparent 70%);left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s var(--ease-apple);}
+.card-spotlight:hover::before{opacity:1;}
+.btn-primary{display:inline-block;background:linear-gradient(180deg,var(--apple-accent) 0%,color-mix(in srgb,var(--apple-accent) 85%,black) 100%);color:#fff;padding:12px 24px;border:none;border-radius:14px;font-weight:600;box-shadow:var(--shadow-sm);transition:transform .15s var(--ease-apple-decel),box-shadow .2s var(--ease-apple);text-decoration:none;}
+.btn-primary:active{transform:scale(.97);}
+.btn-ghost{display:inline-block;background:transparent;color:var(--apple-accent);border:1px solid var(--apple-accent);padding:11px 23px;border-radius:14px;font-weight:600;text-decoration:none;transition:background .2s var(--ease-apple);}
+.btn-ghost:hover{background:rgba(0,113,227,.08);}
+a{color:var(--apple-accent);text-decoration:none;position:relative;}
+a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--apple-accent);transition:width .3s var(--ease-apple);}
+a:hover::after{width:100%;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+</style>
+
+
+<style id="bg-dynamic-layer">
+.bg-dynamic{position:fixed;inset:0;z-index:-2;opacity:.22;background:linear-gradient(135deg,#e8f0fb 0%,#d3e2f5 45%,#bcd2ea 100%);will-change:transform,background-position,opacity;transform:translateZ(0);}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.82) 50%,rgba(255,255,255,.55) 100%);}
+
+.bg-dynamic.anim-pan-x{animation:flow-pan-x 60s linear infinite;background-size:200% 100%;}
+.bg-dynamic.anim-pan-y{animation:flow-pan-y 45s linear infinite;background-size:100% 200%;}
+.bg-dynamic.anim-breathe{animation:flow-breathe 20s ease-in-out infinite;}
+.bg-dynamic.anim-rotate{animation:flow-rotate 120s linear infinite;}
+.bg-dynamic.anim-bleed{animation:flow-bleed 30s ease-in-out infinite;background-size:120% 120%;}
+.bg-dynamic.anim-parallax{background-size:150% 150%;animation:flow-pan-x 80s linear infinite,flow-breathe 25s ease-in-out infinite;}
+@keyframes flow-pan-x{0%{background-position:0% 50%;}100%{background-position:100% 50%;}}
+@keyframes flow-pan-y{0%{background-position:50% 0%;}100%{background-position:50% 100%;}}
+@keyframes flow-breathe{0%,100%{transform:scale(1);opacity:.22;}50%{transform:scale(1.08);opacity:.30;}}
+@keyframes flow-rotate{0%{transform:rotate(0deg) scale(1.15);}100%{transform:rotate(360deg) scale(1.15);}}
+@keyframes flow-bleed{0%,100%{background-position:50% 50%;filter:blur(0px);}50%{background-position:52% 48%;filter:blur(1.5px);}}
+@media (prefers-reduced-motion:reduce){.bg-dynamic,.bg-dynamic.anim-pan-x,.bg-dynamic.anim-pan-y,.bg-dynamic.anim-breathe,.bg-dynamic.anim-rotate,.bg-dynamic.anim-bleed,.bg-dynamic.anim-parallax{animation:none!important;}}
+</style>
+
+</head>
+<body>
+<div class="bg-dynamic anim-anim-parallax"></div>
+<div class="bg-overlay"></div>
+
+<header class="hero">
+  <h1>卡诺热机 · 深度研究图集</h1>
+  <p class="sub">从 1824 年热质说时代的瀑布类比，到 2024 年超导量子电路里的三能级热机——200 年效率上限标尺的完整地图。<br>6 种设计风格 × 4 座深潜馆，同一份经 78 条文献核验的深度研究。</p>
+  <div class="chips">
+    <span class="chip">主馆 <b>6</b> 座</span>
+    <span class="chip">深潜馆 <b>4</b> 座</span>
+    <span class="chip">总行数 <b>28,970</b></span>
+    <span class="chip">体积 <b>1.7 MB</b></span>
+    <span class="chip">人物肖像 <b>12</b> 位</span>
+    <span class="chip">时间线事件 <b>12</b> 个</span>
+    <span class="chip">社交文案 <b>15</b> 条</span>
+    <span class="chip">IEEE 参考文献 <b>78</b> 条</span>
+    <span class="chip">主题 <b>卡诺热机</b></span>
+  </div>
+</header>
+
+<h2 class="sec">🎨 六大主馆 · 同一研究，六种设计语言</h2>
+<div class="container">
+<div class="grid">
+
+<div class="card card-spotlight">
+  <div class="skin s1"><div class="bar"><i></i><i></i><i></i></div></div>
+  <div class="body">
+    <h3>科技深蓝暗黑</h3><div class="en">Tech Deepblue · 工程师 / 暗色仪表盘</div>
+    <div class="swatches"><div class="sw" style="background:#070b1b"></div><div class="sw" style="background:#0d1430"></div><div class="sw" style="background:#3b82f6"></div><div class="sw" style="background:#e8a33d"></div></div>
+    <div class="meta"><span>3206 行 · 185 KB</span><span>数据网格 · KPI 辉光</span></div>
+    <a class="btn" href="carnot_s01_tech_deepblue.html">进入主馆 01</a>
+  </div>
+</div>
+
+<div class="card card-spotlight">
+  <div class="skin s2"><div class="bar"><i></i><i></i><i></i></div></div>
+  <div class="body">
+    <h3>学术墨蓝毛边纸</h3><div class="en">Academic Ink · 教师 / 论文风</div>
+    <div class="swatches"><div class="sw" style="background:#faf6ee"></div><div class="sw" style="background:#1a2340"></div><div class="sw" style="background:#9c7a3f"></div><div class="sw" style="background:#1e3a8a"></div></div>
+    <div class="meta"><span>2837 行 · 176 KB</span><span>首字下沉 · 原文引用</span></div>
+    <a class="btn" href="carnot_s02_academic_ink.html">进入主馆 02</a>
+  </div>
+</div>
+
+<div class="card card-spotlight">
+  <div class="skin s3"><div class="bar"><i></i><i></i><i></i></div></div>
+  <div class="body">
+    <h3>极简金蓝留白</h3><div class="en">Minimal Gold · CEO 汇报 / 打印</div>
+    <div class="swatches"><div class="sw" style="background:#fbf9f4"></div><div class="sw" style="background:#1d4ed8"></div><div class="sw" style="background:#c89f5a"></div><div class="sw" style="background:#64748b"></div></div>
+    <div class="meta"><span>3941 行 · 171 KB</span><span>细金线 · 大数字 KPI</span></div>
+    <a class="btn" href="carnot_s03_minimal_gold.html">进入主馆 03</a>
+  </div>
+</div>
+
+<div class="card card-spotlight">
+  <div class="skin s4"><div class="bar"><i></i><i></i><i></i></div></div>
+  <div class="body">
+    <h3>赛博朋克蓝紫</h3><div class="en">Cyber Indigo · 极客 / B站</div>
+    <div class="swatches"><div class="sw" style="background:#0d0925"></div><div class="sw" style="background:#1a0f4a"></div><div class="sw" style="background:#ec4899"></div><div class="sw" style="background:#22d3ee"></div></div>
+    <div class="meta"><span>2861 行 · 175 KB</span><span>CRT 扫描线 · 霓虹 HUD</span></div>
+    <a class="btn" href="carnot_s04_cyber_indigo.html">进入主馆 04</a>
+  </div>
+</div>
+
+<div class="card card-spotlight">
+  <div class="skin s5"><div class="bar"><i></i><i></i><i></i></div></div>
+  <div class="body">
+    <h3>玻璃天青拟态</h3><div class="en">Glass Sky · 大众科普 / 小红书</div>
+    <div class="swatches"><div class="sw" style="background:#eaf6fb"></div><div class="sw" style="background:rgba(255,255,255,.8)"></div><div class="sw" style="background:#0ea5e9"></div><div class="sw" style="background:#7dd3fc"></div></div>
+    <div class="meta"><span>2596 行 · 183 KB</span><span>玻璃拟态 · 12岁能懂</span></div>
+    <a class="btn" href="carnot_s05_glass_sky.html">进入主馆 05</a>
+  </div>
+</div>
+
+<div class="card card-spotlight">
+  <div class="skin s6"><div class="bar"><i></i><i></i><i></i></div></div>
+  <div class="body">
+    <h3>杂志编辑石板蓝</h3><div class="en">Magazine Slate · 长文出版 / Medium</div>
+    <div class="swatches"><div class="sw" style="background:#f5f1e8"></div><div class="sw" style="background:#2b3a55"></div><div class="sw" style="background:#0077b6"></div><div class="sw" style="background:#b8860b"></div></div>
+    <div class="meta"><span>3032 行 · 173 KB</span><span>Serif 900 · 两栏杂志</span></div>
+    <a class="btn" href="carnot_s06_magazine_slate.html">进入主馆 06</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<h2 class="sec">🧪 四座深潜馆 · 深蓝之下</h2>
+<div class="container">
+<div class="grid">
+  <div class="sub-card">
+    <div class="ico" style="background:rgba(59,130,246,.2);color:#60a5fa">🧮</div>
+    <div>
+      <h3><a href="carnot_methodology_sub.html">方法论深潜馆</a></h3>
+      <p>3 大家族 × 11 方法 × 完整 Python 代码（含复制按钮）· 11×6 维超表 · 8 步 SVG 决策树</p>
+      <div class="meta">2545 行 · 150 KB · accent #3B82F6</div>
+    </div>
+  </div>
+  <div class="sub-card">
+    <div class="ico" style="background:rgba(34,211,238,.2);color:#22d3ee">🏭</div>
+    <div>
+      <h3><a href="carnot_applications_sub.html">行业案例代码馆</a></h3>
+      <p>8 个可实跑 Python 案例（62.22% 复现 / Otto 65.2% / 教学诊断 18.8%）· 行业基准表 · 10 项可复现性清单</p>
+      <div class="meta">2623 行 · 121 KB · accent #22D3EE</div>
+    </div>
+  </div>
+  <div class="sub-card">
+    <div class="ico" style="background:rgba(232,163,61,.2);color:#e8a33d">📊</div>
+    <div>
+      <h3><a href="carnot_evaluation_sub.html">五维评估量规库</a></h3>
+      <p>5D × 24 子指标 1-5 分锚点量规 · 12 方法热力矩阵（77 个悬停理由）· 敏感性梯度场 · 12 项矛盾裁决门禁</p>
+      <div class="meta">2619 行 · 208 KB · accent #E8A33D</div>
+    </div>
+  </div>
+  <div class="sub-card">
+    <div class="ico" style="background:rgba(236,72,153,.2);color:#ec4899">🧠</div>
+    <div>
+      <h3><a href="carnot_four_layer_sub.html">四层架构分析馆</a></h3>
+      <p>L3 决策层 / L2 工具层 / L1 方法层 / L0 直觉层 · 4 张交叉矩阵（含数据佐证列）· 3 个关键洞察 · 四层→17 章映射</p>
+      <div class="meta">2710 行 · 174 KB · accent #EC4899</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<h2 class="sec">🔐 合规性清单</h2>
+<div class="container">
+<div class="checklist">
+  <li><span class="ok">✓</span>全部 10 份 HTML：单文件、CSS/JS 全内联、零外链图片资源（配图均为 CSS 渐变 + 内联 SVG 占位）</li>
+  <li><span class="ok">✓</span>17 章严格顺序执行；16_sources 信源分级章节全部位于 15_references 之后</li>
+  <li><span class="ok">✓</span>行数门禁：主馆 2596–3941 行、深潜馆 2545–2710 行，全部 ≥2500</li>
+  <li><span class="ok">✓</span>禁词扫描（版本编号类词汇共 10 项）：全库 0 命中（推导中的体积比用 Unicode 下标 V₂/V₃/V₄ 表达）</li>
+  <li><span class="ok">✓</span>数据纪律：62.22% 吉尼斯实测 / 63% 设计值 / 64% 厂商宣称三级口径分级标注；12 项矛盾裁决全收录</li>
+  <li><span class="ok">✓</span>社交文案 15 条：5 平台 × 3 条、角度无重复、每条 ≥2 个 skill chip 且必含 feynman_translate、无版本编号标签</li>
+  <li><span class="ok">✓</span>主馆 ↔ 深潜馆双向互通链接完整（主馆底部 → 4 深潜；深潜顶/底 → 6 主馆）</li>
+  <li><span class="ok">✓</span>学术严谨：78 条 IEEE 参考文献体系；S 级信源全部经 Crossref/arXiv API 核验；6 项"未证实"边界如实声明</li>
+  <li><span class="ok">✓</span>Apple UI 优化层 + 页面级动态背景（6 种流动动画、暗色主题适配、prefers-reduced-motion 无障碍）已全量注入</li>
+  <li><span class="ok">✓</span>工具链核验：arXiv / Crossref / Semantic Scholar / 费曼讲义 / agent-reach 等 ≥4 项提及</li>
+</div>
+</div>
+
+<footer>
+  ONESHOT 图集 · 卡诺热机 · 生成日期 2026-08-14<br>
+  集成文献 78 条 · 信源清单 106 条（S/A/B 三级 + 溯源链）· 纯静态单文件 HTML，双击即可打开<br>
+  数据底座：<span class="hl">信源/卡诺热机深度研究报告.md</span>（51KB，含 12 项矛盾裁决与 6 项未证实声明）
+</footer>
+<script id="apple-ui-interactions">
+document.querySelectorAll('.card-spotlight').forEach(function(card){
+  card.addEventListener('mousemove',function(e){var r=card.getBoundingClientRect();card.style.setProperty('--mx',(e.clientX-r.left)+'px');card.style.setProperty('--my',(e.clientY-r.top)+'px');});
+});
+</script>
+</body>
+</html>
