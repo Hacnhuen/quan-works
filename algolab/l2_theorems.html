@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L2 完备 · 算法 | AlgoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Algo<span>Lab</span> · 算法</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html" class="on">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">L2 · Complete</div>
+  <h1>完备：可证的正确性与紧界</h1>
+  <p>这一层把所有"感觉对"变成"能证明对"。主定理统一了分治复杂度；最短路、最小生成树、网络流给出图论的核心可证算法；NP 完全性划定了"高效算法可能不存在"的疆界。对标 MIT 6.046 与 CLRS 全书。</p>
+  <div class="meta">
+    <i>主定理</i><i>最短路</i><i>MST</i><i>最大流=最小割</i><i>NP完全</i><i>线性规划</i><i>考研级</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#master">01 · 主定理</a>
+  <a href="#sssp">02 · 单源最短路</a>
+  <a href="#mst">03 · 最小生成树</a>
+  <a href="#flow">04 · 最大流最小割</a>
+  <a href="#npc">05 · NP 完全性</a>
+  <a href="#lp">06 · 线性规划对偶</a>
+  <a href="#lab1">07 · 实验室</a>
+  <a href="#quiz">08 · 自检</a>
+  <div class="grp"><h4>跳转</h4>
+    <a href="l1_foundation.html">← L1 基础</a>
+    <a href="l3_advanced.html">去 L3 专业 →</a>
+    <a href="lab.html#e3">实验室 03 Dijkstra</a>
+  </div>
+</aside>
+<main>
+
+<section class="section" id="master">
+  <h2><span class="num">01</span>主定理：分治复杂度的"自动求解器"</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 主定理（A2）</span>
+    <p>对递归 T(n) = a·T(n/b) + f(n)，a≥1, b&gt;1 常数，令 n^(log_b a) = n^{ε}（ε=log_b a）：</p>
+    <div class="fml">情形1：若 f(n) = O(n^{ε−δ})（δ&gt;0，即 f 多项式小于），则 T(n) = Θ(n^{ε})
+情形2：若 f(n) = Θ(n^{ε} logᵏn)，则 T(n) = Θ(n^{ε} log^{k+1} n)
+情形3：若 f(n) = Ω(n^{ε+δ}) 且 a·f(n/b) ≤ c·f(n)（正则条件，c&lt;1），则 T(n) = Θ(f(n))</div>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例三连</span>
+    <p>① 归并排序 a=2,b=2,f=Θ(n) → ε=1，情形2(k=0) ⇒ Θ(n log n)。</p>
+    <p>② 二分查找 a=1,b=2,f=Θ(1) → ε=0，情形2 ⇒ Θ(log n)。</p>
+    <p>③ 斯特拉森式 a=7,b=2 ⇒ ε=log₂7≈2.81，f=Θ(n²) 多项式小于 ⇒ Θ(n^{2.81})。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿 · 主定理之外</span>
+    <p>主定理不覆盖 a 非整数、f 为 n^{ε}·log^? 之外的形式（如 Akra–Bazzi  generalization 处理非均匀分割）。L3 的 FFT 用不同的分治结构。</p>
+  </div>
+</section>
+
+<section class="section" id="sssp">
+  <h2><span class="num">02</span>单源最短路：Dijkstra 与 Bellman-Ford</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · Dijkstra 正确性（A3）</span>
+    <p>在<strong>所有边权非负</strong>的图中，Dijkstra 每次从"未定"集合取出距离最小的顶点 u，则 dist[u] 已是最终最短距离，此后不再更新。由此归纳得全局正确。复杂度（二叉堆）O((V+E) log V)。</p>
+  </div>
+  <div class="el el-proof">
+    <span class="tag">证明骨架</span>
+    <p>假设首次出错：取出 u 时 dist[u] 非最终。设真正最短路先经某未定顶点 v，则 dist[v] ≤ dist[u]（否则 u 不会先被取），与"u 是当前最小"矛盾——且非负权保证绕路不会更短。■</p>
+  </div>
+  <div class="el el-concept">
+    <span class="tag">概念 · Bellman-Ford</span>
+    <p>允许负权，复杂度 O(VE)。松弛 V−1 轮；第 V 轮仍能更新则说明存在<strong>负环</strong>。是差分约束、货币套利检测的基础。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>实验室 03 给出 6 节点图逐步松弛过程，可看到 Dijkstra 距离表逐轮收敛、且<em>一旦取出即锁定</em>。</p>
+  </div>
+</section>
+
+<section class="section" id="mst">
+  <h2><span class="num">03</span>最小生成树：Kruskal 与 Prim</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · MST 贪心正确性</span>
+    <p>对图 G 的边按权排序，<strong>Kruskal</strong> 依次加入不形成环的最小边（并查集判定，L3），得到的必是 MST。等价于"切割性质"：横跨某切割的最小权边必在某 MST 中。</p>
+  </div>
+  <div class="el el-coro">
+    <span class="tag">推论</span>
+    <p><strong>Prim</strong>（从一点出发，优先队列取最小跨边）同样得 MST。Kruskal O(E log E)，Prim+堆 O((V+E) log V)。两者都是贪心 + 最优子结构 + 贪心选择性质的实例。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>通信基站布线：用最少的线总长连通所有站点 ⇒ MST。若有"必经中继"约束则变 Steiner 树（NP 难，L4）。</p>
+  </div>
+</section>
+
+<section class="section" id="flow">
+  <h2><span class="num">04</span>最大流与最小割：图论的皇冠</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 最大流最小割（A4）</span>
+    <p>在有向图（容量 c(e)≥0）中，从源 s 到汇 t 的<strong>最大流量</strong>等于<strong>最小 s-t 割的容量</strong>。即 max flow = min cut。</p>
+  </div>
+  <div class="el el-proof">
+    <span class="tag">证明骨架（弱对偶 + 增广路）</span>
+    <p>(1) 任意流 ≤ 任意割（割容量 ≥ 跨割正向流 − 反向流 ≥ 净流 = |f|）。(2) Ford–Fulkerson：当残量网络无增广路时，令 S=可从 s 到达的点，T=其余；割 (S,T) 上正向边满流、反向边零流，故割容量 = |f|。于是 |f| = 割容量 = 最大流 = 最小割。■</p>
+  </div>
+  <div class="el el-concept">
+    <span class="tag">概念 · Edmonds-Karp</span>
+    <p>每次用 BFS 找最短增广路，复杂度 O(VE²)。是网络流的标准实现。整数容量下 FF 必终止。</p>
+  </div>
+  <div class="el el-coro">
+    <span class="tag">推论 · 婚姻定理与二分匹配</span>
+    <p>最大二分匹配 = 最小顶点覆盖（König）。最大流可解二部图匹配、任务分配、最大权匹配（费用流）。</p>
+  </div>
+  <div class="note deep">
+    <b>通往大师</b>
+    最大流最小割是"对偶性"的第一个强例子，与线性规划对偶（本节 06）、信息论中的最大互信息（信息论馆）同构。L4 还会看到它推广到多商品流（NP 难）。
+  </div>
+</section>
+
+<section class="section" id="npc">
+  <h2><span class="num">05</span>NP 完全性：效率疆界的地图</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 复杂度类</span>
+    <div class="fml">P    ：多项式时间可解的决策问题
+NP   ：多项式时间可"验证"解的问题（非"非多项式"！）
+NPC  ：属 NP 且任何 NP 问题都可归约到它（最难的一类 NP 问题）
+NP-hard：至少和 NPC 一样难，未必在 NP 中</div>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · Cook–Levin</span>
+    <p>布尔可满足性 SAT 是 NP 完全的（1971）。由此 Karp 给出 21 个经典 NPC 问题归约链：SAT → 3-SAT → 独立集 → 顶点覆盖 → 团 → 哈密顿回路 → 旅行商(TSP) → …</p>
+  </div>
+  <div class="el el-proof">
+    <span class="tag">证明骨架</span>
+    <p>将任意 NP 图灵机的计算过程编码为布尔公式（单元格状态 + 转移约束 + 接受条件），使"存在接受计算"⇔"公式可满足"。从而 SAT 捕获了所有 NP 问题。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 归约链</span>
+    <p>证明"顶点覆盖是 NPC"：已知 3-SAT NPC；把每个子句变三角形、每个变量变一条边，可构造图使"3-SAT 可满足 ⇔ 图有大小 k 的顶点覆盖"。归约是证明 NPC 的核心手艺。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>P vs NP 是千禧年七大难题之一（未解）。一旦某 NPC 问题被证明在 P 中，则 P=NP。L4 的近似算法正是在"承认可能无精确多项式解"的前提下求近似。</p>
+  </div>
+</section>
+
+<section class="section" id="lp">
+  <h2><span class="num">06</span>线性规划与对偶</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · LP</span>
+    <p>在线性约束下最大化/最小化线性目标。标准型：max cᵀx s.t. Ax ≤ b, x ≥ 0。可用单纯形法（实践快）或内点法（多项式）求解。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 强对偶</span>
+    <p>若原问题（P）有最优解，则其对偶（D）也有，且最优值相等：max cᵀx = min bᵀy。对偶变量 y 可解释为"约束的影子价格"。</p>
+  </div>
+  <div class="el el-coro">
+    <span class="tag">推论</span>
+    <p>最大流最小割是 LP 强对偶的特例（流–割对偶）。网络流、二部匹配、许多近似算法都借 LP 松弛 + 取整来设计（L3/L4）。</p>
+  </div>
+</section>
+
+<section class="section" id="lab1">
+  <h2><span class="num">07</span>实验室 · 主定理可视化</h2>
+  <p class="lead">拖动 a、b，看 T(n) 的渐近类型（情形 1/2/3）随 f(n) 选择的变化。</p>
+  <div class="lab">
+    <div class="lab-h">MASTER THEOREM EXPLORER</div>
+    <div class="ctrl">
+      <label>a（子问题数）</label>
+      <input type="range" id="m-a" min="1" max="8" value="2" step="1">
+      <span class="val" id="m-av">2</span>
+    </div>
+    <div class="ctrl">
+      <label>b（分割因子）</label>
+      <input type="range" id="m-b" min="2" max="4" value="2" step="1">
+      <span class="val" id="m-bv">2</span>
+    </div>
+    <div class="ctrl">
+      <label>f(n) 类型</label>
+      <select id="m-f" style="background:#0d1220;color:#cfe3ff;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-family:var(--mono)">
+        <option value="low">n^{ε−0.3}（情形1）</option>
+        <option value="mid" selected>n^{ε}（情形2）</option>
+        <option value="high">n^{ε+0.3}（情形3）</option>
+      </select>
+    </div>
+    <div class="readout" id="m-out"></div>
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <h2><span class="num">08</span>自检</h2>
+  <div class="quiz">
+    <div class="qh">QUIZ</div>
+    <ol>
+      <li>主定理三种情形分别对应 T(n) 的什么渐近界？</li>
+      <li>Dijkstra 为什么要求"非负权"？负权下会发生什么？</li>
+      <li>用一句话说明最大流最小割定理，并给出一个它"对偶"的其它领域例子。</li>
+      <li>NP 是"非多项式"的意思吗？举一个 NPC 问题的归约链片段。</li>
+      <li>LP 强对偶说的是什么？</li>
+    </ol>
+    <details><summary>答案</summary><div class="dbody">
+      <p>1. 情形1 Θ(n^{log_b a})；情形2 Θ(n^{log_b a} log^{k+1}n)；情形3 Θ(f(n))。</p>
+      <p>2. 非负权保证"先取最小即锁定"（绕路不会更短）。负权可能使已锁定节点的距离被后续更短路径推翻，结果错误；需用 Bellman-Ford。</p>
+      <p>3. max flow = min cut。对偶例：LP 强对偶、信息论 max I(X;Y)（信道容量）。</p>
+      <p>4. 不是，"Nondeterministic Polynomial"=可多项式验证。链：SAT→3-SAT→独立集→顶点覆盖。</p>
+      <p>5. 原问题与对偶最优值相等：max cᵀx = min bᵀy。</p>
+    </div></details>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l1_foundation.html"><span class="lb">← 上一站</span>L1 基础 · 范式</a>
+  <a class="nx" href="l3_advanced.html"><span class="lb">下一站 →</span>L3 专业 · 研究生武器</a>
+</div>
+
+<footer class="foot">
+  <p>本页对标 MIT 6.046 / CLRS。主定理（A2）、最大流最小割（A4）、Dijkstra 正确性（A3）、NP 完全性（Cook–Levin, Karp 1972）均标注出处。复杂度数字由 verify 流水线核对。</p>
+</footer>
+
+</main>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+  (function(){
+    var aEl=document.getElementById('m-a'), bEl=document.getElementById('m-b'), fEl=document.getElementById('m-f'),
+        av=document.getElementById('m-av'), bv=document.getElementById('m-bv'), out=document.getElementById('m-out');
+    function render(){
+      var a=+aEl.value, b=+bEl.value, f=fEl.value;
+      var eps=ILMath.log2(a)/ILMath.log2(b); // log_b a
+      var type, bound, cas;
+      if(f==='low'){cas='情形1'; bound='Θ(n^{'+eps.toFixed(3)+'})';}
+      else if(f==='mid'){cas='情形2'; bound='Θ(n^{'+eps.toFixed(3)+'} log n)';}
+      else {cas='情形3'; bound='Θ(f(n))，f 多项式大于 n^{'+eps.toFixed(3)+'}';}
+      av.textContent=a; bv.textContent=b;
+      out.innerHTML='a='+a+'　b='+b+'　ε = log_b a = <b>'+eps.toFixed(3)+
+        '</b><br>选择 '+f+'-型 f(n) → <b>'+cas+'</b>：T(n) = <b>'+bound+'</b>';
+    }
+    ILBind(['m-a','m-b','m-f'],render);
+  })();
+</script>
+</body>
+</html>
