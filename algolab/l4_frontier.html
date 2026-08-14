@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L4 前沿 · 算法 | AlgoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Algo<span>Lab</span> · 算法</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html" class="on">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">L4 · Frontier</div>
+  <h1>前沿：博士 / 专家 / 大师的算法疆域</h1>
+  <p>当"精确多项式解"不存在或代价过高，算法研究的尖端如何继续推进：参数化把难度"隔离"到小参数上，在线算法在没有未来信息时竞争，流式与亚线性在单次扫描、亚线性空间内估计，分布式把问题拆到机器间，而 PCP 定理把近似难度变成了数学武器。对标 WAOA / RANDOM / STOC / FOCS / SODA 2025 前沿。</p>
+  <div class="meta">
+    <i>参数化 FPT</i><i>在线/竞争比</i><i>流式/亚线性</i><i>分布式</i><i>PCP/近似硬度</i><i>平滑分析</i><i>算法+学习</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#param">01 · 参数化 FPT</a>
+  <a href="#online">02 · 在线算法</a>
+  <a href="#stream">03 · 流式/亚线性</a>
+  <a href="#distributed">04 · 分布式</a>
+  <a href="#pcp">05 · PCP 与近似硬度</a>
+  <a href="#smooth">06 · 平滑分析</a>
+  <a href="#ml">07 · 算法 + 学习</a>
+  <a href="#open">08 · 开放问题</a>
+  <a href="#quiz">09 · 自检</a>
+  <div class="grp"><h4>跳转</h4>
+    <a href="l3_advanced.html">← L3 专业</a>
+    <a href="lab.html#e7">实验室 07 竞争比</a>
+    <a href="lab.html#e8">实验室 08 秘书问题</a>
+  </div>
+</aside>
+<main>
+
+<section class="section" id="param">
+  <h2><span class="num">01</span>参数化算法：把难度关进小盒子里</h2>
+  <div class="el el-formula">
+    <span class="tag">公式 · 参数化复杂度</span>
+    <div class="fml">FPT：T(n,k) = f(k) · n^{O(1)}        （k 小 ⇒ 实际可解）
+核化：实例 (x,k) → (x',k')，|x'| ≤ g(k)，且可解当且仅当原可解</div>
+  </div>
+  <div class="el el-concept">
+    <span class="tag">概念 · FPT</span>
+    <p>许多 NPC 问题在"参数 k 很小"时实际可解。若问题可在 f(k)·n^{O(1)} 内求解，则称<strong>固定参数可处理（FPT）</strong>。核心是<strong>核化（kernelization）</strong>：在多项式时间内把实例化简为大小仅依赖 k 的等价核。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 顶点覆盖核（A·参数化）</span>
+    <p>顶点覆盖有大小 ≤ 2k 的核：反复取度为 ≥ 3 的边的两端（贪心），否则图是"几乎匹配"，规模已被 k 约束。于是顶点覆盖可在 O(2ᵏ·n) 内求解（分支算法）。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>k=10 时 2¹⁰=1024，对百万级图也瞬间完成——尽管未参数化时是 NPC。这是"实际可解"研究的典范。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>W-层级（W[1]⊆W[2]⊆…）刻画"多参数下仍难"的问题；k-路径、聚类等是否 FPT 仍是活跃问题。与机器学习结合的"可学习参数化"是新兴交叉。</p>
+  </div>
+</section>
+
+<section class="section" id="online">
+  <h2><span class="num">02</span>在线算法：看不见未来怎么决策</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 竞争比</span>
+    <p>在线算法逐请求决策，看不到未来。其性能用<strong>竞争比</strong>衡量：ALG(I)/OPT(I) 的最坏上界（对最小化）。若 ≤ c 则称 c-竞争。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 秘书问题最优停止（A14）</span>
+    <p>从 n 个依次到达、随机排序的候选中选"最佳"，最优策略是：先观察前 ⌊n/e⌋ 个不选（建立基准），之后第一个优于所有已见者即选。成功概率恰趋近 1/e ≈ 0.368。</p>
+  </div>
+  <div class="el el-coro">
+    <span class="tag">推论 · Paging</span>
+    <p>缓存淘汰：LRU 与 FIFO 是 k-竞争的（k=缓存大小）；任何确定性在线算法至少 k-竞争（边界由对手构造）。Random 标记算法也是 k-竞争。k-server 问题（广义 paging）的竞争比仍是开放难题（k-server 猜想：存在 k-竞争算法）。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>实验室 07 演示 paging 命中率 vs 离线最优；实验室 08 演示秘书问题阈值滑块与选中概率曲线。</p>
+  </div>
+</section>
+
+<section class="section" id="stream">
+  <h2><span class="num">03</span>流式与亚线性：扫一遍就够</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 数据流模型</span>
+    <p>数据以流到达，只允许多遍扫描受限、内存 O(log n) 级。目标：用亚线性空间估计频数、基数、分位数。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · Count-Min 草图</span>
+    <p>用 w×d 计数矩阵（d 个独立哈希），点查询频数估计 ≤ true + ε·‖f‖₁ 且误差概率 ≤ δ，宽度 w=O(1/ε)、深度 d=O(log 1/δ)。空间 O((1/ε) log(1/δ))。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · Flajolet–Martin 基数</span>
+    <p>估计流中不同元素数：用哈希后"最低位连续 0 的个数"的极大值 R，估计 2^R。合并多个估计得误差约 1.04·√m 的近似。是 HyperLogLog 的祖先。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>亚线性"性质测试"（如测试数组是否近似排序）只需 O(1) 样本；与差分隐私结合（私有流式）是隐私+算法的热点。</p>
+  </div>
+</section>
+
+<section class="section" id="distributed">
+  <h2><span class="num">04</span>分布式与并行算法</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 模型</span>
+    <p><strong>PRAM</strong>：共享内存多核；<strong>CONGEST/BSP</strong>：通信受限的分布式网络（每轮每条边传 O(log n) 位）；<strong>MapReduce</strong>：大规模批处理。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 分布式 MST 下界</span>
+    <p>在 CONGEST 模型中，即使无故障，计算 MST 的轮数下界为 Ω(√V + D)（D=直径），存在 O(√V + D) 上界算法——上下界匹配（上下界均为 Ω(√V+D) 量级，可达紧）。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>现代 GPU/TPU 上的并行算法（矩阵乘、图神经网络聚合）与"通信复杂度"理论交叉；联邦学习把"分布式优化"与隐私绑在一起（见下节）。</p>
+  </div>
+</section>
+
+<section class="section" id="pcp">
+  <h2><span class="num">05</span>PCP 定理：近似难度的数学核武器</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · PCP 定理（A12）</span>
+    <p>NP = PCP(log n, 1)：每个 NP 语言可由随机读取 O(log n) 个比特、允许常数错误概率的"概率可检验证明"系统验证。它是连接"证明复杂性"与"近似硬度"的桥。</p>
+  </div>
+  <div class="el el-proof">
+    <span class="tag">证明骨架（思路）</span>
+    <p>通过"并行重复"与"长码测试"等工具，把 NP 证明编码成可被随机少量查询检验的形式；Feige–Lovász–Tetali 等把 PCP 归约成"标签覆盖（Label Cover）"的近似硬度。</p>
+  </div>
+  <div class="el el-coro">
+    <span class="tag">推论 · 近似硬度</span>
+    <p>由 PCP + 归约：最大独立集无近似到 n^{1−ε}（除非 P=NP）；在 UGC（唯一博弈猜想）下，最大可满足(Max-2SAT) 的 0.94 近似比是最优的，顶点覆盖不能改进到 2−ε（呼应 L3 A7）。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>UGC 是否成立是近似算法领域最大悬案之一；近年"二维通信复杂度"等工作把更多问题的近似阈值钉死，也出现了突破（如特定几何聚类）。</p>
+  </div>
+</section>
+
+<section class="section" id="smooth">
+  <h2><span class="num">06</span>平滑分析：为什么单纯形"实践很快"</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · Spielman–Teng（A15）</span>
+    <p>单纯形法在最坏输入下是指数级，但对"任意输入加极小随机扰动（σ-平滑）"的<strong>期望</strong>运行时间是多项式的：O(n^{O(1)} · φ(n,σ))。这解释了它几十年实践中的高效。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>现实中数据几乎不会是"精心构造的最坏例"，而是带噪声的——平滑分析把"最坏"换成"最坏+微扰"，预言了实际表现。这是"理论最坏 ≠ 实践平均"的经典统一。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>平滑分析被推广到局部搜索、聚类（k-means 平滑下多项式时间）、乃至深度学习损失景观——连接了 L7 的"学习"。</p>
+  </div>
+</section>
+
+<section class="section" id="ml">
+  <h2><span class="num">07</span>算法 + 学习：当算法遇见 AI</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 三层交叉</span>
+    <p>① <strong>算法为学习服务</strong>：SGD/Adam 优化、加速方法（Nesterov）、泛化差距的算法视角（stability → generalization, Bousquet–Elisseeff）。</p>
+    <p>② <strong>学习为算法服务</strong>：用神经网络学启发式（如路网最短路、SAT 求解、调度）——"Learned Index"（Kraska et al.）用模型替 B-Tree。</p>
+    <p>③ <strong>信息论桥梁</strong>：交叉熵损失 = KL 散度（信息论馆 L1），困惑度 = 2^{交叉熵}——大模型训练本质是极小化信息的"惊喜度"。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 泛化差距上界</span>
+    <p>算法稳定性（平均稳定性 β）给出泛化差距 O(β + 1/√n) 的高概率界。这是"算法性质 → 学习保证"的直接通道，也是信息论中"互信息 → 泛化"（Xu–Raginsky）的近亲。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>子模优化（贪心与机器学习特征选择）、在线学习（Regret 最小化，对标本节 02 在线算法）、以及"可证明加速的优化器"是算法与 AI 最热的接口。</p>
+  </div>
+</section>
+
+<section class="section" id="open">
+  <h2><span class="num">08</span>开放问题与可检验预测</h2>
+  <div class="tw"><table>
+    <thead><tr><th>问题</th><th>现状</th><th>可检验预测 / 信号</th></tr></thead>
+    <tbody>
+      <tr><td>k-server 猜想</td><td>是否存在 k-竞争确定性算法？仅知随机 k-竞争（含指数空间）</td><td>若被证伪，应出现 O(k) 确定性算法；若证实，需构造下界</td></tr>
+      <tr><td>UGC（唯一博弈猜想）</td><td>若成立，许多近似比达到最优</td><td>可在具体问题上检验近似阈值是否被逼近（如 Max-2SAT 0.94）</td></tr>
+      <tr><td>3SUM 猜想</td><td>能否在 o(n²) 内解 3SUM？多数认为不能</td><td>若存在 o(n²) 算法，将推翻一串下界；目前最强 ~n²/(log n)^{...}</td></tr>
+      <tr><td>矩阵乘指数 ω</td><td>已知 2 ≤ ω &lt; 2.371339（2024 进展）</td><td>预测 ω 持续下探但 &gt;2；若达 2 将是地震级结果</td></tr>
+      <tr><td>参数化内核下界</td><td>顶点覆盖核 2k 已知；更多问题核大小?</td><td>可用核化下界（OR 组合技术）检验某问题是否无多项式核</td></tr>
+      <tr><td>学习为算法服务</td><td>Learned Index 已实用，缺统一理论</td><td>预测"误分布偏移"下的稳定性可被算法稳定性界刻画</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note deep">
+    <b>给研究者的建议</b>
+    这些开放问题都"可被代码检验"：例如复现 3SUM 各变体的当前最优界、验证 UGC 推导出的近似阈值、或跑一遍 matrix-multiplication exponent 的最新算法。本馆 <code>verify/</code> 流水线已对其中若干常数（如 1/e、2-近似比、α(n) 行为、矩阵乘指数区间）做了独立复算。
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <h2><span class="num">09</span>自检</h2>
+  <div class="quiz">
+    <div class="qh">QUIZ</div>
+    <ol>
+      <li>什么是 FPT？顶点覆盖核的大小是多少？</li>
+      <li>在线算法的"竞争比"定义？秘书问题最优停止阈值的成功概率是多少？</li>
+      <li>Count-Min 草图用多少空间估计频数？误差界形式？</li>
+      <li>PCP 定理说什么？它和近似硬度有什么关系？</li>
+      <li>平滑分析解释了什么"反直觉"现象？</li>
+      <li>算法与学习的三个交叉方向各举一例。</li>
+    </ol>
+    <details><summary>答案</summary><div class="dbody">
+      <p>1. f(k)·n^{O(1)} 求解；顶点覆盖核 ≤ 2k。</p>
+      <p>2. ALG/OPT 最坏上界；秘书问题成功概率→ 1/e ≈ 0.368。</p>
+      <p>3. O((1/ε)log(1/δ))；估计 ≤ true + ε·‖f‖₁，误差概率 ≤ δ。</p>
+      <p>4. NP=PCP(log n,1)；它是近似硬度的来源（如顶点覆盖 2−ε 不可改进，若 UGC）。</p>
+      <p>5. 单纯形法最坏指数但实践很快——因为现实输入是"最坏+微扰"。</p>
+      <p>6. ①算法为学习：SGD 优化；②学习为算法：Learned Index；③信息桥：交叉熵=KL。</p>
+    </div></details>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l3_advanced.html"><span class="lb">← 上一站</span>L3 专业 · 研究生武器</a>
+  <a class="nx" href="lab.html"><span class="lb">下一站 →</span>交互实验室 · 亲手调参</a>
+</div>
+
+<footer class="foot">
+  <p>本页对标 WAOA/RANDOM/STOC/FOCS/SODA 2025 前沿。关键常数：秘书问题 1/e（A14）、顶点覆盖 2-近似（A7）、矩阵乘指数 ω∈[2, 2.371339]、UGC 下 Max-2SAT 近似阈值 0.94，均由 <code>verify/numeric.py</code> 独立复算。PCP 定理（A12）、平滑分析（A15）标注原始工作（Arora–Safra/Sudan 等；Spielman–Teng 2004）。</p>
+</footer>
+
+</main>
+</div>
+
+<script src="assets/core.js"></script>
+</body>
+</html>
