@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L4 前沿 · 高中物理超级研究馆</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="index.html">物<span>理</span>馆 · PhysicsLab</a>
+    <nav class="navlinks">
+      <a href="index.html">总览</a>
+      <a href="l0_intuition.html">L0</a>
+      <a href="l1_foundation.html">L1</a>
+      <a href="l2_complete.html">L2</a>
+      <a href="l3_pro.html">L3</a>
+      <a href="l4_frontier.html" class="on">L4</a>
+      <a href="lab.html">实验室</a>
+      <a href="verify.html">检验</a>
+      <a href="method.html">方法论</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <aside class="side">
+    <h4>本页导航</h4>
+    <a href="#gw">引力波</a>
+    <a href="#qc">量子计算</a>
+    <a href="#topo">拓扑物态</a>
+    <a href="#dark">暗物质与暗能量</a>
+    <a href="#precision">精密测量</a>
+    <a href="#open">开放问题</a>
+    <a class="grp" href="method.html">方法总结 →</a>
+  </aside>
+
+  <main>
+    <section class="hero" style="border:none;padding:34px 0 18px">
+      <div class="kicker">L4 · 前沿层（科研边界）</div>
+      <h1>高中物理之上，仍是旷野</h1>
+      <p>本层展示以高中物理为起点的活前沿：引力波把"时空"变成可探测的波；量子比特在重写计算；拓扑与暗物质在拓展物质观。每一节都给出可被检验流水线核对的数字。</p>
+      <div class="vfy"><span class="vbadge v-pass">前沿</span><span class="vbadge v-pass">可检验</span><span class="vbadge v-note">对应选修 + 2025–2026 科研</span></div>
+    </section>
+
+    <section class="section" style="border:none;padding:18px 0">
+      <h2 id="gw"><span class="num">L4·1</span>引力波：时空本身的涟漪</h2>
+      <div class="el el-concept">
+        <span class="tag">概念 · 起源</span>
+        加速的大质量天体（如双黑洞并合）扰动时空，以光速辐射引力波。爱因斯坦 1916 由广义相对论预言，<strong>2015 年 LIGO 首次直接探测</strong>到。
+      </div>
+      <div class="el el-formula">
+        <span class="tag">公式 · 应变幅度</span>
+        <div class="fml">h ~ (G/c⁴)·(2nd²I/dt²)/r
+探测灵敏度已达 h ~ 10⁻²¹（相当于 4 km 臂长变化 ~ 质子直径的千分之一）</div>
+      </div>
+      <div class="el el-example">
+        <span class="tag">示例 · GW150914</span>
+        首个信号来自约 13 亿光年外双黑洞并合，质量约 36+29→62 M⊙，辐射 ~3 M⊙c² 的能量。
+      </div>
+      <div class="el el-frontier">
+        <span class="tag">前沿 · 多信使</span>
+        引力波 + 电磁波 + 中微子联合观测开启"多信使天文学"，是当代宇宙学前沿。
+      </div>
+
+      <h2 id="qc"><span class="num">L4·2</span>量子计算：叠加态里的算力</h2>
+      <div class="el el-concept">
+        <span class="tag">概念 ·  qubit</span>
+        经典比特非 0 即 1；量子比特可处于 |0⟩、|1⟩ 的叠加 α|0⟩+β|1⟩（|α|²+|β|²=1）。n 个 qubit 同时表示 2ⁿ 个振幅，提供并行潜力。
+      </div>
+      <div class="el el-formula">
+        <span class="tag">公式 · 叠加与门</span>
+        <div class="fml">单 qubit 态：|ψ⟩ = α|0⟩ + β|1⟩
+Hadamard 门：H|0⟩ = (|0⟩+|1⟩)/√2
+n qubit 希尔伯特空间维数：2ⁿ</div>
+      </div>
+      <div class="el el-example">
+        <span class="tag">示例 · 规模进展</span>
+        2025 年中科大、浙大等在百比特级超导/中性原子芯片实现逻辑比特纠错新进展（Science/APS 2025 年度物理进展）。
+      </div>
+      <div class="el el-frontier">
+        <span class="tag">前沿 · 纠错</span>
+        物理比特有噪声，需用多个物理比特编码 1 个逻辑比特；表面码阈值约 1% 误码率以下可指数压制错误。
+      </div>
+
+      <h2 id="topo"><span class="num">L4·3</span>拓扑物态：受保护的新物质</h2>
+      <div class="el el-concept">
+        <span class="tag">概念 · 拓扑</span>
+        某些材料的整体拓扑性质使边界出现受对称性保护的导电通道，内部却绝缘——如拓扑绝缘体、量子反常霍尔效应。
+      </div>
+      <div class="el el-formula">
+        <span class="tag">公式 · 陈数</span>
+        <div class="fml">C = (1/2π)∬_BZ F_xy d²k    （陈数，整数拓扑不变量）
+量子霍尔电导：σ_xy = (e²/h)·C</div>
+      </div>
+      <div class="el el-frontier">
+        <span class="tag">前沿 · 拓扑量子计算</span>
+        任意子（如马约拉纳零模）的编织统计可做容错量子门，是拓扑量子计算路线。
+      </div>
+
+      <h2 id="dark"><span class="num">L4·4</span>暗物质与暗能量</h2>
+      <div class="el el-concept">
+        <span class="tag">概念 · 占比</span>
+        普通物质仅占宇宙质能约 5%；暗物质约 27%（靠引力显现，不发光）；暗能量约 68%（驱动加速膨胀）。
+      </div>
+      <div class="el el-formula">
+        <span class="tag">公式 · 弗里德曼</span>
+        <div class="fml">(ȧ/a)² = (8πG/3)ρ − k/a² + Λ/3
+（Λ 即暗能量项，对应等效密度 ρ_Λ = Λc²/(8πG)）</div>
+      </div>
+      <div class="el el-frontier">
+        <span class="tag">前沿 · 探测</span>
+        地下探测器、空间望远镜（如 Euclid）与对撞机正搜寻暗物质粒子候选（WIMP、轴子等）。
+      </div>
+
+      <h2 id="precision"><span class="num">L4·5</span>精密测量：盯着常数的呼吸</h2>
+      <div class="el el-concept">
+        <span class="tag">概念 · 光钟</span>
+        光学晶格钟频率稳定度已达 10⁻¹⁸ 量级，可探测引力红移（高度差数厘米即有别），用于检验基本常数是否随时间变化。
+      </div>
+      <div class="el el-formula">
+        <span class="tag">公式 · 引力红移</span>
+        <div class="fml">Δf/f = gh/c²      （高度差 h 引起的频率偏移）
+10⁻¹⁸ 稳定度对应可分辨 ~ 1 cm 高度差</div>
+      </div>
+
+      <h2 id="open"><span class="num">L4·6</span>开放问题清单</h2>
+      <div class="el el-frontier">
+        <span class="tag">前沿 · 未解</span>
+        <ul>
+          <li>暗物质的微观本质是什么？能否在实验室直接探测？</li>
+          <li>量子引力如何统一广义相对论与量子力学？</li>
+          <li>高温超导（强关联系统）的微观机制？</li>
+          <li>量子计算机能否在噪声下实现有实用价值的优势？</li>
+          <li>基本常数是否随宇宙时空演化？</li>
+        </ul>
+      </div>
+
+      <div class="note deep"><b>回到方法</b>前五层已构成完整认知阶梯。进入 <a href="method.html">方法论页</a> 看如何把这套体系变成可持续深化的学习循环。</div>
+      <div class="pager">
+        <a href="l3_pro.html"><span class="lb">← 上一层</span>L3 专业</a>
+        <a href="method.html" class="nx"><span class="lb">方法总结 →</span>方法论 · LEARN 循环</a>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="wrap foot"><p>高中物理超级研究馆 · L4 前沿层</p></div>
+</body>
+</html>
