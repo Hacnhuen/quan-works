@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>交互实验室 · 亲手调参 | InfoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html" class="on">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Interactive Laboratory</div>
+  <h1>交互实验室：把公式变成手感</h1>
+  <p>信息论的公式看起来抽象，是因为大多数人从没<strong>动手拧过里面的旋钮</strong>。本页把全站十个核心量做成可拖动的实验台：改一个参数，图、数、结论同时重算。每个实验都配有<em>该看什么</em>与<em>为什么是这样</em>，以及回到对应理论章节的链接。</p>
+  <div class="meta">
+    <i>10 个实验台</i><i>纯 Canvas 实现 · 无外部依赖</i><i>建议配合 L1–L4 边读边玩</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>实验台</h4>
+  <a href="#e1">01 · 自信息与惊奇度</a>
+  <a href="#e2">02 · 二元熵函数</a>
+  <a href="#e3">03 · 三元熵单纯形</a>
+  <a href="#e4">04 · KL 散度的不对称</a>
+  <a href="#e5">05 · BSC 互信息与容量</a>
+  <a href="#e6">06 · 信道容量总览</a>
+  <a href="#e7">07 · Shannon–Hartley 与带宽</a>
+  <a href="#e8">08 · Huffman 编码构树</a>
+  <a href="#e9">09 · 典型集与 AEP</a>
+  <a href="#e10">10 · 率失真曲线</a>
+  <div class="grp">
+    <h4>跳转</h4>
+    <a href="l1_foundation.html">L1 基础理论</a>
+    <a href="l3_advanced.html">L3 专业理论</a>
+    <a href="method.html">学习方法论</a>
+  </div>
+</aside>
+
+<main>
+
+<section class="section">
+  <div class="note deep">
+    <b>使用建议：三遍法</b>
+    第一遍<strong>乱拖</strong>——不看说明，先感受"哪个旋钮让曲线动得最厉害"。<br>
+    第二遍<strong>带问题拖</strong>——先预测"如果我把 p 调到 0.5 会怎样"，再拖动验证，预测错的地方就是你的理解漏洞。<br>
+    第三遍<strong>找极端</strong>——把参数推到边界（0、1、无穷），看公式是否退化成你熟悉的形式。极限行为最能暴露公式的真实结构。
+  </div>
+</section>
+
+<!-- ===== 01 自信息 ===== -->
+<section class="section" id="e1">
+  <h2><span class="num">01</span>自信息与惊奇度</h2>
+  <p class="lead">一切的起点：<span class="fml" style="display:inline-block;padding:3px 10px;margin:0">I(x) = −log₂ p(x)</span>。概率越小，发生时越"惊奇"，携带的信息越多。</p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：概率 → 信息量</div>
+    <div class="ctrl"><label for="a-p">事件概率 p</label><input type="range" id="a-p" min="0.005" max="1" step="0.005" value="0.125"><span class="val" id="a-pv">0.125</span></div>
+    <canvas id="a-cv" data-h="250"></canvas>
+    <div class="readout" id="a-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>p = 1 时 I = 0</b>：必然事件不含任何信息。这是整个理论的锚点。</li>
+      <li><b>p → 0 时 I → ∞</b>：越不可能的事发生，信息量越大，且发散没有上界。</li>
+      <li><b>曲线是凸的</b>：把 p 从 0.5 减到 0.25，信息只增加 1 bit；但从 0.02 减到 0.01，也只增加 1 bit。<em>每次概率减半，信息恰好 +1 bit</em>——这正是"以 2 为底"的含义。</li>
+      <li><b>为什么必须是对数？</b>因为要求独立事件信息可加：I(x,y) = I(x)+I(y) 而 p(x,y)=p(x)p(y)，能把乘法变加法的连续函数只有对数（Cauchy 函数方程）。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l0_intuition.html">L0 §02</a> · <a href="l1_foundation.html">L1 §02</a></p>
+  </div>
+</section>
+
+<!-- ===== 02 二元熵 ===== -->
+<section class="section" id="e2">
+  <h2><span class="num">02</span>二元熵函数 H₂(p)</h2>
+  <p class="lead">信息论里出现频率最高的一条曲线。几乎所有二元问题的答案里都有它。</p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：H₂(p) = −p log₂p − (1−p) log₂(1−p)</div>
+    <div class="ctrl"><label for="b-p">p</label><input type="range" id="b-p" min="0" max="1" step="0.005" value="0.3"><span class="val" id="b-pv">0.300</span></div>
+    <canvas id="b-cv" data-h="250"></canvas>
+    <div class="readout" id="b-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>对称性</b>：H₂(p) = H₂(1−p)。熵只关心"分布多不均匀"，不关心哪个结果被叫做"正面"。</li>
+      <li><b>唯一最大值在 p=0.5，H=1 bit</b>：均匀分布熵最大——这是最大熵原理（<a href="l4_frontier.html">L4 §03</a>）最简单的实例。</li>
+      <li><b>顶部极平坦</b>：p 从 0.5 变到 0.4，熵只从 1.000 掉到 0.971，损失不到 3%。<em>轻度偏斜的硬币几乎和公平硬币一样难猜</em>——这解释了为什么检测微弱偏差需要海量样本。</li>
+      <li><b>两端极陡</b>：p 从 0.01 到 0.02，熵从 0.081 跳到 0.141，翻了近一倍。<em>在接近确定的区域，一点点不确定性的增加代价巨大</em>——这是低错误率通信为何昂贵的根源。</li>
+      <li><b>严格凹</b>：这保证了 Jensen 不等式可用，是 L1 中"条件化不增熵"等一系列证明的基础。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l1_foundation.html">L1 §03</a></p>
+  </div>
+</section>
+
+<!-- ===== 03 三元熵 ===== -->
+<section class="section" id="e3">
+  <h2><span class="num">03</span>三元分布的熵：越均匀越大</h2>
+  <p class="lead">把二元推广到三元，可以直接看到"熵 = 分布的均匀程度"这个几何直觉。</p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：三元分布 (p₁, p₂, p₃)</div>
+    <div class="ctrl"><label for="c-p1">p₁</label><input type="range" id="c-p1" min="0.01" max="0.98" step="0.01" value="0.5"><span class="val" id="c-p1v">0.50</span></div>
+    <div class="ctrl"><label for="c-p2">p₂ / (p₂+p₃) 的占比</label><input type="range" id="c-p2" min="0.01" max="0.99" step="0.01" value="0.5"><span class="val" id="c-p2v">0.50</span></div>
+    <canvas id="c-cv" data-h="250"></canvas>
+    <div class="readout" id="c-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>上界 log₂3 = 1.585 bit</b>，只在 (1/3,1/3,1/3) 处取到。任何偏离都严格降低熵。</li>
+      <li><b>把两个概率合并会降熵</b>：让 p₃→0，熵就趋近于二元熵 H₂(p₁)，上界降到 1 bit。<em>字母表变小 ⟹ 熵上界变小</em>。</li>
+      <li><b>"归组"的代价</b>：这个实验直接展示了 L1 中的<em>分组公理</em>（Shannon 熵三条公理之一）：把两个符号合并成一个，损失的熵恰好是"组内选择"的期望熵。</li>
+      <li><b>与压缩的联系</b>：熵值 = 每符号平均最少比特数。当前分布下 Huffman 码长应落在 [H, H+1) 内，可以到实验 08 验证。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l1_foundation.html">L1 §03</a></p>
+  </div>
+</section>
+
+<!-- ===== 04 KL ===== -->
+<section class="section" id="e4">
+  <h2><span class="num">04</span>KL 散度：为什么它不是距离</h2>
+  <p class="lead">D(p‖q) 度量"用 q 编码来自 p 的数据，每符号多花几个比特"。它非负、非对称、不满足三角不等式。</p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：两个伯努利分布之间的 KL</div>
+    <div class="ctrl"><label for="d-p">真实分布 p</label><input type="range" id="d-p" min="0.01" max="0.99" step="0.01" value="0.7"><span class="val" id="d-pv">0.70</span></div>
+    <div class="ctrl"><label for="d-q">模型分布 q</label><input type="range" id="d-q" min="0.01" max="0.99" step="0.01" value="0.3"><span class="val" id="d-qv">0.30</span></div>
+    <canvas id="d-cv" data-h="250"></canvas>
+    <div class="readout" id="d-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>D ≥ 0，等号仅当 p = q</b>：Gibbs 不等式。这是信息论中<em>被使用次数最多</em>的一条不等式——最大熵定理、互信息非负、Fano 不等式的证明都靠它。</li>
+      <li><b>严重不对称</b>：试试 p=0.9, q=0.5 与 p=0.5, q=0.9，两个值差很多。所以"KL 距离"是错误说法，正确叫法是"KL 散度"。</li>
+      <li><b>q 趋近 0 或 1 时 D 爆炸</b>：如果模型断言某事件不可能（q≈0）而它实际会发生（p&gt;0），惩罚趋于无穷。<em>这就是机器学习中"永远不要输出概率 0"的信息论理由</em>，也是 label smoothing、加性平滑存在的原因。</li>
+      <li><b>交叉熵分解</b>：读数中的 H(p,q) = H(p) + D(p‖q)。训练神经网络最小化 H(p,q)，而 H(p) 固定，所以实际在最小化 KL。见 <a href="l4_frontier.html">L4 §05</a>。</li>
+      <li><b>局部近似</b>：当 q 靠近 p 时 D ≈ (p−q)²/(2·ln2·q(1−q))，是二次的——这就是 Fisher 信息与统计流形几何的起点。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l1_foundation.html">L1 §05</a></p>
+  </div>
+</section>
+
+<!-- ===== 05 BSC ===== -->
+<section class="section" id="e5">
+  <h2><span class="num">05</span>BSC 的互信息与容量</h2>
+  <p class="lead">固定信道翻转率 ε，改变输入分布 p，看互信息 I(X;Y) 如何变化。<strong>容量就是这条曲线的最高点。</strong></p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：I(X;Y) 随输入分布 p 的变化（BSC）</div>
+    <div class="ctrl"><label for="e-eps">信道翻转率 ε</label><input type="range" id="e-eps" min="0" max="1" step="0.005" value="0.11"><span class="val" id="e-epsv">0.110</span></div>
+    <div class="ctrl"><label for="e-p">输入分布 p = P(X=1)</label><input type="range" id="e-p" min="0" max="1" step="0.005" value="0.5"><span class="val" id="e-pv">0.500</span></div>
+    <canvas id="e-cv" data-h="255"></canvas>
+    <div class="readout" id="e-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>最优输入永远是 p = 0.5</b>：无论 ε 取什么值，曲线顶点都在正中间。这是 BSC 的对称性带来的，容量 C = 1 − H₂(ε)。</li>
+      <li><b>ε = 0.5 时容量为 0</b>：信道完全随机，输出与输入独立，一个比特都传不了。此时曲线被压成一条贴地的直线。</li>
+      <li><b>ε = 0 和 ε = 1 时容量都是 1</b>！这是最反直觉的一点：<em>"总是翻转"和"从不翻转"一样好</em>，因为接收方只要把结果取反即可。信息论关心的是<strong>可恢复性</strong>，不是"看起来对不对"。</li>
+      <li><b>C 关于 ε 对称</b>：C(ε) = C(1−ε)，所以"噪声"的坏处在 ε=0.5 处最大。</li>
+      <li><b>数值感：</b>ε=0.11 时 C ≈ 0.5，即每 2 个信道使用只能传 1 比特有效信息——这恰好是许多编码理论论文的基准工作点。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l1_foundation.html">L1 §08–09</a> · 定理 <a href="l2_theorems.html">L2 第二定理</a></p>
+  </div>
+</section>
+
+<!-- ===== 06 容量总览 ===== -->
+<section class="section" id="e6">
+  <h2><span class="num">06</span>三种信道的容量对比</h2>
+  <p class="lead">同一个"噪声参数"下，BSC（翻转）、BEC（擦除）、Z 信道（单向错）的容量差多少？这个对比能建立很强的直觉。</p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：容量 vs 噪声参数</div>
+    <div class="ctrl"><label for="f-x">噪声参数 δ</label><input type="range" id="f-x" min="0" max="1" step="0.005" value="0.3"><span class="val" id="f-xv">0.300</span></div>
+    <canvas id="f-cv" data-h="265"></canvas>
+    <div class="readout" id="f-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>BEC 永远最好</b>：C = 1 − δ，是一条直线。因为擦除是"<em>知道自己不知道</em>"——接收方明确知道哪些位丢了，可以直接请求重传或用擦除码恢复。</li>
+      <li><b>BSC 最差</b>：C = 1 − H₂(δ)。翻转是"<em>不知道自己不知道</em>"，接收方无法定位错误，必须付出更大代价。</li>
+      <li><b>关键对比</b>：δ=0.5 时 BEC 还有 0.5 bit 容量，而 BSC 已经归零。<em>同样"一半出问题"，知道位置与不知道位置，差别是有与无</em>。这是信息论最实用的一条工程洞见——设计系统时应尽量把"错误"转化为"擦除"（这正是 CRC 校验 + 丢包重传的思路）。</li>
+      <li><b>Z 信道居中</b>：只有 1→0 会错，0 永远正确。它不对称，最优输入分布也不是 0.5（读数中给出）。这提醒我们：<em>"均匀输入最优"只是对称信道的特权</em>。</li>
+      <li><b>δ→1 时 Z 信道容量趋于 0 但衰减很慢</b>：因为总还有"发 0"这条完全可靠的通道。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l1_foundation.html">L1 §08</a></p>
+  </div>
+</section>
+
+<!-- ===== 07 Shannon-Hartley ===== -->
+<section class="section" id="e7">
+  <h2><span class="num">07</span>Shannon–Hartley 与带宽—功率权衡</h2>
+  <p class="lead">连续信道的容量公式 <span class="fml" style="display:inline-block;padding:3px 10px;margin:0">C = B log₂(1 + S/N)</span>，是全部无线通信工程的定价表。</p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：容量 vs 带宽（功率固定）</div>
+    <div class="ctrl"><label for="g-snr">信噪比 SNR (dB)</label><input type="range" id="g-snr" min="-10" max="40" step="0.5" value="20"><span class="val" id="g-snrv">20.0</span></div>
+    <div class="ctrl"><label for="g-b">带宽 B (MHz)</label><input type="range" id="g-b" min="0.1" max="100" step="0.1" value="20"><span class="val" id="g-bv">20.0</span></div>
+    <canvas id="g-cv" data-h="265"></canvas>
+    <div class="readout" id="g-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>带宽是线性的，功率是对数的</b>：带宽翻倍，容量翻倍；功率翻倍（+3dB），高 SNR 下容量只加 B 比特。<em>这就是为什么 5G 疯狂抢频谱（毫米波），而不是简单加大发射功率</em>——买带宽的性价比高得多。</li>
+      <li><b>高 SNR 近似 C ≈ B·SNR<sub>dB</sub>/3.01</b>：每 3 dB 增益换 1 bit/s/Hz。工程师的心算公式。</li>
+      <li><b>低 SNR 近似 C ≈ 1.44·B·(S/N)</b>：此时容量与功率成正比，与带宽无关（因为 S/N 中 N=N₀B 随 B 增长）。</li>
+      <li><b>带宽无限时的极限</b>：C<sub>∞</sub> = S/(N₀ ln2)。即使带宽无穷，容量仍有限——由功率决定。对应的最小能量效率是 <strong>E<sub>b</sub>/N₀ = ln2 = −1.59 dB</strong>，这就是著名的 <em>Shannon 极限</em>，是所有编码方案的终极靶心。</li>
+      <li><b>误区提醒</b>：这条公式只对 AWGN 成立。真实无线信道有衰落、干扰、多径，容量分析要用 L3 的网络信息论工具。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l1_foundation.html">L1 §10</a></p>
+  </div>
+</section>
+
+<!-- ===== 08 Huffman ===== -->
+<section class="section" id="e8">
+  <h2><span class="num">08</span>Huffman 编码：亲手验证 H ≤ L &lt; H+1</h2>
+  <p class="lead">修改符号概率，实时重建 Huffman 树，对比平均码长与熵下界。<strong>Shannon 第一定理的实证版。</strong></p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：6 符号 Huffman 编码</div>
+    <div class="ctrl"><label for="h-skew">分布偏斜度</label><input type="range" id="h-skew" min="0" max="1" step="0.01" value="0.6"><span class="val" id="h-skewv">0.60</span></div>
+    <div class="ctrl"><label for="h-n">符号数</label><input type="range" id="h-n" min="2" max="8" step="1" value="6"><span class="val" id="h-nv">6</span></div>
+    <canvas id="h-cv" data-h="230"></canvas>
+    <div class="readout" id="h-out"></div>
+    <div class="tw" style="margin-top:12px">
+      <table id="h-tab">
+        <thead><tr><th>符号</th><th>概率 p</th><th>理想码长 −log₂p</th><th>Huffman 码字</th><th>实际长度</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>永远满足 H ≤ L &lt; H + 1</b>：无论怎么拖，读数中的"冗余 L−H"总在 [0,1) 内。这是 Shannon 第一定理的可达性部分，Huffman 达到了最优前缀码。</li>
+      <li><b>偏斜度 = 0 时（均匀分布）</b>：所有码字等长，L = H = log₂n（当 n 是 2 的幂时严格相等，冗余为 0）。<em>均匀分布下压缩毫无用武之地</em>。</li>
+      <li><b>偏斜度大时压缩收益明显</b>：高概率符号得到 1–2 比特的短码，L 显著低于 log₂n。这就是压缩的全部秘密——<strong>用短码换高频</strong>。</li>
+      <li><b>冗余何时最大？</b>试着让某个概率接近但不等于 2 的负幂（如 p=0.3）。因为码长必须是整数，而理想码长 −log₂0.3 = 1.74，只能取 2，浪费了 0.26 比特。<em>整数约束是 Huffman 唯一的损失来源</em>。</li>
+      <li><b>怎么消除这最后 1 比特？</b>对 n 个符号联合编码，冗余摊薄为 1/n；或者用算术编码 / ANS 直接逼近熵。见 <a href="l2_theorems.html">L2 §08</a>。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l1_foundation.html">L1 §07</a> · <a href="l2_theorems.html">L2 第一定理</a></p>
+  </div>
+</section>
+
+<!-- ===== 09 AEP ===== -->
+<section class="section" id="e9">
+  <h2><span class="num">09</span>典型集：概率如何坍缩到一小撮序列上</h2>
+  <p class="lead">AEP 说：当 n 很大，几乎所有概率质量都集中在约 2<sup>nH</sup> 条"典型序列"上，而它们只占全部 2<sup>n</sup> 条序列的极小比例。这个实验让你看到坍缩过程。</p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：n 增大时典型集的两个极限</div>
+    <div class="ctrl"><label for="i-p">信源偏置 p = P(1)</label><input type="range" id="i-p" min="0.02" max="0.98" step="0.01" value="0.25"><span class="val" id="i-pv">0.25</span></div>
+    <div class="ctrl"><label for="i-n">序列长度 n</label><input type="range" id="i-n" min="4" max="400" step="1" value="60"><span class="val" id="i-nv">60</span></div>
+    <canvas id="i-cv" data-h="265"></canvas>
+    <div class="readout" id="i-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>两条曲线朝相反方向跑</b>：蓝线是<em>典型集的概率</em>（→ 1），橙线是<em>典型集占全部序列的比例</em>（→ 0）。这就是 AEP 的全部内容：<strong>一个可忽略比例的子集，装下了几乎全部概率</strong>。</li>
+      <li><b>数量级的震撼</b>：p=0.25、n=200 时，全部序列有 2²⁰⁰ ≈ 10⁶⁰ 条，典型集约 2^(200×0.811) ≈ 10⁴⁸ 条——典型集只占十亿亿亿亿分之一，却承载 99% 以上的概率。</li>
+      <li><b>这就是压缩的原理</b>：既然只有 2<sup>nH</sup> 条序列真正会出现，给它们编号只需 nH 比特，而不是 n 比特。压缩率 H &lt; 1 的来源就在这里，没有别的魔法。</li>
+      <li><b>p → 0.5 时典型集比例趋于 1</b>：均匀信源下每条序列都同样典型，无法压缩。拖动 p 到 0.5 验证这一点。</li>
+      <li><b>n 小的时候 AEP 不成立</b>：n=10 时两条曲线都还在中间地带。<em>AEP 是渐近定理，有限 n 下的偏差正是 L3 有限块长理论要处理的问题</em>。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l2_theorems.html">L2 §02–03</a> · 有限 n 修正见 <a href="l3_advanced.html">L3 §07</a></p>
+  </div>
+</section>
+
+<!-- ===== 10 率失真 ===== -->
+<section class="section" id="e10">
+  <h2><span class="num">10</span>率失真曲线：允许出错能省多少比特</h2>
+  <p class="lead">Shannon 第三定理。无损压缩的下界是 H；如果允许失真 D，下界降到 R(D)。这条曲线是 JPEG、MP3、模型量化的共同理论基础。</p>
+
+  <div class="lab">
+    <div class="lab-h">▶ 实验：伯努利源与高斯源的 R(D)</div>
+    <div class="ctrl"><label for="j-src">信源类型</label>
+      <select id="j-src" style="background:#131a2b;color:#e8edf7;border:1px solid #2a3550;border-radius:6px;padding:5px 9px;font-family:inherit;font-size:13px">
+        <option value="bern">伯努利源（汉明失真）</option>
+        <option value="gauss">高斯源（平方误差）</option>
+      </select>
+    </div>
+    <div class="ctrl"><label for="j-p">信源参数 p 或 σ</label><input type="range" id="j-p" min="0.05" max="0.95" step="0.01" value="0.5"><span class="val" id="j-pv">0.50</span></div>
+    <div class="ctrl"><label for="j-d">允许失真 D</label><input type="range" id="j-d" min="0.001" max="0.6" step="0.001" value="0.1"><span class="val" id="j-dv">0.100</span></div>
+    <canvas id="j-cv" data-h="265"></canvas>
+    <div class="readout" id="j-out"></div>
+  </div>
+
+  <div class="el el-concept">
+    <span class="tag">该看什么</span>
+    <ul>
+      <li><b>D = 0 时 R = H</b>：无损情形回到 Shannon 第一定理，两个定理在这里对接。</li>
+      <li><b>曲线是凸递减的</b>：一开始"放宽一点点失真"就能省掉大量比特（曲线陡），之后收益递减。<em>这解释了为什么有损压缩的第一步收益最大</em>——JPEG 质量从 100 降到 90，文件小一半而肉眼几乎无差；从 50 降到 40 就明显掉画质了。</li>
+      <li><b>伯努利源：R(D) = H₂(p) − H₂(D)，D ≥ min(p,1−p) 时 R = 0</b>。后半句意思是：失真容忍度一旦超过"直接猜多数类"的错误率，就完全不需要传任何信息。拖动 D 越过 p 看曲线触底。</li>
+      <li><b>高斯源：R(D) = ½ log₂(σ²/D)</b>，每减半失真需要 +0.5 bit。等价说法：<strong>每增加 1 bit，信噪比提升 6.02 dB</strong>——这是量化器设计的黄金法则（"6 dB per bit"）。</li>
+      <li><b>与 LLM 量化的联系</b>：把权重从 FP16 压到 INT4，就是在这条曲线上取一个工作点。R(D) 告诉你理论上能省多少，实际方法（GPTQ / AWQ）离这个界还有多远。</li>
+    </ul>
+    <p style="margin-bottom:0">→ 理论出处：<a href="l3_advanced.html">L3 §01–02</a></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="card">
+    <h4 style="margin-top:0">实验室之后：三条延伸路线</h4>
+    <ol>
+      <li><strong>自己实现一遍。</strong>本页所有计算都是二三十行 JavaScript。用 Python 重写并加上真实数据（比如统计一本英文小说的字母熵，与 Shannon 1951 的 4.03 bit/字母对比）。</li>
+      <li><strong>做数值实验验证定理。</strong>随机生成 DMC，用 Blahut–Arimoto 算容量（<a href="l3_advanced.html">L3 §03</a>），再用蒙特卡洛模拟随机编码，看误码率是否在 R&lt;C 时随 n 指数下降。</li>
+      <li><strong>攻击本站的三条预测。</strong><a href="l4_frontier.html#pred">L4 §08</a> 给出了 P1/P2/P3 三条可证伪陈述，检验脚本框架在 <a href="verify.html">AI 检验页</a>。找到反例比读懂证明更有价值。</li>
+    </ol>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l4_frontier.html"><span class="lb">← 上一站</span>L4 前沿 · Shannon 之外</a>
+  <a class="nx" href="method.html"><span class="lb">下一站 →</span>学习方法论 · 怎么学才有效</a>
+</div>
+
+<footer class="foot">
+  <p>实验台全部为原生 Canvas 实现，无外部依赖。公式依据：Cover &amp; Thomas <i>Elements of Information Theory</i> 2nd ed.（H₂、KL、BSC/BEC 容量、Huffman 界、AEP、率失真闭式解）· Shannon 1948（信道容量、Shannon–Hartley）· Shannon 1959（率失真）· Huffman 1952。数值均可与教材例题逐条核对。</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+(function(){
+var L2 = ILMath.log2, h2 = ILMath.h2, H = ILMath.H;
+function $(id){ return document.getElementById(id); }
+function set(id,v){ var e=$(id); if(e) e.textContent=v; }
+
+/* ===== 01 自信息 ===== */
+if($('a-cv')){
+  var ap = new ILPlot($('a-cv'), {xr:[0,1], yr:[0,8], xlabel:'概率 p', ylabel:'自信息 I = −log₂p (bit)'});
+  ILBind(['a-p'], function(){
+    var p = +$('a-p').value; set('a-pv', p.toFixed(3));
+    ap.resize(); ap.clear(); ap.axes(5,8);
+    ap.line(function(v){ return v<=0?NaN:-L2(v); }, '#38bdf8', 2.4);
+    var I = -L2(p);
+    ap.dot(p, I, '#f472b6', 'I='+I.toFixed(3));
+    // 参考虚线
+    var x=ap.ctx;
+    x.save(); x.strokeStyle='#3a4763'; x.setLineDash([4,4]); x.lineWidth=1;
+    [0.5,0.25,0.125,0.0625].forEach(function(v){
+      x.beginPath(); x.moveTo(ap.px(v), ap.py(0)); x.lineTo(ap.px(v), ap.py(-L2(v))); x.stroke();
+    });
+    x.restore();
+    $('a-out').innerHTML =
+      'p = <b>'+p.toFixed(3)+'</b>　→　I(x) = <b>'+I.toFixed(4)+'</b> bit　＝　<b>'+(I*Math.LN2).toFixed(4)+'</b> nat<br>'+
+      '直观：需要问约 <b>'+Math.ceil(I)+'</b> 个是非题才能锁定这个事件。'+
+      (p>0.99 ? '　（几乎必然发生 → 几乎不含信息）' : p<0.02 ? '　（极罕见事件 → 信息量巨大）' : '')+
+      '<br><span style="color:var(--ink-3)">虚线标出 p = 1/2, 1/4, 1/8, 1/16 处，对应 I = 1, 2, 3, 4 bit——每次概率减半，信息 +1 bit。</span>';
+  });
+}
+
+/* ===== 02 二元熵 ===== */
+if($('b-cv')){
+  var bp = new ILPlot($('b-cv'), {xr:[0,1], yr:[0,1.05], xlabel:'p', ylabel:'H₂(p) (bit)'});
+  ILBind(['b-p'], function(){
+    var p = +$('b-p').value; set('b-pv', p.toFixed(3));
+    bp.resize(); bp.clear(); bp.axes(5,5);
+    bp.line(function(v){ return h2(v); }, '#38bdf8', 2.4);
+    bp.vline(0.5, '#34d399');
+    var Hv = h2(p);
+    bp.dot(p, Hv, '#f472b6', 'H='+Hv.toFixed(4));
+    var slope = (p>0&&p<1) ? L2((1-p)/p) : NaN;
+    $('b-out').innerHTML =
+      'H₂('+p.toFixed(3)+') = <b>'+Hv.toFixed(5)+'</b> bit　·　距最大值 1 bit 差 <b>'+(1-Hv).toFixed(5)+'</b><br>'+
+      '导数 H₂′(p) = log₂((1−p)/p) = <b>'+(isFinite(slope)?slope.toFixed(3):'±∞')+'</b>　'+
+      '<span style="color:var(--ink-3)">（p=0.5 处导数为 0 → 顶点平坦；p→0 或 1 处导数发散 → 两端陡峭）</span><br>'+
+      '等价解读：一枚 p 偏置的硬币，平均每次投掷提供 '+Hv.toFixed(3)+' bit 信息；'+
+      '投 1000 次的序列，最优压缩后约 <b>'+Math.round(Hv*1000)+'</b> bit。';
+  });
+}
+
+/* ===== 03 三元熵 ===== */
+if($('c-cv')){
+  var cp = new ILPlot($('c-cv'), {xr:[0,3], yr:[0,1], xlabel:'符号', ylabel:'概率'});
+  ILBind(['c-p1','c-p2'], function(){
+    var p1 = +$('c-p1').value, r = +$('c-p2').value;
+    set('c-p1v', p1.toFixed(2)); set('c-p2v', r.toFixed(2));
+    var rest = 1 - p1, p2 = rest*r, p3 = rest*(1-r);
+    var ps = [p1,p2,p3], Hv = H(ps), max = L2(3);
+    cp.yr = [0, 1]; cp.resize(); cp.clear(); cp.axes(3,5);
+    cp.bars(ps, ['#38bdf8','#a78bfa','#34d399']);
+    var x = cp.ctx, Y = cp.py(1/3);
+    x.save(); x.strokeStyle='#fbbf24'; x.setLineDash([5,4]); x.lineWidth=1.3;
+    x.beginPath(); x.moveTo(cp.pad.l,Y); x.lineTo(cp.w-cp.pad.r,Y); x.stroke(); x.restore();
+    x.fillStyle='#fbbf24'; x.font='10.5px ui-monospace,monospace';
+    x.textAlign='left'; x.textBaseline='bottom'; x.fillText('均匀 1/3', cp.pad.l+6, Y-4);
+    x.fillStyle='#e8edf7'; x.textAlign='center';
+    var bw=(cp.w-cp.pad.l-cp.pad.r)/3;
+    ['p₁','p₂','p₃'].forEach(function(lb,i){
+      x.fillText(lb+'='+ps[i].toFixed(3), cp.pad.l+bw*(i+0.5), cp.py(ps[i])-6);
+    });
+    $('c-out').innerHTML =
+      'H(p₁,p₂,p₃) = <b>'+Hv.toFixed(5)+'</b> bit　·　上限 log₂3 = <b>'+max.toFixed(5)+'</b>　·　'+
+      '距上限 <b>'+(max-Hv).toFixed(5)+'</b> bit<br>'+
+      '归一化熵（均匀度）= H/log₂3 = <b>'+(Hv/max*100).toFixed(2)+'%</b>　·　'+
+      '有效符号数 2^H = <b>'+Math.pow(2,Hv).toFixed(3)+'</b>'+
+      '<span style="color:var(--ink-3)">（相当于几个等概率符号；上限 3）</span>';
+  });
+}
+
+/* ===== 04 KL ===== */
+if($('d-cv')){
+  var dp = new ILPlot($('d-cv'), {xr:[0.01,0.99], yr:[0,4], xlabel:'模型分布 q', ylabel:'D(p‖q) (bit)'});
+  function kl(p,q){
+    var s=0;
+    if(p>0) s += p*L2(p/q);
+    if(1-p>0) s += (1-p)*L2((1-p)/(1-q));
+    return s;
+  }
+  ILBind(['d-p','d-q'], function(){
+    var p=+$('d-p').value, q=+$('d-q').value;
+    set('d-pv',p.toFixed(2)); set('d-qv',q.toFixed(2));
+    dp.resize(); dp.clear(); dp.axes(5,4);
+    dp.line(function(v){ return kl(p,v); }, '#38bdf8', 2.4);
+    dp.line(function(v){ return kl(v,p); }, '#a78bfa', 1.8);
+    dp.vline(p, '#34d399');
+    var d1=kl(p,q), d2=kl(q,p), Hp=h2(p), CE=Hp+d1;
+    dp.dot(q, d1, '#f472b6', 'D(p‖q)='+d1.toFixed(3));
+    var x=dp.ctx;
+    x.fillStyle='#a78bfa'; x.font='10.5px ui-monospace,monospace';
+    x.textAlign='right'; x.textBaseline='top';
+    x.fillText('紫线 = D(q‖p)（角色互换）', dp.w-dp.pad.r-6, dp.pad.t+4);
+    $('d-out').innerHTML =
+      'D(p‖q) = <b>'+d1.toFixed(5)+'</b> bit　　D(q‖p) = <b>'+d2.toFixed(5)+'</b> bit　'+
+      '<span style="color:'+(Math.abs(d1-d2)>1e-6?'var(--warn)':'var(--ink-3)')+'">'+
+      (Math.abs(d1-d2)>1e-6 ? '← 两者不相等，KL 不对称！' : '← 此处恰好相等（p=q 或对称点）')+'</span><br>'+
+      'H(p) = '+Hp.toFixed(4)+'　+　D(p‖q) = '+d1.toFixed(4)+'　⟹　交叉熵 H(p,q) = <b>'+CE.toFixed(4)+'</b> bit<br>'+
+      '<span style="color:var(--ink-3)">解读：真实分布是 p，但你按 q 设计编码，每个符号平均多花 '+d1.toFixed(4)+' bit。'+
+      '绿色竖线 q=p 处 D=0，是唯一的零点。</span>';
+  });
+}
+
+/* ===== 05 BSC ===== */
+if($('e-cv')){
+  var ep = new ILPlot($('e-cv'), {xr:[0,1], yr:[0,1.05], xlabel:'输入分布 p = P(X=1)', ylabel:'I(X;Y) (bit)'});
+  function bscI(p,eps){
+    var py1 = p*(1-eps) + (1-p)*eps;
+    return h2(py1) - h2(eps);
+  }
+  ILBind(['e-eps','e-p'], function(){
+    var eps=+$('e-eps').value, p=+$('e-p').value;
+    set('e-epsv',eps.toFixed(3)); set('e-pv',p.toFixed(3));
+    ep.resize(); ep.clear(); ep.axes(5,5);
+    ep.line(function(v){ return Math.max(0,bscI(v,eps)); }, '#38bdf8', 2.4);
+    ep.line(function(v){ return Math.max(0,bscI(v,0)); }, '#3a4763', 1.3);
+    ep.vline(0.5,'#34d399');
+    var I=Math.max(0,bscI(p,eps)), C=Math.max(0,1-h2(eps));
+    ep.dot(p, I, '#f472b6', 'I='+I.toFixed(4));
+    var x=ep.ctx, Y=ep.py(C);
+    x.save(); x.strokeStyle='#fbbf24'; x.setLineDash([5,4]); x.lineWidth=1.3;
+    x.beginPath(); x.moveTo(ep.pad.l,Y); x.lineTo(ep.w-ep.pad.r,Y); x.stroke(); x.restore();
+    x.fillStyle='#fbbf24'; x.font='10.5px ui-monospace,monospace';
+    x.textAlign='left'; x.textBaseline='bottom';
+    x.fillText('容量 C = 1 − H₂(ε) = '+C.toFixed(4), ep.pad.l+6, Y-4);
+    $('e-out').innerHTML =
+      'I(X;Y) = <b>'+I.toFixed(5)+'</b> bit　·　信道容量 C = 1 − H₂('+eps.toFixed(3)+') = <b>'+C.toFixed(5)+'</b> bit/使用<br>'+
+      '当前输入距最优损失 <b>'+(C-I).toFixed(5)+'</b> bit'+(Math.abs(p-0.5)<0.006?'　（已在最优点 p=0.5）':'　→ 把 p 拖到 0.5 可取到容量')+'<br>'+
+      '<span style="color:var(--ink-3)">工程含义：要无差错传 1000 bit 信息，至少需要 <b>'+
+      (C>1e-6?Math.ceil(1000/C):'∞')+'</b> 次信道使用（码率 R &lt; C）。灰线为无噪声 (ε=0) 时的对照。</span>';
+  });
+}
+
+/* ===== 06 容量对比 ===== */
+if($('f-cv')){
+  var fp = new ILPlot($('f-cv'), {xr:[0,1], yr:[0,1.05], xlabel:'噪声参数 δ', ylabel:'容量 C (bit/使用)'});
+  function zCap(d){
+    // Z 信道: 1->0 概率 d. C = log2(1 + (1-d)*d^(d/(1-d)))
+    if(d<=0) return 1;
+    if(d>=1) return 0;
+    var s = Math.pow(d, d/(1-d));
+    return L2(1 + (1-d)*s);
+  }
+  ILBind(['f-x'], function(){
+    var d=+$('f-x').value; set('f-xv',d.toFixed(3));
+    fp.resize(); fp.clear(); fp.axes(5,5);
+    fp.line(function(v){ return Math.max(0,1-h2(v)); }, '#f472b6', 2.2);   // BSC
+    fp.line(function(v){ return 1-v; }, '#34d399', 2.2);                    // BEC
+    fp.line(function(v){ return zCap(v); }, '#fbbf24', 2.2);                // Z
+    fp.vline(d, '#8592ab');
+    var cB=Math.max(0,1-h2(d)), cE=1-d, cZ=zCap(d);
+    fp.dot(d,cB,'#f472b6'); fp.dot(d,cE,'#34d399'); fp.dot(d,cZ,'#fbbf24');
+    var x=fp.ctx; x.font='11px ui-monospace,monospace'; x.textAlign='left'; x.textBaseline='top';
+    x.fillStyle='#34d399'; x.fillText('BEC  C=1−δ',        fp.pad.l+8, fp.pad.t+4);
+    x.fillStyle='#fbbf24'; x.fillText('Z 信道',              fp.pad.l+8, fp.pad.t+19);
+    x.fillStyle='#f472b6'; x.fillText('BSC  C=1−H₂(δ)',    fp.pad.l+8, fp.pad.t+34);
+    $('f-out').innerHTML =
+      'δ = <b>'+d.toFixed(3)+'</b> 时：　'+
+      'BEC C = <b style="color:#34d399">'+cE.toFixed(4)+'</b>　·　'+
+      'Z 信道 C = <b style="color:#fbbf24">'+cZ.toFixed(4)+'</b>　·　'+
+      'BSC C = <b style="color:#f472b6">'+cB.toFixed(4)+'</b><br>'+
+      'BEC / BSC 容量比 = <b>'+(cB>1e-6?(cE/cB).toFixed(3):'∞')+'</b> 倍　'+
+      '<span style="color:var(--ink-3)">——"知道错在哪"比"不知道错在哪"值这么多。</span><br>'+
+      '<span style="color:var(--ink-3)">δ=0.5 处最能说明问题：BEC 仍有 0.5 bit，BSC 归零。工程上应尽量把错误转为擦除（CRC + 重传 / 擦除码）。</span>';
+  });
+}
+
+/* ===== 07 Shannon-Hartley ===== */
+if($('g-cv')){
+  var gp = new ILPlot($('g-cv'), {xr:[0,100], yr:[0,400], xlabel:'带宽 B (MHz)', ylabel:'容量 C (Mbps)'});
+  ILBind(['g-snr','g-b'], function(){
+    var snrdb=+$('g-snr').value, B=+$('g-b').value;
+    set('g-snrv',snrdb.toFixed(1)); set('g-bv',B.toFixed(1));
+    var snr = Math.pow(10, snrdb/10);
+    var Cmax = 100 * L2(1+snr);
+    gp.yr=[0, Math.max(20, Cmax*1.12)];
+    gp.resize(); gp.clear(); gp.axes(5,5);
+    gp.line(function(v){ return v*L2(1+snr); }, '#38bdf8', 2.4);
+    // 带宽无限极限（把总功率固定时的曲线）: C = B log2(1 + S/(N0 B))，取 S/N0 = snr * (B0=当前B)
+    var SN0 = snr * B;   // MHz 单位下的 S/N0
+    gp.line(function(v){ return v<=0?0 : v*L2(1+SN0/v); }, '#fbbf24', 1.8);
+    var C = B*L2(1+snr);
+    gp.dot(B, C, '#f472b6', 'C='+C.toFixed(1)+' Mbps');
+    var Cinf = SN0/Math.LN2;
+    var x=gp.ctx; x.font='10.5px ui-monospace,monospace'; x.textAlign='right'; x.textBaseline='top';
+    x.fillStyle='#fbbf24';
+    x.fillText('橙线：固定总功率时增带宽 → 趋于 C∞ = '+Cinf.toFixed(1)+' Mbps', gp.w-gp.pad.r-6, gp.pad.t+4);
+    x.fillStyle='#38bdf8';
+    x.fillText('蓝线：SNR 固定时增带宽 → 线性增长', gp.w-gp.pad.r-6, gp.pad.t+19);
+    var eff = L2(1+snr);
+    $('g-out').innerHTML =
+      'C = B·log₂(1+SNR) = '+B.toFixed(1)+' × '+eff.toFixed(4)+' = <b>'+C.toFixed(2)+'</b> Mbps<br>'+
+      '频谱效率 = <b>'+eff.toFixed(4)+'</b> bit/s/Hz　·　SNR = '+snrdb.toFixed(1)+' dB = '+snr.toFixed(3)+' (线性)<br>'+
+      '<span style="color:var(--ink-3)">'+
+      'ⓐ 带宽翻倍 → 容量翻倍（'+C.toFixed(1)+' → '+(2*C).toFixed(1)+' Mbps）<br>'+
+      'ⓑ 功率翻倍（+3dB） → 容量仅 '+(B*L2(1+2*snr)).toFixed(1)+' Mbps，增幅 '+
+      ((B*L2(1+2*snr)/C-1)*100).toFixed(1)+'%　← 买带宽远比加功率划算<br>'+
+      'ⓒ 带宽 →∞ 的极限 C∞ = S/(N₀ln2) = '+Cinf.toFixed(1)+' Mbps，对应 Eb/N₀ = ln2 = −1.59 dB（Shannon 极限）'+
+      '</span>';
+  });
+}
+
+/* ===== 08 Huffman ===== */
+if($('h-cv')){
+  var hp = new ILPlot($('h-cv'), {xr:[0,6], yr:[0,0.6], xlabel:'符号', ylabel:'概率'});
+  function huffman(ps){
+    var nodes = ps.map(function(p,i){ return {p:p, i:i, leaf:true}; });
+    if(nodes.length===1) return ['0'];
+    var pool = nodes.slice();
+    while(pool.length>1){
+      pool.sort(function(a,b){ return a.p-b.p; });
+      var a=pool.shift(), b=pool.shift();
+      pool.push({p:a.p+b.p, l:a, r:b, leaf:false});
+    }
+    var codes = new Array(ps.length);
+    (function walk(n, code){
+      if(n.leaf){ codes[n.i] = code||'0'; return; }
+      walk(n.l, code+'0'); walk(n.r, code+'1');
+    })(pool[0], '');
+    return codes;
+  }
+  ILBind(['h-skew','h-n'], function(){
+    var sk=+$('h-skew').value, n=+$('h-n').value;
+    set('h-skewv',sk.toFixed(2)); set('h-nv',String(n));
+    // 用几何式偏斜生成分布
+    var raw=[], i, base = 1 + sk*2.2;
+    for(i=0;i<n;i++) raw.push(Math.pow(base, -i));
+    var tot=raw.reduce(function(a,b){return a+b;},0);
+    var ps = raw.map(function(v){ return v/tot; });
+    var codes = huffman(ps);
+    var Hv = H(ps);
+    var Lavg = 0; for(i=0;i<n;i++) Lavg += ps[i]*codes[i].length;
+    var maxp = Math.max.apply(null, ps);
+
+    hp.xr=[0,n]; hp.yr=[0, Math.max(0.3, maxp*1.25)];
+    hp.resize(); hp.clear(); hp.axes(n,5);
+    var cols=[]; for(i=0;i<n;i++) cols.push(i%2 ? '#a78bfa' : '#38bdf8');
+    hp.bars(ps, cols);
+    var x=hp.ctx, bw=(hp.w-hp.pad.l-hp.pad.r)/n;
+    x.font='10px ui-monospace,monospace'; x.textAlign='center'; x.textBaseline='bottom';
+    for(i=0;i<n;i++){
+      x.fillStyle='#e8edf7';
+      x.fillText(codes[i], hp.pad.l+bw*(i+0.5), hp.py(ps[i])-5);
+    }
+    var tb=$('h-tab').querySelector('tbody'); tb.innerHTML='';
+    var names='ABCDEFGH';
+    for(i=0;i<n;i++){
+      var ideal = -L2(ps[i]);
+      var diff = codes[i].length - ideal;
+      tb.innerHTML += '<tr><td><b>'+names[i]+'</b></td><td>'+ps[i].toFixed(4)+'</td><td>'+
+        ideal.toFixed(4)+'</td><td><code>'+codes[i]+'</code></td><td>'+codes[i].length+
+        ' <span style="color:'+(diff>0.35?'var(--warn)':'var(--ink-3)')+'">('+
+        (diff>=0?'+':'')+diff.toFixed(3)+')</span></td></tr>';
+    }
+    var red = Lavg - Hv;
+    $('h-out').innerHTML =
+      '熵 H = <b>'+Hv.toFixed(5)+'</b> bit　≤　Huffman 平均码长 L = <b>'+Lavg.toFixed(5)+'</b> bit　&lt;　H+1 = '+(Hv+1).toFixed(5)+
+      '　<span style="color:var(--ok)">✓ 定理成立</span><br>'+
+      '冗余 L − H = <b>'+red.toFixed(5)+'</b> bit/符号（'+(red/Lavg*100).toFixed(2)+'%）　·　'+
+      '对比定长码 ⌈log₂'+n+'⌉ = '+Math.ceil(L2(n))+' bit，节省 <b>'+
+      ((1-Lavg/Math.ceil(L2(n)))*100).toFixed(1)+'%</b><br>'+
+      '<span style="color:var(--ink-3)">冗余全部来自"码长必须是整数"。'+
+      (red<0.02 ? '当前分布接近 2 的负幂，几乎无损失。' : '把偏斜度调到让概率成为 1/2、1/4、1/8… 时冗余会趋近 0。')+
+      '</span>';
+  });
+}
+
+/* ===== 09 AEP ===== */
+if($('i-cv')){
+  var ip2 = new ILPlot($('i-cv'), {xr:[4,400], yr:[0,1.02], xlabel:'序列长度 n', ylabel:'比例 / 概率'});
+  // 正态近似估算典型集概率与占比
+  function typProb(p,n,eps){
+    // P(|-1/n log p(X^n) - H| < eps)，用 CLT：单符号 -log p 的方差
+    var Hv=h2(p);
+    var v = p*Math.pow(-L2(p),2) + (1-p)*Math.pow(-L2(1-p),2) - Hv*Hv;
+    if(v<=1e-12) return 1;
+    var sd = Math.sqrt(v/n);
+    var z = eps/sd;
+    return erf(z/Math.SQRT2);
+  }
+  function erf(x){
+    var s = x<0?-1:1; x=Math.abs(x);
+    var t=1/(1+0.3275911*x);
+    var y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+    return s*y;
+  }
+  ILBind(['i-p','i-n'], function(){
+    var p=+$('i-p').value, n=+$('i-n').value;
+    set('i-pv',p.toFixed(2)); set('i-nv',String(n));
+    var Hv=h2(p), eps=0.08;
+    ip2.resize(); ip2.clear(); ip2.axes(5,5);
+    // 蓝线: 典型集概率 -> 1
+    ip2.line(function(v){ return typProb(p, Math.max(4,v), eps); }, '#38bdf8', 2.4);
+    // 橙线: 典型集占比 ~ 2^{n(H-1)} (对二元字母表)
+    ip2.line(function(v){ return Math.pow(2, Math.max(4,v)*(Hv-1)); }, '#fbbf24', 2.4);
+    ip2.vline(n, '#8592ab');
+    var pr=typProb(p,n,eps), frac=Math.pow(2, n*(Hv-1));
+    ip2.dot(n, pr, '#38bdf8'); ip2.dot(n, frac, '#fbbf24');
+    var x=ip2.ctx; x.font='11px ui-monospace,monospace'; x.textAlign='left'; x.textBaseline='top';
+    x.fillStyle='#38bdf8'; x.fillText('蓝：典型集的概率 → 1', ip2.pad.l+8, ip2.pad.t+4);
+    x.fillStyle='#fbbf24'; x.fillText('橙：典型集占全部序列的比例 → 0', ip2.pad.l+8, ip2.pad.t+19);
+    var log10All = n*Math.LOG10E*Math.LN2;      // log10(2^n)
+    var log10Typ = n*Hv*Math.LOG10E*Math.LN2;   // log10(2^{nH})
+    $('i-out').innerHTML =
+      'H(p) = <b>'+Hv.toFixed(5)+'</b> bit/符号　·　n = <b>'+n+'</b><br>'+
+      '全部序列数 2^'+n+' ≈ 10^<b>'+log10All.toFixed(1)+'</b>　·　'+
+      '典型集大小 ≈ 2^'+(n*Hv).toFixed(1)+' ≈ 10^<b>'+log10Typ.toFixed(1)+'</b><br>'+
+      '典型集<b style="color:#fbbf24">占比 = '+(frac<1e-6 ? frac.toExponential(3) : frac.toFixed(6))+'</b>　'+
+      '却<b style="color:#38bdf8">承载概率 ≈ '+(pr*100).toFixed(2)+'%</b><br>'+
+      '<span style="color:var(--ink-3)">压缩含义：只需 <b>'+Math.ceil(n*Hv)+'</b> bit 给典型序列编号（而非 '+n+' bit），'+
+      '压缩率 <b>'+(Hv*100).toFixed(1)+'%</b>。'+
+      (n<20 ? '　⚠ n 太小，AEP 尚未生效——这正是 L3 有限块长理论的用武之地。' : '')+
+      '</span>';
+  });
+}
+
+/* ===== 10 率失真 ===== */
+if($('j-cv')){
+  var jp = new ILPlot($('j-cv'), {xr:[0,0.6], yr:[0,3], xlabel:'失真 D', ylabel:'率 R(D) (bit/符号)'});
+  function bindSel(){
+    var s=$('j-src');
+    s.addEventListener('change', function(){ render(); });
+  }
+  function render(){
+    var mode=$('j-src').value;
+    var p=+$('j-p').value, D=+$('j-d').value;
+    set('j-pv',p.toFixed(2)); set('j-dv',D.toFixed(3));
+    var Rfn, Hv, dmax, label, extra;
+    if(mode==='bern'){
+      Hv = h2(p); dmax = Math.min(p,1-p);
+      Rfn = function(d){ return d>=dmax ? 0 : Math.max(0, Hv - h2(d)); };
+      jp.xr=[0,0.6]; jp.yr=[0, Math.max(0.6, Hv*1.2)];
+      label='伯努利源 R(D) = H₂(p) − H₂(D)';
+    } else {
+      var sig = p*2;  // 用 p 当作 sigma
+      Hv = null; dmax = sig*sig;
+      Rfn = function(d){ return d>=dmax ? 0 : Math.max(0, 0.5*L2(sig*sig/d)); };
+      jp.xr=[0, Math.max(0.6, dmax*1.1)]; jp.yr=[0, 4];
+      label='高斯源 R(D) = ½log₂(σ²/D)';
+    }
+    jp.resize(); jp.clear(); jp.axes(5,5);
+    jp.line(Rfn, '#38bdf8', 2.4);
+    jp.vline(D, '#8592ab');
+    var R=Rfn(D);
+    jp.dot(D, R, '#f472b6', 'R='+R.toFixed(4));
+    var x=jp.ctx; x.font='11px ui-monospace,monospace'; x.textAlign='right'; x.textBaseline='top';
+    x.fillStyle='#8592ab'; x.fillText(label, jp.w-jp.pad.r-6, jp.pad.t+4);
+
+    if(mode==='bern'){
+      var save = Hv>1e-9 ? (1-R/Hv)*100 : 0;
+      $('j-out').innerHTML =
+        '信源熵 H₂('+p.toFixed(2)+') = <b>'+Hv.toFixed(5)+'</b> bit　·　'+
+        '允许失真 D = '+D.toFixed(3)+' 时 R(D) = <b>'+R.toFixed(5)+'</b> bit<br>'+
+        '相比无损压缩节省 <b>'+save.toFixed(2)+'%</b> 的比特　·　'+
+        'R 归零阈值 D<sub>max</sub> = min(p,1−p) = <b>'+dmax.toFixed(3)+'</b>'+
+        (D>=dmax ? '　<span style="color:var(--warn)">← 已越过阈值，无需传任何信息（直接猜多数类即可）</span>':'')+'<br>'+
+        '<span style="color:var(--ink-3)">校验：D=0 时 R = H = '+Hv.toFixed(4)+
+        '（回到 Shannon 第一定理）。曲线凸递减 → 放宽失真的边际收益递减。</span>';
+    } else {
+      var sig=p*2;
+      var snrdb = D>0 ? 10*Math.log10(sig*sig/D) : Infinity;
+      $('j-out').innerHTML =
+        'σ = <b>'+sig.toFixed(3)+'</b>（σ² = '+(sig*sig).toFixed(4)+'）　·　D = '+D.toFixed(4)+
+        '　·　R(D) = <b>'+R.toFixed(5)+'</b> bit/符号<br>'+
+        '等价信噪比 σ²/D = <b>'+(D>0?(sig*sig/D).toFixed(2):'∞')+'</b> = <b>'+
+        (isFinite(snrdb)?snrdb.toFixed(2):'∞')+'</b> dB　'+
+        '<span style="color:var(--ink-3)">（每 +1 bit ⟹ +6.02 dB，量化器的黄金法则）</span><br>'+
+        '<span style="color:var(--ink-3)">失真减半需要 +0.5 bit；D ≥ σ² 时 R=0（直接输出均值 0 即可达到该失真）。'+
+        'LLM 权重量化 FP16→INT4 就是在这条曲线上取工作点。</span>';
+    }
+  }
+  bindSel();
+  ILBind(['j-p','j-d'], render);
+}
+
+})();
+</script>
+</body>
+</html>
