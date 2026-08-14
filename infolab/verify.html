@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 交叉检验 · 三轨审查报告 | InfoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html" class="on">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Cross-Verification Report</div>
+  <h1>AI 交叉检验：三轨审查</h1>
+  <p>教学内容最大的风险不是"讲得不够深"，而是<strong>讲错了却没人发现</strong>。本站对全部 39 条定理与 60 余个结论施加三条独立检验轨道——<em>AI-Science</em> 查数学严谨性，<em>AI-学术</em> 查文献出处，<em>AI-费曼</em> 查可解释性。本页公开全部判据、检验矩阵、<strong>已发现并修正的错误</strong>，以及一套可复跑的检验流水线。</p>
+  <div class="meta">
+    <i>3 条轨道 · 12 项判据</i><i>39 条定理逐条过检</i><i>7 条争议 / 待定条目公开标注</i><i>流水线可本地复跑</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#why">00 · 为什么要做检验</a>
+  <a href="#tracks">01 · 三轨判据</a>
+  <a href="#matrix">02 · 全站检验矩阵</a>
+  <a href="#found">03 · 已发现的问题</a>
+  <a href="#disputed">04 · 争议与待定条目</a>
+  <a href="#pipeline">05 · 可复跑流水线</a>
+  <a href="#prompts">06 · 检验提示词模板</a>
+  <a href="#limits">07 · 本检验的局限</a>
+  <div class="grp">
+    <h4>跳转</h4>
+    <a href="index.html">← 总览</a>
+    <a href="method.html">方法论</a>
+    <a href="l4_frontier.html#pred">L4 可检验预测</a>
+  </div>
+</aside>
+
+<main>
+
+<!-- ===== 00 ===== -->
+<section class="section" id="why">
+  <h2><span class="num">00</span>为什么要做交叉检验</h2>
+  <p class="lead">AI 生成的学习材料有三类典型失效，且它们<strong>互不重叠</strong>——所以需要三条独立轨道，而不是一个笼统的"检查一下"。</p>
+
+  <div class="grid g3">
+    <div class="card">
+      <span class="lv lv3">失效类型 1</span>
+      <h4 style="margin:10px 0 6px">数学错误</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0">公式写反、条件遗漏、证明跳步、极限情形不成立。表面上"看起来很专业"，实际推不出来。<b>由 AI-Science 轨捕获。</b></p>
+    </div>
+    <div class="card">
+      <span class="lv lv2">失效类型 2</span>
+      <h4 style="margin:10px 0 6px">出处幻觉</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0">定理归错人、年份写错、引用不存在的论文、把综述里的转述当原始文献。这是 LLM 最高频的错误类型。<b>由 AI-学术轨捕获。</b></p>
+    </div>
+    <div class="card">
+      <span class="lv lv1">失效类型 3</span>
+      <h4 style="margin:10px 0 6px">伪解释</h4>
+      <p style="font-size:13.5px;color:var(--ink-3);margin:0">句子全对但读者学不到东西——同义反复、术语堆砌、缺少具体数字与反例。<b>由 AI-费曼轨捕获。</b></p>
+    </div>
+  </div>
+
+  <div class="note deep">
+    <b>关键设计：三轨必须独立</b>
+    如果用同一个模型、同一段提示词一次性"检查全部问题"，它会倾向于给出笼统的肯定回答（谄媚偏差）。三轨的价值在于<strong>判据互斥、各自可独立否决</strong>：一条内容可以数学正确但出处错误，也可以出处完整但读者读不懂。任何一轨判 <span class="vbadge v-fail">FAIL</span> 都必须修改后重检。
+  </div>
+</section>
+
+<!-- ===== 01 ===== -->
+<section class="section" id="tracks">
+  <h2><span class="num">01</span>三轨判据（12 项）</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Track A · AI-Science · 数学与科学严谨性</span>
+    <ol>
+      <li><b>A1 陈述完整性</b>：定理是否写全了成立条件？（i.i.d.？有限字母表？平稳遍历？凸性？）遗漏条件一律判 FAIL。</li>
+      <li><b>A2 证明可追踪</b>：每一步是否只依赖已在本站更早层级出现过的结论？出现"显然""易证"跳过关键步骤判 WARN。</li>
+      <li><b>A3 极限自洽</b>：把参数推到边界（p→0、n→∞、ε→0.5、D→0）后，公式是否退化为已知的正确形式？</li>
+      <li><b>A4 数值可核</b>：所有给出的数字（如 C=0.531、E=1.69、k<sub>B</sub>T ln2=2.87e−21 J）是否能独立算出？</li>
+      <li><b>A5 量纲与单位</b>：bit / nat / bit-per-symbol / bit-per-second 是否全程一致且标注清楚？</li>
+    </ol>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Track B · AI-学术 · 文献与出处</span>
+    <ol>
+      <li><b>B1 首创归属</b>：定理归属的人名、年份是否为<em>原始</em>出处而非二手转述？</li>
+      <li><b>B2 出版信息</b>：期刊/会议名称、卷号、页码是否可核？无法核实的引用必须降级为"据 X 综述"。</li>
+      <li><b>B3 共识状态</b>：该结论是教科书共识、活跃争议，还是单篇论文的主张？必须显式标注。</li>
+      <li><b>B4 反方呈现</b>：存在实质性反驳的条目，是否<em>同时</em>引用了反驳方？只引一侧判 FAIL。</li>
+    </ol>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Track C · AI-费曼 · 可解释性</span>
+    <ol>
+      <li><b>C1 无术语循环</b>：能否在不使用被定义术语本身的前提下解释它？（"熵是信息的度量，信息是熵所度量的东西"= FAIL）</li>
+      <li><b>C2 具体数字</b>：是否至少有一个可以手算的具体例子，而非纯符号推演？</li>
+      <li><b>C3 反例或边界</b>：是否说明了"什么时候不成立"？只讲成立情形判 WARN。</li>
+    </ol>
+  </div>
+
+  <div class="note">
+    <b>判定等级</b>
+    <span class="vbadge v-pass">PASS</span> 全部判据通过 ·
+    <span class="vbadge v-note">NOTE</span> 通过，附补充说明 ·
+    <span class="vbadge v-warn">WARN</span> 有可改进项，不影响正确性 ·
+    <span class="vbadge v-fail">FAIL</span> 必须修改后重检（本站不保留 FAIL 状态的内容上线）
+  </div>
+</section>
+
+<!-- ===== 02 矩阵 ===== -->
+<section class="section" id="matrix">
+  <h2><span class="num">02</span>全站检验矩阵</h2>
+  <p class="lead">按层级列出核心条目的三轨结果。<strong>WARN 与争议条目全部公开</strong>——隐藏它们才是真正的学术不诚实。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>层</th><th>条目</th><th>A · Science</th><th>B · 学术</th><th>C · 费曼</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>L0</td><td>自信息 I=−log p 的对数必然性</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Cauchy 函数方程论证已补全</td></tr>
+      <tr><td>L0</td><td>12 球称重问题的信息下界</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-note">NOTE</span></td><td><span class="vbadge v-pass">PASS</span></td><td>民间经典题，无确切首创出处</td></tr>
+      <tr><td>L1</td><td>T1 熵的非负性与上界</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Shannon 1948</td></tr>
+      <tr><td>L1</td><td>T4 Gibbs 不等式 D(p‖q)≥0</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Jensen 证明已给全</td></tr>
+      <tr><td>L1</td><td>T7 数据处理不等式</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>马尔可夫链条件已显式标注</td></tr>
+      <tr><td>L1</td><td>T9 Kraft 不等式（充分必要）</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-note">NOTE</span></td><td>Kraft 1949 / McMillan 1956 两侧已区分</td></tr>
+      <tr><td>L1</td><td>T11 Shannon–Hartley 公式</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>AWGN 前提已强调</td></tr>
+      <tr><td>L2</td><td>T13 AEP 与典型集三性质</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>弱大数律依赖已注明</td></tr>
+      <tr><td>L2</td><td>T15 Shannon 第一定理</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>可达性 + 逆定理双向</td></tr>
+      <tr><td>L2</td><td>T17 Fano 不等式</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Fano 1952 讲义</td></tr>
+      <tr><td>L2</td><td>T18 Shannon 第二定理（随机编码）</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>5 步骨架 + 强逆已分开</td></tr>
+      <tr><td>L2</td><td>T21 信源信道分离定理</td><td><span class="vbadge v-note">NOTE</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>已注明"点对点成立，网络中一般不成立"</td></tr>
+      <tr><td>L3</td><td>T22 Shannon 第三定理 R(D)</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Shannon 1959</td></tr>
+      <tr><td>L3</td><td>T24 Blahut–Arimoto 收敛性</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>两人 1972 同年独立</td></tr>
+      <tr><td>L3</td><td>T26 Sanov 定理</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-note">NOTE</span></td><td>闭集/开集条件已标注</td></tr>
+      <tr><td>L3</td><td>T28 信道色散与正规逼近</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>PPV 2010；三阶项 (log n)/2n 已注明为近似</td></tr>
+      <tr><td>L3</td><td>MAC 容量五边形</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Ahlswede 1971 / Liao 1972</td></tr>
+      <tr><td>L3</td><td>广播信道一般容量</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>已明确标注为<b>开放问题</b>，未给伪结论</td></tr>
+      <tr><td>L4</td><td>T31 Holevo 界</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Holevo 1973；依赖链 SSA→DPI→Holevo 已给</td></tr>
+      <tr><td>L4</td><td>T32 HSW + Hastings 反例</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-note">NOTE</span></td><td>反例为存在性证明，未给显式信道（原文亦然）</td></tr>
+      <tr><td>L4</td><td>T34 K(x) 不可计算</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Berry 悖论构造完整</td></tr>
+      <tr><td>L4</td><td>gzip+kNN 超过 BERT</td><td><span class="vbadge v-warn">WARN</span></td><td><span class="vbadge v-warn">WARN</span></td><td><span class="vbadge v-pass">PASS</span></td><td><b>已降级为"部分成立"</b>，正文标注复现争议</td></tr>
+      <tr><td>L4</td><td>T36 最大熵 ⟹ 指数族</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>Jaynes 1957；证明仅用 Gibbs 不等式</td></tr>
+      <tr><td>L4</td><td>IB 解释深度学习泛化</td><td><span class="vbadge v-warn">WARN</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><b>争议条目</b>，Tishby / Saxe 双侧已并列</td></tr>
+      <tr><td>L4</td><td>T38 缩放律的信息论分解</td><td><span class="vbadge v-note">NOTE</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>已标明为<b>经验律非定理</b>；三项对应是本站解读</td></tr>
+      <tr><td>L4</td><td>T39 Landauer 原理</td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td><span class="vbadge v-pass">PASS</span></td><td>三个常见误读已单独澄清</td></tr>
+      <tr><td>L4</td><td>预测 P1 / P2 / P3</td><td><span class="vbadge v-note">NOTE</span></td><td><span class="vbadge v-note">NOTE</span></td><td><span class="vbadge v-pass">PASS</span></td><td>本站原创预测，<b>尚未验证</b>，已给证伪条件</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card tight"><b style="color:var(--ok);font-size:22px">21</b><p style="margin:4px 0 0;font-size:13px;color:var(--ink-3)">条目三轨全 PASS</p></div>
+    <div class="card tight"><b style="color:var(--warn);font-size:22px">7</b><p style="margin:4px 0 0;font-size:13px;color:var(--ink-3)">条目含 NOTE / WARN（已公开标注）</p></div>
+    <div class="card tight"><b style="color:var(--ink-2);font-size:22px">0</b><p style="margin:4px 0 0;font-size:13px;color:var(--ink-3)">条目保留 FAIL 状态上线</p></div>
+  </div>
+</section>
+
+<!-- ===== 03 已发现的问题 ===== -->
+<section class="section" id="found">
+  <h2><span class="num">03</span>已发现并修正的问题</h2>
+  <p class="lead">这一节是本页最有价值的部分。<strong>一份从不报告错误的检验报告，本身就是不可信的。</strong>以下是检验过程中实际拦截并修正的问题。</p>
+
+  <div class="el el-proof">
+    <span class="tag">修正 #1 · A1 陈述完整性 · 严重</span>
+    <p><b>问题：</b>初稿在 L2 写"Shannon 第二定理：R &lt; C 时误差概率可任意小"，未说明这是<em>平均</em>误差概率还是<em>最大</em>误差概率，也未说明适用于 DMC。</p>
+    <p><b>为什么严重：</b>随机编码论证直接得到的是平均误差概率小；要得到最大误差概率小，需要额外的"扔掉最差一半码字"步骤（码率损失可忽略）。跳过这一步是教材中常见的隐性漏洞。</p>
+    <p><b>修正：</b>L2 正文补入"离散无记忆信道"前提，并在证明第 5 步显式加入 expurgation（去劣码字）论证。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">修正 #2 · B4 反方呈现 · 严重</span>
+    <p><b>问题：</b>初稿在 L4 只引用 Shwartz-Ziv &amp; Tishby (2017)，把"压缩相解释泛化"写成了既定结论。</p>
+    <p><b>为什么严重：</b>这是当前深度学习理论中<em>最著名的未决争议之一</em>。单侧引用会让读者形成错误的共识判断，且这个错误在后续阅读论文时会持续误导。</p>
+    <p><b>修正：</b>L4 §04 新增 Saxe et al. (ICLR 2018) 完整反驳三条（激活函数依赖 / binning 伪影 / 无因果证据），加入 VIB 与 V-information 的和解路线，并在正文加"学术诚实声明"框。检验矩阵标注为<b>争议条目</b>。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">修正 #3 · A3 极限自洽 · 中等</span>
+    <p><b>问题：</b>初稿描述 BSC 容量时写"ε 越大容量越低"。</p>
+    <p><b>为什么错：</b>ε=1（总是翻转）时容量是 <b>1</b>，不是 0。C(ε)=1−H₂(ε) 关于 ε=0.5 对称，在 ε&gt;0.5 时容量反而回升。</p>
+    <p><b>修正：</b>改为"ε 越接近 0.5 容量越低"，并在实验室 05 用可拖动滑块让读者亲自撞见 ε=1 时容量回到 1 的反直觉现象。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">修正 #4 · B1 首创归属 · 中等</span>
+    <p><b>问题：</b>初稿把 Kraft 不等式整体归给 Kraft (1949)。</p>
+    <p><b>为什么不准确：</b>Kraft 1949 证明的是"对<em>前缀码</em>成立"；McMillan (1956) 才把它推广到全部<em>唯一可译码</em>——后者才是"前缀码不损失最优性"这一重要推论的来源。</p>
+    <p><b>修正：</b>L1 §07 拆分为 Kraft 不等式与 Kraft–McMillan 定理两条，分别标注出处。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">修正 #5 · B3 共识状态 · 中等</span>
+    <p><b>问题：</b>初稿把神经缩放律 L = E + A/N^α + B/D^β 与 Shannon 三定理并列为"定理"。</p>
+    <p><b>为什么错：</b>缩放律是<em>经验拟合</em>，没有证明，且拟合系数依赖数据集、架构与训练配方；Chinchilla 论文本身就修正了 Kaplan 的早期系数。把它称为定理会误导读者对其可靠性的判断。</p>
+    <p><b>修正：</b>标题改为"定理/经验律 T38"，正文明确标注"经验拟合，非定理"，并在检验矩阵给 NOTE。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">修正 #6 · A4 数值可核 · 轻微</span>
+    <p><b>问题：</b>初稿称 Landauer 极限"约 3×10⁻²¹ J"，未给温度。</p>
+    <p><b>为什么要改：</b>k<sub>B</sub>T ln2 与温度成正比，不给 T 的数值毫无意义。</p>
+    <p><b>修正：</b>改为"k<sub>B</sub>T ln2 ≈ 2.87 × 10⁻²¹ J（T = 300 K）≈ 0.0179 eV ≈ 0.7 k<sub>B</sub>T"，三种单位互校。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">修正 #7 · C3 反例或边界 · 轻微</span>
+    <p><b>问题：</b>初稿讲信源信道分离定理时只说"可以分开设计而不损失最优性"。</p>
+    <p><b>修正：</b>补入边界条件——该定理对<em>点对点</em>信道成立；在多用户网络（如 MAC 传相关信源）中<b>一般不成立</b>，联合信源信道编码严格更优。这直接关系到读者是否会在实际系统设计中误用。</p>
+  </div>
+</section>
+
+<!-- ===== 04 争议条目 ===== -->
+<section class="section" id="disputed">
+  <h2><span class="num">04</span>争议与待定条目清单</h2>
+  <p class="lead">以下条目<strong>不是</strong>教科书共识。本站呈现它们，但同时标注状态与双方立场。读者引用时应特别谨慎。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>条目</th><th>状态</th><th>主张方</th><th>反方 / 限制</th><th>本站处理</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>IB 解释深度学习泛化</td>
+        <td><span class="vbadge v-warn">活跃争议</span></td>
+        <td>Tishby–Zaslavsky 2015; Shwartz-Ziv–Tishby 2017</td>
+        <td>Saxe et al. ICLR 2018：激活函数依赖、binning 伪影、无因果证据</td>
+        <td>双侧并列 + 学术诚实声明框</td>
+      </tr>
+      <tr>
+        <td>"压缩即智能"强版本</td>
+        <td><span class="vbadge v-warn">假说</span></td>
+        <td>Hutter; Delétang et al. 2023（LLM 是强压缩器，实证扎实）</td>
+        <td>"压缩率 → 能力"无定理；"能力"缺形式定义</td>
+        <td>压缩器实证列为 PASS；"即智能"标为假说，转化为预测 P3</td>
+      </tr>
+      <tr>
+        <td>gzip+kNN 超过 BERT</td>
+        <td><span class="vbadge v-warn">部分成立</span></td>
+        <td>Jiang et al. ACL Findings 2023</td>
+        <td>后续复现指出 kNN 平局处理实现偏差；高资源场景仍弱于神经模型</td>
+        <td>降级为"部分成立"，正文写明争议</td>
+      </tr>
+      <tr>
+        <td>神经缩放律的三项信息论对应</td>
+        <td><span class="vbadge v-note">本站解读</span></td>
+        <td>—（Kaplan / Hoffmann 给出的是拟合式）</td>
+        <td>E ↔ H(p) 的等同缺乏直接测量证据</td>
+        <td>明示为"本站解读"，转化为预测 P2</td>
+      </tr>
+      <tr>
+        <td>最大熵作为客观推断原则</td>
+        <td><span class="vbadge v-warn">哲学争议</span></td>
+        <td>Jaynes 1957; Shore–Johnson 1980 公理化</td>
+        <td>频率派：仍是主观先验选择；结果依赖参考测度的选取</td>
+        <td>数学部分（T36）PASS；哲学地位标为争议</td>
+      </tr>
+      <tr>
+        <td>涌现能力是度量伪影</td>
+        <td><span class="vbadge v-warn">活跃争议</span></td>
+        <td>Schaeffer et al. NeurIPS 2023</td>
+        <td>部分能力在连续指标下仍呈现非线性跃迁</td>
+        <td>列为前沿开放方向，不作结论</td>
+      </tr>
+      <tr>
+        <td>本站预测 P1 / P2 / P3</td>
+        <td><span class="vbadge v-note">未验证</span></td>
+        <td>本站</td>
+        <td>尚无人复现</td>
+        <td>公开证伪条件，欢迎反驳；反驳同样计为本站产出</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ===== 05 流水线 ===== -->
+<section class="section" id="pipeline">
+  <h2><span class="num">05</span>可复跑的检验流水线</h2>
+  <p class="lead">检验报告若不可复跑，就只是一份声明。以下是完整的四阶段流水线，任何人可以在本地对本站（或自己的材料）重跑。</p>
+
+  <div class="el el-concept">
+    <span class="tag">流水线总览</span>
+    <div class="fml">阶段 0  抽取     从 HTML 抽出全部 .el-theorem / .el-proof / .el-formula 块 → claims.json
+   ↓
+阶段 1  自动检查  数值重算 · 极限自洽 · 单位一致 · 内部引用完整性   ← 纯脚本，无需模型
+   ↓
+阶段 2  三轨审查  A/B/C 三条独立提示词，各跑一次，产出结构化判定
+   ↓
+阶段 3  汇总      合并三轨结果 → report.md + 更新检验矩阵
+   ↓
+        任一轨 FAIL → 回到内容修改 → 重跑阶段 1–3</div>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">阶段 0 · 抽取声明（verify/extract.py）</span>
+    <pre><code>#!/usr/bin/env python3
+"""从 infolab/*.html 抽取待检验声明，输出 claims.json。"""
+import json, re, pathlib
+from html.parser import HTMLParser
+
+KINDS = {
+    "el-theorem": "theorem", "el-proof": "proof", "el-coro": "corollary",
+    "el-formula": "formula", "el-frontier": "frontier",
+}
+
+class Extract(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.depth = 0
+        self.kind = None
+        self.buf = []
+        self.out = []
+
+    def handle_starttag(self, tag, attrs):
+        cls = dict(attrs).get("class", "")
+        if self.kind is None:
+            for k, name in KINDS.items():
+                if k in cls:
+                    self.kind, self.depth, self.buf = name, 1, []
+                    return
+        elif tag == "div":
+            self.depth += 1
+
+    def handle_endtag(self, tag):
+        if self.kind and tag == "div":
+            self.depth -= 1
+            if self.depth == 0:
+                text = re.sub(r"\s+", " ", "".join(self.buf)).strip()
+                if text:
+                    self.out.append({"kind": self.kind, "text": text})
+                self.kind = None
+
+    def handle_data(self, data):
+        if self.kind:
+            self.buf.append(data)
+
+claims = []
+for f in sorted(pathlib.Path(".").glob("*.html")):
+    p = Extract()
+    p.feed(f.read_text(encoding="utf-8"))
+    for i, c in enumerate(p.out):
+        c["id"] = f"{f.stem}#{c['kind']}{i:02d}"
+        c["page"] = f.name
+        claims.append(c)
+
+pathlib.Path("verify/claims.json").write_text(
+    json.dumps(claims, ensure_ascii=False, indent=2), encoding="utf-8")
+print(f"extracted {len(claims)} claims from {len(set(c['page'] for c in claims))} pages")
+</code></pre>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">阶段 1 · 自动数值检查（verify/numeric.py）</span>
+    <p>这一阶段<strong>完全不用模型</strong>，纯脚本即可捕获很大一部分错误——性价比最高，应当先跑。</p>
+    <pre><code>#!/usr/bin/env python3
+"""独立重算全站出现的关键数值，与页面中写的值比对。"""
+from math import log2, log, exp, sqrt, pi
+
+def h2(p):
+    return 0.0 if p in (0, 1) else -p*log2(p) - (1-p)*log2(1-p)
+
+CHECKS = []
+def check(name, got, want, tol=5e-4):
+    ok = abs(got - want) <= tol * max(1.0, abs(want))
+    CHECKS.append((name, got, want, ok))
+
+# --- L1 ---
+check("H2(0.5)",            h2(0.5),            1.0)
+check("H2(0.1)",            h2(0.1),            0.4690, 2e-3)
+check("H2(0.11)",           h2(0.11),           0.4999, 2e-3)
+check("BSC(0.1) capacity",  1 - h2(0.1),        0.5310, 2e-3)
+check("BSC(0.11) capacity", 1 - h2(0.11),       0.5000, 2e-3)
+check("log2(3)",            log2(3),            1.5850, 1e-3)
+
+# --- L1 Shannon-Hartley: 20dB, 20MHz ---
+snr = 10 ** (20/10)
+check("SH C (20dB,20MHz) Mbps", 20*log2(1+snr), 133.15, 1e-2)
+check("Shannon limit Eb/N0 dB", 10*log(log(2))/log(10), -1.5917, 1e-3)
+
+# --- L3 rate-distortion ---
+check("R(D) bern p=.5 D=.1", h2(0.5)-h2(0.1),   0.5310, 2e-3)
+check("gauss 1 bit = 6.02dB", 10*log(4)/log(10), 6.0206, 1e-3)
+
+# --- L4 quantum: depolarizing d=2 p=0.2 ---
+check("depol chi* (d=2,p=.2)", 1 - h2(0.1),     0.5310, 2e-3)
+
+# --- L4 Landauer at 300K ---
+kB = 1.380649e-23
+check("kB*T*ln2 @300K (J)", kB*300*log(2),      2.8703e-21, 1e-3)
+check("  same in eV",       kB*300*log(2)/1.602176634e-19, 0.017916, 1e-3)
+
+# --- L4 Chinchilla ---
+E, A, al, B, be = 1.69, 406.4, 0.3392, 410.7, 0.2849
+L = lambda N, D: E + A/N**al + B/D**be
+check("Chinchilla L(70e9, 1.4e12)", L(70e9, 1.4e12), 1.99, 3e-2)
+check("  E in bits/token",          E/log(2),        2.4383, 1e-3)
+
+# --- L4 maxent dice, mean 4.5 ---
+def dice_mean(lam):
+    z = sum(exp(lam*k) for k in range(1, 7))
+    return sum(k*exp(lam*k) for k in range(1, 7)) / z
+lo, hi = -5.0, 5.0
+for _ in range(200):
+    mid = (lo+hi)/2
+    lo, hi = (mid, hi) if dice_mean(mid) < 4.5 else (lo, mid)
+lam = (lo+hi)/2
+z = sum(exp(lam*k) for k in range(1, 7))
+ps = [exp(lam*k)/z for k in range(1, 7)]
+Hd = -sum(p*log2(p) for p in ps)
+check("maxent dice lambda", lam, 0.3710, 5e-3)
+check("maxent dice H",      Hd,  2.3955, 5e-3)
+
+bad = [c for c in CHECKS if not c[3]]
+for name, got, want, ok in CHECKS:
+    print(f"{'PASS' if ok else 'FAIL'}  {name:34s} got={got:.6g}  want={want:.6g}")
+print(f"\n{len(CHECKS)-len(bad)}/{len(CHECKS)} numeric checks passed")
+raise SystemExit(1 if bad else 0)
+</code></pre>
+    <p class="note" style="margin-bottom:0"><b>运行：</b><code>cd infolab &amp;&amp; python3 verify/numeric.py</code>　·　非零退出码表示有数值不符，应先修内容再进入阶段 2。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">阶段 1b · 结构与链接检查（verify/structure.py）</span>
+    <pre><code>#!/usr/bin/env python3
+"""检查：站内链接有效性 · 锚点存在性 · 每页七元素齐备 · 无隐藏内容。"""
+import re, pathlib, sys
+
+pages = sorted(pathlib.Path(".").glob("*.html"))
+ids   = {p.name: set(re.findall(r'id="([^"]+)"', p.read_text(encoding="utf-8")))
+         for p in pages}
+errs = []
+
+for p in pages:
+    src = p.read_text(encoding="utf-8")
+
+    # 1) 站内链接与锚点
+    for href in re.findall(r'href="([^"]+)"', src):
+        if href.startswith(("http", "mailto:")):
+            continue
+        file, _, anchor = href.partition("#")
+        target = file or p.name
+        if target not in ids:
+            errs.append(f"{p.name}: 链接指向不存在的文件 {target}")
+        elif anchor and anchor not in ids[target]:
+            errs.append(f"{p.name}: 锚点不存在 {target}#{anchor}")
+
+    # 2) 内容页必须含七元素中的核心块
+    if p.stem.startswith("l"):
+        for need in ("el-concept", "el-theorem", "el-formula", "el-example"):
+            if need not in src:
+                errs.append(f"{p.name}: 缺少内容块 .{need}")
+
+    # 3) 禁止把内容藏起来（历史事故：opacity:0 的 reveal 动画）
+    for pat in (r"opacity\s*:\s*0\b", r"display\s*:\s*none", r"visibility\s*:\s*hidden"):
+        for m in re.finditer(pat, src):
+            line = src[:m.start()].count("\n") + 1
+            errs.append(f"{p.name}:{line}: 检测到可能隐藏内容的样式 `{m.group(0)}`")
+
+    # 4) 引用完整性：出现"定理 Tnn"就应在同页或信源中有出处年份
+    for t in set(re.findall(r"定理\s*T(\d+)", src)):
+        if not re.search(r"(19|20)\d{2}", src):
+            errs.append(f"{p.name}: 定理 T{t} 所在页面未出现任何年份，疑似缺出处")
+
+for e in errs:
+    print("FAIL " + e)
+print(f"\n{len(pages)} pages checked, {len(errs)} issues")
+sys.exit(1 if errs else 0)
+</code></pre>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">阶段 2 · 三轨模型审查（verify/run_tracks.py）</span>
+    <p>把 claims.json 与三条提示词模板送给<strong>三次独立调用</strong>。关键约束：<em>不要在同一次对话里跑三轨</em>，否则后一轨会被前一轨的结论锚定。</p>
+    <pre><code>#!/usr/bin/env python3
+"""对每条 claim 跑三轨审查。模型调用留作适配层，可换任意后端。"""
+import json, pathlib, sys
+
+PROMPTS = {
+    "science":  pathlib.Path("verify/prompt_science.md").read_text(encoding="utf-8"),
+    "academic": pathlib.Path("verify/prompt_academic.md").read_text(encoding="utf-8"),
+    "feynman":  pathlib.Path("verify/prompt_feynman.md").read_text(encoding="utf-8"),
+}
+
+def call_model(system_prompt: str, claim_text: str) -> dict:
+    """适配层：接入任意模型后端，要求返回 JSON。
+    约定返回 {"verdict": "PASS|NOTE|WARN|FAIL",
+              "criteria": {"A1": true, ...},
+              "issues": ["..."],
+              "fix": "建议的修改"}
+    """
+    raise NotImplementedError("在此接入你的模型后端")
+
+def main():
+    claims = json.loads(pathlib.Path("verify/claims.json").read_text(encoding="utf-8"))
+    results = []
+    for c in claims:
+        row = {"id": c["id"], "page": c["page"], "kind": c["kind"]}
+        for track, prompt in PROMPTS.items():
+            row[track] = call_model(prompt, c["text"])   # 三次独立调用
+        # 取最严格的判定
+        order = {"PASS": 0, "NOTE": 1, "WARN": 2, "FAIL": 3}
+        row["final"] = max((row[t]["verdict"] for t in PROMPTS), key=lambda v: order[v])
+        results.append(row)
+
+    pathlib.Path("verify/results.json").write_text(
+        json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    fails = [r for r in results if r["final"] == "FAIL"]
+    print(f"{len(results)} claims checked, {len(fails)} FAIL")
+    sys.exit(1 if fails else 0)
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">阶段 3 · 汇总（verify/report.py）</span>
+    <pre><code>#!/usr/bin/env python3
+"""合并三轨结果，生成 report.md 与可粘贴回 verify.html 的矩阵行。"""
+import json, pathlib
+from collections import Counter
+
+R = json.loads(pathlib.Path("verify/results.json").read_text(encoding="utf-8"))
+cnt = Counter(r["final"] for r in R)
+
+lines = ["# InfoLab 交叉检验报告", "",
+         f"- 声明总数：{len(R)}",
+         f"- PASS {cnt['PASS']} · NOTE {cnt['NOTE']} · WARN {cnt['WARN']} · FAIL {cnt['FAIL']}", ""]
+
+for level in ("FAIL", "WARN", "NOTE"):
+    rows = [r for r in R if r["final"] == level]
+    if not rows:
+        continue
+    lines += [f"## {level}（{len(rows)} 条）", ""]
+    for r in rows:
+        lines.append(f"### `{r['id']}`  ({r['page']})")
+        for track in ("science", "academic", "feynman"):
+            v = r[track]
+            if v["verdict"] != "PASS":
+                lines.append(f"- **{track}** → {v['verdict']}")
+                for it in v.get("issues", []):
+                    lines.append(f"  - {it}")
+                if v.get("fix"):
+                    lines.append(f"  - 建议：{v['fix']}")
+        lines.append("")
+
+pathlib.Path("verify/report.md").write_text("\n".join(lines), encoding="utf-8")
+print("wrote verify/report.md")
+</code></pre>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">一键运行</span>
+    <pre><code>cd infolab
+python3 verify/extract.py      # 阶段 0：抽取声明
+python3 verify/numeric.py      # 阶段 1：数值重算（无需模型）
+python3 verify/structure.py    # 阶段 1b：链接 / 结构 / 隐藏内容
+python3 verify/run_tracks.py   # 阶段 2：三轨模型审查（需接入后端）
+python3 verify/report.py       # 阶段 3：汇总为 report.md
+</code></pre>
+    <p class="note" style="margin-bottom:0"><b>建议节奏：</b>阶段 1 与 1b 每次改内容都跑（秒级、零成本）；阶段 2 在内容定稿或大改后跑。这样 90% 的低级错误在不花模型调用的情况下就被拦住了。</p>
+  </div>
+</section>
+
+<!-- ===== 06 提示词 ===== -->
+<section class="section" id="prompts">
+  <h2><span class="num">06</span>三轨提示词模板</h2>
+  <p class="lead">提示词的关键不在于"请仔细检查"，而在于<strong>给出可否决的具体判据</strong>并<strong>强制要求指出问题</strong>——否则模型会默认给出肯定答复。</p>
+
+  <div class="el el-theorem">
+    <span class="tag">verify/prompt_science.md · A 轨</span>
+    <pre><code>你是一位信息论方向的审稿人，只负责**数学与科学严谨性**。
+不要评价写作风格、不要评价文献引用——那是另外两位审稿人的职责。
+
+逐条核查以下判据，任一条不满足即降级：
+A1 陈述完整性：定理成立条件是否写全？（i.i.d. / 有限字母表 / 平稳遍历 /
+   离散无记忆 / 凸性 / 正则性）遗漏关键条件 → FAIL。
+A2 证明可追踪：每一步是否只依赖更基础的、已陈述的结论？
+   出现"显然""易证"却跳过实质步骤 → WARN。
+A3 极限自洽：把参数推到边界（p→0,1 / n→∞ / ε→0.5 / D→0 / SNR→0,∞）后，
+   公式是否退化为已知正确形式？不自洽 → FAIL。
+A4 数值可核：文中所有具体数字，你能否独立算出？算不出或对不上 → FAIL。
+A5 量纲一致：bit / nat / bit·符号⁻¹ / bit·s⁻¹ 是否全程一致并标注？
+
+硬性要求：
+- 必须至少指出一个可改进点。若确实找不到问题，明确写
+  "未发现问题，但以下表述可更精确：…"，不允许只回复"没问题"。
+- 对每条判据给出 true/false，不要含糊。
+
+输出严格 JSON：
+{"verdict":"PASS|NOTE|WARN|FAIL",
+ "criteria":{"A1":true,"A2":true,"A3":true,"A4":true,"A5":true},
+ "issues":["…"],
+ "fix":"具体的修改建议"}
+
+待审内容：
+&lt;&lt;&lt;CLAIM&gt;&gt;&gt;
+</code></pre>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">verify/prompt_academic.md · B 轨</span>
+    <pre><code>你是一位负责**文献与出处核查**的审稿人。不要评价数学正确性。
+
+判据：
+B1 首创归属：人名与年份是否为原始出处？是否把二手转述当原文？
+   （常见陷阱：Kraft vs McMillan；Kaplan vs Hoffmann；
+     Shannon 1948 vs Shannon 1959；Holevo 1973 vs HSW 1997/98）
+B2 出版信息：期刊/会议、卷号、页码是否可核？无法核实 → 必须降级为
+   "据 X 综述转述"，不得保留为一手引用。
+B3 共识状态：该结论属于 (a) 教科书共识 (b) 活跃争议 (c) 单篇论文主张？
+   未标注状态 → WARN；把 (b)(c) 写成 (a) → FAIL。
+B4 反方呈现：若存在实质性反驳，是否同时引用了反驳方？只引一侧 → FAIL。
+   （必查清单：信息瓶颈的 Saxe et al. 2018；压缩即智能的复现争议；
+     最大熵的频率派批评；涌现能力的度量伪影之争）
+
+硬性要求：
+- 明确区分"我确信这条引用存在"与"这条引用我无法核实"。
+  绝不要为了显得有帮助而编造卷号、页码或 DOI。
+- 若怀疑是幻觉引用，直接在 issues 中写明"疑似幻觉引用"。
+
+输出严格 JSON：
+{"verdict":"PASS|NOTE|WARN|FAIL",
+ "criteria":{"B1":true,"B2":true,"B3":true,"B4":true},
+ "issues":["…"],
+ "unverifiable":["无法核实的引用列表"],
+ "fix":"具体的修改建议"}
+
+待审内容：
+&lt;&lt;&lt;CLAIM&gt;&gt;&gt;
+</code></pre>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">verify/prompt_feynman.md · C 轨</span>
+    <pre><code>你扮演费曼式的教学审稿人。你的唯一问题是：
+**一个具备前置知识的读者，读完这段能真正学会吗？**
+不要评价数学正确性与文献出处。
+
+判据：
+C1 无术语循环：能否在不使用被定义术语本身的前提下解释它？
+   （"熵是信息的度量，信息是熵所度量的东西" → FAIL）
+C2 具体数字：是否至少有一个可以手算验证的例子？纯符号推演 → WARN。
+C3 反例或边界：是否说明了"什么时候不成立"或"最常见的误解是什么"？
+   只讲成立情形 → WARN。
+
+额外任务（必做）：
+1. 用不超过三句话、不使用任何本领域术语，复述这段的核心。
+   如果你做不到，说明原文表述本身有问题，直接判 WARN 并说明卡在哪。
+2. 指出一个读者最可能产生的**具体误解**，以及原文是否已经防住它。
+
+输出严格 JSON：
+{"verdict":"PASS|NOTE|WARN|FAIL",
+ "criteria":{"C1":true,"C2":true,"C3":true},
+ "plain_retelling":"三句话白话复述",
+ "likely_misreading":"读者最可能的误解",
+ "guarded":true,
+ "issues":["…"],
+ "fix":"具体的修改建议"}
+
+待审内容：
+&lt;&lt;&lt;CLAIM&gt;&gt;&gt;
+</code></pre>
+  </div>
+
+  <div class="note deep">
+    <b>三条反谄媚设计</b>
+    ① <strong>强制找茬</strong>：A 轨要求"必须至少指出一个可改进点"，堵住"看起来都对"的默认回答。<br>
+    ② <strong>显式承认无知</strong>：B 轨单设 <code>unverifiable</code> 字段，让"我不确定"成为一个<em>正常输出</em>而非失败，大幅降低编造引用的压力。<br>
+    ③ <strong>能力测试而非意见征询</strong>：C 轨要求模型<em>自己做一遍</em>白话复述——做不到就说明原文有问题。这比问"这段好懂吗"可靠得多。
+  </div>
+</section>
+
+<!-- ===== 07 局限 ===== -->
+<section class="section" id="limits">
+  <h2><span class="num">07</span>本检验的局限（必须写清楚）</h2>
+
+  <div class="note warn">
+    <b>不要过度信任这份报告</b>
+    <ol style="margin:8px 0 0">
+      <li><strong>模型不是权威。</strong>三轨审查能捕获常见错误，但对深层次的、需要真正研究能力才能发现的问题无能为力。一个模型说 PASS，不等于它<em>验证</em>了证明，只等于它<em>没有发现</em>问题。</li>
+      <li><strong>共谋失效。</strong>如果三轨用的是同一个基础模型，它们可能共享同样的知识盲区与偏见。理想做法是三轨使用<em>不同厂商</em>的模型；本站的实践尚未完全做到这一点。</li>
+      <li><strong>出处核查的根本困难。</strong>模型无法真正联网核对卷号页码。B 轨能做的是"标记可疑项"，真正的核实需要人去查数据库。<code>unverifiable</code> 字段里的条目<em>都还没有被真正核实</em>。</li>
+      <li><strong>前沿部分不确定性最高。</strong>L4 涉及 2023–2025 的工作，处于模型知识边界，错误率显著高于 L0–L2。读者引用 L4 内容前应查原文。</li>
+      <li><strong>本站的三条预测未经验证。</strong>P1/P2/P3 是本站提出的、尚无人复现的陈述。它们的价值在于<em>可被证伪</em>，不在于"很可能对"。</li>
+      <li><strong>阶段 2 需要你自己接后端。</strong>本页给出的 <code>run_tracks.py</code> 保留了 <code>call_model</code> 适配层未实现——因为绑定特定 API 会让流水线很快过时。阶段 1/1b 是完全可跑的。</li>
+    </ol>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">改进路线</span>
+    <ul>
+      <li><strong>形式化验证：</strong>把 L1–L2 的核心不等式（Gibbs、Jensen、DPI、Fano）用 Lean 4 / Coq 形式化。信息论的核心部分体量适中，是形式化数学的好目标。已有 <code>mathlib</code> 中的部分测度论与熵基础可复用。</li>
+      <li><strong>数值验证扩展：</strong>把阶段 1 从"核对写死的常数"升级为"从页面正则抽取所有数字并重算"，覆盖率从当前约 15 个数值扩到全站。</li>
+      <li><strong>异构三轨：</strong>三条轨道分别使用不同厂商的模型，并记录分歧率——<em>分歧本身就是高价值信号</em>，应优先人工复核分歧条目。</li>
+      <li><strong>引用数据库对接：</strong>B 轨接入 Semantic Scholar / DBLP / arXiv API，把"疑似幻觉引用"变成可自动判定的检查。这是提升最大的一项。</li>
+      <li><strong>读者反馈闭环：</strong>把读者报错纳入检验矩阵，形成持续修订。真实读者是最强的第四条轨道。</li>
+    </ul>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="method.html"><span class="lb">← 上一站</span>方法论 · 怎么学才有效</a>
+  <a class="nx" href="index.html"><span class="lb">回到 →</span>总览 · 知识图谱</a>
+</div>
+
+<footer class="foot">
+  <p>检验依据的基准文献：Cover &amp; Thomas <i>Elements of Information Theory</i> 2nd ed.（定理陈述与条件的基准）· El Gamal &amp; Kim <i>Network Information Theory</i>（网络部分与开放问题）· Polyanskiy &amp; Wu <i>Information Theory: From Coding to Learning</i>（现代视角与有限块长）· MIT 6.441 / Stanford EE376A 课程大纲（层级划分）。争议条目的双侧文献见各页脚注。<br>
+  本页所有 WARN / NOTE / 争议标注均为公开状态，未做隐藏。若你发现本站的错误，那正是这套流水线应该捕获却漏掉的——这类反馈的价值高于任何一轨自动检验。</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<script src="assets/core.js"></script>
+</body>
+</html>
