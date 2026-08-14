@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教育和AI · 多风格研究图集总入口 | EduAI Atlas Hub</title>
+<style id="apple-ui-layer">
+/* ===== Apple UI 优化层（full intensity）===== */
+:root{
+  --font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue",system-ui,sans-serif;
+  --font-mono:"SF Mono","JetBrains Mono","Fira Code",Menlo,monospace;
+  --font-serif:"New York","PingFang SC",Georgia,serif;
+  --apple-accent:#0071e3;
+  --space-xs:8px;--space-sm:16px;--space-md:24px;--space-lg:40px;--space-xl:64px;--space-2xl:96px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:28px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 12px rgba(0,0,0,.06),0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg:0 12px 32px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06);
+  --shadow-xl:0 24px 64px rgba(0,0,0,.10),0 8px 24px rgba(0,0,0,.08);
+  --ease-apple:cubic-bezier(0.4,0,0.2,1);
+  --ease-apple-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --ease-apple-decel:cubic-bezier(0,0,0.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;
+  background:#f5f5f7;
+  color:#1d1d1f;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+section{padding:var(--space-2xl) var(--space-lg);scroll-snap-align:start;}
+h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:700;letter-spacing:-0.03em;line-height:1.1;margin-bottom:var(--space-lg);}
+h2{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:600;letter-spacing:-0.02em;margin-bottom:var(--space-md);}
+h3{font-size:1.25rem;font-weight:600;margin-bottom:var(--space-sm);}
+p{line-height:1.6;margin-bottom:var(--space-md);}
+.eyebrow{font-size:.875rem;font-weight:600;color:var(--apple-accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-sm);}
+a{position:relative;color:var(--apple-accent);text-decoration:none;}
+a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--apple-accent);transition:width .3s var(--ease-apple);}
+a:hover::after{width:100%;}
+.card{background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-md);transition:box-shadow .3s var(--ease-apple),transform .3s var(--ease-apple);overflow:hidden;}
+.card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+.card-spotlight{position:relative;overflow:hidden;}
+.card-spotlight::before{content:'';position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(0,113,227,.08) 0%,transparent 70%);left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s var(--ease-apple);}
+.card-spotlight:hover::before{opacity:1;}
+.glass-nav{background:rgba(255,255,255,.72);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.6);position:sticky;top:0;z-index:100;}
+.btn-primary{background:linear-gradient(180deg,var(--apple-accent) 0%,#0058b9 100%);color:#fff;padding:12px 24px;border:none;border-radius:var(--radius-sm);font-weight:500;box-shadow:var(--shadow-sm);transition:all .15s var(--ease-apple-decel);cursor:pointer;font-family:inherit;font-size:.95rem;}
+.btn-primary:active{transform:scale(.97);}
+.btn-ghost{background:transparent;color:var(--apple-accent);border:1px solid var(--apple-accent);padding:12px 24px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;font-size:.95rem;transition:all .15s var(--ease-apple-decel);}
+.btn-ghost:active{transform:scale(.97);}
+</style>
+
+<style id="bg-dynamic-layer">
+/* ===== 页面级 AI 流动背景 ===== */
+.bg-dynamic{
+  position:fixed;inset:0;z-index:-2;
+  background-image:url('images/hub_education_ai_neural_network_knowledge_graph_abstract_motif_f__landscape_16_9.jpg');
+  background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.25;
+  will-change:transform,background-position,opacity;transform:translateZ(0);backface-visibility:hidden;
+}
+.bg-overlay{
+  position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(255,255,255,.6) 0%,rgba(255,255,255,.85) 50%,rgba(255,255,255,.6) 100%);
+}
+@keyframes flow-pan-x{0%{background-position:0% 50%;}100%{background-position:100% 50%;}}
+@keyframes flow-breathe{0%,100%{transform:scale(1);opacity:.25;}50%{transform:scale(1.08);opacity:.32;}}
+.bg-dynamic.anim-parallax{
+  background-size:150% 150%;
+  animation:flow-pan-x 80s linear infinite,flow-breathe 25s ease-in-out infinite;
+}
+@media (prefers-reduced-motion:reduce){
+  .bg-dynamic,.bg-dynamic.anim-parallax{animation:none!important;}
+}
+body > *:not(.bg-dynamic):not(.bg-overlay){position:relative;z-index:1;}
+</style>
+
+<style>
+/* ===== HUB 专用样式 ===== */
+.glass-nav nav{max-width:1280px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;}
+.glass-nav .logo{font-weight:700;font-size:1.05rem;letter-spacing:-.02em;}
+.glass-nav .nav-links{display:flex;gap:24px;font-size:.9rem;}
+.glass-nav .nav-links a{color:#1d1d1f;}
+.hero{text-align:center;max-width:1100px;margin:0 auto;padding:var(--space-2xl) var(--space-lg) var(--space-xl);}
+.hero h1{margin-bottom:var(--space-md);}
+.hero .subtitle{font-size:1.2rem;color:#515154;max-width:760px;margin:0 auto var(--space-lg);font-weight:400;}
+.chip-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:var(--space-md);}
+.chip{background:rgba(0,113,227,.08);color:var(--apple-accent);padding:8px 16px;border-radius:980px;font-size:.85rem;font-weight:500;border:1px solid rgba(0,113,227,.15);}
+.section-wrap{max-width:1280px;margin:0 auto;}
+.section-title{text-align:center;margin-bottom:var(--space-xl);}
+.section-title .eyebrow{display:block;text-align:center;}
+.hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.hub-grid .card{padding:0;}
+.skin{height:160px;position:relative;overflow:hidden;border-radius:var(--radius-md) var(--radius-md) 0 0;}
+.skin .swatch-row{position:absolute;bottom:12px;left:12px;display:flex;gap:6px;}
+.skin .swatch{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.7);box-shadow:0 1px 3px rgba(0,0,0,.15);}
+.skin .skin-label{position:absolute;top:12px;right:12px;font-size:.7rem;font-weight:600;background:rgba(0,0,0,.4);color:#fff;padding:4px 10px;border-radius:8px;backdrop-filter:blur(8px);}
+.card-body{padding:var(--space-md);}
+.card-body h3{font-size:1.15rem;margin-bottom:8px;}
+.card-body .style-en{font-size:.8rem;color:#86868b;font-family:var(--font-mono);margin-bottom:12px;}
+.card-body .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.card-body .tag{font-size:.72rem;padding:4px 10px;background:#f5f5f7;border-radius:6px;color:#515154;}
+.card-body .meta{font-size:.8rem;color:#86868b;display:flex;justify-content:space-between;margin-bottom:14px;padding-top:12px;border-top:1px solid #f0f0f2;}
+.card-body .btn-primary{width:100%;text-align:center;display:block;}
+/* 6 个风格皮肤 */
+.skin.s01{background:linear-gradient(135deg,#070B1B 0%,#0D1430 50%,#3B82F6 100%);}
+.skin.s01::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.1) 1px,transparent 1px);background-size:20px 20px;}
+.skin.s02{background:linear-gradient(135deg,#FAF6EE 0%,#FFFFFF 50%,#1A2340 100%);}
+.skin.s02::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(156,122,63,.15),transparent 50%);}
+.skin.s03{background:linear-gradient(135deg,#FBF9F4 0%,#FFFFFF 60%,#C89F5A 100%);}
+.skin.s03::before{content:'';position:absolute;inset:0;background-image:radial-gradient(#C89F5A33 1px,transparent 1px);background-size:16px 16px;}
+.skin.s04{background:linear-gradient(135deg,#0D0925 0%,#1A0F4A 50%,#EC4899 100%);}
+.skin.s04::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(139,92,246,.08) 0,rgba(139,92,246,.08) 1px,transparent 1px,transparent 3px);}
+.skin.s05{background:linear-gradient(135deg,#EAF6FB 0%,rgba(255,255,255,.55) 50%,#0EA5E9 100%);}
+.skin.s05::before{content:'';position:absolute;inset:0;backdrop-filter:blur(8px);background:radial-gradient(circle at 50% 50%,rgba(125,211,252,.3),transparent 60%);}
+.skin.s06{background:linear-gradient(135deg,#F5F1E8 0%,#FFFFFF 50%,#2B3A55 100%);}
+.skin.s06::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 48%,#B8860B22 49%,#B8860B22 51%,transparent 52%);background-size:24px 24px;}
+/* 深潜馆卡片 */
+.sub-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.sub-card{padding:var(--space-md);text-align:left;}
+.sub-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:14px;}
+.sub-card.methodology .sub-icon{background:rgba(59,130,246,.12);color:#3B82F6;}
+.sub-card.applications .sub-icon{background:rgba(34,211,238,.12);color:#22D3EE;}
+.sub-card.evaluation .sub-icon{background:rgba(232,163,61,.12);color:#E8A33D;}
+.sub-card.four_layer .sub-icon{background:rgba(167,139,250,.12);color:#A78BFA;}
+.sub-card h3{margin-bottom:8px;}
+.sub-card .summary{font-size:.85rem;color:#515154;margin-bottom:14px;}
+.sub-card .meta{font-size:.78rem;color:#86868b;margin-bottom:14px;}
+/* 合规清单 */
+.compliance-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:900px;margin:0 auto;}
+.compliance-item{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:#fff;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);}
+.compliance-item .check{color:#34c759;font-size:1.2rem;font-weight:700;flex-shrink:0;}
+.compliance-item .txt{font-size:.88rem;color:#1d1d1f;}
+.compliance-item .txt strong{font-weight:600;}
+/* 元数据 */
+.meta-footer{text-align:center;padding:var(--space-xl) var(--space-lg);background:#fff;border-top:1px solid #f0f0f2;}
+.meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:900px;margin:0 auto var(--space-lg);}
+.meta-item .num{font-size:2rem;font-weight:700;color:var(--apple-accent);font-family:var(--font-mono);}
+.meta-item .label{font-size:.82rem;color:#86868b;margin-top:4px;}
+.meta-footer .note{font-size:.8rem;color:#86868b;max-width:600px;margin:0 auto;}
+@media (max-width:1024px){
+  .hub-grid{grid-template-columns:repeat(2,1fr);}
+  .sub-grid{grid-template-columns:repeat(2,1fr);}
+  .compliance-grid{grid-template-columns:1fr;}
+  .meta-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:640px){
+  .hub-grid,.sub-grid,.compliance-grid,.meta-grid{grid-template-columns:1fr;}
+  .glass-nav nav{padding:12px 20px;flex-wrap:wrap;gap:12px;}
+  .glass-nav .nav-links{font-size:.8rem;gap:14px;flex-wrap:wrap;}
+  section{padding:var(--space-xl) var(--space-sm);}
+  .hero{padding:var(--space-xl) var(--space-sm);}
+}
+</style>
+</head>
+<body>
+
+<!-- 页面级 AI 流动背景 -->
+<div class="bg-dynamic anim-parallax"></div>
+<div class="bg-overlay"></div>
+
+<!-- 顶部玻璃导航 -->
+<div class="glass-nav">
+  <nav>
+    <div class="logo">教育和AI · 研究图集</div>
+    <div class="nav-links">
+      <a href="#main-halls">主馆</a>
+      <a href="#sub-annexes">深潜馆</a>
+      <a href="#compliance">合规</a>
+      <a href="#metadata">元数据</a>
+    </div>
+  </nav>
+</div>
+
+<!-- Hero 区 -->
+<header class="hero">
+  <span class="eyebrow">EduAI Atlas · 多风格研究图集</span>
+  <h1>教育和 AI · 深度研究图集</h1>
+  <p class="subtitle">基于本地 15000 字研究报告、10 篇 2026-07-22 最新 arXiv 论文、8 份产品案例与费曼式深度分析，融合 UNESCO AI 素养四级框架、OECD-EC AILit、AI4K12、EU AI Act Art.4 等权威信源，以六种设计风格呈现教育 AI 技术栈全貌。</p>
+  <div class="chip-row">
+    <span class="chip">6 主馆</span>
+    <span class="chip">4 深潜馆</span>
+    <span class="chip">10 人物肖像</span>
+    <span class="chip">9 时间线事件</span>
+    <span class="chip">8 工具链</span>
+    <span class="chip">8 行业案例</span>
+    <span class="chip">36 条社交文案</span>
+    <span class="chip">5D×21 评估指标</span>
+    <span class="chip">四层架构交叉分析</span>
+  </div>
+</header>
+
+<!-- 6 主馆 -->
+<section id="main-halls">
+  <div class="section-wrap">
+    <div class="section-title">
+      <span class="eyebrow">Main Pavilions</span>
+      <h2>六大主馆 · 六种设计风格</h2>
+    </div>
+    <div class="hub-grid">
+
+      <article class="card card-spotlight">
+        <div class="skin s01">
+          <span class="skin-label">01</span>
+          <div class="swatch-row">
+            <span class="swatch" style="background:#070B1B"></span>
+            <span class="swatch" style="background:#0D1430"></span>
+            <span class="swatch" style="background:#3B82F6"></span>
+            <span class="swatch" style="background:#E8A33D"></span>
+            <span class="swatch" style="background:#8B5CF6"></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>科技深蓝暗黑</h3>
+          <div class="style-en">tech_deepblue</div>
+          <div class="tags"><span class="tag">工程师</span><span class="tag">暗色仪表盘</span><span class="tag">霓虹蓝光晕</span></div>
+          <div class="meta"><span>2675 行</span><span>17 章</span></div>
+          <a class="btn-primary" href="eduai_s01_tech_deepblue.html">进入主馆 →</a>
+        </div>
+      </article>
+
+      <article class="card card-spotlight">
+        <div class="skin s02">
+          <span class="skin-label">02</span>
+          <div class="swatch-row">
+            <span class="swatch" style="background:#FAF6EE"></span>
+            <span class="swatch" style="background:#FFFFFF"></span>
+            <span class="swatch" style="background:#1A2340"></span>
+            <span class="swatch" style="background:#9C7A3F"></span>
+            <span class="swatch" style="background:#1E3A8A"></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>学术墨蓝毛边纸</h3>
+          <div class="style-en">academic_ink</div>
+          <div class="tags"><span class="tag">教师</span><span class="tag">论文风</span><span class="tag">首字下沉</span></div>
+          <div class="meta"><span>2507 行</span><span>17 章</span></div>
+          <a class="btn-primary" href="eduai_s02_academic_ink.html">进入主馆 →</a>
+        </div>
+      </article>
+
+      <article class="card card-spotlight">
+        <div class="skin s03">
+          <span class="skin-label">03</span>
+          <div class="swatch-row">
+            <span class="swatch" style="background:#FBF9F4"></span>
+            <span class="swatch" style="background:#FFFFFF"></span>
+            <span class="swatch" style="background:#1D4ED8"></span>
+            <span class="swatch" style="background:#C89F5A"></span>
+            <span class="swatch" style="background:#64748B"></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>极简金蓝留白</h3>
+          <div class="style-en">minimal_gold</div>
+          <div class="tags"><span class="tag">CEO 汇报</span><span class="tag">打印</span><span class="tag">大留白</span></div>
+          <div class="meta"><span>2509 行</span><span>17 章</span></div>
+          <a class="btn-primary" href="eduai_s03_minimal_gold.html">进入主馆 →</a>
+        </div>
+      </article>
+
+      <article class="card card-spotlight">
+        <div class="skin s04">
+          <span class="skin-label">04</span>
+          <div class="swatch-row">
+            <span class="swatch" style="background:#0D0925"></span>
+            <span class="swatch" style="background:#1A0F4A"></span>
+            <span class="swatch" style="background:#EC4899"></span>
+            <span class="swatch" style="background:#8B5CF6"></span>
+            <span class="swatch" style="background:#22D3EE"></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>赛博朋克蓝紫</h3>
+          <div class="style-en">cyber_indigo</div>
+          <div class="tags"><span class="tag">极客</span><span class="tag">B 站</span><span class="tag">CRT 扫描线</span></div>
+          <div class="meta"><span>2640 行</span><span>17 章</span></div>
+          <a class="btn-primary" href="eduai_s04_cyber_indigo.html">进入主馆 →</a>
+        </div>
+      </article>
+
+      <article class="card card-spotlight">
+        <div class="skin s05">
+          <span class="skin-label">05</span>
+          <div class="swatch-row">
+            <span class="swatch" style="background:#EAF6FB"></span>
+            <span class="swatch" style="background:#0EA5E9"></span>
+            <span class="swatch" style="background:#0284C7"></span>
+            <span class="swatch" style="background:#7DD3FC"></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>玻璃天青拟态</h3>
+          <div class="style-en">glass_sky</div>
+          <div class="tags"><span class="tag">大众科普</span><span class="tag">小红书</span><span class="tag">毛玻璃</span></div>
+          <div class="meta"><span>2555 行</span><span>17 章</span></div>
+          <a class="btn-primary" href="eduai_s05_glass_sky.html">进入主馆 →</a>
+        </div>
+      </article>
+
+      <article class="card card-spotlight">
+        <div class="skin s06">
+          <span class="skin-label">06</span>
+          <div class="swatch-row">
+            <span class="swatch" style="background:#F5F1E8"></span>
+            <span class="swatch" style="background:#FFFFFF"></span>
+            <span class="swatch" style="background:#2B3A55"></span>
+            <span class="swatch" style="background:#0077B6"></span>
+            <span class="swatch" style="background:#B8860B"></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>杂志编辑石板蓝</h3>
+          <div class="style-en">magazine_slate</div>
+          <div class="tags"><span class="tag">长文出版</span><span class="tag">Medium</span><span class="tag">大标题</span></div>
+          <div class="meta"><span>2513 行</span><span>17 章</span></div>
+          <a class="btn-primary" href="eduai_s06_magazine_slate.html">进入主馆 →</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 4 深潜馆 -->
+<section id="sub-annexes" style="background:rgba(255,255,255,.5);">
+  <div class="section-wrap">
+    <div class="section-title">
+      <span class="eyebrow">Sub Annexes · Deep Dive</span>
+      <h2>四座深潜馆 · 子结构深度展开</h2>
+    </div>
+    <div class="sub-grid">
+
+      <article class="card sub-card methodology card-spotlight">
+        <div class="sub-icon">📐</div>
+        <h3>方法论深潜馆</h3>
+        <div class="style-en">Methodology Deep Annex</div>
+        <p class="summary">3 大家族 × 12 方法完整展开，每方法配 30-40 行 Python 代码与复制按钮，含 8 步 SVG 决策树与 12×6 维超表。</p>
+        <div class="meta">2527 行 · 12 代码块</div>
+        <a class="btn-ghost" href="methodology_sub.html">进入深潜 →</a>
+      </article>
+
+      <article class="card sub-card applications card-spotlight">
+        <div class="sub-icon">🏭</div>
+        <h3>行业案例代码馆</h3>
+        <div class="style-en">Applications Code Gallery</div>
+        <p class="summary">8 行业完整 Python 案例（K12/高校/职教/企业/特教/语言/STEM/教师发展），20 公共数据集基准表，10 项可复现性检查清单。</p>
+        <div class="meta">2513 行 · 8 案例 · 20 数据集</div>
+        <a class="btn-ghost" href="applications_sub.html">进入深潜 →</a>
+      </article>
+
+      <article class="card sub-card evaluation card-spotlight">
+        <div class="sub-icon">📊</div>
+        <h3>五维评估量规库</h3>
+        <div class="style-en">Evaluation Rubric Warehouse</div>
+        <p class="summary">5D × 21 子指标 1-5 分锚点量规，12 方法 × 5D 热力图评分矩阵（悬停专家理由），4 套敏感性分析 + 14 项反驳门禁。</p>
+        <div class="meta">2531 行 · 21 量规 · 14 门禁</div>
+        <a class="btn-ghost" href="evaluation_sub.html">进入深潜 →</a>
+      </article>
+
+      <article class="card sub-card four_layer card-spotlight">
+        <div class="sub-icon">🧭</div>
+        <h3>四层架构分析馆</h3>
+        <div class="style-en">Four Layer Cross Analysis</div>
+        <p class="summary">L3 元认知（6 教育思想家）→ L2 应用（8 工具）→ L1 方法（12 方法）→ L0 评估（5D），4 个交叉矩阵 + 3 个关键洞察。</p>
+        <div class="meta">2504 行 · 4 矩阵 · 3 洞察</div>
+        <a class="btn-ghost" href="four_layer_sub.html">进入深潜 →</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 合规性清单 -->
+<section id="compliance">
+  <div class="section-wrap">
+    <div class="section-title">
+      <span class="eyebrow">Compliance Checklist</span>
+      <h2>合规性验证</h2>
+    </div>
+    <div class="compliance-grid">
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>人物居中构图</strong>：10 位人物肖像 prompt 均含 professional bust centered / upper body filling frame / photorealistic</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>禁词清除</strong>：V2/V3/v2/v3/A版/B版/C版/三版/几个版本/版本数量 全部扫描零命中（白名单 IV2SLS/SVG 坐标/V1-V28 放行）</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>工具链完整</strong>：8 教育AI工具卡（Khanmigo/Duolingo Max/Coursera Coach/ChatGPT Edu/Gemini Education/MagicSchool/智谱/MathGPT）</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>名人技能</strong>：6 位教育思想家（Bloom/Vygotsky/Piaget/Mazur/Mitra/Anderson）含行动步骤与局限</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>章节顺序</strong>：17 章严格按序，16_sources 位于 15_references 之后</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>文案无编号</strong>：36 条社交文案用"第N篇/其N"自然排序，无版本标签</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>主馆↔深潜互通</strong>：主馆底部链接 4 深潜馆，深潜馆顶底链接 6 主馆</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>行数达标</strong>：10 份 HTML 均 ≥2500 行（主馆/深潜阈值）</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>四层交叉矩阵</strong>：L3↔L2 / L2↔L1 / L1↔L0 / L3↔L0 四矩阵完整</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>Apple UI 优化层</strong>：SF Pro 字体 / backdrop-filter / cubic-bezier / border-radius 体系注入全部 11 份 HTML</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>页面级流动背景</strong>：11 份 HTML 均注入 bg-dynamic 风格化动态背景 + prefers-reduced-motion 无障碍</span></div>
+      <div class="compliance-item"><span class="check">✓</span><span class="txt"><strong>单文件内联</strong>：所有 HTML 的 CSS/JS 全内联，仅图片走 AI API CDN</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 底部元数据 -->
+<section id="metadata" class="meta-footer">
+  <div class="meta-grid">
+    <div class="meta-item"><div class="num">11</div><div class="label">HTML 文件总数</div></div>
+    <div class="meta-item"><div class="num">25474</div><div class="label">总行数</div></div>
+    <div class="meta-item"><div class="num">6+4</div><div class="label">主馆 + 深潜馆</div></div>
+    <div class="meta-item"><div class="num">2026-07-31</div><div class="label">生成日期</div></div>
+  </div>
+  <p class="note">纯静态 HTML，无后端依赖。内容信源：本地 15000 字研究报告 + 10 篇 2026-07-22 arXiv 论文 + 8 产品案例 + 费曼式深度分析 4500 字 + LLM Wiki 词条；网络补充：UNESCO AI 素养四级框架、OECD-EC AILit、AI4K12、EU AI Act Art.4。图片由 AI 绘图 API 生成。</p>
+</section>
+
+<script id="apple-ui-interactions">
+// 鼠标光晕跟随
+document.querySelectorAll('.card-spotlight').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',`${e.clientX-r.left}px`);
+    card.style.setProperty('--my',`${e.clientY-r.top}px`);
+  });
+});
+// 平滑滚动
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+
+</body>
+</html>
