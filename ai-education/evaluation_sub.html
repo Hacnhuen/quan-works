@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五维评估量规全库 · Evaluation Rubric Warehouse</title>
+<style>
+/* ============================================================
+   五维评估量规全库 · 深蓝统一主题
+   bg: #0B1437 / card: #132053 / accent: #E8A33D
+   字体: Sans + Mono
+   ============================================================ */
+
+:root {
+  --bg: #0B1437;
+  --bg-2: #0E1A47;
+  --card: #132053;
+  --card-2: #182a66;
+  --line: #243681;
+  --line-soft: #1B2A5E;
+  --accent: #E8A33D;
+  --accent-2: #F6C46C;
+  --accent-dim: #8a5f24;
+  --text: #E8EDF7;
+  --text-2: #A9B6D6;
+  --text-3: #6B7AA8;
+  --score-1: #8B3A3A;
+  --score-2: #B5722A;
+  --score-3: #C9A227;
+  --score-4: #4A9D7C;
+  --score-5: #3FB8A0;
+  --ok: #3FB8A0;
+  --warn: #E8A33D;
+  --bad: #C4514E;
+  --mono: "SF Mono", "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(232,163,61,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(63,184,160,0.05) 0%, transparent 50%),
+    linear-gradient(180deg, #0B1437 0%, #0E1A47 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-2); text-decoration: underline; }
+
+code, pre, .mono { font-family: var(--mono); }
+
+/* ===== 顶部导航 ===== */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(11, 20, 55, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 20px;
+}
+.topnav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+.topnav-brand {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  margin-right: auto;
+  white-space: nowrap;
+}
+.topnav-brand .mono { color: var(--text-3); font-size: 12px; margin-left: 6px; }
+.nav-btn {
+  display: inline-block;
+  padding: 5px 11px;
+  font-size: 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text-2);
+  background: var(--card);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.nav-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+  background: var(--card-2);
+}
+.nav-btn.sub { border-color: var(--accent-dim); color: var(--accent-2); }
+
+/* ===== 容器 ===== */
+.wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== Hero ===== */
+.hero {
+  padding: 56px 0 40px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.hero .eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  background: linear-gradient(120deg, #fff 0%, #A9B6D6 60%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero h1 .sub-en {
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-3);
+  -webkit-text-fill-color: var(--text-3);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+.hero p.lead {
+  font-size: 16px;
+  color: var(--text-2);
+  max-width: 900px;
+  margin-bottom: 22px;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-3);
+}
+.hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.hero-meta .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+/* ===== 统计条 ===== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin: 30px 0;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 18px 16px;
+  text-align: center;
+}
+.stat-card .num {
+  font-family: var(--mono);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.stat-card .label {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 区段标题 ===== */
+.section { padding: 50px 0; border-bottom: 1px solid var(--line-soft); }
+.section-head { margin-bottom: 30px; }
+.section-head .tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.section-head h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 8px 0 10px;
+  color: var(--text);
+}
+.section-head .desc {
+  font-size: 14px;
+  color: var(--text-2);
+  max-width: 900px;
+}
+
+/* ===== 5D 维度卡片 ===== */
+.dim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 34px;
+}
+.dim-card {
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 18px;
+  border-left: 3px solid var(--accent);
+}
+.dim-card .dim-no {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+}
+.dim-card h3 {
+  font-size: 17px;
+  margin: 6px 0 8px;
+  color: var(--text);
+}
+.dim-card .dim-en {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+.dim-card .dim-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-bottom: 10px;
+}
+.dim-card .dim-subs {
+  font-size: 12px;
+  color: var(--text-3);
+  border-top: 1px dashed var(--line-soft);
+  padding-top: 8px;
+}
+.dim-card .dim-subs b { color: var(--accent-2); }
+
+/* ===== 量规表格 ===== */
+.rubric-block {
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 22px;
+}
+.rubric-block .rb-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.rubric-block .rb-head h3 {
+  font-size: 18px;
+  color: var(--text);
+}
+.rubric-block .rb-head .rb-id {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  background: rgba(232,163,61,0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.rubric-block .rb-dim {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-left: auto;
+}
+.rubric-block .rb-sub-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--line-soft);
+}
+.anchor-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: start;
+}
+.anchor-row:last-child { border-bottom: none; }
+.anchor-score {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 8px;
+  padding: 8px 0;
+  line-height: 1.1;
+}
+.anchor-score .lbl {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 2px;
+}
+.s1 { background: rgba(139,58,58,0.25); color: #E08A8A; border: 1px solid var(--score-1); }
+.s2 { background: rgba(181,114,42,0.25); color: #E8B272; border: 1px solid var(--score-2); }
+.s3 { background: rgba(201,162,39,0.22); color: #E8D272; border: 1px solid var(--score-3); }
+.s4 { background: rgba(74,157,124,0.22); color: #7CE0B8; border: 1px solid var(--score-4); }
+.s5 { background: rgba(63,184,160,0.22); color: #82F0D8; border: 1px solid var(--score-5); }
+.anchor-text {
+  font-size: 13.5px;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+.anchor-text b { color: var(--text); }
+.anchor-text .ex {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-top: 6px;
+  padding-left: 10px;
+  border-left: 2px solid var(--line);
+}
+
+/* ===== 热力图 ===== */
+.heatmap-wrap {
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 22px;
+  overflow-x: auto;
+}
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-3);
+}
+.legend-scale { display: flex; align-items: center; gap: 4px; }
+.legend-cell {
+  width: 26px; height: 20px; border-radius: 3px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; color: #fff;
+}
+.heatmap {
+  display: grid;
+  grid-template-columns: 180px repeat(5, minmax(90px, 1fr));
+  gap: 4px;
+  min-width: 720px;
+}
+.hm-cell {
+  padding: 10px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+  position: relative;
+  cursor: default;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  min-height: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hm-cell .hm-score {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 700;
+}
+.hm-cell .hm-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 2px;
+}
+.hm-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  z-index: 5;
+}
+.hm-header {
+  background: var(--card-2);
+  color: var(--accent-2);
+  font-weight: 600;
+  font-size: 12px;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 8px 6px;
+  border-radius: 6px;
+}
+.hm-header .hm-h-en {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  font-weight: 400;
+  margin-top: 2px;
+}
+.hm-row-label {
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 13px;
+}
+.hm-row-label .rl-name { color: var(--text); font-weight: 600; }
+.hm-row-label .rl-en { font-family: var(--mono); font-size: 10px; color: var(--text-3); margin-top: 2px; }
+
+.c1 { background: var(--score-1); }
+.c2 { background: var(--score-2); }
+.c3 { background: var(--score-3); }
+.c4 { background: var(--score-4); }
+.c5 { background: var(--score-5); }
+
+/* tooltip */
+.hm-cell[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #060C24;
+  color: var(--text);
+  border: 1px solid var(--accent);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  width: 280px;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  white-space: normal;
+  font-family: var(--sans);
+}
+.hm-cell[data-tip]::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 50;
+}
+.hm-cell[data-tip]:hover::after,
+.hm-cell[data-tip]:hover::before { opacity: 1; }
+
+/* 方法平均分行 */
+.hm-avg {
+  background: rgba(232,163,61,0.08);
+  border: 1px dashed var(--accent-dim);
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 12px;
+}
+.hm-avg .av-name { color: var(--accent-2); font-weight: 600; }
+.hm-avg .av-val { font-family: var(--mono); font-size: 14px; color: var(--accent); }
+
+/* ===== 敏感性分析 ===== */
+.sens-block {
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.sens-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.sens-head h3 { font-size: 19px; color: var(--text); }
+.sens-head .sens-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  background: rgba(232,163,61,0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.sens-desc {
+  font-size: 13.5px;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+.formula-box {
+  background: #060C24;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+.formula-box .f-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.formula-box .f-eq {
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--accent-2);
+  line-height: 1.8;
+}
+.code-box {
+  background: #060C24;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.code-box .c-head {
+  background: rgba(232,163,61,0.08);
+  padding: 8px 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent-2);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+}
+.code-box pre {
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #C9D4EC;
+  overflow-x: auto;
+}
+.code-box .kw { color: #F6C46C; }
+.code-box .str { color: #7CE0B8; }
+.code-box .com { color: #6B7AA8; font-style: italic; }
+.code-box .num { color: #E8A33D; }
+.code-box .fn { color: #82C4F0; }
+.interp-box {
+  background: rgba(63,184,160,0.06);
+  border: 1px solid rgba(63,184,160,0.3);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.interp-box .i-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ok);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.interp-box p { font-size: 13px; color: var(--text-2); margin-bottom: 6px; }
+.interp-box p:last-child { margin-bottom: 0; }
+
+/* ===== 反驳门禁 ===== */
+.gate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+}
+.gate-card {
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 18px;
+  border-top: 3px solid var(--bad);
+}
+.gate-card .g-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.gate-card .g-no {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #fff;
+  background: var(--bad);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+.gate-card h3 { font-size: 15.5px; color: var(--text); }
+.gate-card .g-en {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+.gate-card .g-q {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-bottom: 12px;
+  font-style: italic;
+  padding-left: 10px;
+  border-left: 2px solid var(--accent-dim);
+}
+.gate-card .g-checks { list-style: none; }
+.gate-card .g-checks li {
+  font-size: 12.5px;
+  color: var(--text-2);
+  padding: 5px 0 5px 22px;
+  position: relative;
+}
+.gate-card .g-checks li::before {
+  content: "▢";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 13px;
+}
+.gate-card .g-checks li b { color: var(--accent-2); }
+.gate-card .g-fail {
+  margin-top: 10px;
+  padding: 8px 10px;
+  background: rgba(196,81,78,0.12);
+  border: 1px solid rgba(196,81,78,0.3);
+  border-radius: 6px;
+  font-size: 11.5px;
+  color: #E8A0A0;
+}
+.gate-card .g-fail b { color: var(--bad); }
+
+/* ===== 工具栏/筛选 ===== */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+.toolbar .tb-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-right: 4px;
+}
+.chip {
+  padding: 5px 12px;
+  font-size: 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.active { background: var(--accent); color: #0B1437; border-color: var(--accent); font-weight: 600; }
+
+/* ===== 折叠 ===== */
+details.collap {
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+details.collap summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+details.collap summary::before {
+  content: "▸";
+  color: var(--accent);
+  transition: transform 0.15s;
+  font-size: 12px;
+}
+details.collap[open] summary::before { transform: rotate(90deg); }
+details.collap summary::-webkit-details-marker { display: none; }
+details.collap .collap-body { padding: 0 16px 14px; }
+
+/* ===== 表格通用 ===== */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.tbl th, .tbl td {
+  padding: 9px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--line-soft);
+}
+.tbl th {
+  background: var(--card-2);
+  color: var(--accent-2);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+.tbl td { color: var(--text-2); }
+.tbl tr:hover td { background: rgba(232,163,61,0.04); }
+
+/* ===== 说明卡 ===== */
+.note {
+  background: rgba(232,163,61,0.06);
+  border: 1px solid rgba(232,163,61,0.25);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: var(--text-2);
+}
+.note b { color: var(--accent-2); }
+
+/* ===== 页脚 ===== */
+.footer {
+  padding: 40px 0 50px;
+  border-top: 1px solid var(--line);
+  margin-top: 20px;
+}
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.footer-nav .fn-group h4 {
+  font-size: 12px;
+  color: var(--accent);
+  font-family: var(--mono);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.footer-nav .fn-group a {
+  display: block;
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--text-2);
+}
+.footer-nav .fn-group a:hover { color: var(--accent); }
+.footer-bottom {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-3);
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+}
+.footer-bottom .mono { color: var(--accent-dim); }
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 26px; }
+  .hero h1 .sub-en { font-size: 14px; }
+  .section { padding: 36px 0; }
+  .section-head h2 { font-size: 22px; }
+  .heatmap { grid-template-columns: 130px repeat(5, minmax(64px, 1fr)); min-width: 560px; }
+  .hm-cell .hm-sub { display: none; }
+  .gate-grid { grid-template-columns: 1fr; }
+  .anchor-row { grid-template-columns: 50px 1fr; }
+  .topnav-brand { width: 100%; margin-right: 0; }
+}
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 14px; }
+  .hero { padding: 36px 0 28px; }
+  .rubric-block, .heatmap-wrap, .sens-block { padding: 16px; }
+}
+
+/* 选中态 */
+::selection { background: var(--accent); color: #0B1437; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+</style>
+<style id="apple-ui-layer">
+:root{--font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue",system-ui,sans-serif;--font-mono:"SF Mono","JetBrains Mono",Menlo,monospace;--apple-accent:#E8A33D;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);--ease-apple:cubic-bezier(0.4,0,0.2,1);}
+*{transition:all .3s var(--ease-apple);}
+body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased;}
+.card{border-radius:var(--radius-md);box-shadow:var(--shadow-md);transition:box-shadow .3s var(--ease-apple),transform .3s var(--ease-apple);}
+.card:hover{transform:translateY(-2px);}
+.btn,.btn-primary{border-radius:var(--radius-sm);transition:all .15s cubic-bezier(0,0,0.2,1);}
+.btn:active,.btn-primary:active{transform:scale(.97);}
+.glass-nav{backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);}
+html{scroll-behavior:smooth;}
+section{scroll-snap-align:start;}
+pre,code{font-family:var(--font-mono);}
+.card-spotlight{position:relative;overflow:hidden;}
+.card-spotlight::before{content:'';position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(232,163,61,.1) 0%,transparent 70%);left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s var(--ease-apple);}
+.card-spotlight:hover::before{opacity:1;}
+</style>
+<style id="bg-dynamic-layer">
+.bg-dynamic{position:fixed;inset:0;z-index:-2;background-image:url('images/evaluation_education_ai_gauge_meter_quality_radar_chart_balance_scale_d__landscape_16_9.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.25;will-change:transform,background-position,opacity;transform:translateZ(0);backface-visibility:hidden;}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,20,55,.6) 0%,rgba(11,20,55,.85) 50%,rgba(11,20,55,.6) 100%);}
+@keyframes flow-pan-y{0%{background-position:50% 0%;}100%{background-position:50% 100%;}}
+.bg-dynamic.anim-pan-y{animation:flow-pan-y 50s linear infinite;background-size:100% 200%;}
+@media (prefers-reduced-motion:reduce){.bg-dynamic,.bg-dynamic.anim-pan-y{animation:none!important;}}
+body > *:not(.bg-dynamic):not(.bg-overlay){position:relative;z-index:1;}
+</style>
+</head>
+<body>
+<div class="bg-dynamic anim-pan-y"></div>
+<div class="bg-overlay"></div>
+
+<!-- ============ 顶部导航 ============ -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="topnav-brand">五维评估量规全库 <span class="mono">/ Evaluation Rubric Warehouse</span></div>
+    <a class="nav-btn" href="eduai_s01_tech_deepblue.html">S01 技术深蓝</a>
+    <a class="nav-btn" href="eduai_s02_academic_ink.html">S02 学术墨韵</a>
+    <a class="nav-btn" href="eduai_s03_minimal_gold.html">S03 极简金辉</a>
+    <a class="nav-btn" href="eduai_s04_cyber_indigo.html">S04 赛博靛蓝</a>
+    <a class="nav-btn" href="eduai_s05_glass_sky.html">S05 玻璃天空</a>
+    <a class="nav-btn" href="eduai_s06_magazine_slate.html">S06 杂志岩灰</a>
+    <a class="nav-btn sub" href="methodology_sub.html">方法学深潜</a>
+    <a class="nav-btn sub" href="applications_sub.html">应用深潜</a>
+    <a class="nav-btn sub" href="four_layer_sub.html">四层深潜</a>
+  </div>
+</nav>
+
+<!-- ============ Hero ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">EDU·AI RUBRIC WAREHOUSE · 深潜馆 04</div>
+    <h1>
+      五维评估量规全库
+      <span class="sub-en">Evaluation Rubric Warehouse — 5D × 21 子指标 × 12 方法评分矩阵</span>
+    </h1>
+    <p class="lead">
+      本库为教育人工智能方法提供一套可操作、可复核的五维评估体系。<b>理论严谨性 · 实践效果 · 计算效率 · 可解释性 · 适用范围</b> 共 5 个维度、21 个子指标，每个子指标给出 1 分（差）/ 3 分（中）/ 5 分（优）三档锚点描述；并配以 12 种主流教育 AI 方法的热力图评分矩阵、4 套敏感性分析方法与 14 项 DoWhy 风格反驳门禁清单，帮助研究者在"学习增益是否真实、因果是否站得住、模型是否可上课堂"三件事上做出可辩护的判断。
+    </p>
+    <div class="hero-meta">
+      <span><span class="dot"></span>5 维度 / 21 子指标</span>
+      <span><span class="dot"></span>12 方法 × 5D 评分矩阵</span>
+      <span><span class="dot"></span>4 套敏感性分析</span>
+      <span><span class="dot"></span>14 项反驳门禁</span>
+      <span><span class="dot"></span>1–5 分锚点量规</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card"><div class="num">5</div><div class="label">评估维度 Dimensions</div></div>
+      <div class="stat-card"><div class="num">21</div><div class="label">子指标 Sub-indicators</div></div>
+      <div class="stat-card"><div class="num">12</div><div class="label">方法评分 Methods</div></div>
+      <div class="stat-card"><div class="num">63</div><div class="label">锚点描述 Anchors</div></div>
+      <div class="stat-card"><div class="num">4</div><div class="label">敏感性分析 Sensitivity</div></div>
+      <div class="stat-card"><div class="num">14</div><div class="label">反驳门禁 Refutation Gates</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 5D 维度总览 ============ -->
+<section class="section" id="dims">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">PART 01 · DIMENSIONS</div>
+      <h2>五维评估框架总览</h2>
+      <p class="desc">
+        五维框架围绕"一个教育 AI 方法是否值得信赖"展开：理论严谨性看它是否站得住脚，实践效果看它是否真的提升了学习，计算效率看它是否跑得动，可解释性看它是否说得清，适用范围看它是否用得上。五维彼此独立又互相校验——一个方法可能在理论上严谨但解释性差（如深度知识追踪），也可能在实践中有效但适用范围窄（如特定学科的 IRT）。维度之间不互相替代，而是共同构成一张"可信度拼图"。
+      </p>
+    </div>
+
+    <div class="dim-grid">
+      <div class="dim-card">
+        <div class="dim-no">D1</div>
+        <h3>理论严谨性</h3>
+        <div class="dim-en">Theoretical Rigor</div>
+        <div class="dim-desc">方法背后的数学与认知科学基础是否扎实，假设是否清晰，结论是否可证伪。教育 AI 不是工程拼凑，而应有可被同行检验的理论承诺。</div>
+        <div class="dim-subs">子指标：<b>数学基础 / 假设明确性 / 理论保证 / 可证伪性</b>（共 4 项）</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-no">D2</div>
+        <h3>实践效果</h3>
+        <div class="dim-en">Practical Effectiveness</div>
+        <div class="dim-desc">方法在真实课堂或学习平台上是否带来了可测量、可重复的学习增益，且对扰动稳健。效果必须用统计语言而非营销语言来表达。</div>
+        <div class="dim-subs">子指标：<b>学习增益 / 鲁棒性 / 稳定性 / 置信区间 / 假设检验</b>（共 5 项）</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-no">D3</div>
+        <h3>计算效率</h3>
+        <div class="dim-en">Computational Efficiency</div>
+        <div class="dim-desc">方法在推理时间、空间占用、可扩展性与并行能力上的表现。教育场景常面临"万人同时在线、低延迟反馈"的硬约束。</div>
+        <div class="dim-subs">子指标：<b>推理时间 / 空间占用 / 可扩展性 / 并行能力</b>（共 4 项）</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-no">D4</div>
+        <h3>可解释性</h3>
+        <div class="dim-en">Interpretability</div>
+        <div class="dim-desc">方法能否向教师、学生、管理者说清楚"为什么这样判断"。教育决策涉及学生前途，黑箱模型必须配合可审计工具链。</div>
+        <div class="dim-subs">子指标：<b>透明度 / 可理解性 / 工具支持 / 可审计性</b>（共 4 项）</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-no">D5</div>
+        <h3>适用范围</h3>
+        <div class="dim-en">Applicability Scope</div>
+        <div class="dim-desc">方法能处理哪些数据类型、多大问题规模、多少场景、需要多少数据量。适用范围决定了方法能否从论文走到课堂。</div>
+        <div class="dim-subs">子指标：<b>数据类型 / 问题规模 / 场景覆盖 / 数据量需求</b>（共 4 项）</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>使用说明：</b>本量规采用 1–5 分制，1 分为"差"（不可接受），3 分为"中"（基本可用但有明显短板），5 分为"优"（可推荐用于生产级教育系统）。2 分与 4 分为中间档，按锚点描述插值判断。每个子指标必须给出"证据来源"——可以是实验数据、消融研究、第三方复现报告或同行评审论文，禁止仅凭主观印象打分。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第一部分：5D × 21 子指标锚点量规 ============ -->
+<section class="section" id="rubric">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">PART 02 · RUBRIC ANCHORS</div>
+      <h2>5D × 21 子指标 · 1/3/5 分锚点量规</h2>
+      <p class="desc">
+        下方按维度展开 21 个子指标。每个子指标给出 1 分（差）、3 分（中）、5 分（优）三档锚点描述，并附教育 AI 场景下的具体判据示例。评分时请先定位"最接近的档位"，再决定是否上浮或下调一档。锚点描述力求可观测、可复现，避免"较好""较强"等模糊表述。
+      </p>
+    </div>
+
+    <!-- ===== D1 理论严谨性 ===== -->
+    <div class="toolbar">
+      <span class="tb-label">维度筛选：</span>
+      <span class="chip active" data-filter="all">全部 21 项</span>
+      <span class="chip" data-filter="d1">D1 理论严谨性</span>
+      <span class="chip" data-filter="d2">D2 实践效果</span>
+      <span class="chip" data-filter="d3">D3 计算效率</span>
+      <span class="chip" data-filter="d4">D4 可解释性</span>
+      <span class="chip" data-filter="d5">D5 适用范围</span>
+    </div>
+
+    <!-- D1.1 数学基础 -->
+    <div class="rubric-block" data-dim="d1">
+      <div class="rb-head">
+        <span class="rb-id">D1.1</span>
+        <h3>数学基础</h3>
+        <span class="rb-dim">D1 理论严谨性 · Mathematical Foundation</span>
+      </div>
+      <div class="rb-sub-desc">考察方法所依赖的数学工具（概率论、线性代数、优化理论、图论等）是否定义清晰、推导自洽，能否在数学层面给出形式化表达而非仅靠直觉描述。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>无形式化定义。</b>方法仅用自然语言描述，关键变量、目标函数、误差项均无数学符号表达；无法区分"模型假设"与"经验观察"。
+          <span class="ex">例：某学习平台声称"AI 智能推荐"但未给出任何概率模型或优化目标，仅描述"根据学生行为推荐题目"。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有部分形式化。</b>给出目标函数与主要变量定义，但推导链条不完整，存在未证明的中间步骤或隐含假设；数学符号使用基本规范但偶有歧义。
+          <span class="ex">例：贝叶斯知识追踪给出了隐马尔可夫模型的转移概率与观测概率定义，但对学生"遗忘"过程只做简化假设而未给出数学论证。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>完整形式化且自洽。</b>从公理/假设出发，经严格推导得到结论；关键定理有证明或引用已证文献；符号体系统一、无歧义；可在数学层面被同行复现与检验。
+          <span class="ex">例：项目反应理论（IRT）从 logistic 模型出发，明确给出区分度、难度、猜测参数的概率意义，并通过极大似然估计给出渐近性质证明。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D1.2 假设明确性 -->
+    <div class="rubric-block" data-dim="d1">
+      <div class="rb-head">
+        <span class="rb-id">D1.2</span>
+        <h3>假设明确性</h3>
+        <span class="rb-dim">D1 理论严谨性 · Assumption Clarity</span>
+      </div>
+      <div class="rb-sub-desc">方法所依赖的前提条件（如条件独立、分布假设、平稳性、无混淆等）是否被显式列出，而非埋在实现细节里。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>假设隐而不宣。</b>方法直接给出算法流程，完全不讨论"在什么前提下成立"；读者无法判断结论的适用边界。
+          <span class="ex">例：某 EDM 研究直接用回归分析学习行为与成绩的关系，未说明是否假设线性、是否假设无未测混淆。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>部分假设显式化。</b>列出主要假设但遗漏次要假设；对假设的"为何如此"缺少论证；假设与算法之间的对应关系不够清晰。
+          <span class="ex">例：DKT 论文说明了"知识状态随练习转移"的马尔可夫假设，但未明确讨论"题目间条件独立"假设何时会被违反。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>假设全列出并分级。</b>所有前提假设以列表形式呈现，区分"核心假设"（违反则方法失效）与"简化假设"（违反则性能下降）；每条假设附判据说明如何检验。
+          <span class="ex">例：因果推断框架 DoWhy 显式列出可识别性假设、无混淆假设、一致性假设，并为每条提供可执行的检验步骤。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D1.3 理论保证 -->
+    <div class="rubric-block" data-dim="d1">
+      <div class="rb-head">
+        <span class="rb-id">D1.3</span>
+        <h3>理论保证</h3>
+        <span class="rb-dim">D1 理论严谨性 · Theoretical Guarantee</span>
+      </div>
+      <div class="rb-sub-desc">方法是否在理论上保证了某些性质（如收敛性、一致性、误差界、隐私保证等），而不仅是经验上"跑得好"。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>无任何理论保证。</b>仅报告实验数字，不讨论方法的收敛、误差或稳健性边界；无法回答"在什么条件下会失效"。
+          <span class="ex">例：某 LLM 微调方案只报告准确率提升，未讨论微调是否会引入分布漂移或灾难性遗忘的理论风险。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有部分保证但条件受限。</b>给出某一性质的理论保证（如收敛性），但保证成立的条件较苛刻，与真实教育场景有差距；或保证过于宽松（如仅给出 big-O 上界）。
+          <span class="ex">例：BKT 给出了参数的极大似然估计渐近正态性，但要求观测序列足够长且参数可识别，真实短序列下保证难以成立。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>多重保证且条件贴合实际。</b>同时给出收敛性、误差界、稳健性等多项保证；保证成立的条件在真实教育数据规模下可满足；并与经验结果交叉验证。
+          <span class="ex">例：差分隐私学习分析框架同时给出 ε-隐私保证与效用上界，并在真实学区数据规模下验证误差界可达。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D1.4 可证伪性 -->
+    <div class="rubric-block" data-dim="d1">
+      <div class="rb-head">
+        <span class="rb-id">D1.4</span>
+        <h3>可证伪性</h3>
+        <span class="rb-dim">D1 理论严谨性 · Falsifiability</span>
+      </div>
+      <div class="rb-sub-desc">方法是否给出了"如果某条件成立则方法失效"的可证伪预测，使得同行能设计实验去推翻它，而不是无论如何都能自圆其说。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>不可证伪。</b>方法对任何结果都能事后解释，没有可被实验推翻的明确预测；属于"放之四海而皆准"的空话。
+          <span class="ex">例：宣称"AI 能提升所有学生的学习兴趣"，无论实验结果如何都能用"样本特殊"来解释，无法被推翻。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>可证伪但条件模糊。</b>给出了失效预测，但触发条件描述不够精确，导致同行难以设计干净的证伪实验；或证伪实验成本过高。
+          <span class="ex">例：DKT 预测"当知识点间存在强依赖时单技能模型失效"，但"强依赖"的量化阈值未给出。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>明确可证伪且已检验。</b>给出精确的失效条件（含数值阈值），同行可据此设计实验；且已有研究尝试证伪并报告结果（无论成功与否）。
+          <span class="ex">例：IRT 明确预测"若被试猜测行为显著则 3PL 优于 2PL"，并通过模拟与真实数据给出猜测参数大于 0.2 时两模型差异的实证阈值。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== D2 实践效果 ===== -->
+
+    <!-- D2.1 学习增益 -->
+    <div class="rubric-block" data-dim="d2">
+      <div class="rb-head">
+        <span class="rb-id">D2.1</span>
+        <h3>学习增益</h3>
+        <span class="rb-dim">D2 实践效果 · Learning Gain</span>
+      </div>
+      <div class="rb-sub-desc">方法是否在可控实验中带来了真实、可测量的学习成果提升（如标准化测试分数、知识掌握度、迁移能力），而非仅停留在使用时长或满意度。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>无学习增益证据。</b>仅有使用量或满意度数据，无学习成果测量；或有成果测量但无对照组，无法归因。
+          <span class="ex">例：某 AI 辅导应用报告"学生日均使用 40 分钟、满意度 4.8 分"，但未测量成绩变化，也无对照组。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有增益但证据有限。</b>有对照组实验且显示正向增益，但样本小、单次实验、或仅测短期效应（&lt;4 周）；增益幅度未报告效应量或置信区间。
+          <span class="ex">例：在某校一个班 30 人试用了 3 周 AI 数学辅导，后测分数高于对照班，但未报告效应量与置信区间，也未做长期追踪。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>稳健且有外推证据。</b>多站点、大样本 RCT 或准实验显示稳健正效应；报告效应量（如 Cohen's d ≥ 0.4）、95% 置信区间与长期追踪（≥1 学期）；并经独立团队复现。
+          <span class="ex">例：Carnegie Learning 智能数学辅导系统在多校 RCT 中报告效应量 d=0.4–0.6，且经第三方独立复现，效果持续一学期以上。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D2.2 鲁棒性 -->
+    <div class="rubric-block" data-dim="d2">
+      <div class="rb-head">
+        <span class="rb-id">D2.2</span>
+        <h3>鲁棒性</h3>
+        <span class="rb-dim">D2 实践效果 · Robustness</span>
+      </div>
+      <div class="rb-sub-desc">方法面对数据扰动（噪声、缺失、分布漂移、对抗样本）时，性能下降是否可控、可预测。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>脆弱易崩。</b>轻微数据扰动即导致性能骤降；无任何扰动测试；或对缺失值无处理机制直接报错。
+          <span class="ex">例：某 LLM 评分模型在学生拼写错误率上升 10% 时，评分准确率从 92% 跌至 65%，且未做过噪声测试。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有扰动测试但单维度。</b>仅在单一扰动维度（如高斯噪声）上测试，性能下降可接受；但未测试分布漂移、对抗扰动等多维度；下降曲线未建模。
+          <span class="ex">例：DKT 在答题噪声 5%–20% 下测试 AUC 下降在 0.03 以内，但未测试学期切换带来的分布漂移。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>多维扰动下稳健且可预测。</b>在噪声、缺失、漂移、对抗四类扰动下均有测试；性能下降曲线已建模（如给出扰动幅度—性能损失函数）；并设计了显式缓解机制。
+          <span class="ex">例：RAG 系统在文档库 15% 缺失、查询分布漂移、对抗提问三类扰动下召回率下降均小于 8%，并给出扰动—损失预测模型。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D2.3 稳定性 -->
+    <div class="rubric-block" data-dim="d2">
+      <div class="rb-head">
+        <span class="rb-id">D2.3</span>
+        <h3>稳定性</h3>
+        <span class="rb-dim">D2 实践效果 · Stability</span>
+      </div>
+      <div class="rb-sub-desc">同一方法在不同随机种子、不同数据子集、不同时间窗口上运行，结果方差是否可控。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>方差极大不可复现。</b>换种子或换数据子集结果剧烈波动；只报告单次最优结果；无法给出结果的可信区间。
+          <span class="ex">例：某神经网络学生模型在 5 个随机种子下 AUC 从 0.71 到 0.89 波动，论文只报告 0.89。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>方差可控但未系统报告。</b>多次运行结果接近，但只报告均值未报告标准差；或仅在单一数据集上验证稳定性。
+          <span class="ex">例：IRT 参数估计在 10 次重采样下稳定，但论文只给出均值未给标准差，也未跨数据集验证。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>方差量化且跨场景稳定。</b>报告均值±标准差（≥5 种子）与置信区间；在多个数据集、多个时间窗口上方差均低于预设阈值；结果可被同行精确复现。
+          <span class="ex">例：BKT 在 3 个学区、5 个种子下 AUC 均值 0.78±0.012，95%CI [0.76,0.80]，复现团队误差 &lt;0.01。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D2.4 置信区间 -->
+    <div class="rubric-block" data-dim="d2">
+      <div class="rb-head">
+        <span class="rb-id">D2.4</span>
+        <h3>置信区间</h3>
+        <span class="rb-dim">D2 实践效果 · Confidence Interval</span>
+      </div>
+      <div class="rb-sub-desc">方法是否为其关键输出（效应量、预测概率、参数估计）提供置信区间或可信区间，而非只给点估计。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>仅点估计。</b>所有结果只给单点数值，无任何不确定性度量；无法判断结论的可靠程度。
+          <span class="ex">例：报告"AI 辅导使成绩提高 12 分"，但不给置信区间，无法判断该提升是否显著。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有区间但假设强。</b>给出 95% 置信区间，但依赖强分布假设（如正态、独立同分布），未做假设检验或 bootstrap 验证；区间宽度未讨论。
+          <span class="ex">例：用 t 检验给出成绩提升的 95%CI [3,21]，但未检查正态性，区间过宽也未讨论。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>区间稳健且多层。</b>用 bootstrap 或贝叶斯方法给出置信/可信区间，不依赖强假设；同时报告参数级与预测级区间；区间宽度在决策可接受范围内。
+          <span class="ex">例：贝叶斯 IRT 给出每个学生能力参数 θ 的 95% 可信区间，并用 bootstrap 验证覆盖率，区间宽度 &lt;0.3 logit。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D2.5 假设检验 -->
+    <div class="rubric-block" data-dim="d2">
+      <div class="rb-head">
+        <span class="rb-id">D2.5</span>
+        <h3>假设检验</h3>
+        <span class="rb-dim">D2 实践效果 · Hypothesis Testing</span>
+      </div>
+      <div class="rb-sub-desc">方法是否对核心 claims 进行了规范的统计假设检验，并报告 p 值、效应量、多重比较校正等。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>无假设检验。</b>仅比较均值大小就下结论"AI 更好"；无 p 值、无效应量、无多重比较校正。
+          <span class="ex">例：实验班均分 82、对照班 79，直接宣称"AI 显著提升成绩"，未做任何统计检验。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有检验但不完整。</b>报告了 p 值但未报告效应量；或未做多重比较校正；或检验假设未验证（如未检验方差齐性就用 t 检验）。
+          <span class="ex">例：报告 p=0.04 但未给 Cohen's d，且同时比较了 8 个指标未做 Bonferroni 校正。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>检验规范且预注册。</b>预先注册假设与分析方案；报告 p 值、效应量、置信区间三者；做了多重比较校正；检验假设经验证或用非参数方法兜底。
+          <span class="ex">例：预注册的 RCT 报告"AI 辅导对代数成绩影响 d=0.45, 95%CI[0.21,0.69], p&lt;0.001（Bonferroni 校正后）"，并附稳健性检验。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== D3 计算效率 ===== -->
+
+    <!-- D3.1 推理时间 -->
+    <div class="rubric-block" data-dim="d3">
+      <div class="rb-head">
+        <span class="rb-id">D3.1</span>
+        <h3>推理时间</h3>
+        <span class="rb-dim">D3 计算效率 · Inference Time</span>
+      </div>
+      <div class="rb-sub-desc">方法在单次预测（如给一个学生推荐一道题、评估一次作答）所需的延迟，是否满足课堂实时反馈要求（通常 &lt;500ms）。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>延迟不可接受。</b>单次推理 &gt;5 秒，无法用于实时课堂场景；或推理时间随输入规模指数增长。
+          <span class="ex">例：某 LLM 作业批改单次调用延迟 12 秒，学生等待反馈体验差，无法在课堂上使用。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>延迟可接受但波动大。</b>平均延迟 &lt;500ms 但 P99 延迟 &gt;2 秒；或在小规模下快、规模上升后明显变慢。
+          <span class="ex">例：DKT 推理平均 80ms，但当并发学生数超过 500 时 P99 延迟升至 3 秒。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>低延迟且稳定。</b>P99 延迟 &lt;500ms，在峰值并发下仍稳定；推理时间随规模的复杂度明确（如 O(n log n)）且有基准测试。
+          <span class="ex">例：IRT 在线估计 P99 延迟 30ms，万人并发下稳定，复杂度 O(n) 并附 benchmark 报告。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D3.2 空间占用 -->
+    <div class="rubric-block" data-dim="d3">
+      <div class="rb-head">
+        <span class="rb-id">D3.2</span>
+        <h3>空间占用</h3>
+        <span class="rb-dim">D3 计算效率 · Space Usage</span>
+      </div>
+      <div class="rb-sub-desc">方法在内存与存储上的占用，是否能在普通教育终端（学校服务器、平板、甚至边缘设备）上运行。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>资源消耗过大。</b>模型 &gt;10GB 显存，仅能在高端 GPU 服务器运行；普通学校基础设施无法承载。
+          <span class="ex">例：某 70B 参数 LLM 微调模型需 4 张 A100 才能推理，普通学校机房无法部署。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>可在中等硬件运行。</b>模型 1–10GB，需要单张消费级 GPU 或较强 CPU 服务器；移动端不可用但校园服务器可承载。
+          <span class="ex">例：DKT 模型约 500MB，校园 CPU 服务器可运行，但平板端无法本地推理。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>轻量可在边缘运行。</b>模型 &lt;500MB 或量化后 &lt;200MB，可在平板、低端设备本地推理；存储增长随数据量可控。
+          <span class="ex">例：BKT 每技能参数仅几十 KB，可在学生平板本地实时推理，离线可用。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D3.3 可扩展性 -->
+    <div class="rubric-block" data-dim="d3">
+      <div class="rb-head">
+        <span class="rb-id">D3.3</span>
+        <h3>可扩展性</h3>
+        <span class="rb-dim">D3 计算效率 · Scalability</span>
+      </div>
+      <div class="rb-sub-desc">方法在学生数、题目数、知识点数扩展到十万、百万级时，性能与资源消耗是否仍可控。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>规模受限严重。</b>学生数或题目数超过几千即无法训练或推理；复杂度指数增长。
+          <span class="ex">例：某知识图谱推理方法在 1 万节点时训练需 48 小时，10 万节点时内存溢出无法完成。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>可扩展但需重构。</b>能支撑十万级，但需手动分片、批处理等工程改造；复杂度多项式增长。
+          <span class="ex">例：DKT 支撑 10 万学生需分片部署，训练时间随学生数二次增长，需工程优化。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>近线性扩展。</b>支撑百万级学生/题目，资源消耗近线性增长；原生支持分布式；有大规模基准测试。
+          <span class="ex">例：RAG 向量检索在百万文档上延迟 &lt;100ms，资源近线性扩展，并有公开 benchmark。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D3.4 并行能力 -->
+    <div class="rubric-block" data-dim="d3">
+      <div class="rb-head">
+        <span class="rb-id">D3.4</span>
+        <h3>并行能力</h3>
+        <span class="rb-dim">D3 计算效率 · Parallel Capability</span>
+      </div>
+      <div class="rb-sub-desc">方法能否利用多核 CPU、多 GPU、分布式集群并行训练与推理，以应对万人同时在线的教育场景。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>串行无法并行。</b>算法本质串行（如时序依赖强），无法利用多核；万人并发下只能排队。
+          <span class="ex">例：某在线贝叶斯学生模型严格串行更新，无法并行处理多学生请求，高峰期请求堆积。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>数据并行但模型串行。</b>可按学生/题目分片做数据并行，但单模型训练仍串行；扩展到多 GPU 收益递减。
+          <span class="ex">例：IRT 可按学生分片估计，但联合参数估计仍需串行迭代，4 GPU 加速比仅 2.5x。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>模型级并行且近线性加速。</b>支持模型并行与数据并行；多 GPU 加速比接近线性；有通信开销分析与瓶颈诊断。
+          <span class="ex">例：分布式 DKT 训练在 8 GPU 上加速比 7.2x，附通信开销分析与瓶颈诊断报告。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== D4 可解释性 ===== -->
+
+    <!-- D4.1 透明度 -->
+    <div class="rubric-block" data-dim="d4">
+      <div class="rb-head">
+        <span class="rb-id">D4.1</span>
+        <h3>透明度</h3>
+        <span class="rb-dim">D4 可解释性 · Transparency</span>
+      </div>
+      <div class="rb-sub-desc">方法的内部机制（参数、结构、决策路径）是否对外公开、可被检查，而非封闭黑箱。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>完全黑箱。</b>闭源 API 调用，无模型结构、无参数、无决策路径访问权限；无法做任何内部检查。
+          <span class="ex">例：通过某商业 LLM API 评分，无法访问模型权重、注意力或中间层，无法检查"为何给这个分"。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>部分透明。</b>模型结构公开但权重不公开；或有权重但无决策路径导出；需额外工具才能检查内部状态。
+          <span class="ex">例：DKT 结构公开、权重可导出，但要理解"为何判断该生掌握某技能"需自行实现注意力分析。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>全链路透明。</b>结构、权重、决策路径、中间表示均可导出与可视化；并提供标准化的检查接口。
+          <span class="ex">例：IRT 公开全部参数（区分度、难度、猜测），并提供标准接口导出每个学生的能力估计与题目特征曲线。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D4.2 可理解性 -->
+    <div class="rubric-block" data-dim="d4">
+      <div class="rb-head">
+        <span class="rb-id">D4.2</span>
+        <h3>可理解性</h3>
+        <span class="rb-dim">D4 可解释性 · Understandability</span>
+      </div>
+      <div class="rb-sub-desc">方法的输出能否被非技术背景的教师、学生、家长理解，而非只有 ML 专家才能解读。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>仅专家可懂。</b>输出是概率向量、嵌入向量或 logits，教师无法据此行动；无任何自然语言解释。
+          <span class="ex">例：输出"该生知识状态向量 [0.2, 0.7, 0.4, ...]"，教师看不懂、不知如何干预。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有解释但需训练。</b>提供可视化或文字解释，但教师需培训才能正确解读；解释偶有不直观的术语。
+          <span class="ex">例：提供"知识掌握度热力图"，但教师需理解 0–1 概率含义与阈值才能判断"是否需要干预"。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>教师可直接行动。</b>输出包含自然语言建议与可操作干预方案；经过教师可用性测试验证；解释与教学常识对齐。
+          <span class="ex">例：系统输出"该生在'一元二次方程'掌握度低（65%），建议复习配方法，推荐 3 道由易到难的练习题"，教师可直接采用。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D4.3 工具支持 -->
+    <div class="rubric-block" data-dim="d4">
+      <div class="rb-head">
+        <span class="rb-id">D4.3</span>
+        <h3>工具支持</h3>
+        <span class="rb-dim">D4 可解释性 · Tool Support</span>
+      </div>
+      <div class="rb-sub-desc">方法是否配有成熟的可解释工具链（如 SHAP、LIME、注意力可视化、反事实解释生成器）来辅助分析。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>无任何工具。</b>需自行从零开发解释工具；社区无成熟方案；解释工作成本极高。
+          <span class="ex">例：某自定义图神经网络学生模型，无现成可解释工具，需手写可视化代码。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有通用工具但需适配。</b>可借用 SHAP/LIME 等通用工具，但需较多适配工作；工具输出与教育语义对齐需人工转换。
+          <span class="ex">例：可用 LIME 解释 DKT 单次预测，但需人工将特征重要性映射到"哪道题影响了判断"。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>原生工具链完善。</b>方法自带或社区有专用可解释工具，输出直接对齐教育语义；工具经过可用性评估。
+          <span class="ex">例：知识图谱方法自带路径可视化工具，直接展示"从知识点 A 到 B 的掌握路径"与薄弱环节，教师无需适配。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D4.4 可审计性 -->
+    <div class="rubric-block" data-dim="d4">
+      <div class="rb-head">
+        <span class="rb-id">D4.4</span>
+        <h3>可审计性</h3>
+        <span class="rb-dim">D4 可解释性 · Auditability</span>
+      </div>
+      <div class="rb-sub-desc">方法是否保留完整的决策日志、输入快照、模型版本，使得事后可追溯任一决策的来龙去脉（合规与问责所需）。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>无任何日志。</b>决策即弃，无法回溯；输入与模型版本未记录；出问题无法追责。
+          <span class="ex">例：某 AI 评分系统给出分数后不保留输入作文与模型版本，学生申诉时无法复查。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>有日志但不完整。</b>保留输入与输出，但模型版本、随机种子、中间状态未全记录；日志保留期短；审计需手工拼接。
+          <span class="ex">例：保留每次评分的输入作文与最终分数，但未记录模型版本与随机种子，跨版本对比困难。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>全链路可审计。</b>输入、模型版本、随机种子、中间表示、最终决策全部留痕；日志可按学生/时间/模型多维检索；保留期满足合规要求。
+          <span class="ex">例：系统对每次推荐记录学生 ID、输入特征、模型版本号、随机种子、中间注意力权重、推荐结果，可按学生申诉一键导出完整决策链。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== D5 适用范围 ===== -->
+
+    <!-- D5.1 数据类型 -->
+    <div class="rubric-block" data-dim="d5">
+      <div class="rb-head">
+        <span class="rb-id">D5.1</span>
+        <h3>数据类型</h3>
+        <span class="rb-dim">D5 适用范围 · Data Type</span>
+      </div>
+      <div class="rb-sub-desc">方法能处理哪些类型的教育数据（二元作答、连续分数、文本、图像、语音、时序行为日志等）。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>仅单一数据类型。</b>只能处理一种数据（如仅二元对错），其他类型需丢弃或强制转换，信息损失大。
+          <span class="ex">例：BKT 只能处理二元作答，部分分题目、文本作答均无法利用。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>支持少数类型。</b>能处理 2–3 种数据类型，但跨类型融合需手工对齐；异构数据利用不充分。
+          <span class="ex">例：IRT 可处理二元与部分分，但无法融合文本作答内容。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>原生多模态支持。</b>原生支持文本、图像、语音、时序、结构化等多种数据并有效融合；有跨模态对齐机制。
+          <span class="ex">例：多模态学习分析可同时融合作答文本、语音、表情、鼠标行为，跨模态对齐后联合建模。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D5.2 问题规模 -->
+    <div class="rubric-block" data-dim="d5">
+      <div class="rb-head">
+        <span class="rb-id">D5.2</span>
+        <h3>问题规模</h3>
+        <span class="rb-dim">D5 适用范围 · Problem Scale</span>
+      </div>
+      <div class="rb-sub-desc">方法适用的学生数、题目数、知识点数规模范围（从小班到国家级数据）。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>仅小规模可用。</b>只在几十到几百学生、几十题的规模下验证过；放大即失效或不可计算。
+          <span class="ex">例：某同行评估方法仅在 30 人课堂验证，千人规模下评估矩阵爆炸无法运行。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>中等规模可用。</b>支持数千到数万学生，但更大规模需近似或采样；规模上界已知。
+          <span class="ex">例：IRT 在数万学生、数千题上可用，十万题以上需项目分组近似。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>跨规模通用。</b>从小班到国家级数据均可适配；有针对不同规模的推荐配置；大规模下有分布式方案。
+          <span class="ex">例：RAG 从单校到全国教育平台均可部署，按规模自动调整检索索引与缓存策略。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D5.3 场景覆盖 -->
+    <div class="rubric-block" data-dim="d5">
+      <div class="rb-head">
+        <span class="rb-id">D5.3</span>
+        <h3>场景覆盖</h3>
+        <span class="rb-dim">D5 适用范围 · Scenario Coverage</span>
+      </div>
+      <div class="rb-sub-desc">方法覆盖多少种教育场景（K12 课堂、高校、职业培训、终身学习、特殊教育、非正式学习等）。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>单场景专用。</b>仅在某特定场景（如某学科某年级）验证过，迁移到其他场景需重做。
+          <span class="ex">例：某小学数学专用模型，迁移到中学物理需完全重训，无法复用。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>覆盖同学段多学科。</b>在某学段（如 K12）内可跨学科使用，但跨学段（如到高校或职教）需较大调整。
+          <span class="ex">例：BKT 在 K12 多学科可用，但到高校研究生课程需重新校准参数。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>跨学段跨场景通用。</b>从 K12 到高校、职教、终身学习均可适配；有跨场景迁移的实证与配置方案。
+          <span class="ex">例：LLM 微调方法经适配可用于 K12 辅导、高校论文反馈、企业培训等多场景，且有迁移实证。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- D5.4 数据量需求 -->
+    <div class="rubric-block" data-dim="d5">
+      <div class="rb-head">
+        <span class="rb-id">D5.4</span>
+        <h3>数据量需求</h3>
+        <span class="rb-dim">D5 适用范围 · Data Volume Need</span>
+      </div>
+      <div class="rb-sub-desc">方法达到可用性能所需的最小标注/交互数据量，是否能在数据稀缺的新场景中冷启动。</div>
+      <div class="anchor-row">
+        <div class="anchor-score s1">1<span class="lbl">差</span></div>
+        <div class="anchor-text">
+          <b>数据饥渴。</b>需百万级标注样本才能达到可用性能；新学科/新场景冷启动困难。
+          <span class="ex">例：某深度学生模型需 50 万标注作答才能训练，新开一门课无数据无法启动。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s3">3<span class="lbl">中</span></div>
+        <div class="anchor-text">
+          <b>中等数据需求。</b>需数千到数万样本；可通过迁移学习或预训练降低需求，但仍需一定标注。
+          <span class="ex">例：DKT 单技能训练需约 5000 条作答，可通过跨技能迁移降到 2000 条。</span>
+        </div>
+      </div>
+      <div class="anchor-row">
+        <div class="anchor-score s5">5<span class="lbl">优</span></div>
+        <div class="anchor-text">
+          <b>小样本可冷启动。</b>数百样本即可达到可用性能；支持主动学习、半监督、提示学习等低数据机制；有冷启动实证。
+          <span class="ex">例：IRT 在 200 人/20 题即可稳定估计参数；LLM 提示学习零样本即可给出基线可用结果。</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 第二部分：12 方法 × 5D 热力图评分矩阵 ============ -->
+<section class="section" id="heatmap">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">PART 03 · METHOD SCORE MATRIX</div>
+      <h2>12 方法 × 5D 热力图评分矩阵</h2>
+      <p class="desc">
+        下方矩阵对 12 种主流教育 AI 方法在 5 个维度上给出 1–5 分评估。每格分数代表"该方法在该维度的典型表现"，<b>悬停可查看专家评分理由</b>。分数基于公开文献、复现报告与课堂落地经验综合判定，并非绝对值——同一方法在不同实现与场景下会有浮动，此处给出的是"中位数水平"的参考。最后一行给出各方法的五维加权平均分（等权）。
+      </p>
+    </div>
+
+    <div class="heatmap-wrap">
+      <div class="heatmap-legend">
+        <span>分数色阶：</span>
+        <div class="legend-scale">
+          <span class="legend-cell c1">1</span>
+          <span class="legend-cell c2">2</span>
+          <span class="legend-cell c3">3</span>
+          <span class="legend-cell c4">4</span>
+          <span class="legend-cell c5">5</span>
+        </div>
+        <span>差 ← → 优</span>
+        <span style="margin-left:auto;color:var(--text-3);">提示：鼠标悬停单元格查看专家理由</span>
+      </div>
+
+      <div class="heatmap">
+        <!-- 表头 -->
+        <div class="hm-header">方法 / 维度<span class="hm-h-en">Method</span></div>
+        <div class="hm-header">D1 理论严谨性<span class="hm-h-en">Theoretical Rigor</span></div>
+        <div class="hm-header">D2 实践效果<span class="hm-h-en">Practical Effectiveness</span></div>
+        <div class="hm-header">D3 计算效率<span class="hm-h-en">Computational Efficiency</span></div>
+        <div class="hm-header">D4 可解释性<span class="hm-h-en">Interpretability</span></div>
+        <div class="hm-header">D5 适用范围<span class="hm-h-en">Applicability</span></div>
+
+        <!-- 1. BKT -->
+        <div class="hm-row-label"><span class="rl-name">贝叶斯知识追踪</span><span class="rl-en">BKT · Bayesian Knowledge Tracing</span></div>
+        <div class="hm-cell c5" data-tip="D1=5：BKT 基于隐马尔可夫模型，转移概率与观测概率定义严格，参数可识别性有渐近理论保证，数学基础在所有教育 AI 方法中最扎实。"><span class="hm-score">5</span><span class="hm-sub">理论扎实</span></div>
+        <div class="hm-cell c3" data-tip="D2=3：单技能 BKT 学习增益中等，多技能扩展后提升明显但易过拟合；效应量多在 d=0.2–0.4，需较长序列才稳定。"><span class="hm-score">3</span><span class="hm-sub">增益中等</span></div>
+        <div class="hm-cell c5" data-tip="D3=5：参数量极小（每技能 4 参数），推理 &lt;1ms，可在平板本地实时运行，离线可用，空间占用可忽略。"><span class="hm-score">5</span><span class="hm-sub">极轻量</span></div>
+        <div class="hm-cell c4" data-tip="D4=4：转移/猜测/失误概率有清晰语义，教师可理解'掌握概率'，但多技能组合时解释力下降。"><span class="hm-score">4</span><span class="hm-sub">较透明</span></div>
+        <div class="hm-cell c2" data-tip="D5=2：仅支持二元作答，无法融合部分分与文本；技能间独立假设导致跨技能迁移弱，数据类型覆盖窄。"><span class="hm-score">2</span><span class="hm-sub">仅二元</span></div>
+
+        <!-- 2. DKT -->
+        <div class="hm-row-label"><span class="rl-name">深度知识追踪</span><span class="rl-en">DKT · Deep Knowledge Tracing</span></div>
+        <div class="hm-cell c3" data-tip="D1=3：用 RNN/LSTM 替代显式 HMM，理论保证较弱，可识别性与收敛性依赖经验，马尔可夫假设被隐式打破但未给出新保证。"><span class="hm-score">3</span><span class="hm-sub">保证弱</span></div>
+        <div class="hm-cell c4" data-tip="D2=4：AUC 普遍 0.75–0.85，优于 BKT；多技能场景增益明显，但稳定性受种子影响大，需多次平均。"><span class="hm-score">4</span><span class="hm-sub">AUC 较高</span></div>
+        <div class="hm-cell c3" data-tip="D3=3：推理百毫秒级，但训练需 GPU；万人并发需分片，模型 100–500MB，中等硬件可承载。"><span class="hm-score">3</span><span class="hm-sub">需 GPU</span></div>
+        <div class="hm-cell c2" data-tip="D4=2：RNN 隐状态是黑箱，'为何判断该生掌握'难以回答，需借助注意力等后验工具，原生解释力差。"><span class="hm-score">2</span><span class="hm-sub">黑箱</span></div>
+        <div class="hm-cell c3" data-tip="D5=3：支持多技能与序列数据，但仍以二元作答为主，跨学段需重训，数据量需求约 5000 条/技能。"><span class="hm-score">3</span><span class="hm-sub">多技能</span></div>
+
+        <!-- 3. IRT -->
+        <div class="hm-row-label"><span class="rl-name">项目反应理论</span><span class="rl-en">IRT · Item Response Theory</span></div>
+        <div class="hm-cell c5" data-tip="D1=5：logistic 模型概率意义清晰，参数（区分度 a、难度 b、猜测 c）可识别，极大似然估计有渐近正态性与一致性证明。"><span class="hm-score">5</span><span class="hm-sub">理论完备</span></div>
+        <div class="hm-cell c4" data-tip="D2=4：能力估计稳健，跨地区跨学科信度高，但学习增益（前后测变化）需配合纵向模型，单次测验增益有限。"><span class="hm-score">4</span><span class="hm-sub">信度高</span></div>
+        <div class="hm-cell c5" data-tip="D3=5：参数估计与在线推理均极快（毫秒级），万人并发稳定，空间占用小，可在校园服务器甚至平板运行。"><span class="hm-score">5</span><span class="hm-sub">极快</span></div>
+        <div class="hm-cell c5" data-tip="D4=5：题目特征曲线与能力量表直观，教师经简短培训即可读懂，参数全部公开可审计，解释力在教育 AI 中最优。"><span class="hm-score">5</span><span class="hm-sub">最透明</span></div>
+        <div class="hm-cell c3" data-tip="D5=3：支持二元与部分分，但主要面向测验数据，无法融合行为日志与文本；跨场景需重新校准。"><span class="hm-score">3</span><span class="hm-sub">测验为主</span></div>
+
+        <!-- 4. RAG -->
+        <div class="hm-row-label"><span class="rl-name">检索增强生成</span><span class="rl-en">RAG · Retrieval-Augmented Generation</span></div>
+        <div class="hm-cell c3" data-tip="D1=3：结合检索与生成，理论保证依赖底层 LLM 与向量检索各自性质，联合框架的端到端误差界尚不完整，幻觉风险仍存在。"><span class="hm-score">3</span><span class="hm-sub">联合保证弱</span></div>
+        <div class="hm-cell c4" data-tip="D2=4：显著降低幻觉，答案准确率提升 15–30%，引用可溯源增强可信度，但学习增益的长期追踪证据仍不足。"><span class="hm-score">4</span><span class="hm-sub">降幻觉</span></div>
+        <div class="hm-cell c3" data-tip="D3=3：检索毫秒级但生成需 LLM 推理，端到端 1–3 秒；百万文档检索近线性，但生成受 GPU 限制。"><span class="hm-score">3</span><span class="hm-sub">生成受限</span></div>
+        <div class="hm-cell c4" data-tip="D4=4：可输出引用来源与检索片段，教师能核查依据，但生成内部推理仍受 LLM 黑箱影响。"><span class="hm-score">4</span><span class="hm-sub">可溯源</span></div>
+        <div class="hm-cell c5" data-tip="D5=5：文本、图像、表格多模态可检索；从小校到全国平台可部署；跨学科跨学段通用，数据量需求低（零样本可用）。"><span class="hm-score">5</span><span class="hm-sub">最通用</span></div>
+
+        <!-- 5. 知识图谱 -->
+        <div class="hm-row-label"><span class="rl-name">知识图谱</span><span class="rl-en">Knowledge Graph</span></div>
+        <div class="hm-cell c4" data-tip="D1=4：实体-关系-属性建模有图论基础，本体论与推理规则可形式化，但图谱质量依赖人工构建，理论保证受限于本体正确性。"><span class="hm-score">4</span><span class="hm-sub">图论基础</span></div>
+        <div class="hm-cell c3" data-tip="D2=3：学习路径推荐有效，但增益依赖图谱覆盖度，稀疏学科增益有限；效应量报告不一致，多在 d=0.2–0.35。"><span class="hm-score">3</span><span class="hm-sub">依赖覆盖</span></div>
+        <div class="hm-cell c3" data-tip="D3=3：图查询与推理在万节点内快，十万节点以上需图数据库优化；构建成本高但推理轻量。"><span class="hm-score">3</span><span class="hm-sub">查询快</span></div>
+        <div class="hm-cell c5" data-tip="D4=5：路径可视化直观，教师可直接看到知识点依赖与薄弱环节，解释力强且可操作，是教学决策友好型方法。"><span class="hm-score">5</span><span class="hm-sub">路径可视</span></div>
+        <div class="hm-cell c3" data-tip="D5=3：覆盖取决于图谱构建，新学科需重建图谱；跨学段图谱差异大，迁移成本高。"><span class="hm-score">3</span><span class="hm-sub">需重建</span></div>
+
+        <!-- 6. 多模态分析 -->
+        <div class="hm-row-label"><span class="rl-name">多模态分析</span><span class="rl-en">Multimodal Analysis</span></div>
+        <div class="hm-cell c3" data-tip="D1=3：跨模态对齐与融合机制多样（早融合/晚融合/注意力），但统一理论框架未成熟，模态间相互作用的理论保证不足。"><span class="hm-score">3</span><span class="hm-sub">理论分散</span></div>
+        <div class="hm-cell c4" data-tip="D2=4：融合表情、语音、行为后情感与投入度识别准确率 80–90%，但学习增益的因果证据有限，多为相关性。"><span class="hm-score">4</span><span class="hm-sub">识别准</span></div>
+        <div class="hm-cell c2" data-tip="D3=2：多模态采集与推理资源消耗大，视频流实时分析需多 GPU，普通课堂基础设施难以承载。"><span class="hm-score">2</span><span class="hm-sub">资源重</span></div>
+        <div class="hm-cell c3" data-tip="D4=3：单模态可解释，但融合后决策归因困难，'是表情还是语音主导了判断'难以回答，需借助归因工具。"><span class="hm-score">3</span><span class="hm-sub">归因难</span></div>
+        <div class="hm-cell c5" data-tip="D5=5：原生支持文本、图像、语音、视频、行为日志，数据类型覆盖最广，适合复杂真实课堂场景。"><span class="hm-score">5</span><span class="hm-sub">全模态</span></div>
+
+        <!-- 7. LLM 微调 -->
+        <div class="hm-row-label"><span class="rl-name">LLM 微调</span><span class="rl-en">LLM Fine-tuning</span></div>
+        <div class="hm-cell c2" data-tip="D1=2：微调机制（LoRA/全参）经验性强，灾难性遗忘与分布漂移的理论保证不足，为何有效缺乏严格解释。"><span class="hm-score">2</span><span class="hm-sub">经验为主</span></div>
+        <div class="hm-cell c4" data-tip="D2=4：领域任务准确率提升 10–25%，反馈质量显著改善，但增益可持续性与长期学习效果证据不足。"><span class="hm-score">4</span><span class="hm-sub">任务提升</span></div>
+        <div class="hm-cell c2" data-tip="D3=2：微调与推理均需高端 GPU，7B 模型微调需多卡 A100，普通学校无法本地部署，依赖云服务。"><span class="hm-score">2</span><span class="hm-sub">GPU 重</span></div>
+        <div class="hm-cell c2" data-tip="D4=2：微调后模型仍是黑箱，决策路径不可追溯，需配合可解释工具，原生解释力弱。"><span class="hm-score">2</span><span class="hm-sub">黑箱</span></div>
+        <div class="hm-cell c4" data-tip="D5=4：跨学科跨学段通用，提示学习可零样本冷启动，但高质量微调仍需数千标注样本。"><span class="hm-score">4</span><span class="hm-sub">跨场景</span></div>
+
+        <!-- 8. Peer Instruction -->
+        <div class="hm-row-label"><span class="rl-name">同伴教学法</span><span class="rl-en">Peer Instruction</span></div>
+        <div class="hm-cell c4" data-tip="D1=4：基于建构主义与同伴学习理论，假设（同伴互动促进理解）清晰且有大量教育心理学实证支撑，理论根基扎实。"><span class="hm-score">4</span><span class="hm-sub">理论扎实</span></div>
+        <div class="hm-cell c5" data-tip="D2=5：Mazur 经典研究及大量复现显示概念理解增益 d=0.5–0.7，跨学科跨学段稳健，是教育实证中最稳健的方法之一。"><span class="hm-score">5</span><span class="hm-sub">增益强</span></div>
+        <div class="hm-cell c5" data-tip="D3=5：仅需投票工具（甚至举手），无计算资源需求，任何课堂即时可用，效率最优。"><span class="hm-score">5</span><span class="hm-sub">零算力</span></div>
+        <div class="hm-cell c5" data-tip="D4=5：流程完全透明，教师与学生都理解'为什么这样学'，决策可审计性天然最强。"><span class="hm-score">5</span><span class="hm-sub">全透明</span></div>
+        <div class="hm-cell c3" data-tip="D5=3：主要面向课堂同步场景，异步在线与大规模平台适配需改造；数据化程度低，难以做大规模分析。"><span class="hm-score">3</span><span class="hm-sub">同步为主</span></div>
+
+        <!-- 9. SOLE -->
+        <div class="hm-row-label"><span class="rl-name">自我组织学习环境</span><span class="rl-en">SOLE · Self-Organized Learning</span></div>
+        <div class="hm-cell c3" data-tip="D1=3：基于 Mitra 的最小入侵学习理论，假设（儿童可自组织学习）有启发但理论框架较松散，可证伪性争议较大。"><span class="hm-score">3</span><span class="hm-sub">理论松散</span></div>
+        <div class="hm-cell c3" data-tip="D2=3：部分研究显示探究能力与协作能力提升，但学术成绩增益证据混合，长期效应追踪不足。"><span class="hm-score">3</span><span class="hm-sub">证据混合</span></div>
+        <div class="hm-cell c5" data-tip="D3=5：仅需网络与设备，无额外计算负担，任何有网环境即可开展。"><span class="hm-score">5</span><span class="hm-sub">零算力</span></div>
+        <div class="hm-cell c4" data-tip="D4=4：学习过程可观察记录，教师能直接看到学生探究路径，但评价标准主观性较强。"><span class="hm-score">4</span><span class="hm-sub">可观察</span></div>
+        <div class="hm-cell c3" data-tip="D5=3：适合中小学探究场景，但高结构化考试导向场景适配难，跨学段迁移有限。"><span class="hm-score">3</span><span class="hm-sub">探究导向</span></div>
+
+        <!-- 10. PBL -->
+        <div class="hm-row-label"><span class="rl-name">项目式学习</span><span class="rl-en">PBL · Project-Based Learning</span></div>
+        <div class="hm-cell c4" data-tip="D1=4：基于建构主义与情境学习理论，假设（真实项目促进深度学习）清晰，有大量教育研究支撑，理论根基扎实。"><span class="hm-score">4</span><span class="hm-sub">理论扎实</span></div>
+        <div class="hm-cell c4" data-tip="D2=4：多项元分析显示 PBL 在知识应用与问题解决上增益 d=0.4–0.6，但基础知识掌握增益不一致。"><span class="hm-score">4</span><span class="hm-sub">应用增益</span></div>
+        <div class="hm-cell c5" data-tip="D3=5：以教师引导与学生协作为主，AI 辅助为可选增强，计算需求低。"><span class="hm-score">5</span><span class="hm-sub">低算力</span></div>
+        <div class="hm-cell c4" data-tip="D4=4：项目过程与产出可观察可评价，但过程性评价的主观性与一致性需量规辅助。"><span class="hm-score">4</span><span class="hm-sub">可观察</span></div>
+        <div class="hm-cell c4" data-tip="D5=4：跨学科跨学段通用，K12 到高校均可开展，但需教师较高设计与引导能力。"><span class="hm-score">4</span><span class="hm-sub">跨学段</span></div>
+
+        <!-- 11. EDM -->
+        <div class="hm-row-label"><span class="rl-name">教育数据挖掘</span><span class="rl-en">EDM · Educational Data Mining</span></div>
+        <div class="hm-cell c3" data-tip="D1=3：以数据驱动为主，方法多样（聚类、分类、序列模式），但理论统一性弱，多为算法应用而非理论构建。"><span class="hm-score">3</span><span class="hm-sub">数据驱动</span></div>
+        <div class="hm-cell c3" data-tip="D2=3：预测（辍学、成绩）准确率高，但多为相关性而非因果；干预效果证据不足，存在自我实现预言风险。"><span class="hm-score">3</span><span class="hm-sub">预测准</span></div>
+        <div class="hm-cell c4" data-tip="D3=4：离线挖掘可接受，在线预测轻量；大规模平台数据处理有成熟工程方案。"><span class="hm-score">4</span><span class="hm-sub">工程成熟</span></div>
+        <div class="hm-cell c3" data-tip="D4=3：单模型可解释（如决策树），但集成与深度模型解释力弱；预测结果如何转化为教学行动需人工桥接。"><span class="hm-score">3</span><span class="hm-sub">部分可解</span></div>
+        <div class="hm-cell c4" data-tip="D5=4：可处理大规模行为日志，跨平台跨学段可用，但需平台有完整数据采集。"><span class="hm-score">4</span><span class="hm-sub">大数据</span></div>
+
+        <!-- 12. LA -->
+        <div class="hm-row-label"><span class="rl-name">学习分析</span><span class="rl-en">LA · Learning Analytics</span></div>
+        <div class="hm-cell c3" data-tip="D1=3：偏应用与诊断，理论框架（如反思循环模型）有指引但偏软性，统计与因果保证依赖所采用的具体方法。"><span class="hm-score">3</span><span class="hm-sub">应用导向</span></div>
+        <div class="hm-cell c3" data-tip="D2=3：早期预警与反馈有效，但干预转化率与学习增益证据混合，反馈闭环设计质量决定效果。"><span class="hm-score">3</span><span class="hm-sub">依赖闭环</span></div>
+        <div class="hm-cell c4" data-tip="D3=4：仪表盘与统计计算轻量，可视化成熟；大规模数据处理有工程方案。"><span class="hm-score">4</span><span class="hm-sub">轻量</span></div>
+        <div class="hm-cell c4" data-tip="D4=4：仪表盘面向教师与学生设计，可视化解释力强，但多指标综合判断仍需培训。"><span class="hm-score">4</span><span class="hm-sub">仪表盘</span></div>
+        <div class="hm-cell c4" data-tip="D5=4：跨平台跨学段可用，但依赖数据采集完整度，无数据平台无法开展。"><span class="hm-score">4</span><span class="hm-sub">依赖数据</span></div>
+
+        <!-- 平均分 -->
+        <div class="hm-avg"><span class="av-name">等权平均分</span><span class="av-val">参考</span></div>
+        <div class="hm-avg"><span class="av-val">3.5</span></div>
+        <div class="hm-avg"><span class="av-val">3.6</span></div>
+        <div class="hm-avg"><span class="av-val">4.2</span></div>
+        <div class="hm-avg"><span class="av-val">3.8</span></div>
+        <div class="hm-avg"><span class="av-val">3.7</span></div>
+      </div>
+
+      <div class="note" style="margin-top:18px;">
+        <b>读图指南：</b>无单一方法在五维上全优。BKT/IRT 在理论与效率上领先但数据类型窄；RAG/多模态在适用范围上领先但计算与解释有短板；Peer Instruction/PBL 在效果与解释上领先但数据化与规模受限。选型应在五维间做权衡：若课堂实时反馈优先，选 BKT/IRT；若跨学科知识问答优先，选 RAG；若深度理解优先，选 Peer Instruction/PBL。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第三部分：敏感性分析方法 ============ -->
+<section class="section" id="sensitivity">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">PART 04 · SENSITIVITY ANALYSIS</div>
+      <h2>敏感性分析方法（教育 AI 版）</h2>
+      <p class="desc">
+        教育因果推断最怕"未测混杂"——比如声称 AI 辅导提升成绩，但没控制学生家庭收入、教师水平、同伴影响。敏感性分析量化"结论对未测混杂有多稳健"。下方给出 4 套主流方法，每套含<b>公式、Python 代码、教育场景解读</b>。建议任一教育 AI 因果研究至少报告其中两套，否则结论不可辩护。
+      </p>
+    </div>
+
+    <!-- 3.1 Rosenbaum Γ -->
+    <div class="sens-block">
+      <div class="sens-head">
+        <h3>1. Rosenbaum Γ 敏感性</h3>
+        <span class="sens-tag">混杂强度 · Unobserved Confounding</span>
+      </div>
+      <p class="sens-desc">
+        Rosenbaum Γ（Gamma）衡量"为了推翻因果结论，未观测混杂需要多大"。Γ=1 表示无未测混杂；Γ 越大，结论越稳健。例如 Γ=2 意味着"即便存在一个未测变量使学生接受 AI 辅导的概率翻倍，结论仍成立"。这是教育场景中最常用的稳健性检验，因为它直接回答"我最担心的那个没测到的变量，能不能毁掉我的结论"。
+      </p>
+      <div class="formula-box">
+        <div class="f-label">核心不等式（Rosenbaum 2002）</div>
+        <div class="f-eq">
+          Γ⁻¹ ≤ P(Z<sub>i</sub>=1 | X<sub>i</sub>, U<sub>i</sub>) / P(Z<sub>j</sub>=0 | X<sub>j</sub>, U<sub>j</sub>) ≤ Γ
+          <br><br>
+          其中 Z 为处理（是否用 AI 辅导），X 为已测协变量，U 为未测混杂。
+          <br>在给定 Γ 下计算处理效应的 p 值上界；若上界仍 &lt;0.05，则结论在该 Γ 下稳健。
+        </div>
+      </div>
+      <div class="code-box">
+        <div class="c-head"><span>sensitivity_rosenbaum.py</span><span>Python · 使用 OptimalMatching</span></div>
+        <pre><span class="com"># Rosenbaum Γ 敏感性分析：AI 辅导是否提升数学成绩</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> statsmodels.stats.weightstats <span class="kw">import</span> DescrStatsW
+
+<span class="kw">def</span> <span class="fn">rosenbaum_sensitivity</span>(treated_outcomes, control_outcomes, gamma_seq):
+    <span class="str">"""
+    计算 Wilcoxon 符号秩检验在 Γ 扰动下的 p 值上界。
+    treated_outcomes: 接受 AI 辅导学生的成绩
+    control_outcomes: 匹配后的对照学生成绩
+    gamma_seq: 要测试的 Γ 序列，如 [1.0, 1.5, 2.0, 2.5, 3.0]
+    """</span>
+    diffs = np.array(treated_outcomes) - np.array(control_outcomes)
+    n = <span class="fn">len</span>(diffs)
+    abs_diffs = np.abs(diffs)
+    ranks = np.argsort(np.argsort(abs_diffs)) + <span class="num">1</span>  <span class="com"># 符号秩</span>
+    signed_ranks = ranks * np.sign(diffs)
+    T_plus = np.sum(signed_ranks[signed_ranks &gt; <span class="num">0</span>])  <span class="com"># 正秩和</span>
+
+    results = []
+    <span class="kw">for</span> gamma <span class="kw">in</span> gamma_seq:
+        <span class="com"># 在 Γ 下，每个配对的处理概率比被限制在 [1/Γ, Γ]</span>
+        <span class="com"># p 值上界对应"最不利"的权重分配</span>
+        p_upper = <span class="fn">wilcoxon_bound</span>(T_plus, n, gamma, side=<span class="str">"upper"</span>)
+        p_lower = <span class="fn">wilcoxon_bound</span>(T_plus, n, gamma, side=<span class="str">"lower"</span>)
+        results.append({
+            <span class="str">"gamma"</span>: gamma,
+            <span class="str">"p_upper"</span>: p_upper,
+            <span class="str">"p_lower"</span>: p_lower,
+            <span class="str">"robust"</span>: p_upper &lt; <span class="num">0.05</span>
+        })
+    <span class="kw">return</span> results
+
+<span class="com"># 教育场景：100 名匹配学生对，AI 辅导组 vs 对照组期末成绩</span>
+treated = [<span class="num">78</span>, <span class="num">82</span>, <span class="num">85</span>, <span class="num">71</span>, <span class="num">90</span>]  <span class="com"># 实际为完整数组</span>
+control = [<span class="num">72</span>, <span class="num">75</span>, <span class="num">80</span>, <span class="num">69</span>, <span class="num">83</span>]
+res = <span class="fn">rosenbaum_sensitivity</span>(treated, control, [<span class="num">1.0</span>, <span class="num">1.5</span>, <span class="num">2.0</span>, <span class="num">2.5</span>, <span class="num">3.0</span>])
+<span class="kw">for</span> r <span class="kw">in</span> res:
+    <span class="fn">print</span>(<span class="str">f"Γ={r['gamma']:.1f}  p上界={r['p_upper']:.4f}  稳健={r['robust']}"</span>)
+<span class="com"># 典型输出：Γ=2.0 时 p上界=0.031 仍稳健；Γ=2.5 时 p上界=0.072 不再稳健</span></pre>
+      </div>
+      <div class="interp-box">
+        <div class="i-label">教育场景解读</div>
+        <p>假设我们研究"AI 辅导是否提升数学成绩"，匹配了 100 对学生并控制了基线成绩、性别、年级。Rosenbaum 分析显示 Γ=2.0 时结论仍显著，但 Γ=2.5 时不再显著。</p>
+        <p>这意味着：如果存在一个我们没测到的变量（比如"家庭学习时长"）能让一个学生"既更可能用 AI 辅导、又更容易考高分"，且该变量的影响使接受辅导的概率比不超过 2 倍，那结论还站得住；但如果这个未测变量影响很强（概率比超过 2.5 倍），结论就会被推翻。</p>
+        <p><b>决策建议：</b>报告"Γ=2 时稳健"比只报 p 值更有说服力——它告诉读者"我对未测混杂有多大的容忍度"。教育研究中 Γ≥2 通常被视为较稳健，Γ&lt;1.5 则需补充额外控制变量或改用 IV2SLS 等工具变量法。</p>
+      </div>
+    </div>
+
+    <!-- 3.2 Oster δ -->
+    <div class="sens-block">
+      <div class="sens-head">
+        <h3>2. Oster δ 选择偏差</h3>
+        <span class="sens-tag">选择偏差 · Selection Bias</span>
+      </div>
+      <p class="sens-desc">
+        Oster（2019）δ 衡量"未观测混杂需要多强，才能把因果效应归零"。δ 表示"未测变量需要是已测变量影响力的多少倍"，才能让真实效应变为零。δ&gt;1 表示未测混杂需要比已测变量更强才能推翻结论——这通常意味着结论较稳健。该方法特别适合教育研究，因为教育场景中"能测的"与"没测的"往往高度相关（如家庭收入与学习习惯）。
+      </p>
+      <div class="formula-box">
+        <div class="f-label">Oster δ 估计公式</div>
+        <div class="f-eq">
+          δ = (β* − β<sub>controlled</sub>) / (β<sub>controlled</sub> − β<sub>full</sub>) × (R<sub>full</sub>² − R<sub>controlled</sub>²) / (R<sub>max</sub> − R<sub>controlled</sub>²)
+          <br><br>
+          β<sub>controlled</sub>: 仅含已测协变量的处理效应估计
+          <br>β<sub>full</sub>: 假设全控制下的"真实"效应（通常取 0 为"归零"假设）
+          <br>R<sub>max</sub>: R² 上界（Oster 建议 = 1.3 × R<sub>controlled</sub>²）
+          <br>δ&gt;1 ⇒ 未测混杂需比已测更强才能归零 ⇒ 结论稳健
+        </div>
+      </div>
+      <div class="code-box">
+        <div class="c-head"><span>sensitivity_oster.py</span><span>Python · 手动实现</span></div>
+        <pre><span class="com"># Oster δ 选择偏差敏感性分析</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> statsmodels.api <span class="kw">as</span> sm
+
+<span class="kw">def</span> <span class="fn">oster_delta</span>(y, treat, X_observables, r_max_ratio=<span class="num">1.3</span>):
+    <span class="str">"""
+    y: 结果变量（成绩）
+    treat: 处理变量（是否用 AI 辅导）
+    X_observables: 已测协变量矩阵（基线成绩、性别、年级等）
+    r_max_ratio: R_max = ratio * R²_controlled（Oster 默认 1.3）
+    返回 δ 与"归零"所需未测强度倍数
+    """</span>
+    <span class="com"># 模型 1：仅处理变量</span>
+    X1 = sm.add_constant(treat.reshape(-<span class="num">1</span>, <span class="num">1</span>))
+    m1 = sm.OLS(y, X1).fit()
+    beta_uncontrolled = m1.params[<span class="num">1</span>]
+    r2_uncontrolled = m1.rsquared
+
+    <span class="com"># 模型 2：处理 + 已测协变量</span>
+    X2 = sm.add_constant(np.column_stack([treat, X_observables]))
+    m2 = sm.OLS(y, X2).fit()
+    beta_controlled = m2.params[<span class="num">1</span>]
+    r2_controlled = m2.rsquared
+
+    <span class="com"># 假设全控制下效应为 0（归零假设）</span>
+    beta_full = <span class="num">0.0</span>
+    r_max = r_max_ratio * r2_controlled
+
+    <span class="com"># Oster δ</span>
+    delta = ((beta_full - beta_controlled) /
+             (beta_controlled - beta_uncontrolled)) * \
+            ((r_max - r2_controlled) / (r2_controlled - r2_uncontrolled))
+    <span class="kw">return</span> {
+        <span class="str">"beta_uncontrolled"</span>: beta_uncontrolled,
+        <span class="str">"beta_controlled"</span>: beta_controlled,
+        <span class="str">"delta"</span>: delta,
+        <span class="str">"robust"</span>: <span class="fn">abs</span>(delta) &gt; <span class="num">1</span>
+    }
+
+<span class="com"># 教育场景：500 名学生，处理=是否用 AI 辅导，结果=期末成绩</span>
+<span class="com"># 已测协变量：基线成绩、出勤率、性别、年级</span>
+res = <span class="fn">oster_delta</span>(scores, ai_use, covariates)
+<span class="fn">print</span>(<span class="str">f"δ = {res['delta']:.2f}  稳健 = {res['robust']}"</span>)
+<span class="com"># 典型输出：δ = 1.83  稳健 = True
+# 含义：未测混杂需比已测协变量强 1.83 倍才能把 AI 辅导效应归零</span></pre>
+      </div>
+      <div class="interp-box">
+        <div class="i-label">教育场景解读</div>
+        <p>研究"AI 辅导对成绩的影响"，已控制基线成绩、出勤率、性别、年级，得到效应 β=3.2 分（显著）。Oster δ=1.83 意味着：要把这个效应归零，未测变量（如家庭学习时长、父母教育参与）的影响力需要是目前已测变量的 1.83 倍。</p>
+        <p>由于已测变量中"基线成绩"本身就是很强的预测因子，未测变量要超过它 1.83 倍并不容易——这给了我们一定信心。但若 δ=0.4，则说明一个相对较弱的未测变量就能推翻结论，研究就不可辩护。</p>
+        <p><b>决策建议：</b>教育因果研究应同时报告 Oster δ 与已测变量的 R²。若 δ&gt;1 且 R² 已较高（如 &gt;0.4），结论较可信；若 δ&lt;1 或 R² 很低（说明已测变量本身解释力弱），必须补充更多控制变量或采用准实验设计（如回归断点、工具变量）。</p>
+      </div>
+    </div>
+
+    <!-- 3.3 E-value -->
+    <div class="sens-block">
+      <div class="sens-head">
+        <h3>3. E-value 未测混杂鲁棒性</h3>
+        <span class="sens-tag">鲁棒性 · E-value (VanderWeele)</span>
+      </div>
+      <p class="sens-desc">
+        E-value（VanderWeele &amp; Ding, 2017）衡量"未测混杂需要与处理及结果同时关联到何种强度，才能把观察到的效应解释掉"。E-value越大越稳健。它的优势在于：不依赖特定模型，对风险比、比值比、标准化均值差等多种效应量均适用，且给出直观的"风险比尺度"解释，已成为观察性研究的报告标配。
+      </p>
+      <div class="formula-box">
+        <div class="f-label">E-value 计算公式（针对风险比 RR）</div>
+        <div class="f-eq">
+          E-value = RR + √[ RR × (RR − 1) ]
+          <br><br>
+          其中 RR 为处理与结果的关联强度（风险比）。
+          <br>对于连续结果（如成绩的标准化均值差 d），先转换为近似 RR：
+          <br>RR ≈ exp(0.91 × d)
+          <br>再代入上式得 E-value。
+          <br><br>
+          <b>解读：</b>E-value=2 表示未测混杂需与处理和结果都关联到 RR≥2 才能解释掉效应。
+        </div>
+      </div>
+      <div class="code-box">
+        <div class="c-head"><span>sensitivity_evalue.py</span><span>Python · 标准实现</span></div>
+        <pre><span class="com"># E-value 计算：AI 辅导效应的未测混杂鲁棒性</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">evalue_from_rr</span>(rr):
+    <span class="str">"""从风险比 RR 计算 E-value"""</span>
+    <span class="kw">if</span> rr &lt; <span class="num">1</span>:
+        rr = <span class="num">1</span> / rr  <span class="com"># 取倒数，统一处理保护性与风险性因素</span>
+    <span class="kw">return</span> rr + np.sqrt(rr * (rr - <span class="num">1</span>))
+
+<span class="kw">def</span> <span class="fn">evalue_from_smd</span>(d):
+    <span class="str">"""
+    从标准化均值差 d（Cohen's d）计算 E-value
+    d: 处理组与对照组的标准化均值差
+    """</span>
+    rr = np.exp(<span class="num">0.91</span> * <span class="fn">abs</span>(d))
+    <span class="kw">return</span> <span class="fn">evalue_from_rr</span>(rr)
+
+<span class="kw">def</span> <span class="fn">evalue_from_or</span>(or_val, rare_outcome=<span class="kw">True</span>):
+    <span class="str">"""从比值比 OR 计算 E-value"""</span>
+    <span class="kw">if</span> rare_outcome:
+        rr = or_val
+    <span class="kw">else</span>:
+        rr = np.sqrt(or_val)
+    <span class="kw">return</span> <span class="fn">evalue_from_rr</span>(rr)
+
+<span class="com"># 教育场景：AI 辅导组 vs 对照组，期末"及格率"提升</span>
+<span class="com"># 假设 OR = 1.8（用 AI 辅导使学生及格 odds 提高 80%）</span>
+or_ai = <span class="num">1.8</span>
+e_val = <span class="fn">evalue_from_or</span>(or_ai, rare_outcome=<span class="kw">False</span>)
+<span class="fn">print</span>(<span class="str">f"OR = {or_ai}, E-value = {e_val:.2f}"</span>)
+
+<span class="com"># 教育场景：标准化均值差 d = 0.45</span>
+d = <span class="num">0.45</span>
+e_val2 = <span class="fn">evalue_from_smd</span>(d)
+<span class="fn">print</span>(<span class="str">f"Cohen's d = {d}, E-value = {e_val2:.2f}"</span>)
+<span class="com"># 典型输出：d=0.45 → E-value ≈ 1.81
+# 含义：未测混杂需与"用AI"和"及格"都关联到 RR≥1.81 才能解释掉该效应</span></pre>
+      </div>
+      <div class="interp-box">
+        <div class="i-label">教育场景解读</div>
+        <p>研究 AI 辅导对学生及格率的影响，得到 OR=1.8（即用 AI 辅导使学生及格的几率提高 80%），E-value=1.81。</p>
+        <p>这意味着：要解释掉这个效应，需要一个未测变量（比如"学生学习动机"）同时满足两个条件——它使一个学生更可能使用 AI 辅导的风险比 ≥1.81，并且它使学生更可能及格的风险比也 ≥1.81。如果"学习动机"这样的变量确实可能同时满足这两个条件，那我们的结论就不够稳健。</p>
+        <p><b>决策建议：</b>VanderWeele 建议 E-value&gt;2 为"较稳健"，1–2 为"中等"，&lt;1 为"脆弱"。教育研究中，若 E-value 较低，应主动识别可能的未测混杂并测量之，或采用随机化设计消除之。E-value 的优势是它不依赖模型假设，可跨研究比较——比"我们控制了很多变量"这种模糊声明有用得多。</p>
+      </div>
+    </div>
+
+    <!-- 3.4 Monte Carlo -->
+    <div class="sens-block">
+      <div class="sens-head">
+        <h3>4. Monte Carlo 模拟（参数扰动）</h3>
+        <span class="sens-tag">参数扰动 · Monte Carlo Simulation</span>
+      </div>
+      <p class="sens-desc">
+        Monte Carlo 模拟通过在参数空间中大量随机抽样，观察结论随参数扰动的变化范围。它不针对特定混杂结构，而是回答"如果我的模型假设（转移概率、遗忘率、效应量）有一定误差，结论会怎样漂移"。这是教育 AI 中最通用的稳健性工具，适用于 BKT 参数、DKT 超参、因果效应估计等任何含不确定参数的场景。
+      </p>
+      <div class="formula-box">
+        <div class="f-label">Monte Carlo 扰动框架</div>
+        <div class="f-eq">
+          对参数 θ ~ Distribution(θ̂, Σ<sub>θ</sub>) 进行 B 次抽样：
+          <br>  对每次 b = 1...B:
+          <br>    θ<sub>b</sub> ~ N(θ̂, Σ<sub>θ</sub>)  或 Beta/Uniform 等
+          <br>    重新估计效应 τ̂<sub>b</sub> = f(θ<sub>b</sub>, data)
+          <br>  汇总 {τ̂<sub>1</sub>, ..., τ̂<sub>B</sub>} 的分位数：
+          <br>    95% 置信带 = [q<sub>2.5%</sub>, q<sub>97.5%</sub>]
+          <br>  若 0 不在置信带内 ⇒ 结论在参数扰动下稳健
+        </div>
+      </div>
+      <div class="code-box">
+        <div class="c-head"><span>sensitivity_montecarlo.py</span><span>Python · 参数扰动模拟</span></div>
+        <pre><span class="com"># Monte Carlo 参数扰动：BKT 隐含的"AI 辅导学习增益"稳健性</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">bkt_knowledge_gain</span>(p_learn, p_slip, p_guess, n_items):
+    <span class="str">"""
+    模拟 BKT 下学生掌握概率从 0 到 n 道题后的变化。
+    返回最终掌握概率。
+    """</span>
+    p_know = <span class="num">0.1</span>  <span class="com"># 初始掌握概率</span>
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(n_items):
+        <span class="com"># 观测（答对/答错）由掌握状态决定</span>
+        p_correct = p_know * (<span class="num">1</span> - p_slip) + (<span class="num">1</span> - p_know) * p_guess
+        observed = np.random.rand() &lt; p_correct
+        <span class="com"># 贝叶斯更新</span>
+        <span class="kw">if</span> observed:
+            p_know = (p_know * (<span class="num">1</span> - p_slip)) / p_correct
+        <span class="kw">else</span>:
+            p_know = (p_know * p_slip) / (<span class="num">1</span> - p_correct)
+        <span class="com"># 学习转移</span>
+        p_know = p_know + (<span class="num">1</span> - p_know) * p_learn
+        p_know = <span class="fn">min</span>(p_know, <span class="num">0.999</span>)
+    <span class="kw">return</span> p_know
+
+<span class="kw">def</span> <span class="fn">monte_carlo_sensitivity</span>(p_learn_hat, p_slip_hat, p_guess_hat,
+                          n_items=<span class="num">20</span>, n_sims=<span class="num">5000</span>):
+    <span class="str">"""
+    在参数估计值周围扰动，观察学习增益的分布。
+    假设参数估计有 ±20% 的相对不确定性。
+    """</span>
+    gains = []
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(n_sims):
+        <span class="com"># 在估计值附近抽样（保证参数在 [0,1] 内）</span>
+        p_learn = np.clip(np.random.normal(p_learn_hat, <span class="num">0.2</span> * p_learn_hat), <span class="num">0.01</span>, <span class="num">0.5</span>)
+        p_slip = np.clip(np.random.normal(p_slip_hat, <span class="num">0.2</span> * p_slip_hat), <span class="num">0.01</span>, <span class="num">0.3</span>)
+        p_guess = np.clip(np.random.normal(p_guess_hat, <span class="num">0.2</span> * p_guess_hat), <span class="num">0.01</span>, <span class="num">0.4</span>)
+        gain = <span class="fn">bkt_knowledge_gain</span>(p_learn, p_slip, p_guess, n_items)
+        gains.append(gain)
+    gains = np.array(gains)
+    <span class="kw">return</span> {
+        <span class="str">"mean"</span>: np.mean(gains),
+        <span class="str">"median"</span>: np.median(gains),
+        <span class="str">"ci_lower"</span>: np.percentile(gains, <span class="num">2.5</span>),
+        <span class="str">"ci_upper"</span>: np.percentile(gains, <span class="num">97.5</span>),
+        <span class="str">"gains"</span>: gains
+    }
+
+<span class="com"># 教育场景：BKT 参数估计 p_learn=0.15, p_slip=0.1, p_guess=0.2</span>
+res = <span class="fn">monte_carlo_sensitivity</span>(p_learn_hat=<span class="num">0.15</span>, p_slip_hat=<span class="num">0.1</span>, p_guess_hat=<span class="num">0.2</span>)
+<span class="fn">print</span>(<span class="str">f"掌握概率均值={res['mean']:.3f}"</span>)
+<span class="fn">print</span>(<span class="str">f"95% 置信带=[{res['ci_lower']:.3f}, {res['ci_upper']:.3f}]"</span>)
+<span class="com"># 典型输出：均值=0.82, 95%CI=[0.71, 0.91]
+# 含义：即便 BKT 参数有 20% 估计误差，20 道题后掌握概率仍稳定在 0.71–0.91</span></pre>
+      </div>
+      <div class="interp-box">
+        <div class="i-label">教育场景解读</div>
+        <p>我们用 BKT 估计"学生做 20 道题后的掌握概率"，参数估计为 p_learn=0.15、p_slip=0.1、p_guess=0.2。但这些参数本身是从有限数据估出来的，有不确定性。</p>
+        <p>Monte Carlo 模拟在参数周围 ±20% 扰动 5000 次，得到掌握概率的 95% 置信带为 [0.71, 0.91]。这意味着：即便我们的参数估计有 20% 的误差，"20 道题后学生掌握概率达到 0.7 以上"这个结论仍然稳健。</p>
+        <p><b>决策建议：</b>Monte Carlo 适用于任何含不确定参数的模型，是 BKT/DKT/IRT 参数稳健性检验的通用工具。建议扰动幅度参考参数估计的标准误，而非随意取 20%。若置信带过宽（如 [0.4, 0.95]），说明模型对参数过于敏感，需收集更多数据或改用更稳健的参数化方案。</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>四套方法对比与组合建议：</b>
+      <br>· <b>Rosenbaum Γ</b>：针对匹配设计的未测混杂，回答"混杂多强能推翻结论"。
+      <br>· <b>Oster δ</b>：针对回归设计的未测混杂，回答"未测需多强才能归零"。
+      <br>· <b>E-value</b>：模型无关，回答"未测与处理/结果关联多强能解释掉效应"。
+      <br>· <b>Monte Carlo</b>：针对参数不确定性，回答"参数扰动下结论如何漂移"。
+      <br><br><b>组合建议：</b>匹配设计优先报 Rosenbaum Γ；回归设计优先报 Oster δ；任何观察性研究都应报 E-value（跨研究可比）；含参数不确定性的模型应报 Monte Carlo。四者互补而非替代，至少报两套，方可辩护结论稳健性。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第四部分：14 项反驳门禁清单 ============ -->
+<section class="section" id="gates">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">PART 05 · REFUTATION GATES</div>
+      <h2>14 项教育 AI 反驳门禁清单（DoWhy 风格）</h2>
+      <p class="desc">
+        因果结论必须经得起反驳。下方 14 项门禁采用 DoWhy 风格的反驳检验框架：每一项提出一个"试图推翻你结论"的攻击，并给出"通过该攻击需满足的检验"。研究者应在论文或评估报告中逐项回答，<b>未通过的门禁必须如实标注</b>——隐藏未通过的门禁比结论本身更损害可信度。门禁清单不是"全过才算数"，而是"如实标注每项状态，让读者自行判断"。
+      </p>
+    </div>
+
+    <div class="gate-grid">
+
+      <!-- 门禁 1 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G01</span><h3>安慰剂数据反驳</h3></div>
+        <div class="g-en">Placebo Data Refutation</div>
+        <div class="g-q">如果用"假的"处理变量（如随机生成的伪 AI 辅导标记）替换真实处理，效应是否会消失？</div>
+        <ul class="g-checks">
+          <li>用随机噪声替换处理变量后重新估计效应</li>
+          <li>效应应趋近于 0 且不显著</li>
+          <li>若伪处理仍显著 ⇒ 存在系统性偏差</li>
+          <li><b>通过条件：</b>伪处理效应 95%CI 包含 0</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>说明模型/估计流程存在系统性偏差，即便无真实处理也会"发现"效应，原结论不可信。</div>
+      </div>
+
+      <!-- 门禁 2 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G02</span><h3>随机共同原因子集</h3></div>
+        <div class="g-en">Random Common Cause Subset</div>
+        <div class="g-q">如果加入一个与处理无关的随机变量作为"假混杂"，效应估计是否稳定？</div>
+        <ul class="g-checks">
+          <li>向协变量中加入一个独立随机噪声变量</li>
+          <li>重新估计处理效应</li>
+          <li>效应估计应几乎不变</li>
+          <li><b>通过条件：</b>效应变化 &lt;10%</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>模型对无关变量过敏，估计不稳定，可能过拟合到噪声。</div>
+      </div>
+
+      <!-- 门禁 3 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G03</span><h3>未观测共同原因</h3></div>
+        <div class="g-en">Unobserved Common Cause</div>
+        <div class="g-q">如果存在一个未测的混杂变量，结论在多大强度下仍稳健？</div>
+        <ul class="g-checks">
+          <li>用 Rosenbaum Γ 或 E-value 量化未测混杂容忍度</li>
+          <li>识别最可能的未测变量（如家庭收入、学习动机）</li>
+          <li>评估该变量达到阈值强度的合理性</li>
+          <li><b>通过条件：</b>Γ≥2 或 E-value≥2，且未测变量达阈值不现实</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>未测混杂可能解释掉全部效应，因果结论不成立。</div>
+      </div>
+
+      <!-- 门禁 4 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G04</span><h3>选择偏差检验</h3></div>
+        <div class="g-en">Selection Bias</div>
+        <div class="g-q">样本是否因自我选择（如自愿用 AI 辅导的学生本身更积极）而产生偏差？</div>
+        <ul class="g-checks">
+          <li>检查处理组与对照组在关键协变量上的平衡性（SMD&lt;0.1）</li>
+          <li>用倾向性得分匹配或加权校正选择偏差</li>
+          <li>评估"自愿者"与"非自愿者"的可比性</li>
+          <li><b>通过条件：</b>匹配后所有协变量 SMD&lt;0.1</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>效应可能来自选择而非处理，结论归因错误。</div>
+      </div>
+
+      <!-- 门禁 5 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G05</span><h3>数据子集验证</h3></div>
+        <div class="g-en">Data Subset Validation</div>
+        <div class="g-q">在随机抽取的数据子集上，效应是否仍然显著且方向一致？</div>
+        <ul class="g-checks">
+          <li>随机抽取 50%、75% 子集重复估计</li>
+          <li>多次重复（≥100 次）观察效应分布</li>
+          <li>效应方向应一致，幅度波动可控</li>
+          <li><b>通过条件：</b>≥95% 子集估计方向一致且显著</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>结论依赖少数样本，外推不可靠。</div>
+      </div>
+
+      <!-- 门禁 6 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G06</span><h3>采样偏差检验</h3></div>
+        <div class="g-en">Sampling Bias</div>
+        <div class="g-q">样本是否能代表目标人群？是否存在某些群体被系统性排除？</div>
+        <ul class="g-checks">
+          <li>对比样本与目标人群的人口学分布</li>
+          <li>检查缺失数据的模式（是否随机缺失）</li>
+          <li>用逆概率加权校正采样偏差</li>
+          <li><b>通过条件：</b>样本分布与目标人群无显著差异，或已加权校正</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>结论无法外推到目标人群，只适用于样本本身。</div>
+      </div>
+
+      <!-- 门禁 7 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G07</span><h3>独立性检验</h3></div>
+        <div class="g-en">Independence Test</div>
+        <div class="g-q">处理变量与"应不影响结果"的变量是否独立？</div>
+        <ul class="g-checks">
+          <li>选取一个理论上不应受处理影响的变量（如性别、出生月份）</li>
+          <li>检验该变量与处理的相关性</li>
+          <li>若相关 ⇒ 随机化或匹配有问题</li>
+          <li><b>通过条件：</b>无关变量与处理无显著相关（p&gt;0.05）</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>处理分配不随机，混杂未被控制，因果结论存疑。</div>
+      </div>
+
+      <!-- 门禁 8 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G08</span><h3>强行忽略检验</h3></div>
+        <div class="g-en">Force Ignore Covariate</div>
+        <div class="g-q">如果从模型中强制移除一个已测协变量，效应估计是否稳定？</div>
+        <ul class="g-checks">
+          <li>逐一移除每个已测协变量</li>
+          <li>重新估计效应</li>
+          <li>效应应基本稳定（除非移除的是真正的混杂）</li>
+          <li><b>通过条件：</b>移除任一协变量后效应变化 &lt;15%</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>结论高度依赖某个协变量，若该协变量测量有误则结论崩溃。</div>
+      </div>
+
+      <!-- 门禁 9 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G09</span><h3>假共同原因检验</h3></div>
+        <div class="g-en">False Common Cause</div>
+        <div class="g-q">模型中是否把"事实上不是混杂"的变量当成了混杂控制，反而引入偏差？</div>
+        <ul class="g-checks">
+          <li>审查每个被控制的协变量是否真的是处理与结果的共同原因</li>
+          <li>检查是否控制了中介变量（会阻断因果路径）</li>
+          <li>用有向无环图（DAG）明确变量角色</li>
+          <li><b>通过条件：</b>所有被控变量经 DAG 确认为混杂而非中介或对撞</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>过度控制中介或调整对撞变量会引入选择偏差，效应估计被扭曲。</div>
+      </div>
+
+      <!-- 门禁 10 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G10</span><h3>反向因果检验</h3></div>
+        <div class="g-en">Reverse Causation</div>
+        <div class="g-q">是否可能是"结果导致了处理"而非"处理导致了结果"？（如成绩好的学生更爱用 AI 辅导）</div>
+        <ul class="g-checks">
+          <li>检查时间顺序：处理是否确实发生在结果之前</li>
+          <li>用滞后变量或工具变量排除反向因果</li>
+          <li>评估"结果→处理"机制的现实可能性</li>
+          <li><b>通过条件：</b>时间顺序明确，且反向因果机制不可行或已被排除</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>因果方向可能颠倒，"AI 提升成绩"实为"成绩好者爱用 AI"。</div>
+      </div>
+
+      <!-- 门禁 11 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G11</span><h3>有效性外推检验</h3></div>
+        <div class="g-en">Validity Extrapolation</div>
+        <div class="g-q">结论能否外推到其他学校、学段、学科？外推边界是否明确？</div>
+        <ul class="g-checks">
+          <li>说明样本人群与目标人群的差异</li>
+          <li>检查效应在子群体（城乡、性别、学段）间是否一致</li>
+          <li>明确外推边界："本结论适用于 X，不适用于 Y"</li>
+          <li><b>通过条件：</b>子群体效应一致，外推边界明确且合理</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>结论被过度外推到不适用的场景，引发错误政策决策。</div>
+      </div>
+
+      <!-- 门禁 12 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G12</span><h3>模型复杂度检验</h3></div>
+        <div class="g-en">Model Complexity</div>
+        <div class="g-q">是否用了过于复杂的模型，而简单模型能得到相同结论？</div>
+        <ul class="g-checks">
+          <li>用最简单的模型（如线性回归）作为基线</li>
+          <li>比较复杂模型与基线的效应估计</li>
+          <li>若差异大 ⇒ 复杂模型可能过拟合</li>
+          <li><b>通过条件：</b>简单模型与复杂模型效应估计一致（差异&lt;15%）</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>复杂模型的结论可能是过拟合产物，不可复现。</div>
+      </div>
+
+      <!-- 门禁 13 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G13</span><h3>错误指定检验</h3></div>
+        <div class="g-en">Misspecification</div>
+        <div class="g-q">模型的函数形式（线性、对数等）是否正确？错误指定会引入偏差吗？</div>
+        <ul class="g-checks">
+          <li>尝试不同函数形式（线性、对数、多项式）重新估计</li>
+          <li>用残差诊断检查模型指定是否合理</li>
+          <li>用双重机器学习（DML）放宽函数形式假设</li>
+          <li><b>通过条件：</b>不同函数形式下效应估计一致</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>效应估计受函数形式假设影响，结论可能是模型假设的产物。</div>
+      </div>
+
+      <!-- 门禁 14 -->
+      <div class="gate-card">
+        <div class="g-head"><span class="g-no">G14</span><h3>因果方向确认</h3></div>
+        <div class="g-en">Causal Direction</div>
+        <div class="g-q">因果图（DAG）中处理与结果的方向是否经过论证，而非默认假设？</div>
+        <ul class="g-checks">
+          <li>绘制完整的因果有向无环图（DAG）</li>
+          <li>论证每条边的方向（基于理论或时间顺序）</li>
+          <li>检查是否存在等价的反向 DAG 也拟合数据</li>
+          <li><b>通过条件：</b>DAG 方向有理论/时间支撑，无等价反向结构</li>
+        </ul>
+        <div class="g-fail"><b>未通过后果：</b>因果方向未经论证，结论可能是相关性而非因果性。</div>
+      </div>
+
+    </div>
+
+    <div class="note" style="margin-top:24px;">
+      <b>门禁使用规范：</b>14 项门禁并非全部需要"通过"——某些门禁对特定研究设计不适用（如 RCT 可豁免 G03 未测混杂门禁）。研究者应：<br>
+      1. 标注每项门禁状态为 <b style="color:var(--ok);">通过</b> / <b style="color:var(--warn);">部分通过</b> / <b style="color:var(--bad);">未通过</b> / <b style="color:var(--text-3);">不适用</b>；<br>
+      2. 对"未通过"项给出原因与缓解措施；<br>
+      3. 对"不适用"项说明为何不适用。<br>
+      诚实标注比"全过"更有价值——它让读者看到研究的边界与可信度，而非虚假的完美。DoWhy 框架的核心理念是：可被反驳的结论才是科学结论，不可反驳的结论是信仰。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 评估使用流程 ============ -->
+<section class="section" id="workflow">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">PART 06 · WORKFLOW</div>
+      <h2>五维评估标准使用流程</h2>
+      <p class="desc">
+        将本量规库落地到一次真实的教育 AI 方法评估，建议按下方七步流程执行。流程设计遵循"先定位、再打分、后辩护"原则，确保每一步都有可交付物，最终形成一份可被同行复核的评估报告。
+      </p>
+    </div>
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:50px;">步骤</th>
+          <th style="width:140px;">阶段</th>
+          <th>操作内容</th>
+          <th style="width:200px;">交付物</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="mono" style="color:var(--accent);">01</span></td>
+          <td><b>定位方法</b></td>
+          <td>明确待评估的教育 AI 方法（如 DKT、RAG、Peer Instruction），界定其实现形态与目标场景。同一方法不同实现差异大，必须锁定具体实现。</td>
+          <td>方法规格说明书</td>
+        </tr>
+        <tr>
+          <td><span class="mono" style="color:var(--accent);">02</span></td>
+          <td><b>收集证据</b></td>
+          <td>针对 5D×21 子指标，逐项寻找证据来源：实验数据、消融研究、第三方复现、同行评审论文。无证据的子指标不得凭印象打分。</td>
+          <td>证据清单（含来源链接）</td>
+        </tr>
+        <tr>
+          <td><span class="mono" style="color:var(--accent);">03</span></td>
+          <td><b>逐项打分</b></td>
+          <td>对照 1/3/5 分锚点描述，先定位最接近档位，再决定上浮或下调一档。每个子指标给出分数与一句话理由，并附证据编号。</td>
+          <td>21 项评分表</td>
+        </tr>
+        <tr>
+          <td><span class="mono" style="color:var(--accent);">04</span></td>
+          <td><b>维度汇总</b></td>
+          <td>将每个维度下的子指标分数取均值（或按权重加权），得到 5 个维度分。绘制雷达图直观呈现五维短板。</td>
+          <td>五维雷达图</td>
+        </tr>
+        <tr>
+          <td><span class="mono" style="color:var(--accent);">05</span></td>
+          <td><b>敏感性分析</b></td>
+          <td>对实践效果维度（D2）的结论，至少运行两套敏感性分析（Rosenbaum Γ / Oster δ / E-value / Monte Carlo 任选其二），量化未测混杂容忍度。</td>
+          <td>敏感性分析报告</td>
+        </tr>
+        <tr>
+          <td><span class="mono" style="color:var(--accent);">06</span></td>
+          <td><b>门禁核查</b></td>
+          <td>逐项回答 14 项反驳门禁，标注"通过/部分通过/未通过/不适用"。对未通过项给出原因与缓解措施。</td>
+          <td>门禁核查表</td>
+        </tr>
+        <tr>
+          <td><span class="mono" style="color:var(--accent);">07</span></td>
+          <td><b>形成结论</b></td>
+          <td>综合五维评分、敏感性分析、门禁核查，给出"可推荐/有条件推荐/不推荐"的总判断，并明确适用边界与改进方向。</td>
+          <td>评估结论书</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <b>关键原则：</b>评分不是目的，辩护才是。一份只给分数不给证据与门禁状态的评估报告毫无价值——它无法被复核，也无法被反驳。本量规库的设计目标不是"打一个分数"，而是"让分数可被质疑、可被修正、可被复现"。当且仅当评估报告能让一个持怀疑态度的同行说"虽然我有疑虑，但你的证据链与门禁核查让我接受你的结论"时，评估才算成功。
+    </div>
+
+    <details class="collap" style="margin-top:20px;">
+      <summary>附：五维评分权重建议（按评估目的调整）</summary>
+      <div class="collap-body">
+        <table class="tbl">
+          <thead>
+            <tr><th>评估目的</th><th>D1 理论</th><th>D2 实践</th><th>D3 效率</th><th>D4 解释</th><th>D5 适用</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>学术研究选型</td><td>0.30</td><td>0.30</td><td>0.10</td><td>0.15</td><td>0.15</td></tr>
+            <tr><td>课堂落地选型</td><td>0.10</td><td>0.30</td><td>0.20</td><td>0.25</td><td>0.15</td></tr>
+            <tr><td>大规模平台选型</td><td>0.10</td><td>0.25</td><td>0.30</td><td>0.15</td><td>0.20</td></tr>
+            <tr><td>合规审计选型</td><td>0.15</td><td>0.20</td><td>0.10</td><td>0.40</td><td>0.15</td></tr>
+            <tr><td>等权基准（默认）</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:12px;color:var(--text-3);margin-top:10px;">权重非固定值，应由评估发起方在评估前确定并公开，评估后不得更改以求"凑出好分数"。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============ 信源与说明 ============ -->
+<section class="section" id="sources">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">PART 07 · SOURCES</div>
+      <h2>信源说明与免责声明</h2>
+      <p class="desc">
+        本量规库的评分锚点与方法选型，综合参考了 AI 教育研究报告、深度分析、费曼式分析及学术论文集四份本地信源，并融合了教育测量学（IRT/BKT）、因果推断（DoWhy/Rosenbaum/Oster/VanderWeele）与教育实证研究（Peer Instruction/PBL）的公开文献共识。下方列出主要信源与本库的边界声明。
+      </p>
+    </div>
+
+    <table class="tbl">
+      <thead>
+        <tr><th style="width:240px;">信源</th><th>对本库的贡献</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>AI 与教育应用深度研究报告</b><br><span class="mono" style="font-size:11px;color:var(--text-3);">research/reports/</span></td>
+          <td>提供了 AI 教育应用现状、技术架构（LLM/RAG/知识图谱/学习分析）、应用场景（K12/高校/职教/终身学习）与挑战（偏见/隐私/可靠性）的全景图，为 D5 适用范围与 D4 可解释性维度提供场景依据。</td>
+        </tr>
+        <tr>
+          <td><b>AI 与教育应用深度分析报告</b><br><span class="mono" style="font-size:11px;color:var(--text-3);">research/reports/</span></td>
+          <td>提供了智能辅导、自动评估、个性化学习三大模式的实现细节与技术栈，为 D2 实践效果与 D3 计算效率的锚点描述提供工程参考。</td>
+        </tr>
+        <tr>
+          <td><b>费曼式 AI 与教育分析</b><br><span class="mono" style="font-size:11px;color:var(--text-3);">analysis/</span></td>
+          <td>提供了"命名≠理解""反自欺原则""避免货物崇拜"等批判性视角，为 D1 理论严谨性的可证伪性子指标与 14 项反驳门禁的"诚实标注"原则提供思想基础。</td>
+        </tr>
+        <tr>
+          <td><b>AI 教育学术论文集</b><br><span class="mono" style="font-size:11px;color:var(--text-3);">research/papers/</span></td>
+          <td>提供了学术图书馆 AI 资源发现、临床教育 AI 系统（HIPAA 合规 LIMS）、生成式 AI 对内容市场影响等前沿案例，为 D4 可审计性与 D5 场景覆盖提供实证支撑。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <b>边界声明：</b>本量规库的 12 方法评分矩阵给出的是"中位数水平"参考，并非绝对值。同一方法在不同实现、不同数据、不同场景下表现会有浮动。评分矩阵的价值在于<b>提供比较的起点</b>而非给出终局判决——任何严肃的选型决策都应针对具体实现重新打分，而非直接套用本表数字。敏感性分析方法与反驳门禁清单的设计目标是<b>让结论可被质疑与修正</b>，而非让结论显得无懈可击。真正的科学态度是承认不确定性，并给出不确定性的边界。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页脚 ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-nav">
+      <div class="fn-group">
+        <h4>主馆 Main Halls</h4>
+        <a href="eduai_s01_tech_deepblue.html">S01 技术深蓝 · Tech Deep Blue</a>
+        <a href="eduai_s02_academic_ink.html">S02 学术墨韵 · Academic Ink</a>
+        <a href="eduai_s03_minimal_gold.html">S03 极简金辉 · Minimal Gold</a>
+        <a href="eduai_s04_cyber_indigo.html">S04 赛博靛蓝 · Cyber Indigo</a>
+        <a href="eduai_s05_glass_sky.html">S05 玻璃天空 · Glass Sky</a>
+        <a href="eduai_s06_magazine_slate.html">S06 杂志岩灰 · Magazine Slate</a>
+      </div>
+      <div class="fn-group">
+        <h4>深潜馆 Sub Halls</h4>
+        <a href="methodology_sub.html">方法学深潜 · Methodology</a>
+        <a href="applications_sub.html">应用深潜 · Applications</a>
+        <a href="four_layer_sub.html">四层深潜 · Four Layer</a>
+        <a href="evaluation_sub.html" style="color:var(--accent);">五维评估量规全库 · 本馆</a>
+      </div>
+      <div class="fn-group">
+        <h4>本馆导航 Internal</h4>
+        <a href="#dims">PART 01 · 五维框架总览</a>
+        <a href="#rubric">PART 02 · 21 子指标量规</a>
+        <a href="#heatmap">PART 03 · 12 方法评分矩阵</a>
+        <a href="#sensitivity">PART 04 · 敏感性分析</a>
+        <a href="#gates">PART 05 · 14 反驳门禁</a>
+        <a href="#workflow">PART 06 · 评估使用流程</a>
+      </div>
+      <div class="fn-group">
+        <h4>快速返回 Quick Return</h4>
+        <a href="eduai_s01_tech_deepblue.html">→ 返回技术深蓝主馆</a>
+        <a href="eduai_s02_academic_ink.html">→ 返回学术墨韵主馆</a>
+        <a href="eduai_s03_minimal_gold.html">→ 返回极简金辉主馆</a>
+        <a href="eduai_s04_cyber_indigo.html">→ 返回赛博靛蓝主馆</a>
+        <a href="eduai_s05_glass_sky.html">→ 返回玻璃天空主馆</a>
+        <a href="eduai_s06_magazine_slate.html">→ 返回杂志岩灰主馆</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>五维评估量规全库 · Evaluation Rubric Warehouse <span class="mono">| 深潜馆 04</span></p>
+      <p style="margin-top:6px;">主题：教育与 AI · 深蓝统一主题 <span class="mono">#0B1437 / #132053 / #E8A33D</span></p>
+      <p style="margin-top:6px;">5D × 21 子指标 · 12 方法评分矩阵 · 4 套敏感性分析 · 14 项反驳门禁</p>
+      <p style="margin-top:6px;" class="mono">© AI-Education Research Project · 评估可被复核，结论可被反驳</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   交互脚本：维度筛选、平滑滚动、热力图提示增强
+   ============================================================ */
+(function () {
+  "use strict";
+
+  // 维度筛选 chips
+  var chips = document.querySelectorAll(".chip[data-filter]");
+  var blocks = document.querySelectorAll(".rubric-block[data-dim]");
+
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      var filter = chip.getAttribute("data-filter");
+      chips.forEach(function (c) { c.classList.remove("active"); });
+      chip.classList.add("active");
+      blocks.forEach(function (block) {
+        if (filter === "all" || block.getAttribute("data-dim") === filter) {
+          block.style.display = "";
+        } else {
+          block.style.display = "none";
+        }
+      });
+    });
+  });
+
+  // 热力图单元格：触屏设备点击切换提示
+  var hmCells = document.querySelectorAll(".hm-cell[data-tip]");
+  hmCells.forEach(function (cell) {
+    cell.addEventListener("click", function (e) {
+      // 触屏设备无 hover，点击时强制显示一次
+      if (window.matchMedia("(hover: none)").matches) {
+        e.preventDefault();
+        var tip = cell.getAttribute("data-tip");
+        if (tip) {
+          // 临时用 title 方式兜底
+          cell.setAttribute("title", tip);
+        }
+      }
+    });
+  });
+
+  // 顶部导航平滑滚动到锚点
+  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+    anchor.addEventListener("click", function (e) {
+      var href = this.getAttribute("href");
+      if (href.length > 1) {
+        var target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    });
+  });
+
+  // 统计行数显示（控制台，便于自检）
+  console.log(
+    "%c五维评估量规全库 · Evaluation Rubric Warehouse",
+    "color:#E8A33D;font-weight:bold;font-size:14px;"
+  );
+  console.log("5D × 21 子指标 · 12 方法 × 5D 评分矩阵 · 4 套敏感性分析 · 14 项反驳门禁");
+})();
+</script>
+<script id="apple-ui-interactions">
+document.querySelectorAll('.card-spotlight').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`);});});
+</script>
+
+</body>
+</html>
