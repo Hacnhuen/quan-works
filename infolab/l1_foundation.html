@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L1 基础 · 三大度量与四性框架 | InfoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html" class="on">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Level 1 · Foundation</div>
+  <h1>L1 基础：三大度量与四性框架</h1>
+  <p>本级建立信息论的<strong>全部基本量</strong>：熵 H、相对熵 D、互信息 I、信道容量 C，以及它们之间的恒等式与不等式。同时给出中文教学体系的组织主线——<em>有效性 · 可靠性 · 保密性 · 认证性</em>。读完你能手算编码长度与信道容量。</p>
+  <div class="meta">
+    <i>学段：本科</i><i>门槛：离散概率 · Jensen 不等式</i>
+    <i>教材基准：Cover &amp; Thomas Ch.2–8</i><i>核心：H · D · I · C</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>L1 目录</h4>
+  <a href="#frame">00 · 四性框架</a>
+  <a href="#entropy">01 · 熵：定义与性质</a>
+  <a href="#joint">02 · 联合熵与条件熵</a>
+  <a href="#kl">03 · 相对熵 KL 散度</a>
+  <a href="#mi">04 · 互信息</a>
+  <a href="#venn">05 · 恒等式全图</a>
+  <a href="#dpi">06 · 数据处理不等式</a>
+  <a href="#kraft">07 · Kraft 不等式</a>
+  <a href="#huffman">08 · Huffman 最优码</a>
+  <a href="#channel">09 · 信道模型</a>
+  <a href="#capacity">10 · 信道容量</a>
+  <a href="#gauss">11 · 高斯信道与 Shannon 公式</a>
+  <a href="#quiz1">12 · 自检与作业</a>
+  <div class="grp">
+    <h4>跳转</h4>
+    <a href="l0_intuition.html">← L0 启蒙</a>
+    <a href="l2_theorems.html">L2 完备 →</a>
+    <a href="lab.html">🧪 实验室</a>
+  </div>
+</aside>
+
+<main>
+
+<section class="section" id="frame">
+  <h2><span class="num">00</span>四性框架：本科信息论在解决什么</h2>
+  <p class="lead">中文教学体系用"四性"组织整门课，这是一条比章节顺序更清晰的主线。</p>
+
+  <div class="tw"><table>
+    <tr><th>性质</th><th>要解决的问题</th><th>核心工具</th><th>极限由什么决定</th></tr>
+    <tr><td><strong>有效性</strong></td><td>怎样用最少的比特表示信息（压缩）</td><td>信源编码 · Huffman · LZ</td><td>熵 H(X)</td></tr>
+    <tr><td><strong>可靠性</strong></td><td>怎样在有噪声时不出错地传输</td><td>信道编码 · Hamming · LDPC · Polar</td><td>信道容量 C</td></tr>
+    <tr><td><strong>保密性</strong></td><td>怎样让窃听者得不到信息</td><td>一次一密 · 保密容量</td><td>互信息 I(M;Z)=0</td></tr>
+    <tr><td><strong>认证性</strong></td><td>怎样确认消息来源真实未篡改</td><td>认证码 · 哈希</td><td>欺骗概率下界</td></tr>
+  </table></div>
+
+  <div class="note">
+    <b>一句话把四性串起来</b>
+    <strong>先把水分挤干（有效性），再有意加回冗余（可靠性），加冗余的方式要让敌人看不懂（保密性）、也伪造不了（认证性）。</strong><br>
+    注意有效性与可靠性方向相反——一个去冗余，一个加冗余。Shannon 的<em>分离定理</em>证明了：分两步做，和联合优化一样好（在渐近意义下）。这是现代通信系统"压缩模块 + 纠错模块"分开设计的理论依据。
+    <div class="src">依据：UESTC《信息论》大纲；西电、南京工程学院本科大纲共识目标。</div>
+  </div>
+</section>
+
+<section class="section" id="entropy">
+  <h2><span class="num">01</span>熵：定义与性质</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p>设离散随机变量 X 取值于字母表 𝒳，概率质量函数 p(x)=Pr{X=x}。</p>
+    <div class="fml">H(X) = − Σ<sub>x∈𝒳</sub> p(x) log₂ p(x)   <span class="cm">[bit]</span>
+
+<span class="cm">约定：0 log 0 = 0（由 lim_{t→0⁺} t log t = 0 保证连续性）</span></div>
+    <p>注意 H(X) 是 <strong>分布的泛函</strong>，不是 X 的函数——它不依赖 X 取什么值，只依赖取各值的概率。所以有时写 H(p) 更准确。</p>
+    <p>另一种写法揭示本质：<code>H(X) = E[−log₂ p(X)] = E[I(X)]</code>，即<em>自信息的期望</em>。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 熵的基本性质</span>
+    <ol>
+      <li><strong>非负性：</strong>H(X) ≥ 0，等号成立当且仅当 X 是退化分布（某个 p(x)=1）。</li>
+      <li><strong>极值性（最大熵）：</strong>H(X) ≤ log₂|𝒳|，等号成立当且仅当 X 均匀分布。</li>
+      <li><strong>对称性：</strong>H 不随概率分量的重排而改变。</li>
+      <li><strong>凹性：</strong>H(p) 是关于 p 的凹函数。</li>
+      <li><strong>可加性：</strong>X,Y 独立 ⟹ H(X,Y) = H(X) + H(Y)。</li>
+    </ol>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 极值性（关键，必须会）</span>
+    <p>用 Jensen 不等式。设 |𝒳|=n，u(x)=1/n 为均匀分布。考察差值：</p>
+    <div class="fml">log₂n − H(X) = Σ p(x) log₂ n + Σ p(x) log₂ p(x)
+             = Σ p(x) log₂ [ n·p(x) ]
+             = Σ p(x) log₂ [ p(x) / (1/n) ]
+             = D( p ‖ u )  ≥ 0</div>
+    <p>最后一步用了<em>信息不等式</em> D(p‖q) ≥ 0（见 §03）。等号成立当且仅当 p = u，即均匀分布。∎</p>
+    <p><b>这个证明的价值：</b>它把"熵的极值"化归为"KL 散度非负"，说明 D 才是更基本的量。这是理解 L2/L3 的关键视角。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题</span>
+    <p><b>例 1.1</b> 四符号源 p = (1/2, 1/4, 1/8, 1/8)，求熵。</p>
+    <div class="fml">H = −[½log₂½ + ¼log₂¼ + ⅛log₂⅛ + ⅛log₂⅛]
+  = ½(1) + ¼(2) + ⅛(3) + ⅛(3)
+  = 0.5 + 0.5 + 0.375 + 0.375 = <b>1.75 bit/符号</b></div>
+    <p>对比：4 符号均匀分布时 H = log₂4 = 2 bit。所以这个源比均匀源少 0.25 bit/符号，可压缩性更好。<br>
+    这个例子会在 §08 再出现——Huffman 码恰好达到 1.75 bit，<em>正好等于熵</em>（因为所有概率都是 2 的幂次）。</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：三元分布的熵</div>
+    <div class="ctrl"><label for="e1">p₁</label><input type="range" id="e1" min="0.01" max="0.98" step="0.01" value="0.5"><span class="val" id="e1v">0.50</span></div>
+    <div class="ctrl"><label for="e2">p₂</label><input type="range" id="e2" min="0.01" max="0.98" step="0.01" value="0.3"><span class="val" id="e2v">0.30</span></div>
+    <canvas id="e-cv" data-h="230"></canvas>
+    <div class="readout" id="e-out"></div>
+    <p style="font-size:13.5px;color:var(--ink-3);margin:10px 0 0">p₃ 自动 = 1−p₁−p₂。试着让三者尽量接近 1/3，看 H 是否逼近 log₂3 ≈ 1.585 bit（极值定理）。</p>
+  </div>
+
+  <div class="vfy">
+    <span class="vbadge v-pass">✓ AI-Science 定义完备（含 0log0 约定）</span>
+    <span class="vbadge v-pass">✓ AI-学术 Cover &amp; Thomas §2.1</span>
+    <span class="vbadge v-pass">✓ AI-费曼 有数值例 + 交互</span>
+  </div>
+</section>
+
+<section class="section" id="joint">
+  <h2><span class="num">02</span>联合熵与条件熵</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <div class="fml"><b>联合熵</b>  H(X,Y) = − Σ<sub>x,y</sub> p(x,y) log₂ p(x,y)
+
+<b>条件熵</b>  H(Y|X) = Σ<sub>x</sub> p(x) H(Y|X=x)
+             = − Σ<sub>x,y</sub> p(x,y) log₂ p(y|x)</div>
+    <p><strong>条件熵读作：</strong>"已经知道 X 之后，Y 还剩多少不确定性"。</p>
+    <p>⚠️ 注意 H(Y|X) 是对 <em>x 取期望后</em>的量，而非某个固定 x 的熵。个别 H(Y|X=x) 可能大于 H(Y)，但平均值 H(Y|X) 一定不超过 H(Y)。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 链式法则</span>
+    <div class="fml">H(X,Y) = H(X) + H(Y|X) = H(Y) + H(X|Y)
+
+一般地：H(X₁,…,X<sub>n</sub>) = Σ<sub>i=1</sub><sup>n</sup> H(X<sub>i</sub> | X₁,…,X<sub>i−1</sub>)</div>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明</span>
+    <p>直接从 p(x,y) = p(x)p(y|x) 出发：</p>
+    <div class="fml">H(X,Y) = − Σ p(x,y) log₂ p(x,y)
+       = − Σ p(x,y) log₂ [ p(x) p(y|x) ]
+       = − Σ p(x,y) log₂ p(x) − Σ p(x,y) log₂ p(y|x)
+       = − Σ<sub>x</sub> p(x) log₂ p(x) + H(Y|X)
+       = H(X) + H(Y|X)  ∎</div>
+    <p>本质就是<strong>对概率乘法法则取对数取期望</strong>。链式法则由此归纳即得。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 条件作用减少熵</span>
+    <div class="fml">H(Y|X) ≤ H(Y)   <span class="cm">等号 ⟺ X 与 Y 独立</span></div>
+    <p>俗称 <em>"Conditioning reduces entropy"</em>——"知道得越多，不确定性越小（平均而言）"。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 熵的次可加性</span>
+    <div class="fml">H(X,Y) ≤ H(X) + H(Y)   <span class="cm">等号 ⟺ 独立</span>
+H(X₁,…,X<sub>n</sub>) ≤ Σ H(X<sub>i</sub>)</div>
+    <p>意义：<strong>相关性总是让联合系统的总不确定性小于各部分之和</strong>——这正是压缩的空间来源。视频能被高倍压缩，就是因为相邻帧高度相关。</p>
+  </div>
+</section>
+
+<section class="section" id="kl">
+  <h2><span class="num">03</span>相对熵（KL 散度）：最基本的量</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <div class="fml">D(p ‖ q) = Σ<sub>x</sub> p(x) log₂ [ p(x) / q(x) ]   <span class="cm">[bit]</span>
+
+<span class="cm">约定：0 log(0/q)=0；p log(p/0)=+∞（p&gt;0 时）</span></div>
+    <p><strong>操作性解释（最重要）：</strong>真实分布是 p，但你误以为是 q，并按 q 设计了最优编码。那么你<em>每个符号平均多花的比特数</em>就是 D(p‖q)。</p>
+    <div class="fml">按 q 编码的平均长度 = H(p) + D(p‖q)
+                    ↑真实最优   ↑因用错模型付出的代价</div>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 信息不等式（Gibbs 不等式）</span>
+    <div class="fml">D(p ‖ q) ≥ 0，等号成立 ⟺ p(x) = q(x) 对所有 x</div>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 两行搞定</span>
+    <p>设 A = {x : p(x) &gt; 0} 为 p 的支撑集。由 Jensen 不等式（log 是凹函数）：</p>
+    <div class="fml">−D(p‖q) = Σ<sub>x∈A</sub> p(x) log₂ [ q(x)/p(x) ]
+        ≤ log₂ [ Σ<sub>x∈A</sub> p(x) · q(x)/p(x) ]     <span class="cm">← Jensen</span>
+        = log₂ [ Σ<sub>x∈A</sub> q(x) ]
+        ≤ log₂ 1 = 0
+
+⟹ D(p‖q) ≥ 0  ∎</div>
+    <p>等号条件：Jensen 取等要求 q(x)/p(x) 为常数，结合两者都是概率分布，得 p=q。</p>
+  </div>
+
+  <div class="note warn">
+    <b>KL 散度不是距离</b>
+    <ul style="margin-bottom:0">
+      <li><strong>不对称：</strong>D(p‖q) ≠ D(q‖p)。这不是缺陷而是特性——机器学习里"前向 KL"导致模式覆盖（mean-seeking），"反向 KL"导致模式坍缩（mode-seeking），行为截然不同。</li>
+      <li><strong>不满足三角不等式。</strong></li>
+      <li>正确的名字是<em>散度（divergence）</em>。若要真正的度量，可用 Jensen–Shannon 散度的平方根，或全变差距离。</li>
+    </ul>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题</span>
+    <p><b>例 1.2</b> p=(0.5,0.5)，q=(0.9,0.1)，计算双向 KL。</p>
+    <div class="fml">D(p‖q) = 0.5·log₂(0.5/0.9) + 0.5·log₂(0.5/0.1)
+       = 0.5(−0.8480) + 0.5(2.3219) = <b>0.7370 bit</b>
+
+D(q‖p) = 0.9·log₂(0.9/0.5) + 0.1·log₂(0.1/0.5)
+       = 0.9(0.8480) + 0.1(−2.3219) = <b>0.5310 bit</b></div>
+    <p>果然 <strong>0.7370 ≠ 0.5310</strong>，不对称性一目了然。</p>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿</span>
+    <p>KL 散度是现代 AI 的核心零件：<strong>变分推断</strong>的 ELBO、<strong>VAE</strong> 的正则项、<strong>RLHF/PPO</strong> 限制策略偏移的 KL 惩罚、<strong>DPO</strong> 的隐式 KL 约束、<strong>知识蒸馏</strong>的师生匹配——全部是在最小化某个 KL。→ <a href="l4_frontier.html#llm" style="color:var(--l4)">L4 大模型</a></p>
+  </div>
+</section>
+
+<section class="section" id="mi">
+  <h2><span class="num">04</span>互信息：共享了多少</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <div class="fml">I(X;Y) = Σ<sub>x,y</sub> p(x,y) log₂ [ p(x,y) / (p(x)p(y)) ]
+       = D( p(x,y) ‖ p(x)p(y) )</div>
+    <p><strong>互信息 = 联合分布与"假装独立"之间的 KL 散度</strong>，即衡量 X 与 Y 有多不独立。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 互信息的等价形式</span>
+    <div class="fml">I(X;Y) = H(X) − H(X|Y)          <span class="cm">观测 Y 后 X 的不确定性减少量</span>
+       = H(Y) − H(Y|X)          <span class="cm">对称</span>
+       = H(X) + H(Y) − H(X,Y)   <span class="cm">容斥</span>
+       = I(Y;X)                 <span class="cm">对称性</span>
+       ≥ 0                      <span class="cm">由 D ≥ 0</span></div>
+    <p>其中 I(X;Y) = 0 ⟺ X ⊥ Y（独立）。另有 <strong>I(X;X) = H(X)</strong>，故熵又称"自信息量"。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 完整手算</span>
+    <p><b>例 1.3</b> 二元对称信道 BSC，输入等概率 P(X=0)=P(X=1)=0.5，翻转概率 ε=0.1。求 I(X;Y)。</p>
+    <p><b>步骤1 · 联合分布：</b></p>
+    <div class="fml">p(0,0)=0.5×0.9=0.45   p(0,1)=0.5×0.1=0.05
+p(1,0)=0.5×0.1=0.05   p(1,1)=0.5×0.9=0.45</div>
+    <p><b>步骤2 · 边缘：</b>P(Y=0)=0.45+0.05=0.5，P(Y=1)=0.5。故 H(Y)=1 bit。</p>
+    <p><b>步骤3 · 条件熵：</b>给定 X=0，Y 的分布是 (0.9, 0.1)，熵为 H(0.1)。给定 X=1 同理。</p>
+    <div class="fml">H(Y|X) = 0.5·H(0.1) + 0.5·H(0.1) = H(0.1)
+       = −0.9log₂0.9 − 0.1log₂0.1
+       = 0.1368 + 0.3322 = <b>0.4690 bit</b></div>
+    <p><b>步骤4 · 互信息：</b></p>
+    <div class="fml">I(X;Y) = H(Y) − H(Y|X) = 1 − 0.4690 = <b>0.5310 bit</b></div>
+    <p><b>解读：</b>每次使用这个信道，平均只能可靠传递 0.531 bit，而非 1 bit。噪声吃掉了 0.469 bit——恰好等于 H(ε)。这个结论直接给出 BSC 的容量公式（§10）。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 条件互信息与链式法则</span>
+    <div class="fml">I(X;Y|Z) = H(X|Z) − H(X|Y,Z)
+
+I(X₁,…,X<sub>n</sub>;Y) = Σ<sub>i</sub> I(X<sub>i</sub>;Y | X₁,…,X<sub>i−1</sub>)</div>
+    <p>⚠️ <strong>反直觉警告：</strong>I(X;Y|Z) 与 I(X;Y) 之间<em>没有</em>大小关系！条件可能增加也可能减少互信息。<br>
+    经典反例：X,Y 独立同分布的公平硬币，Z = X⊕Y。则 I(X;Y)=0，但 I(X;Y|Z)=1 bit（知道异或值后，X 完全决定 Y）。这现象在因果推断中叫 <em>collider bias / explaining away</em>。</p>
+  </div>
+</section>
+
+<section class="section" id="venn">
+  <h2><span class="num">05</span>恒等式全图：一张图记住所有关系</h2>
+
+  <div class="card">
+    <svg viewBox="0 0 660 250" style="width:100%;height:auto">
+      <rect x="0" y="0" width="660" height="250" fill="#0d1220"/>
+      <circle cx="255" cy="120" r="96" fill="rgba(56,189,248,.17)" stroke="#38bdf8" stroke-width="2"/>
+      <circle cx="395" cy="120" r="96" fill="rgba(52,211,153,.17)" stroke="#34d399" stroke-width="2"/>
+      <text x="175" y="118" fill="#38bdf8" font-family="monospace" font-size="14" text-anchor="middle" font-weight="700">H(X|Y)</text>
+      <text x="325" y="112" fill="#fbbf24" font-family="monospace" font-size="14" text-anchor="middle" font-weight="700">I(X;Y)</text>
+      <text x="475" y="118" fill="#34d399" font-family="monospace" font-size="14" text-anchor="middle" font-weight="700">H(Y|X)</text>
+      <text x="185" y="18" fill="#38bdf8" font-family="monospace" font-size="13" text-anchor="middle">H(X)</text>
+      <text x="470" y="18" fill="#34d399" font-family="monospace" font-size="13" text-anchor="middle">H(Y)</text>
+      <path d="M120,32 A 130 130 0 0 1 300,32" stroke="#38bdf8" stroke-width="1.4" fill="none" opacity=".65"/>
+      <path d="M355,32 A 130 130 0 0 1 535,32" stroke="#34d399" stroke-width="1.4" fill="none" opacity=".65"/>
+      <text x="325" y="238" fill="#8592ab" font-family="monospace" font-size="12" text-anchor="middle">整个并集 = H(X,Y)　·　交集 = I(X;Y)　·　左月牙 = H(X|Y)　·　右月牙 = H(Y|X)</text>
+    </svg>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式 · 全部恒等式</span>
+    <div class="fml">H(X,Y) = H(X) + H(Y|X) = H(Y) + H(X|Y)
+H(X,Y) = H(X) + H(Y) − I(X;Y)
+I(X;Y) = H(X) − H(X|Y) = H(Y) − H(Y|X)
+I(X;Y) = H(X) + H(Y) − H(X,Y)
+I(X;Y) = H(X,Y) − H(X|Y) − H(Y|X)
+I(X;X) = H(X)
+0 ≤ I(X;Y) ≤ min{ H(X), H(Y) }</div>
+  </div>
+
+  <div class="note warn">
+    <b>Venn 图的适用边界（严谨性提醒）</b>
+    两变量时这张图完全正确。但推广到<strong>三个及以上</strong>变量时，"交互信息" I(X;Y;Z) = I(X;Y) − I(X;Y|Z) <em>可以为负</em>，此时它不再对应任何真实集合的面积，Venn 图会误导。上面 XOR 的例子就给出 I(X;Y;Z) = 0 − 1 = −1 bit。<br>
+    这是本科阶段最常见的隐性错误之一。严格处理需要 I-measure 理论（Yeung）。
+  </div>
+</section>
+
+<section class="section" id="dpi">
+  <h2><span class="num">06</span>数据处理不等式：信息不会凭空增加</h2>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 数据处理不等式 DPI</span>
+    <p>若 X → Y → Z 构成马尔可夫链（即给定 Y 时 X 与 Z 条件独立），则</p>
+    <div class="fml">I(X;Y) ≥ I(X;Z)   <span class="cm">等号 ⟺ X → Z → Y 也是马氏链</span></div>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明</span>
+    <p>用互信息链式法则，把 I(X;Y,Z) 按两种顺序展开：</p>
+    <div class="fml">I(X;Y,Z) = I(X;Z) + I(X;Y|Z)
+I(X;Y,Z) = I(X;Y) + I(X;Z|Y)
+
+马氏性 X→Y→Z ⟹ I(X;Z|Y) = 0
+
+⟹ I(X;Y) = I(X;Z) + I(X;Y|Z) ≥ I(X;Z)   <span class="cm">因 I(X;Y|Z) ≥ 0</span>  ∎</div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论</span>
+    <ul>
+      <li><strong>任何确定性处理都不增加信息：</strong>取 Z=g(Y)，则 I(X;g(Y)) ≤ I(X;Y)。<em>再精妙的算法也无法从数据中榨出原本不存在的信息。</em></li>
+      <li><strong>神经网络逐层信息不增：</strong>输入 X → 第1层 T₁ → 第2层 T₂ → …，则 I(X;T₁) ≥ I(X;T₂) ≥ …。这是<a href="l4_frontier.html#ib" style="color:var(--l4)">信息瓶颈理论</a>的出发点。</li>
+      <li><strong>充分统计量：</strong>T(Y) 是关于 X 的充分统计量 ⟺ DPI 取等，即 I(X;T(Y)) = I(X;Y)，压缩了数据却没丢信息。</li>
+    </ul>
+  </div>
+
+  <div class="note deep">
+    <b>DPI 是信息论最深刻的哲学陈述</b>
+    它是"天下没有免费午餐"的精确数学版本。图像增强不能恢复真正丢失的细节；数据清洗不能创造新知识；无论多深的网络，对输入的信息量只会单调递减。<br>
+    ——但这不意味着处理无用：处理的价值在于<em>把信息重排成更可用的形式</em>（提高对下游任务的"可提取性"），而非增加总量。
+  </div>
+</section>
+
+<section class="section" id="kraft">
+  <h2><span class="num">07</span>Kraft 不等式：什么样的码长可实现</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p><strong>前缀码（prefix code）：</strong>任何码字都不是另一个码字的前缀。好处是<em>即时可译</em>——接收端读到就能立刻解码，无需回看。</p>
+    <p>例：{0, 10, 110, 111} 是前缀码；{0, 01, 011} 不是（0 是 01 的前缀）。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Kraft–McMillan 不等式</span>
+    <p><b>(a) Kraft (1949)：</b>存在码长为 ℓ₁,…,ℓ<sub>m</sub> 的 D 元前缀码，当且仅当</p>
+    <div class="fml">Σ<sub>i=1</sub><sup>m</sup> D<sup>−ℓ<sub>i</sub></sup> ≤ 1</div>
+    <p><b>(b) McMillan (1956)：</b>任何<em>唯一可译码</em>也必须满足同一不等式。</p>
+    <p><strong>(b) 的意义极其重要：</strong>允许使用更一般的唯一可译码，并不能获得比前缀码更短的码长。所以<em>只研究前缀码不损失任何一般性</em>。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · Kraft 必要性（二叉树论证）</span>
+    <p>把前缀码画成二叉树：码字 = 叶节点，码长 = 深度。设最长码长为 L。</p>
+    <p>深度为 L 的满二叉树共有 2<sup>L</sup> 个叶节点。一个深度为 ℓ<sub>i</sub> 的码字，会"占用"其下方全部 2<sup>L−ℓ<sub>i</sub></sup> 个叶节点（前缀性质保证这些子树互不相交）。因此：</p>
+    <div class="fml">Σ<sub>i</sub> 2<sup>L−ℓ<sub>i</sub></sup> ≤ 2<sup>L</sup>   ⟹   Σ<sub>i</sub> 2<sup>−ℓ<sub>i</sub></sup> ≤ 1  ∎</div>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 最优码长界</span>
+    <p>设 L* 为最优前缀码的期望长度，则</p>
+    <div class="fml">H(X) ≤ L* &lt; H(X) + 1   <span class="cm">[以 D=2 为例，单位 bit]</span></div>
+    <p><b>下界</b>来自 Kraft + Gibbs 不等式；<b>上界</b>由取 ℓ<sub>i</sub> = ⌈−log₂p(x<sub>i</sub>)⌉（Shannon 码）构造得到。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 消灭那个 "+1"</span>
+    <p>对 n 个符号<strong>成块编码</strong>，则每符号平均长度满足：</p>
+    <div class="fml">H(X) ≤ L*<sub>n</sub>/n &lt; H(X) + 1/n  →  当 n→∞ 时收敛到 H(X)</div>
+    <p>这正是 <strong>Shannon 第一定理</strong>的雏形。→ <a href="l2_theorems.html#src" style="color:var(--l2)">L2 严格版</a></p>
+  </div>
+</section>
+
+<section class="section" id="huffman">
+  <h2><span class="num">08</span>Huffman 码：可证最优的构造</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · 算法（Huffman 1952）</span>
+    <ol>
+      <li>把所有符号按概率排成一列；</li>
+      <li>取出概率<strong>最小的两个</strong>，合并成一个新节点，概率相加；</li>
+      <li>把新节点放回队列，重复直到只剩一个节点（根）；</li>
+      <li>从根到叶，左枝标 0、右枝标 1，路径即码字。</li>
+    </ol>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 完整构造</span>
+    <p>仍用 <b>例 1.1</b> 的源：a:0.5, b:0.25, c:0.125, d:0.125</p>
+    <pre><code>步骤1: 最小两个 c(.125) + d(.125) → cd(.25)
+       队列: a(.5)  b(.25)  cd(.25)
+
+步骤2: 最小两个 b(.25) + cd(.25) → bcd(.5)
+       队列: a(.5)  bcd(.5)
+
+步骤3: a(.5) + bcd(.5) → 根(1.0)
+
+码树:              [1.0]
+                 0/      \1
+              a(.5)     [bcd .5]
+                        0/      \1
+                     b(.25)   [cd .25]
+                              0/     \1
+                            c(.125) d(.125)
+
+码字: a=0   b=10   c=110   d=111</code></pre>
+    <p><b>平均码长：</b></p>
+    <div class="fml">L = 0.5(1) + 0.25(2) + 0.125(3) + 0.125(3)
+  = 0.5 + 0.5 + 0.375 + 0.375 = <b>1.75 bit/符号</b>
+
+而 H(X) = 1.75 bit  ⟹  L = H，<b>达到理论极限！</b></div>
+    <p><b>为什么恰好相等？</b>因为所有概率都是 2 的负整数次幂（1/2, 1/4, 1/8, 1/8），此时 −log₂p(x) 恰为整数，Kraft 不等式取等。这类分布称为 <em>D-adic 分布</em>。</p>
+    <p>验证 Kraft：2⁻¹ + 2⁻² + 2⁻³ + 2⁻³ = 0.5+0.25+0.125+0.125 = 1 ✓</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Huffman 最优性</span>
+    <p>Huffman 码在所有<strong>逐符号</strong>唯一可译码中期望长度最小。</p>
+    <p><b>证明骨架（交换论证）：</b>①最优码中，概率越小码长必不越短（否则交换可改进）；②最优码树中最深的两个叶节点必可安排为兄弟；③故概率最小的两符号可取为兄弟——这正是 Huffman 的贪心步；④对合并后的 m−1 符号问题归纳。∎</p>
+  </div>
+
+  <div class="note warn">
+    <b>Huffman 的三个局限（本科常考）</b>
+    <ol style="margin-bottom:0">
+      <li><strong>至少 1 比特/符号。</strong>若某符号概率 0.99（H≈0.08 bit），Huffman 仍需 1 bit，效率仅 8%。解法：<em>算术编码</em>可逼近熵到任意精度。</li>
+      <li><strong>需要预知概率分布。</strong>解法：<em>自适应 Huffman</em> 或 <em>LZ 系列</em>通用压缩（无需先验分布仍渐近最优）。</li>
+      <li><strong>只利用单符号统计</strong>，不利用上下文相关性。解法：先做上下文建模（如 PPM）或用块编码。</li>
+    </ol>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：Huffman 编码器（4 符号）</div>
+    <div class="ctrl"><label for="hf1">p(a)</label><input type="range" id="hf1" min="0.02" max="0.94" step="0.01" value="0.50"><span class="val" id="hf1v">0.50</span></div>
+    <div class="ctrl"><label for="hf2">p(b)</label><input type="range" id="hf2" min="0.02" max="0.94" step="0.01" value="0.25"><span class="val" id="hf2v">0.25</span></div>
+    <div class="ctrl"><label for="hf3">p(c)</label><input type="range" id="hf3" min="0.02" max="0.94" step="0.01" value="0.13"><span class="val" id="hf3v">0.13</span></div>
+    <div class="readout" id="hf-out"></div>
+    <p style="font-size:13.5px;color:var(--ink-3);margin:10px 0 0">p(d) 自动补齐。观察：概率接近 2 的幂次时，效率 → 100%；分布极端不均时，效率显著下降（局限 1）。</p>
+  </div>
+</section>
+
+<section class="section" id="channel">
+  <h2><span class="num">09</span>信道模型：噪声的数学化</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p><strong>离散无记忆信道 DMC</strong> 由三元组 (𝒳, p(y|x), 𝒴) 完全刻画：输入字母表、转移概率矩阵、输出字母表。</p>
+    <p>"<em>无记忆</em>"指：p(y<sup>n</sup>|x<sup>n</sup>) = Π<sub>i</sub> p(y<sub>i</sub>|x<sub>i</sub>)，即每次使用信道时噪声独立，不受历史影响。这是一个<strong>关键前提</strong>，L3 会讨论有记忆信道。</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h4 style="margin-top:0">二元对称信道 BSC(ε)</h4>
+      <svg viewBox="0 0 260 130" style="width:100%">
+        <rect width="260" height="130" fill="#0d1220"/>
+        <circle cx="50" cy="35" r="15" fill="none" stroke="#38bdf8" stroke-width="1.8"/><text x="50" y="40" fill="#38bdf8" font-size="13" text-anchor="middle" font-family="monospace">0</text>
+        <circle cx="50" cy="95" r="15" fill="none" stroke="#38bdf8" stroke-width="1.8"/><text x="50" y="100" fill="#38bdf8" font-size="13" text-anchor="middle" font-family="monospace">1</text>
+        <circle cx="210" cy="35" r="15" fill="none" stroke="#34d399" stroke-width="1.8"/><text x="210" y="40" fill="#34d399" font-size="13" text-anchor="middle" font-family="monospace">0</text>
+        <circle cx="210" cy="95" r="15" fill="none" stroke="#34d399" stroke-width="1.8"/><text x="210" y="100" fill="#34d399" font-size="13" text-anchor="middle" font-family="monospace">1</text>
+        <line x1="66" y1="35" x2="194" y2="35" stroke="#34d399" stroke-width="1.6"/><text x="130" y="27" fill="#34d399" font-size="10" text-anchor="middle" font-family="monospace">1−ε</text>
+        <line x1="66" y1="95" x2="194" y2="95" stroke="#34d399" stroke-width="1.6"/><text x="130" y="112" fill="#34d399" font-size="10" text-anchor="middle" font-family="monospace">1−ε</text>
+        <line x1="66" y1="43" x2="194" y2="88" stroke="#f87171" stroke-width="1.4" stroke-dasharray="4,3"/>
+        <line x1="66" y1="88" x2="194" y2="43" stroke="#f87171" stroke-width="1.4" stroke-dasharray="4,3"/>
+        <text x="130" y="70" fill="#f87171" font-size="10" text-anchor="middle" font-family="monospace">ε</text>
+      </svg>
+      <p style="font-size:13.5px;margin-top:8px">比特以概率 ε 被翻转。最经典的信道模型。</p>
+      <div class="fml" style="font-size:13px">C = 1 − H(ε)</div>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">二元擦除信道 BEC(α)</h4>
+      <svg viewBox="0 0 260 130" style="width:100%">
+        <rect width="260" height="130" fill="#0d1220"/>
+        <circle cx="50" cy="30" r="15" fill="none" stroke="#38bdf8" stroke-width="1.8"/><text x="50" y="35" fill="#38bdf8" font-size="13" text-anchor="middle" font-family="monospace">0</text>
+        <circle cx="50" cy="100" r="15" fill="none" stroke="#38bdf8" stroke-width="1.8"/><text x="50" y="105" fill="#38bdf8" font-size="13" text-anchor="middle" font-family="monospace">1</text>
+        <circle cx="210" cy="22" r="14" fill="none" stroke="#34d399" stroke-width="1.8"/><text x="210" y="27" fill="#34d399" font-size="12" text-anchor="middle" font-family="monospace">0</text>
+        <circle cx="210" cy="65" r="14" fill="none" stroke="#fbbf24" stroke-width="1.8"/><text x="210" y="70" fill="#fbbf24" font-size="12" text-anchor="middle" font-family="monospace">?</text>
+        <circle cx="210" cy="108" r="14" fill="none" stroke="#34d399" stroke-width="1.8"/><text x="210" y="113" fill="#34d399" font-size="12" text-anchor="middle" font-family="monospace">1</text>
+        <line x1="66" y1="28" x2="195" y2="22" stroke="#34d399" stroke-width="1.6"/><text x="128" y="17" fill="#34d399" font-size="10" text-anchor="middle" font-family="monospace">1−α</text>
+        <line x1="66" y1="102" x2="195" y2="108" stroke="#34d399" stroke-width="1.6"/><text x="128" y="120" fill="#34d399" font-size="10" text-anchor="middle" font-family="monospace">1−α</text>
+        <line x1="66" y1="36" x2="195" y2="60" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="4,3"/>
+        <line x1="66" y1="94" x2="195" y2="70" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="4,3"/>
+        <text x="140" y="52" fill="#fbbf24" font-size="10" text-anchor="middle" font-family="monospace">α</text>
+      </svg>
+      <p style="font-size:13.5px;margin-top:8px">比特以概率 α 被"擦除"（收到 ?），但<em>绝不翻转</em>——错误位置已知。</p>
+      <div class="fml" style="font-size:13px">C = 1 − α</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>BSC 与 BEC 的关键差异</b>
+    同样"损坏率" 0.1 时：BSC 容量 = 1−H(0.1) = <strong>0.531</strong>，BEC 容量 = 1−0.1 = <strong>0.9</strong>。<br>
+    差距巨大，原因是 BEC <em>知道哪里错了</em>，BSC 不知道。<strong>"知道错在哪"本身就是巨大的信息。</strong>这解释了为什么互联网丢包（≈擦除）比误码更容易处理。
+  </div>
+</section>
+
+<section class="section" id="capacity">
+  <h2><span class="num">10</span>信道容量</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <div class="fml">C = max<sub>p(x)</sub> I(X;Y)   <span class="cm">[bit / 信道使用]</span></div>
+    <p>注意这是对<strong>输入分布</strong> p(x) 取最大——信道 p(y|x) 是给定的，我们能选的只有"怎么用它"。C 是这个信道的<em>固有属性</em>。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 推导 BSC 容量</span>
+    <div class="fml">I(X;Y) = H(Y) − H(Y|X)
+
+第二项：给定任何 x，Y 的分布都是 (1−ε, ε)
+       ⟹ H(Y|X) = H(ε)，<b>与输入分布无关</b>
+
+第一项：H(Y) ≤ 1（二元变量），取等当 Y 均匀
+       输入均匀 ⟹ 输出均匀 ⟹ 可取到
+
+⟹ C = max[H(Y)] − H(ε) = <b>1 − H(ε)</b>
+  达到于 p(x) = (1/2, 1/2)</div>
+    <table>
+      <tr><th>ε</th><th>H(ε)</th><th>C = 1−H(ε)</th><th>说明</th></tr>
+      <tr><td>0</td><td>0</td><td>1.000</td><td>无噪，满速</td></tr>
+      <tr><td>0.01</td><td>0.0808</td><td>0.919</td><td>轻噪</td></tr>
+      <tr><td>0.1</td><td>0.4690</td><td>0.531</td><td>重噪</td></tr>
+      <tr><td>0.5</td><td>1.000</td><td><strong>0</strong></td><td>完全随机，无法通信</td></tr>
+      <tr><td>0.9</td><td>0.4690</td><td>0.531</td><td>翻转即可恢复！</td></tr>
+      <tr><td>1</td><td>0</td><td>1.000</td><td>全翻转 = 无损（取反）</td></tr>
+    </table>
+    <p><b>ε=0.5 是最坏情形</b>，此时输出与输入完全无关，容量为零。而 ε&gt;0.5 时反而变好——因为你只需把收到的比特取反。所以容量曲线关于 ε=0.5 对称。</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：BSC / BEC 容量对比</div>
+    <div class="ctrl"><label for="c-e">损坏概率 ε 或 α</label><input type="range" id="c-e" min="0" max="1" step="0.01" value="0.1"><span class="val" id="c-ev">0.10</span></div>
+    <canvas id="c-cv" data-h="255"></canvas>
+    <div class="readout" id="c-out"></div>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · 容量的性质</span>
+    <ol>
+      <li>0 ≤ C ≤ min{ log|𝒳|, log|𝒴| }</li>
+      <li>I(X;Y) 关于 p(x) 是<strong>凹函数</strong> ⟹ 最大化是凸优化问题，局部最优即全局最优</li>
+      <li>存在数值算法：<strong>Blahut–Arimoto 迭代</strong>，保证收敛到 C</li>
+      <li>对称信道（转移矩阵每行是彼此置换、每列也是）：C = log|𝒴| − H(行分布)，且由均匀输入达到</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="gauss">
+  <h2><span class="num">11</span>高斯信道与 Shannon 公式</h2>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念</span>
+    <p><strong>加性白高斯噪声信道 AWGN：</strong>Y = X + Z，其中 Z ~ 𝒩(0, N)，且输入受功率约束 E[X²] ≤ P。</p>
+    <p>连续变量需用<strong>微分熵</strong>：h(X) = −∫ f(x) log₂ f(x) dx。关键事实：<em>在给定方差下，高斯分布微分熵最大</em>，h(𝒩(0,σ²)) = ½log₂(2πeσ²)。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 推导容量</span>
+    <div class="fml">I(X;Y) = h(Y) − h(Y|X) = h(Y) − h(X+Z|X) = h(Y) − h(Z)
+
+h(Z) = ½ log₂(2πeN)   <span class="cm">固定</span>
+
+Var(Y) = Var(X)+Var(Z) ≤ P+N
+h(Y) ≤ ½ log₂(2πe(P+N))   <span class="cm">高斯最大化微分熵</span>
+取等 ⟺ Y 高斯 ⟺ X ~ 𝒩(0,P)
+
+⟹ C = ½log₂(2πe(P+N)) − ½log₂(2πeN)
+    = ½ log₂( (P+N)/N )
+    = <b>½ log₂(1 + P/N)</b>  [bit/信道使用]  ∎</div>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 · Shannon–Hartley 公式</span>
+    <p>对带宽 B（Hz）、信号功率 S、噪声功率谱密度对应总噪声 N 的连续时间信道（每秒可用 2B 次）：</p>
+    <div class="fml">C = B · log₂( 1 + S/N )   <span class="cm">[bit/秒]</span></div>
+    <p>这是全部工程通信的<strong>根本上限</strong>。5G、Wi-Fi、光纤、深空通信的设计都在逼近这条线。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题</span>
+    <p><b>例 1.4</b> 电话线：B = 3400 Hz，信噪比 30 dB。求理论最大速率。</p>
+    <div class="fml">30 dB ⟹ S/N = 10^(30/10) = 1000
+
+C = 3400 × log₂(1 + 1000)
+  = 3400 × log₂(1001)
+  = 3400 × 9.9672
+  ≈ <b>33 888 bit/s ≈ 33.9 kbps</b></div>
+    <p><strong>历史印证：</strong>这正是 1990 年代拨号调制解调器停在 <em>33.6 kbps</em> 的原因——不是技术不行，而是撞上了 Shannon 极限。后来的 56k 调制解调器之所以能突破，是因为下行链路的一端是<em>全数字</em>的，绕开了一次模数转换，等效于换了个信道模型。</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：Shannon–Hartley 容量</div>
+    <div class="ctrl"><label for="g-b">带宽 B (kHz)</label><input type="range" id="g-b" min="1" max="200" step="1" value="20"><span class="val" id="g-bv">20</span></div>
+    <div class="ctrl"><label for="g-s">信噪比 (dB)</label><input type="range" id="g-s" min="-10" max="50" step="1" value="20"><span class="val" id="g-sv">20</span></div>
+    <canvas id="g-cv" data-h="250"></canvas>
+    <div class="readout" id="g-out"></div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 带宽与功率的权衡</span>
+    <ul>
+      <li><strong>功率受限区（低 SNR）：</strong>C ≈ 1.4427 · S/N₀（与带宽几乎无关）。深空通信处于此区——加带宽没用，只能加功率或提高天线增益。</li>
+      <li><strong>带宽受限区（高 SNR）：</strong>C ≈ B·log₂(S/N)，此时加带宽是线性收益，而加功率只有对数收益。<em>宽带比大功率划算</em>——这是 5G 走向毫米波大带宽的根本原因。</li>
+      <li><strong>最小比特能量：</strong>令 B→∞，可得每比特所需能量的绝对下界
+        <div class="fml">E<sub>b</sub>/N₀ ≥ ln 2 = 0.693 ≈ <b>−1.59 dB</b></div>
+        低于此值，<em>无论用什么编码、多低的速率，都无法可靠通信</em>。这被称为 Shannon 极限，是通信工程的"绝对零度"。
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="quiz1">
+  <h2><span class="num">12</span>自检与作业</h2>
+
+  <div class="quiz">
+    <div class="qh">Level 1 自检 · 通过后进 L2</div>
+    <ol>
+      <li>证明 H(X|Y) ≤ H(X)，并说明什么时候取等。为什么这不意味着 H(X|Y=y) ≤ H(X) 对每个 y 成立？</li>
+      <li>为什么 KL 散度不对称？举一个 D(p‖q) 有限但 D(q‖p) = ∞ 的例子。</li>
+      <li>设 X,Y 独立公平硬币，Z = X ⊕ Y。计算 I(X;Y)、I(X;Y|Z)、I(X;Z)。这违反数据处理不等式吗？</li>
+      <li>某源 p = (0.6, 0.2, 0.1, 0.1)。求熵、构造 Huffman 码、计算平均码长与效率。</li>
+      <li>BSC(0.11) 的容量是多少？若要以 0.4 bit/使用的速率传输，理论上可行吗？</li>
+      <li>为什么 BEC(0.5) 的容量（0.5）远大于 BSC(0.5) 的容量（0）？</li>
+    </ol>
+  </div>
+
+  <details>
+    <summary>参考答案</summary>
+    <div class="dbody">
+      <p><b>1.</b> H(X) − H(X|Y) = I(X;Y) = D(p(x,y)‖p(x)p(y)) ≥ 0。取等 ⟺ X ⊥ Y。<br>
+      单个 y 不成立的原因：H(X|Y) 是<em>对 y 求期望</em>后的量。某个特定观测可能让你更迷惑（如观测到一个极罕见的值），但平均而言信息总是有帮助的。例：X 均匀于 {1,2,3,4}，Y 是某种指示器，某个 y 值可能使 X 的后验更接近均匀从而 H(X|Y=y) &gt; H(X)，但加权平均后必然不超过。</p>
+      <p><b>2.</b> 因为 D(p‖q) = E<sub>p</sub>[log(p/q)]，期望是<em>按 p 取</em>的，角色天然不对称。<br>
+      例：p=(0.5,0.5,0)，q=(⅓,⅓,⅓)。则 D(p‖q) = log₂(1.5) = 0.585 有限；而 D(q‖p) 中出现 ⅓·log₂(⅓/0) = ∞。<strong>规律：分母为 0 而分子非 0 时发散</strong>，即 q 必须"覆盖" p 的支撑集。</p>
+      <p><b>3.</b> I(X;Y) = 0（独立）。I(X;Z) = 0（X 与 XOR 结果也独立！）。I(X;Y|Z) = H(X|Z) − H(X|Y,Z) = 1 − 0 = <b>1 bit</b>。<br>
+      <em>不违反 DPI</em>，因为 X→Y→Z <b>不构成马尔可夫链</b>（Z 直接依赖 X，给定 Y 时 X 与 Z 并不条件独立）。DPI 的前提不满足，自然不适用。这是最经典的"条件增加互信息"反例。</p>
+      <p><b>4.</b> H = −[0.6log₂0.6 + 0.2log₂0.2 + 0.1log₂0.1 ×2] = 0.4422+0.4644+0.3322+0.3322 = <b>1.571 bit</b>。<br>
+      Huffman：合并 0.1+0.1=0.2 → 队列 (0.6, 0.2, 0.2)；合并 0.2+0.2=0.4 → (0.6, 0.4)；合并成根。<br>
+      码字：a=0（长1），b=10（长2）或视分支，c=110，d=111。<br>
+      L = 0.6(1)+0.2(2)+0.1(3)+0.1(3) = 0.6+0.4+0.3+0.3 = <b>1.6 bit</b>。<br>
+      效率 = H/L = 1.571/1.6 = <b>98.2%</b>。冗余 0.029 bit/符号（因概率非 2 的幂次）。</p>
+      <p><b>5.</b> H(0.11) = −0.11log₂0.11 − 0.89log₂0.89 = 0.3503 + 0.1498 = 0.5001。C = 1 − 0.5001 = <b>0.4999 ≈ 0.5</b>。<br>
+      要求速率 0.4 &lt; C = 0.5，<strong>理论上可行</strong>：由信道编码定理，存在码使错误概率任意小。（这个 ε=0.11 是著名的例子，因为它使 C 恰好 ≈ 1/2。）</p>
+      <p><b>6.</b> BSC(0.5)：输出与输入统计独立，I(X;Y)=0，完全无法通信。BEC(0.5)：一半比特完好无损地到达，且<em>接收方确切知道哪些丢了</em>，故可靠传输一半的比特，C=0.5。<br>
+      <strong>核心差异：BEC 的错误位置是已知的（擦除），BSC 的错误位置未知（翻转伪装成正确数据）。</strong>定位错误本身耗费信息。</p>
+    </div>
+  </details>
+
+  <div class="card">
+    <h4 style="margin-top:0">动手作业</h4>
+    <ol>
+      <li>取一段 1000 字的中文文本，统计字频，计算一阶熵；再统计二字组，计算条件熵 H(X₂|X₁)。验证 H(X₂|X₁) &lt; H(X₂)。</li>
+      <li>用 Python 实现 Blahut–Arimoto 算法，对一个非对称的 3×3 信道求容量，并与穷举搜索对比。</li>
+      <li>查你家 Wi-Fi 的带宽与信噪比，用 Shannon 公式估算理论上限，与实测速率对比，解释差距来源。</li>
+    </ol>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l0_intuition.html"><span class="lb">← 上一站</span>L0 启蒙 · 什么是信息</a>
+  <a class="nx" href="l2_theorems.html"><span class="lb">下一站 →</span>L2 完备 · 三大定理与证明骨架</a>
+</div>
+
+<footer class="foot">
+  <p>L1 信源：Cover &amp; Thomas <i>Elements of Information Theory</i> 2nd ed. Ch.2–8 · Shannon 1948 · Kraft 1949 / McMillan 1956 · Huffman 1952 · UESTC 大纲第 1–2、4 章 · Stanford EE376A · Britannica: Classical information theory。</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+(function(){
+  // 三元熵
+  var ec=document.getElementById('e-cv');
+  if(ec){
+    var ep=new ILPlot(ec,{xr:[0,3],yr:[0,1.05],xlabel:'符号',ylabel:'概率',pad:{l:52,r:16,t:16,b:38}});
+    ILBind(['e1','e2'],function(){
+      var p1=+document.getElementById('e1').value, p2=+document.getElementById('e2').value;
+      if(p1+p2>0.99){p2=0.99-p1; if(p2<0.01){p2=0.01;p1=0.98;}}
+      var p3=Math.max(0,1-p1-p2);
+      document.getElementById('e1v').textContent=p1.toFixed(2);
+      document.getElementById('e2v').textContent=p2.toFixed(2);
+      ep.resize();ep.clear();ep.axes(3,4);
+      ep.bars([p1,p2,p3],['#38bdf8','#34d399','#fbbf24']);
+      var H=ILMath.H([p1,p2,p3]), mx=ILMath.log2(3);
+      document.getElementById('e-out').innerHTML=
+        'p = ('+p1.toFixed(2)+', '+p2.toFixed(2)+', '+p3.toFixed(2)+')<br>'+
+        'H(X) = <b>'+ILMath.fmt(H,4)+' bit</b>　/　最大 log₂3 = '+ILMath.fmt(mx,4)+' bit　'+
+        '（达成率 <b>'+ILMath.fmt(H/mx*100,1)+'%</b>）<br>'+
+        '<span style="color:#8592ab">与均匀分布的距离 D(p‖u) = '+ILMath.fmt(mx-H,4)+' bit —— 正是极值定理证明中的那一项。</span>';
+    });
+  }
+
+  // Huffman
+  function huff(ps){
+    var nodes=ps.map(function(p,i){return {p:p,leaf:i,d:0};});
+    var work=nodes.map(function(n){return {p:n.p,ls:[n]};});
+    if(work.length===1) return [1];
+    while(work.length>1){
+      work.sort(function(a,b){return a.p-b.p;});
+      var a=work.shift(), b=work.shift();
+      a.ls.concat(b.ls).forEach(function(n){n.d++;});
+      work.push({p:a.p+b.p,ls:a.ls.concat(b.ls)});
+    }
+    var out=[];nodes.forEach(function(n){out[n.leaf]=n.d;});
+    return out;
+  }
+  var hfo=document.getElementById('hf-out');
+  if(hfo){
+    ILBind(['hf1','hf2','hf3'],function(){
+      var a=+document.getElementById('hf1').value,
+          b=+document.getElementById('hf2').value,
+          c=+document.getElementById('hf3').value;
+      var s=a+b+c;
+      if(s>=0.99){a/=s/0.98;b/=s/0.98;c/=s/0.98;}
+      var d=Math.max(0.01,1-a-b-c);
+      var t=a+b+c+d; a/=t;b/=t;c/=t;d/=t;
+      document.getElementById('hf1v').textContent=a.toFixed(2);
+      document.getElementById('hf2v').textContent=b.toFixed(2);
+      document.getElementById('hf3v').textContent=c.toFixed(2);
+      var ps=[a,b,c,d], L=huff(ps);
+      var avg=0;for(var i=0;i<4;i++)avg+=ps[i]*L[i];
+      var H=ILMath.H(ps);
+      var nm=['a','b','c','d'];
+      var rows=ps.map(function(p,i){
+        return nm[i]+': p='+p.toFixed(3)+'  码长='+L[i]+'  理想=−log₂p='+ILMath.fmt(-ILMath.log2(p),2);
+      }).join('<br>');
+      var kr=ps.map(function(p,i){return Math.pow(2,-L[i]);}).reduce(function(x,y){return x+y;},0);
+      hfo.innerHTML=rows+'<br><br>'+
+        'H(X) = <b>'+ILMath.fmt(H,4)+'</b> bit　·　Huffman 平均码长 L = <b>'+ILMath.fmt(avg,4)+'</b> bit<br>'+
+        '冗余 L−H = '+ILMath.fmt(avg-H,4)+' bit　·　效率 H/L = <b>'+ILMath.fmt(H/avg*100,2)+'%</b><br>'+
+        '<span style="color:#8592ab">Kraft 和 Σ2^(−ℓᵢ) = '+ILMath.fmt(kr,4)+' （前缀码要求 ≤ 1，=1 表示码树饱满）<br>'+
+        '定理保证：H ≤ L &lt; H+1，此处 '+ILMath.fmt(H,3)+' ≤ '+ILMath.fmt(avg,3)+' &lt; '+ILMath.fmt(H+1,3)+' ✓</span>';
+    });
+  }
+
+  // 容量对比
+  var cc=document.getElementById('c-cv');
+  if(cc){
+    var cp=new ILPlot(cc,{xr:[0,1],yr:[0,1.05],xlabel:'损坏概率 ε (BSC) / α (BEC)',ylabel:'容量 C (bit/使用)'});
+    ILBind(['c-e'],function(){
+      var e=+document.getElementById('c-e').value;
+      document.getElementById('c-ev').textContent=e.toFixed(2);
+      cp.resize();cp.clear();cp.axes(5,4);
+      cp.line(function(x){return 1-ILMath.h2(x);},'#38bdf8',2.2);
+      cp.line(function(x){return 1-x;},'#34d399',2.2);
+      var cb=1-ILMath.h2(e), ce=1-e;
+      cp.vline(e,'#fbbf24');
+      cp.dot(e,cb,'#38bdf8'); cp.dot(e,ce,'#34d399');
+      var x=cp.ctx;
+      x.font='11px ui-monospace,monospace';x.textAlign='left';
+      x.fillStyle='#38bdf8';x.fillText('BSC: 1−H(ε)',cp.px(.60),cp.py(.30));
+      x.fillStyle='#34d399';x.fillText('BEC: 1−α',cp.px(.60),cp.py(.46));
+      document.getElementById('c-out').innerHTML=
+        'BSC('+e.toFixed(2)+')：C = 1 − H('+e.toFixed(2)+') = 1 − '+ILMath.fmt(ILMath.h2(e),4)+' = <b>'+ILMath.fmt(cb,4)+'</b> bit/使用<br>'+
+        'BEC('+e.toFixed(2)+')：C = 1 − '+e.toFixed(2)+' = <b>'+ILMath.fmt(ce,4)+'</b> bit/使用<br>'+
+        '<span style="color:#8592ab">BEC 比 BSC 多 '+ILMath.fmt(ce-cb,4)+' bit —— 这就是"知道错在哪"值多少钱。'+
+        (Math.abs(e-0.5)<0.005?'　⚠ ε=0.5：BSC 容量归零，信道完全无用。':'')+'</span>';
+    });
+  }
+
+  // Shannon-Hartley
+  var gc=document.getElementById('g-cv');
+  if(gc){
+    var gp=new ILPlot(gc,{xr:[-10,50],yr:[0,10],xlabel:'信噪比 (dB)',ylabel:'频谱效率 (bit/s/Hz)'});
+    ILBind(['g-b','g-s'],function(){
+      var B=+document.getElementById('g-b').value, S=+document.getElementById('g-s').value;
+      document.getElementById('g-bv').textContent=B;
+      document.getElementById('g-sv').textContent=S;
+      gp.resize();gp.clear();gp.axes(6,5);
+      gp.line(function(db){return ILMath.log2(1+Math.pow(10,db/10));},'#a78bfa',2.2);
+      var eff=ILMath.log2(1+Math.pow(10,S/10));
+      gp.vline(S,'#fbbf24');
+      gp.dot(S,eff,'#fbbf24',ILMath.fmt(eff,2)+' b/s/Hz');
+      var C=B*1000*eff;
+      var snr=Math.pow(10,S/10);
+      document.getElementById('g-out').innerHTML=
+        'B = '+B+' kHz　SNR = '+S+' dB（线性 '+ILMath.fmt(snr,2)+'）<br>'+
+        '频谱效率 = log₂(1+'+ILMath.fmt(snr,2)+') = <b>'+ILMath.fmt(eff,4)+'</b> bit/s/Hz<br>'+
+        'C = B·log₂(1+S/N) = <b>'+(C>=1e6?ILMath.fmt(C/1e6,3)+' Mbps':ILMath.fmt(C/1e3,2)+' kbps')+'</b><br>'+
+        '<span style="color:#8592ab">'+(S<0?'功率受限区：C ≈ 1.4427·S/N₀，加带宽收益很小。':'带宽受限区：加带宽线性增益，加功率仅对数增益。')+'</span>';
+    });
+  }
+})();
+</script>
+</body>
+</html>
