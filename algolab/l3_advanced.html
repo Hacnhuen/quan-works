@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L3 专业 · 算法 | AlgoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Algo<span>Lab</span> · 算法</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html" class="on">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">L3 · Advanced</div>
+  <h1>专业：研究生级的算法武器库</h1>
+  <p>这一层进入 MIT 6.854（Advanced Algorithms）与 TAoCP 的领地：摊还分析看清单次操作的真实代价，字符串与高级数据结构处理海量文本，随机算法用巧合换效率，近似算法在 NPC 面前依然给出有界保证。对标研究生一年级。</p>
+  <div class="meta">
+    <i>摊还</i><i>字符串 KMP</i><i>并查集 O(α)</i><i>随机算法</i><i>近似</i><i>FFT</i><i>研究生</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#amort">01 · 摊还分析</a>
+  <a href="#string">02 · 字符串 KMP</a>
+  <a href="#ds">03 · 高级数据结构</a>
+  <a href="#rand">04 · 随机算法</a>
+  <a href="#approx">05 · 近似算法</a>
+  <a href="#fft">06 · FFT</a>
+  <a href="#geom">07 · 计算几何</a>
+  <a href="#quiz">08 · 自检</a>
+  <div class="grp"><h4>跳转</h4>
+    <a href="l2_theorems.html">← L2 完备</a>
+    <a href="l4_frontier.html">去 L4 前沿 →</a>
+    <a href="lab.html">交互实验室</a>
+  </div>
+</aside>
+<main>
+
+<section class="section" id="amort">
+  <h2><span class="num">01</span>摊还分析：把"贵操作"摊薄</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 三种方法</span>
+    <p><strong>聚合分析</strong>：总代价 / 操作数。<strong>记账法</strong>：给操作预收"信用"，贵操作花信用。<strong>势能法</strong>：定义势函数 Φ，摊还代价 = 实际 + ΔΦ，使坏状态的高代价被之前积累的势抵消。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 动态表（加倍）</span>
+    <p>数组满时倍增容量。插入 n 个元素：第 k 次加倍复制 2^{k-1} 个元素，总复制 ≤ 2n，故 n 次插入总 O(2n)，<strong>摊还 O(1)/次</strong>——尽管某次插入是 O(n)。势函数法：令 Φ = 2·(已用 − 容量/2)，可严格证得每次摊还 ≤ 3。</p>
+  </div>
+  <div class="el el-coro">
+    <span class="tag">推论</span>
+    <p>斐波那契堆借助摊还，使 Dijkstra 在稠密图上降到 O(E + V log V)；并查集的路径压缩也靠摊还（见下节）。</p>
+  </div>
+</section>
+
+<section class="section" id="string">
+  <h2><span class="num">02</span>字符串：KMP 与失配函数</h2>
+  <div class="el el-formula">
+    <span class="tag">公式 · 失配函数与匹配</span>
+    <div class="fml">π[i] = max{ k &lt; i : P[0..k-1] = P[i-k+1..i] }      （最长真前缀=后缀）
+匹配时文本指针 i 失配于 j+1：令 j = π[j]，重复直到匹配或 j=0</div>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · KMP 线性匹配（A10）</span>
+    <p>用模式 P（长 m）在文本 T（长 n）中匹配，预处理失配函数 π（π[i]=P[0..i] 的最长真前缀同时也是后缀的长度），使匹配过程 O(n+m)，无需回退文本指针。</p>
+  </div>
+  <div class="el el-proof">
+    <span class="tag">证明骨架</span>
+    <p>当 T[i]≠P[j+1]，由 π 直接把模式右移 j+1−π[j] 位，跳过已隐含匹配的部分；每步文本指针只进不退，故总比较 O(n+m)。π 自身在 O(m) 内自匹配算出。■</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>P="ABABAC"。π=[0,0,1,2,3,0]。文本 "ABABABAC" 中，第 6 位失配时由 π[4]=3 右移，避免回溯。后缀数组（L3/L4）是 KMP 在"全后缀排序"上的推广。</p>
+  </div>
+</section>
+
+<section class="section" id="ds">
+  <h2><span class="num">03</span>高级数据结构：并查集的近乎常数</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 并查集摊还 O(α(n))（A5）</span>
+    <p>对 n 个元素做"路径压缩 + 按秩合并"的并查集，m 次操作（含 find/union）总复杂度 O(m·α(n))，其中 α 是逆阿克曼函数——增长极慢，宇宙级 n 也 &lt; 5。</p>
+  </div>
+  <div class="el el-proof">
+    <span class="tag">证明骨架</span>
+    <p>按秩合并保证树高 O(log n)；路径压缩进一步压平。Tarjan 用"秩分层 + 势能"证明单次摊还不超 O(α(n))。α(n) = min{k : A_k(1) ≥ n}，A 为阿克曼函数。■</p>
+  </div>
+  <div class="el el-concept">
+    <span class="tag">概念 · 其它高级结构</span>
+    <p><strong>跳表</strong>：用随机多层链表实现有序集合，期望 O(log n) 查找/插入。<strong>持久化结构</strong>：保留所有历史版本（函数式编程/版本控制）。<strong>二项/斐波那契堆</strong>：摊还最优优先队列。</p>
+  </div>
+  <div class="note">
+    <b>实践提醒</b>
+    跳表因实现简单、并发友好，在 Redis 等系统中比红黑树更受青睐；理论复杂度和红黑树同阶，但常数与工程性更优。
+  </div>
+</section>
+
+<section class="section" id="rand">
+  <h2><span class="num">04</span>随机算法：让概率替你想</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 复杂度类</span>
+    <p><strong>RP</strong>：错误只在"否"时，多项式时间可重复降至任意小。<strong>ZPP</strong>：期望多项式时间的 Las Vegas（一定对）。<strong>BPP</strong>：双向错误概率小。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 快速选择期望线性</span>
+    <p>选第 k 小元素，随机选主元划分，期望比较次数 Θ(n)（比排序快，因为只排一侧）。最坏仍 O(n²)，但随机化使最坏概率可忽略。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · Miller-Rabin</span>
+    <p>素数判定：确定性对大数慢，Miller-Rabin 随机取底做费马式测试，错判合数概率每轮 ≤ 1/4，重复 40 轮后 &lt; 2⁻⁸⁰——密码学（RSA 密钥生成）基石。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>随机化贯穿 L4：流式草图（AMS/Count-Min）、局部敏感哈希（LSH）、以及"随机化在 P=NP 之外能否分离复杂度类"的理论问题。</p>
+  </div>
+</section>
+
+<section class="section" id="approx">
+  <h2><span class="num">05</span>近似算法：NPC 面前的体面退场</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 近似比</span>
+    <p>对最小化问题，若算法输出值 ALG ≤ ρ·OPT，则称 ρ-近似（ρ≥1）。APX = 存在常数近似比的问题类；PTAS = 对任意 ε 有 (1+ε)-近似（但时间可能随 1/ε 爆炸）；FPTAS = PTAS 且时间多项式于 1/ε。</p>
+  </div>
+  <div class="el el-theorem">
+    <span class="tag">定理 · 顶点覆盖 2-近似（A7）</span>
+    <p>贪心取边两端：每取一条未覆盖边 (u,v)，其代价 ≤ u、v 在任一最优解中的贡献之和，故 2·ALG ≥ OPT，即 2-近似。</p>
+  </div>
+  <div class="el el-coro">
+    <span class="tag">推论 · 集覆盖</span>
+    <p>贪心每轮选"覆盖最多未覆盖元素"的集合，得 H(n)-近似 ≈ ln n；这是对数近似的典型。而若 UGC 成立，集覆盖不能比 (1−o(1))ln n 更好（L4 PCP 硬度的后果）。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 度量 TSP</span>
+    <p>欧氏/三角不等式下：MST → 走两遍得 2-近似；再 shortcut 仍 ≤ 2·OPT。Arora 给出几何 TSP 的 PTAS（L4）。</p>
+  </div>
+</section>
+
+<section class="section" id="fft">
+  <h2><span class="num">06</span>FFT：把多项式乘法从 O(n²) 拽到 O(n log n)</h2>
+  <div class="el el-theorem">
+    <span class="tag">定理 · Cooley–Tukey（A6）</span>
+    <p>在 O(n log n) 内把 n 点 DFT（及多项式乘法）算出。多项式乘法：点值表示下乘法是 O(n)，故"系数→点值（FFT）→乘→系数（逆 FFT）"整体 O(n log n)，优于朴素 O(n²)。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例</span>
+    <p>大整数乘法（Karatsuba O(n^{1.585}) 之上，FFT 实现 O(n log n)）、卷积、信号处理、乃至 L4 分布式矩阵乘的基础。Strassen 矩阵乘 O(n^{2.81}) 是另一支"分治降次"。</p>
+  </div>
+</section>
+
+<section class="section" id="geom">
+  <h2><span class="num">07</span>计算几何选萃</h2>
+  <div class="el el-concept">
+    <span class="tag">概念 · 扫描线</span>
+    <p>平面问题（线段相交、最近点对、凸包）常用"扫描线 + 平衡 BST"在 O(n log n) 内解决。Graham 扫描求凸包 O(n log n)。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 最近点对</span>
+    <p>分治：按 x 中线分左右，递归得 d，再只查中线 ±d 带内按 y 排序的点对，O(n log n)。这正是 L1 提到的分治实例的严格版。</p>
+  </div>
+  <div class="el el-frontier">
+    <span class="tag">前沿</span>
+    <p>高维近似最近邻（ANN）用 LSH（见随机节）在亚线性时间近似求解，是向量检索/大模型检索的底层支撑（L4 学习）。</p>
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <h2><span class="num">08</span>自检</h2>
+  <div class="quiz">
+    <div class="qh">QUIZ</div>
+    <ol>
+      <li>动态表插入为什么摊还是 O(1)？三种摊还方法各叫什么？</li>
+      <li>KMP 的 π 数组是什么？匹配复杂度为什么是 O(n+m)？</li>
+      <li>并查集路径压缩 + 按秩合并的单次代价是什么量级？α(n) 是什么？</li>
+      <li>顶点覆盖的 2-近似怎么证？集覆盖的近似比是多少？</li>
+      <li>FFT 把多项式乘法从什么复杂度降到什么？</li>
+    </ol>
+    <details><summary>答案</summary><div class="dbody">
+      <p>1. 加倍复制总代价 ≤ 2n，摊均 O(1)。三法：聚合 / 记账 / 势能。</p>
+      <p>2. π[i]=P[0..i] 最长"真前缀=后缀"长。文本指针不回退 ⇒ O(n+m)。</p>
+      <p>3. 摊还 O(α(n))，α 是逆阿克曼函数（增长极慢）。</p>
+      <p>4. 每取边两端代价 ≤ 其在 OPT 的贡献和 ⇒ 2·ALG≥OPT。集覆盖 H(n)≈ln n 近似。</p>
+      <p>5. 从 O(n²) 降到 O(n log n)。</p>
+    </div></details>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l2_theorems.html"><span class="lb">← 上一站</span>L2 完备 · 可证的界</a>
+  <a class="nx" href="l4_frontier.html"><span class="lb">下一站 →</span>L4 前沿 · 博士/专家</a>
+</div>
+
+<footer class="foot">
+  <p>本页对标 MIT 6.854 Advanced Algorithms / Knuth TAoCP。定理 A5（并查集 O(α)）、A6（FFT）、A7（顶点覆盖 2-近似）、A10（KMP）均标注出处并由 verify 流水线核对近似比数值。</p>
+</footer>
+
+</main>
+</div>
+
+<script src="assets/core.js"></script>
+</body>
+</html>
