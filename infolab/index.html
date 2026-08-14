@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>InfoLab · 信息论深度学习馆</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html" class="on">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Information Theory · From Intuition to Mastery</div>
+  <h1>把「不确定」量出来<br>——信息论的五级阶梯</h1>
+  <p>本站以<strong>教育层级</strong>为主轴重建信息论：从中学生能懂的猜数游戏，到博士层的有限块长与大偏差，再到量子 Shannon 理论与机器学习交叉的前沿。每个知识点都按<em>概念 · 定理 · 证明 · 推论 · 公式 · 例题 · 前沿</em>七要素展开，并接受 AI-Science / AI-学术 / AI-费曼 三轨交叉检验。</p>
+  <div class="meta">
+    <i>5 级阶梯</i><i>30 条核心定理</i><i>64 条信源</i>
+    <i>MIT 6.441 · UESTC · Stanford EE376A 骨架</i>
+    <i>ITW 2025 前沿分类</i><i>可交互实验室</i>
+  </div>
+</header>
+
+<section class="section" id="map">
+  <h2><span class="num">MAP</span>知识图谱 · 非线性导航</h2>
+  <p class="lead">节点 = 知识点，颜色 = 层级，连线 = 依赖关系（箭头指向"由此推出"）。点击任一节点跳转到对应章节。</p>
+
+  <div class="kgwrap">
+    <div class="kg-legend">
+      <i><b style="background:#38bdf8"></b>L0 启蒙</i>
+      <i><b style="background:#34d399"></b>L1 基础</i>
+      <i><b style="background:#fbbf24"></b>L2 完备</i>
+      <i><b style="background:#f472b6"></b>L3 专业</i>
+      <i><b style="background:#a78bfa"></b>L4 前沿</i>
+      <i style="margin-left:auto;color:#8592ab">连线方向：下层 → 上层（依赖 → 推出）</i>
+    </div>
+    <svg viewBox="0 0 1000 560" role="img" aria-label="信息论知识图谱">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#3a4763"/>
+        </marker>
+      </defs>
+      <g stroke="#26304a" stroke-width="1.2" fill="none" marker-end="url(#ar)" opacity=".75">
+        <path d="M120,505 L120,435"/>
+        <path d="M120,505 L285,435"/>
+        <path d="M120,425 L120,355"/>
+        <path d="M285,425 L150,360"/>
+        <path d="M285,425 L285,355"/>
+        <path d="M450,425 L300,360"/>
+        <path d="M120,345 L120,275"/>
+        <path d="M285,345 L145,280"/>
+        <path d="M285,345 L285,275"/>
+        <path d="M285,345 L430,280"/>
+        <path d="M450,345 L455,275"/>
+        <path d="M615,345 L620,275"/>
+        <path d="M120,265 L130,195"/>
+        <path d="M285,265 L290,195"/>
+        <path d="M285,265 L440,195"/>
+        <path d="M450,265 L455,195"/>
+        <path d="M615,265 L620,195"/>
+        <path d="M780,345 L785,275"/>
+        <path d="M130,185 L150,120"/>
+        <path d="M290,185 L300,120"/>
+        <path d="M455,185 L460,120"/>
+        <path d="M620,185 L640,120"/>
+        <path d="M785,265 L790,120"/>
+      </g>
+
+      <!-- L0 -->
+      <g class="kg-node" onclick="location.href='l0_intuition.html#surprise'">
+        <circle cx="120" cy="520" r="24" fill="#0d1220" stroke="#38bdf8" stroke-width="2"/>
+        <text x="120" y="518">惊奇度</text><text x="120" y="529">−log p</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l0_intuition.html#bit'">
+        <circle cx="285" cy="520" r="24" fill="#0d1220" stroke="#38bdf8" stroke-width="2"/>
+        <text x="285" y="518">比特</text><text x="285" y="529">bit</text>
+      </g>
+
+      <!-- L1 -->
+      <g class="kg-node" onclick="location.href='l1_foundation.html#entropy'">
+        <circle cx="120" cy="410" r="26" fill="#0d1220" stroke="#34d399" stroke-width="2"/>
+        <text x="120" y="408">熵</text><text x="120" y="419">H(X)</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l1_foundation.html#kl'">
+        <circle cx="285" cy="410" r="26" fill="#0d1220" stroke="#34d399" stroke-width="2"/>
+        <text x="285" y="408">KL 散度</text><text x="285" y="419">D(p‖q)</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l1_foundation.html#kraft'">
+        <circle cx="450" cy="410" r="26" fill="#0d1220" stroke="#34d399" stroke-width="2"/>
+        <text x="450" y="408">Kraft</text><text x="450" y="419">不等式</text>
+      </g>
+
+      <!-- L1/L2 -->
+      <g class="kg-node" onclick="location.href='l1_foundation.html#mi'">
+        <circle cx="120" cy="330" r="26" fill="#0d1220" stroke="#34d399" stroke-width="2"/>
+        <text x="120" y="328">互信息</text><text x="120" y="339">I(X;Y)</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l1_foundation.html#dpi'">
+        <circle cx="285" cy="330" r="26" fill="#0d1220" stroke="#34d399" stroke-width="2"/>
+        <text x="285" y="328">数据处理</text><text x="285" y="339">不等式</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l1_foundation.html#huffman'">
+        <circle cx="450" cy="330" r="26" fill="#0d1220" stroke="#34d399" stroke-width="2"/>
+        <text x="450" y="332">Huffman</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l1_foundation.html#capacity'">
+        <circle cx="615" cy="330" r="26" fill="#0d1220" stroke="#34d399" stroke-width="2"/>
+        <text x="615" y="328">信道容量</text><text x="615" y="339">C</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l4_frontier.html#maxent'">
+        <circle cx="780" cy="330" r="26" fill="#0d1220" stroke="#fbbf24" stroke-width="2"/>
+        <text x="780" y="328">最大熵</text><text x="780" y="339">Jaynes</text>
+      </g>
+
+      <!-- L2 -->
+      <g class="kg-node" onclick="location.href='l2_theorems.html#aep'">
+        <circle cx="120" cy="250" r="26" fill="#0d1220" stroke="#fbbf24" stroke-width="2"/>
+        <text x="120" y="248">AEP</text><text x="120" y="259">典型集</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l2_theorems.html#fano'">
+        <circle cx="285" cy="250" r="26" fill="#0d1220" stroke="#fbbf24" stroke-width="2"/>
+        <text x="285" y="248">Fano</text><text x="285" y="259">不等式</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l2_theorems.html#src'">
+        <circle cx="450" cy="250" r="26" fill="#0d1220" stroke="#fbbf24" stroke-width="2"/>
+        <text x="450" y="248">第一定理</text><text x="450" y="259">信源编码</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l2_theorems.html#chn'">
+        <circle cx="615" cy="250" r="26" fill="#0d1220" stroke="#fbbf24" stroke-width="2"/>
+        <text x="615" y="248">第二定理</text><text x="615" y="259">信道编码</text>
+      </g>
+
+      <!-- L3 -->
+      <g class="kg-node" onclick="location.href='l3_advanced.html#rd'">
+        <circle cx="130" cy="170" r="26" fill="#0d1220" stroke="#f472b6" stroke-width="2"/>
+        <text x="130" y="168">第三定理</text><text x="130" y="179">率失真</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l3_advanced.html#largedev'">
+        <circle cx="290" cy="170" r="26" fill="#0d1220" stroke="#f472b6" stroke-width="2"/>
+        <text x="290" y="168">大偏差</text><text x="290" y="179">Sanov</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l3_advanced.html#finite'">
+        <circle cx="455" cy="170" r="26" fill="#0d1220" stroke="#f472b6" stroke-width="2"/>
+        <text x="455" y="168">有限块长</text><text x="455" y="179">色散 V</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l3_advanced.html#network'">
+        <circle cx="620" cy="170" r="26" fill="#0d1220" stroke="#f472b6" stroke-width="2"/>
+        <text x="620" y="168">网络</text><text x="620" y="179">MAC/BC</text>
+      </g>
+
+      <!-- L4 -->
+      <g class="kg-node" onclick="location.href='l4_frontier.html#quantum'">
+        <circle cx="150" cy="90" r="26" fill="#0d1220" stroke="#a78bfa" stroke-width="2"/>
+        <text x="150" y="88">量子</text><text x="150" y="99">Holevo</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l4_frontier.html#ait'">
+        <circle cx="300" cy="90" r="26" fill="#0d1220" stroke="#a78bfa" stroke-width="2"/>
+        <text x="300" y="88">算法信息</text><text x="300" y="99">K(x)</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l4_frontier.html#ib'">
+        <circle cx="460" cy="90" r="26" fill="#0d1220" stroke="#a78bfa" stroke-width="2"/>
+        <text x="460" y="88">信息瓶颈</text><text x="460" y="99">IB</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l4_frontier.html#llm'">
+        <circle cx="640" cy="90" r="26" fill="#0d1220" stroke="#a78bfa" stroke-width="2"/>
+        <text x="640" y="88">大模型</text><text x="640" y="99">交叉熵</text>
+      </g>
+      <g class="kg-node" onclick="location.href='l4_frontier.html#physics'">
+        <circle cx="790" cy="90" r="26" fill="#0d1220" stroke="#a78bfa" stroke-width="2"/>
+        <text x="790" y="88">物理</text><text x="790" y="99">Landauer</text>
+      </g>
+    </svg>
+  </div>
+  <p class="src">图谱骨架依据：MIT 6.441 六大模块 · UESTC 六章大纲 · Cover &amp; Thomas 章序 · ITW 2025 前沿分类。</p>
+</section>
+
+<section class="section" id="ladder">
+  <h2><span class="num">L0–L4</span>五级阶梯 · 主线路径</h2>
+  <p class="lead">每一级都自成闭环：读得懂、算得出、证得了、用得上。建议顺序推进，也可由知识图谱任意切入。</p>
+
+  <div class="ladder">
+    <a class="step" href="l0_intuition.html">
+      <div class="lvbox" style="color:#38bdf8">L0</div>
+      <div>
+        <h3>启蒙 · 什么是信息 <span class="lv lv0">中学 / 通识</span></h3>
+        <p>不用一个积分符号，把「信息量」讲清楚。猜数游戏、20 问、称球问题，从"消除多少不确定"出发，自然导出 −log p 与 bit。</p>
+        <div class="m"><span>门槛：对数 + 概率初步</span><span>核心：惊奇度 · 比特 · 平均</span><span>产出：会估算信息量</span></div>
+      </div>
+    </a>
+    <a class="step" href="l1_foundation.html">
+      <div class="lvbox" style="color:#34d399">L1</div>
+      <div>
+        <h3>基础 · 三大度量与四性框架 <span class="lv lv1">本科</span></h3>
+        <p>熵、KL 散度、互信息的严格定义与性质；Kraft 不等式与 Huffman 最优码；信道容量的定义与 BSC/BEC/高斯三大信道。中文教学体系的"有效性—可靠性—保密性—认证性"四性主线。</p>
+        <div class="m"><span>门槛：离散概率 · Jensen</span><span>核心：H · D · I · C</span><span>产出：能手算编码与容量</span></div>
+      </div>
+    </a>
+    <a class="step" href="l2_theorems.html">
+      <div class="lvbox" style="color:#fbbf24">L2</div>
+      <div>
+        <h3>完备 · 三大定理与证明骨架 <span class="lv lv2">研究生</span></h3>
+        <p>AEP 与典型集为什么是一切的钥匙；Fano 不等式如何撑起所有逆定理；随机编码 + 联合典型性译码如何证明第二定理的可达性。正定理与逆定理成对呈现。</p>
+        <div class="m"><span>门槛：大数定律 · 典型集</span><span>核心：AEP · Fano · 随机编码</span><span>产出：能复述证明骨架</span></div>
+      </div>
+    </a>
+    <a class="step" href="l3_advanced.html">
+      <div class="lvbox" style="color:#f472b6">L3</div>
+      <div>
+        <h3>专业 · 现代信息论 <span class="lv lv3">博士</span></h3>
+        <p>率失真与失真—速率对偶；大偏差、Sanov 定理与 I-投影；有限块长下的信道色散 V 与正规逼近；网络信息论的容量区域（MAC / BC / Slepian–Wolf / Gelfand–Pinsker）。</p>
+        <div class="m"><span>门槛：测度 · 凸分析 · 大偏差</span><span>核心：R(D) · V · 容量区域</span><span>产出：能读懂 ISIT 论文</span></div>
+      </div>
+    </a>
+    <a class="step" href="l4_frontier.html">
+      <div class="lvbox" style="color:#a78bfa">L4</div>
+      <div>
+        <h3>前沿 · 交叉 · 开放问题 <span class="lv lv4">专家 / 大师</span></h3>
+        <p>量子 Shannon 理论与 Holevo 界；算法信息论与不可计算性；最大熵与统计力学；信息瓶颈及其争议；大模型中的交叉熵/KL/困惑度；Landauer 原理与信息的物理性。附开放问题清单与可检验预测。</p>
+        <div class="m"><span>门槛：泛函 · 算子 · 统计学习</span><span>核心：S(ρ) · K(x) · IB · 6G</span><span>产出：能定位研究缺口</span></div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="section" id="entry">
+  <h2><span class="num">GO</span>三个横向入口</h2>
+  <div class="grid g3">
+    <a class="card" href="lab.html" style="text-decoration:none">
+      <h3 style="margin-top:0">🧪 交互实验室</h3>
+      <p style="color:var(--ink-3);font-size:14px;margin-bottom:0">熵曲线、BSC/BEC 容量、Shannon 公式、Huffman 构树、率失真曲线、典型集模拟、信息瓶颈平面——全部可拖动参数实时重算。</p>
+    </a>
+    <a class="card" href="method.html" style="text-decoration:none">
+      <h3 style="margin-top:0">🔁 学习方法论</h3>
+      <p style="color:var(--ink-3);font-size:14px;margin-bottom:0">流程化（六步循环）、可视化（五类图式）、深广化（螺旋上升）。含费曼卡模板、Bloom 梯度练习、间隔重复排程。</p>
+    </a>
+    <a class="card" href="verify.html" style="text-decoration:none">
+      <h3 style="margin-top:0">🛡 AI 交叉检验</h3>
+      <p style="color:var(--ink-3);font-size:14px;margin-bottom:0">AI-Science 严谨性 / AI-学术 出处 / AI-费曼 可解释性三轨检验的判据、全站检验结果矩阵，以及可复跑的检验流水线。</p>
+    </a>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <h2><span class="num">USE</span>怎么用这个站</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h4 style="margin-top:0">四条推荐路径</h4>
+      <table>
+        <tr><th>你是谁</th><th>建议路径</th></tr>
+        <tr><td>中学生 / 完全零基础</td><td>L0 全部 → 实验室「熵曲线」→ L1 前半</td></tr>
+        <tr><td>本科生（通信 / CS）</td><td>L1 全部 → 实验室 → L2 定理陈述（先跳证明）</td></tr>
+        <tr><td>研究生 / 面试备考</td><td>L2 全部（含证明）→ L3 率失真与有限块长</td></tr>
+        <tr><td>研究者 / AI 从业者</td><td>L3 → L4，重点看信息瓶颈争议与 LLM 一节</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">七要素阅读法</h4>
+      <p style="font-size:14.5px">每个知识点固定按七个色带块展开，你可以只挑需要的读：</p>
+      <div class="el el-concept"><span class="tag">Concept 概念</span>直觉 + 严格定义</div>
+      <div class="el el-theorem"><span class="tag">Theorem 定理</span>陈述 + 条件 + 归属</div>
+      <div class="el el-proof"><span class="tag">Proof 证明</span>骨架或完整推导</div>
+      <div class="el el-coro"><span class="tag">Corollary 推论</span>直接导出的结论</div>
+      <div class="el el-formula"><span class="tag">Formula 公式</span>可计算表达式</div>
+      <div class="el el-example"><span class="tag">Example 例题</span>数值算例</div>
+      <div class="el el-frontier"><span class="tag">Frontier 前沿</span>该点的开放方向</div>
+    </div>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="method.html"><span class="lb">先看方法</span>学习方法论 · 怎么学才有效</a>
+  <a class="nx" href="l0_intuition.html"><span class="lb">开始 →</span>L0 启蒙 · 什么是信息</a>
+</div>
+
+<footer class="foot">
+  <p><strong>InfoLab · 信息论深度学习馆</strong> — 五级阶梯 · 30 条核心定理 · 64 条信源 · 三轨 AI 交叉检验。</p>
+  <p>课程骨架：MIT 6.441 (Polyanskiy) · UESTC 0108106006 · Stanford EE376A｜教材基准：Cover &amp; Thomas 2nd ed.｜前沿分类：IEEE ITW 2025。</p>
+</footer>
+
+</div>
+<script src="assets/core.js"></script>
+</body>
+</html>
