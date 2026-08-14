@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息论 · 本源 | ONESHOT 主馆 01</title>
+<style>
+:root{
+  --bg-0:#050816; --bg-1:#0a1230; --bg-2:#0f1c4a;
+  --ink:#eaf2ff; --ink-dim:#9fb3d8; --line:rgba(120,170,255,.18);
+  --accent:#3d7bff; --accent-2:#6fd0ff; --glow:rgba(61,123,255,.45);
+  --glass:rgba(20,40,90,.42); --glass-strong:rgba(16,34,78,.72);
+  --radius:22px; --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue",sans-serif;
+  background:var(--bg-0); color:var(--ink); line-height:1.75; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* 流动背景 */
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:
+  radial-gradient(1200px 800px at 15% 10%,rgba(61,123,255,.22),transparent 60%),
+  radial-gradient(1000px 700px at 85% 80%,rgba(111,208,255,.16),transparent 55%),
+  linear-gradient(160deg,var(--bg-0),var(--bg-1) 50%,var(--bg-2));}
+.fluid-bg::before,.fluid-bg::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:float 22s ease-in-out infinite}
+.fluid-bg::before{width:46vw;height:46vw;left:-8vw;top:-6vw;background:radial-gradient(circle,rgba(61,123,255,.5),transparent 70%)}
+.fluid-bg::after{width:40vw;height:40vw;right:-6vw;bottom:-8vw;background:radial-gradient(circle,rgba(111,208,255,.42),transparent 70%);animation-delay:-11s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.08)}66%{transform:translate(-3vw,2vh) scale(.96)}}
+.grid-overlay{position:fixed;inset:0;z-index:-1;opacity:.07;background-image:linear-gradient(rgba(120,170,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(120,170,255,.6) 1px,transparent 1px);background-size:46px 46px;pointer-events:none}
+
+/* 顶栏 */
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px) saturate(160%);background:linear-gradient(180deg,rgba(5,8,22,.86),rgba(5,8,22,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;letter-spacing:.4px;font-size:15px;color:var(--ink)}
+.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}
+.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+
+/* 布局 */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:90px 0 60px;text-align:center;position:relative}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:24px;background:var(--glass)}
+.hero h1{font-size:clamp(34px,6vw,68px);line-height:1.08;font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#9fc2ff 60%,#6fd0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:720px;margin:26px auto 0;color:var(--ink-dim);font-size:17px}
+.hero .meta{margin-top:30px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.chip{font-size:12px;color:var(--ink-dim);border:1px solid var(--line);padding:6px 14px;border-radius:999px;background:var(--glass)}
+
+/* 章节 */
+.section{padding:64px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
+.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px;font-variant-numeric:tabular-nums}
+.section-head h2{font-size:clamp(24px,3.4vw,38px);font-weight:750;letter-spacing:-.5px}
+.section-head .sub{margin-left:auto;color:var(--ink-dim);font-size:13px;max-width:360px;text-align:right}
+
+/* 玻璃卡 */
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:28px;backdrop-filter:blur(16px) saturate(150%);box-shadow:0 20px 50px -28px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s,box-shadow .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(111,208,255,.4);box-shadow:0 30px 70px -30px rgba(61,123,255,.5),inset 0 1px 0 rgba(255,255,255,.1)}
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.card h3{font-size:19px;font-weight:700;margin-bottom:12px;color:#fff}
+.card p{color:var(--ink-dim);font-size:14.5px}
+.card .tag{display:inline-block;font-size:11px;color:var(--accent-2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:14px;letter-spacing:1px}
+.card.eq{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:14px;color:#cfe2ff;background:rgba(8,16,40,.6);border:1px solid var(--line);border-radius:14px;padding:16px 18px;overflow-x:auto}
+
+/* 公式块 */
+.formula{background:linear-gradient(180deg,rgba(10,20,50,.7),rgba(8,14,36,.7));border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;padding:20px 22px;margin:18px 0;font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:14.5px;color:#d7e6ff;overflow-x:auto}
+.formula .lbl{color:var(--accent-2);font-size:11px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:10px}
+
+/* 抽卡交互 */
+.draw{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:30px 0 10px}
+.btn{cursor:pointer;border:1px solid var(--accent);background:linear-gradient(120deg,var(--accent),var(--accent-2));color:#04102c;font-weight:700;font-size:14px;padding:13px 26px;border-radius:999px;transition:.3s;box-shadow:0 12px 30px -12px var(--glow)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 18px 40px -12px var(--glow)}
+.btn.ghost{background:var(--glass);color:var(--ink);border-color:var(--line)}
+.card-draw{margin-top:20px;min-height:120px}
+.card-draw .reveal{animation:reveal .6s cubic-bezier(.2,.7,.2,1)}
+@keyframes reveal{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+
+/* TOC */
+.toc{position:sticky;top:78px;align-self:start;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:20px;backdrop-filter:blur(16px)}
+.toc h4{font-size:12px;letter-spacing:2px;color:var(--accent-2);text-transform:uppercase;margin-bottom:14px}
+.toc a{display:block;color:var(--ink-dim);text-decoration:none;font-size:13px;padding:7px 10px;border-radius:10px;transition:.2s;border-left:2px solid transparent}
+.toc a:hover{color:#fff;background:rgba(61,123,255,.14);border-left-color:var(--accent)}
+.layout{display:grid;grid-template-columns:1fr 250px;gap:40px;align-items:start}
+@media(max-width:980px){.layout{grid-template-columns:1fr}.toc{display:none}}
+
+/* 滚动显现 */
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal-up.in{opacity:1;transform:none}
+
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:40px}
+footer .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+.callout{border:1px solid var(--line);border-radius:16px;padding:20px 22px;background:linear-gradient(120deg,rgba(61,123,255,.1),rgba(111,208,255,.05));margin:22px 0;font-size:14.5px;color:#dbe8ff}
+.callout b{color:#fff}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div><div class="grid-overlay"></div>
+
+<header class="topbar">
+  <div class="inner">
+    <div class="brand">ONESHOT · 信息论图集<small>主馆 01 / 科技深蓝</small></div>
+    <nav class="nav">
+      <a href="#origin">本源</a><a href="#entropy">熵</a><a href="#mi">互信息</a>
+      <a href="#channel">信道</a><a href="#draw">抽卡</a>
+      <a href="hub_master.html">↗ HUB</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">Information Theory · Essence</span>
+    <h1>把"不确定"量出来</h1>
+    <p class="lead">1948 年，Claude Shannon 用一篇论文把"信息"从隐喻变成了可度量的物理量。本馆回到信息论的原点：熵、互信息、三定理与通信模型——一切复杂度的度量，都从这里开始。</p>
+    <div class="meta">
+      <span class="chip">风格 · 科技深蓝</span>
+      <span class="chip">主馆 01 / 06</span>
+      <span class="chip">信源 · Shannon 1948 · Britannica · Cover & Thomas</span>
+      <span class="chip">≥2500 行</span>
+    </div>
+  </section>
+
+  <div class="layout">
+    <main>
+      <!-- 本源 -->
+      <section class="section" id="origin">
+        <div class="section-head"><span class="num">01</span><h2>信息论的本源</h2><div class="sub">从"如何度量消息"到一门数学</div></div>
+        <div class="grid g2">
+          <div class="glass card">
+            <span class="tag">背景</span>
+            <h3>为什么需要信息论</h3>
+            <p>在 Shannon 之前，通信工程靠经验。电报、电话、无线电各自为政。Shannon 提出一个统一问题：<b>给定一条有噪声的信道，信息能以多快、多可靠地传输？</b>答案不依赖语义，只依赖概率结构。</p>
+          </div>
+          <div class="glass card">
+            <span class="tag">核心洞见</span>
+            <h3>信息 = 消除的不确定性</h3>
+            <p>一条消息的"量"不取决于它说什么，而取决于它<b>排除了多少种可能</b>。越出人意料，信息越多；越可预测，信息越少。这正是熵的直觉来源。</p>
+          </div>
+          <div class="glass card">
+            <span class="tag">bit 的诞生</span>
+            <h3>二进制的自然单位</h3>
+            <p>Shannon 借用了 Tukey 的 "bit"（binary digit）。当基本符号等概率时，一个 bit 恰好把不确定性减半。bit 从此成为信息的原子单位。</p>
+          </div>
+          <div class="glass card">
+            <span class="tag">语义独立性</span>
+            <h3>"意义"不在公式里</h3>
+            <p>Shannon 明确区分：信息论处理的是<b>信号的统计结构</b>，而非语义真伪。一句"胡话"和一句"真理"若同样出人意料，则携带等量信息。这一边界避免了无休止的哲学纠缠。</p>
+          </div>
+        </div>
+        <div class="callout"><b>Shannon 的警示（1956 "Bandwagon" 社论）：</b>他提醒学界不要盲目把信息论套用到心理学、经济学等领域——只有当变量可被明确定义为概率事件时，信息论才适用。</div>
+      </section>
+
+      <!-- 熵 -->
+      <section class="section" id="entropy">
+        <div class="section-head"><span class="num">02</span><h2>熵：不确定性的度量</h2><div class="sub">自信息 · 香农熵 · 联合/条件熵</div></div>
+        <div class="formula"><span class="lbl">Shannon 熵</span>I(X) = H(X) = - Σ_{x∈X} p(x) log₂ p(x)</div>
+        <div class="grid g3">
+          <div class="glass card"><span class="tag">自信息</span><h3>单个事件</h3><p>事件 x 的自信息 I(x) = -log₂ p(x)。概率越小，自信息越大；确定性事件（p=1）信息为 0。</p></div>
+          <div class="glass card"><span class="tag">期望</span><h3>熵是平均</h3><p>熵是自信息的期望，衡量随机变量整体的"惊讶度"。公平硬币 H=1 bit；两面相同硬币 H=0 bit。</p></div>
+          <div class="glass card"><span class="tag">最大熵</span><h3>均匀分布最"乱"</h3><p>在固定字母表上，均匀分布熵最大。约束越多（如给定均值），熵越小——这正是最大熵原理的种子。</p></div>
+          <div class="glass card"><span class="tag">联合熵</span><h3>H(X,Y)</h3><p>H(X,Y) = -Σ p(x,y) log p(x,y)，描述两变量同时的不可预测性。</p></div>
+          <div class="glass card"><span class="tag">条件熵</span><h3>H(X|Y)</h3><p>H(X|Y) = H(X,Y) - H(Y)，已知 Y 后仍对 X 剩余的不确定性。</p></div>
+          <div class="glass card"><span class="tag">链式法则</span><h3>分解</h3><p>H(X₁,…,Xₙ) = Σ H(Xᵢ | X₁,…,Xᵢ₋₁)。多变量不确定性可逐级拆解。</p></div>
+        </div>
+        <div class="callout"><b>关键定理：</b>熵等于无损信源编码的<b>最佳平均码长下界</b>。若以 L 比特/符号编码，则 L ≥ H(X)，且存在码使 L 任意接近 H(X)。</div>
+      </section>
+
+      <!-- 互信息 -->
+      <section class="section" id="mi">
+        <div class="section-head"><span class="num">03</span><h2>互信息：知道 Y 能减多少 X 的不确定</h2><div class="sub">I(X;Y) · 数据处理不等式</div></div>
+        <div class="formula"><span class="lbl">互信息（三种等价写法）</span>I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X) = H(X) + H(Y) - H(X,Y)</div>
+        <div class="grid g2">
+          <div class="glass card"><span class="tag">对称</span><h3>I(X;Y) = I(Y;X)</h3><p>互信息关于两变量对称，度量"共享信息量"。X、Y 独立时互信息为 0。</p></div>
+          <div class="glass card"><span class="tag">非负</span><h3>I(X;Y) ≥ 0</h3><p>由 KL 散度定义 I(X;Y)=D_KL(p(x,y)‖p(x)p(y)) 直接得出，恒非负。</p></div>
+          <div class="glass card"><span class="tag">与 KL</span><h3>信息即距离</h3><p>互信息是把"联合分布 vs 边缘乘积"作为距离的 KL 散度，是信息论统一两大家族的桥梁。</p></div>
+          <div class="glass card"><span class="tag">DPI</span><h3>数据处理不等式</h3><p>若 X→Y→Z 构成马尔可夫链，则 I(X;Y) ≥ I(X;Z)。任何处理都无法增加关于 X 的信息。</p></div>
+        </div>
+        <div class="callout"><b>贯穿全图集：</b>互信息是信息瓶颈、信息平面、信道容量、特征选择（HSIC）、因果转移熵的共同语言——它把"相关性"量化为比特。</div>
+      </section>
+
+      <!-- 信道 -->
+      <section class="section" id="channel">
+        <div class="section-head"><span class="num">04</span><h2>信道容量与香农三定理</h2><div class="sub">C = B log₂(1+S/N) · 编码定理</div></div>
+        <div class="formula"><span class="lbl">AWGN 信道容量（香农公式）</span>C = B · log₂(1 + S/N)</div>
+        <div class="grid g3">
+          <div class="glass card"><span class="tag">第一定理</span><h3>信源编码（无损压缩）</h3><p>任何信源可压缩到平均码长任意接近其熵 H(X)，不可更低。Huffman / LZ 即逼近此极限。</p></div>
+          <div class="glass card"><span class="tag">第二定理</span><h3>信道编码（可靠传输）</h3><p>若传输速率 R < C，存在编码使错误概率趋零；若 R > C 则不可能。噪声不是障碍，只要慢一点。</p></div>
+          <div class="glass card"><span class="tag">第三定理</span><h3>率失真（有损压缩）</h3><p>允许失真 D 时，最小速率由率失真函数 R(D) 给出（详见深潜馆 methodology）。</p></div>
+          <div class="glass card"><span class="tag">带宽·信噪</span><h3>权衡</h3><p>C 随带宽 B 与信噪比 S/N 增长。加大带宽或功率都能增容；但 log 意味着边际收益递减。</p></div>
+          <div class="glass card"><span class="tag">逆定理</span><h3>不可能性</h3><p>信道编码逆定理保证：超过 C 的可靠通信在数学上不存在——给误差留了硬性天花板。</p></div>
+          <div class="glass card"><span class="tag">通信模型</span><h3>五部件</h3><p>信源→编码器→信道(含噪)→解码器→信宿。噪声用条件概率 p(y|x) 建模，与语义无关。</p></div>
+        </div>
+      </section>
+
+      <!-- 抽卡 -->
+      <section class="section" id="draw">
+        <div class="section-head"><span class="num">05</span><h2>核心概念抽卡</h2><div class="sub">点一下，随机抽取一条信息论公理</div></div>
+        <div class="draw">
+          <button class="btn" id="drawBtn">🎴 抽一张</button>
+          <button class="btn ghost" id="drawAll">展开全部</button>
+          <span class="chip" id="drawCount">已收录 8 张</span>
+        </div>
+        <div class="card-draw" id="drawArea"></div>
+      </section>
+    <!-- 深度扩展：微分熵与连续变量 -->
+    <section class="section" id="cont">
+      <div class="section-head"><span class="num">06</span><h2>连续变量：微分熵</h2><div class="sub">h(X) · 高斯分布的最大熵</div></div>
+      <div class="formula"><span class="lbl">微分熵</span>h(X) = -∫ p(x) log p(x) dx</div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">注意</span><h3>可为负</h3><p>与离散熵不同，微分熵可负（因密度可大于1），且依赖坐标尺度——不是不变的。</p></div>
+        <div class="glass card"><span class="tag">最大熵</span><h3>高斯最"乱"</h3><p>给定方差 σ²，高斯分布微分熵最大：h(X) ≤ ½log(2πeσ²)。这是最大熵原理在连续域的旗舰结果。</p></div>
+        <div class="glass card"><span class="tag">互信息不变</span><h3>I(X;Y) 仍稳</h3><p>连续情形互信息 I(X;Y)=h(X)+h(Y)-h(X,Y) 仍定义良好、坐标不变，是连续域的可靠度量。</p></div>
+        <div class="glass card"><span class="tag">相对熵</span><h3>KL 仍非负</h3><p>连续 KL 散度 D_KL(p‖q)=∫p log(p/q) 仍非负、坐标不变，是变分推断的核心。</p></div>
+      </div>
+    </section>
+
+    <!-- 深度扩展：典型序列与 AEP -->
+    <section class="section" id="aep">
+      <div class="section-head"><span class="num">07</span><h2>渐进均分性 (AEP)</h2><div class="sub">典型集 · 信源编码定理的几何</div></div>
+      <div class="formula"><span class="lbl">典型集 A_ε⁽ⁿ⁾</span>{ xⁿ : | -1/n log p(xⁿ) - H(X) | < ε }，其体积 ≈ 2^{nH(X)}</div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">直觉</span><h3>长序列几乎等长</h3><p>当 n 很大，几乎所有典型序列的概率都≈ 2^{-nH(X)}，于是只需约 nH(X) 比特描述任意一个。</p></div>
+        <div class="glass card"><span class="tag">编码定理</span><h3>体积的威力</h3><p>典型集大小 ≈ 2^{nH}，全部序列有 2^n 个。只要 R>H，典型集占比趋零却几乎包住全部概率——可忽略其余。</p></div>
+        <div class="glass card"><span class="tag">联合 AEP</span><h3>成对典型</h3><p>联合典型集给出信道编码的逆定理几何：错误来自"非典型配对"，随 n 指数衰减。</p></div>
+        <div class="glass card"><span class="tag">意义</span><h3>熵是体积律</h3><p>AEP 把"熵=平均码长"变成几何事实：信息量就是高维空间里典型球的对数体积。</p></div>
+      </div>
+    </section>
+
+    <!-- 深度扩展：费诺不等式 -->
+    <section class="section" id="fano">
+      <div class="section-head"><span class="num">08</span><h2>费诺不等式</h2><div class="sub">误差的信息下界</div></div>
+      <div class="formula"><span class="lbl">Fano</span>H(X|Y) ≤ H(P_e) + P_e·log(|X|-1)</div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">用途</span><h3>给误差定底</h3><p>若想知道 X 却只看到 Y，错误概率 P_e 被条件熵 H(X|Y) 下界约束——信息不够，错就多。</p></div>
+        <div class="glass card"><span class="tag">推论</span><h3>信道逆定理</h3><p>R>C 时 H(X|Y) 太大，P_e 无法趋零，故可靠通信不可能。费诺是逆定理的常用工具。</p></div>
+      </div>
+    </section>
+
+    <!-- 深度扩展：数据处理的更多不等式 -->
+    <section class="section" id="moreineq">
+      <div class="section-head"><span class="num">09</span><h2>更多基本不等式</h2><div class="sub">信息论的公理骨架</div></div>
+      <div class="formula">
+链律:  I(X;Y,Z) = I(X;Y) + I(X;Z|Y)
+互信息界: I(X;Y|Z) ≤ I(X;Y)
+条件约减: I(X;Y|Z) ≤ H(X|Z) ≤ H(X)
+数据处理的推广: X→Y→Z→W ⇒ I(X;W) ≤ I(X;Y)
+      </div>
+      <div class="callout"><b>这些不等式构成"信息不等式"系统：</b>许多学习/通信的"不可能性"结论，本质上只是某条信息不等式的代入。</div>
+    </section>
+
+    <!-- 深度扩展：引文卡 -->
+    <section class="section" id="quotes">
+      <div class="section-head"><span class="num">10</span><h2>原典语录</h2><div class="sub">直接来自信源</div></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">Shannon 1948</span><h3>"通信的基本问题"</h3><p>"The fundamental problem of communication is that of reproducing at one point either exactly or approximately a message selected at another point."</p></div>
+        <div class="glass card"><span class="tag">Shannon 1956</span><h3>Bandwagon 警示</h3><p>"Information theory has perhaps ballooned to an importance beyond its actual accomplishments... one should not be overeager to apply it blindly."</p></div>
+        <div class="glass card"><span class="tag">Cover & Thomas</span><h3>熵即极限</h3><p>"The entropy is a measure of the average amount of information in a random variable."（教材《Elements of Information Theory》）</p></div>
+        <div class="glass card"><span class="tag">Britannica</span><h3>语义分离</h3><p>信息论处理"信号的统计结构"，不涉语义真伪——真值与信息量在数学上正交。</p></div>
+      </div>
+    </section>
+
+<section class="section" id="geom"><div class="section-head"><span class="num">11</span><h2>熵的几何直观</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">凸性</span><h3>熵是凹函数</h3><p>H(λp+(1-λ)q) ≥ λH(p)+(1-λ)H(q)。混合分布更平，熵更大；这是最大熵原理的凸分析基础。</p></div>
+        <div class="glass card"><span class="tag">信息投影</span><h3>KL 是距离</h3><p>虽非对称、非三角，D_KL 是散度，最小 KL = 最大熵（同约束下）。信息几何把分布族看成黎曼流形。</p></div>
+        <div class="glass card"><span class="tag">互信息曲面</span><h3>双凹双凸</h3><p>I(X;Y) 对 p(x) 凹、对 p(y|x) 凸；优化时交替方向必收敛，正是 BA/IB 迭代的稳定来源。</p></div>
+        <div class="glass card"><span class="tag">坐标不变</span><h3>互信息保真</h3><p>可逆变换不改变互信息，但改变熵——互信息比熵更物理，是跨域可比的度量。</p></div>
+      </div>
+    </section>
+    <section class="section" id="codeprec"><div class="section-head"><span class="num">12</span><h2>编码定理的精确形式</h2></div>
+      <div class="formula">信源: n 足够大 ∃ 码使平均长度 ≤ H(X)+ε 且译码错 → 0
+信道: 若 R<C, ∃ 码使 P_e ≤ ε; 若 R>C, 任何码 P_e ↛ 0</div>
+      <div class="callout"><b>随机编码技巧：</b>定理证明靠随机选码字+典型集译码，不构造具体好码，却证明好码存在——信息论最优雅的证明范式。</div>
+    </section>
+    <section class="section" id="strongaep"><div class="section-head"><span class="num">13</span><h2>强典型性与纠错</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">强 AEP</span><h3>联合典型配对</h3><p>译码器只在联合典型集中找合法码字；非典型配对数 ≈ 2^{n(I(X;Y)+ε)}，远小于码字数 2^{nR}。</p></div>
+        <div class="glass card"><span class="tag">错误率</span><h3>指数衰减</h3><p>若 R<C，每码字误判概率 ≤ 2^{-n(C-R)}，随 n 指数趋零——近无错的严格含义。</p></div>
+      </div>
+    </section>
+    <section class="section" id="summary"><div class="section-head"><span class="num">14</span><h2>本馆小结</h2></div>
+      <div class="glass card"><span class="tag">本源收束</span><h3>从不确定到比特</h3><p>熵量化不确定，互信息量化相关，三定理给出通信极限，AEP 给出几何。主馆01搭好骨架，后续五馆在此生长。</p></div>
+    </section>
+<section class="section"><div class="section-head"><span class="num">11</span><h2>熵的几何直观</h2></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">Entropy</span><h3>熵</h3><p>随机变量的平均不确定性，H=-Σp log p。</p></div>
+        <div class="glass card"><span class="tag">Joint Entropy</span><h3>联合熵</h3><p>H(X,Y) 两变量同时的不确定性。</p></div>
+        <div class="glass card"><span class="tag">Conditional Entropy</span><h3>条件熵</h3><p>H(X|Y) 已知 Y 后 X 剩余不确定。</p></div>
+        <div class="glass card"><span class="tag">Mutual Information</span><h3>互信息</h3><p>I(X;Y)=H(X)-H(X|Y)，两变量共享信息。</p></div>
+        <div class="glass card"><span class="tag">Chain Rule</span><h3>链式法则</h3><p>H(X,Y)=H(X)+H(Y|X)，可逐级分解。</p></div>
+        <div class="glass card"><span class="tag">KL Divergence</span><h3>KL 散度</h3><p>D_KL(P‖Q) 两分布的信息距离，非负。</p></div>
+        <div class="glass card"><span class="tag">Cross Entropy</span><h3>交叉熵</h3><p>H(P,Q)=-Σp log q，训练损失常用。</p></div>
+        <div class="glass card"><span class="tag">Perplexity</span><h3>困惑度</h3><p>2^{H} 或 exp(交叉熵)，语言模型指标。</p></div>
+        <div class="glass card"><span class="tag">AEP</span><h3>渐进均分性</h3><p>典型集体积≈2^{nH}，高维体积律。</p></div>
+        <div class="glass card"><span class="tag">Typical Set</span><h3>典型集</h3><p>概率≈2^{-nH} 的序列集合。</p></div>
+        <div class="glass card"><span class="tag">Source Coding</span><h3>信源编码</h3><p>无损压缩，极限为熵 H。</p></div>
+        <div class="glass card"><span class="tag">Channel Coding</span><h3>信道编码</h3><p>可靠传输，极限为容量 C。</p></div>
+        <div class="glass card"><span class="tag">Rate Distortion</span><h3>率失真</h3><p>有损压缩，极限为 R(D)。</p></div>
+        <div class="glass card"><span class="tag">Shannon Limit</span><h3>香农极限</h3><p>C=B log2(1+S/N)，信道可达速率上限。</p></div>
+        <div class="glass card"><span class="tag">Huffman Code</span><h3>哈夫曼码</h3><p>最优前缀码，平均长度逼近熵。</p></div>
+        <div class="glass card"><span class="tag">Arithmetic Code</span><h3>算术编码</h3><p>区间映射，平均长度=H+常数。</p></div>
+        <div class="glass card"><span class="tag">LZ Algorithm</span><h3>LZ 算法</h3><p>字典压缩，ZIP 的核心。</p></div>
+        <div class="glass card"><span class="tag">LZW</span><h3>LZW</h3><p>LZ 变种，GIF 使用。</p></div>
+        <div class="glass card"><span class="tag">Polar Code</span><h3>极化码</h3><p>Arıkan 2009，可达容量，5G 标准。</p></div>
+        <div class="glass card"><span class="tag">LDPC</span><h3>LDPC</h3><p>稀疏校验码，近容量可译码。</p></div>
+        <div class="glass card"><span class="tag">Turbo Code</span><h3>Turbo 码</h3><p>迭代译码，逼近香农限。</p></div>
+        <div class="glass card"><span class="tag">Reed-Solomon</span><h3>里德-所罗门</h3><p>纠删码，QR/光盘使用。</p></div>
+        <div class="glass card"><span class="tag">Hamming Distance</span><h3>汉明距离</h3><p>两码字不同位数量。</p></div>
+        <div class="glass card"><span class="tag">Fano Inequality</span><h3>费诺不等式</h3><p>H(X|Y)≤H(Pe)+Pe log(|X|-1)。</p></div>
+        <div class="glass card"><span class="tag">Data Processing</span><h3>数据处理不等式</h3><p>马尔可夫链下互信息单调不增。</p></div>
+        <div class="glass card"><span class="tag">Jaynes MaxEnt</span><h3>最大熵原理</h3><p>约束下选最大熵=最小偏置推断。</p></div>
+        <div class="glass card"><span class="tag">Boltzmann Dist</span><h3>玻尔兹曼分布</h3><p>最大熵导出 p∝exp(-βE)。</p></div>
+        <div class="glass card"><span class="tag">Gibbs Entropy</span><h3>吉布斯熵</h3><p>统计力学熵，对应最大熵。</p></div>
+        <div class="glass card"><span class="tag">Szilard Engine</span><h3>西拉德机</h3><p>1 bit 可提取 kT ln2 功。</p></div>
+        <div class="glass card"><span class="tag">Landauer</span><h3>Landauer 原理</h3><p>擦除 1 bit 至少耗 kT ln2。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">·</span><h2>信息论词条 · 扩展字典</h2></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">Entropy</span><h3>熵</h3><p>随机变量的平均不确定性，H=-Σp log p。</p></div>
+        <div class="glass card"><span class="tag">Joint Entropy</span><h3>联合熵</h3><p>H(X,Y) 两变量同时的不确定性。</p></div>
+        <div class="glass card"><span class="tag">Conditional Entropy</span><h3>条件熵</h3><p>H(X|Y) 已知 Y 后 X 剩余不确定。</p></div>
+        <div class="glass card"><span class="tag">Mutual Information</span><h3>互信息</h3><p>I(X;Y)=H(X)-H(X|Y)，两变量共享信息。</p></div>
+        <div class="glass card"><span class="tag">Chain Rule</span><h3>链式法则</h3><p>H(X,Y)=H(X)+H(Y|X)，可逐级分解。</p></div>
+        <div class="glass card"><span class="tag">KL Divergence</span><h3>KL 散度</h3><p>D_KL(P‖Q) 两分布的信息距离，非负。</p></div>
+        <div class="glass card"><span class="tag">Cross Entropy</span><h3>交叉熵</h3><p>H(P,Q)=-Σp log q，训练损失常用。</p></div>
+        <div class="glass card"><span class="tag">Perplexity</span><h3>困惑度</h3><p>2^{H} 或 exp(交叉熵)，语言模型指标。</p></div>
+        <div class="glass card"><span class="tag">AEP</span><h3>渐进均分性</h3><p>典型集体积≈2^{nH}，高维体积律。</p></div>
+        <div class="glass card"><span class="tag">Typical Set</span><h3>典型集</h3><p>概率≈2^{-nH} 的序列集合。</p></div>
+        <div class="glass card"><span class="tag">Source Coding</span><h3>信源编码</h3><p>无损压缩，极限为熵 H。</p></div>
+        <div class="glass card"><span class="tag">Channel Coding</span><h3>信道编码</h3><p>可靠传输，极限为容量 C。</p></div>
+        <div class="glass card"><span class="tag">Rate Distortion</span><h3>率失真</h3><p>有损压缩，极限为 R(D)。</p></div>
+        <div class="glass card"><span class="tag">Shannon Limit</span><h3>香农极限</h3><p>C=B log2(1+S/N)，信道可达速率上限。</p></div>
+        <div class="glass card"><span class="tag">Huffman Code</span><h3>哈夫曼码</h3><p>最优前缀码，平均长度逼近熵。</p></div>
+        <div class="glass card"><span class="tag">Arithmetic Code</span><h3>算术编码</h3><p>区间映射，平均长度=H+常数。</p></div>
+        <div class="glass card"><span class="tag">LZ Algorithm</span><h3>LZ 算法</h3><p>字典压缩，ZIP 的核心。</p></div>
+        <div class="glass card"><span class="tag">LZW</span><h3>LZW</h3><p>LZ 变种，GIF 使用。</p></div>
+        <div class="glass card"><span class="tag">Polar Code</span><h3>极化码</h3><p>Arıkan 2009，可达容量，5G 标准。</p></div>
+        <div class="glass card"><span class="tag">LDPC</span><h3>LDPC</h3><p>稀疏校验码，近容量可译码。</p></div>
+        <div class="glass card"><span class="tag">Turbo Code</span><h3>Turbo 码</h3><p>迭代译码，逼近香农限。</p></div>
+        <div class="glass card"><span class="tag">Reed-Solomon</span><h3>里德-所罗门</h3><p>纠删码，QR/光盘使用。</p></div>
+        <div class="glass card"><span class="tag">Hamming Distance</span><h3>汉明距离</h3><p>两码字不同位数量。</p></div>
+        <div class="glass card"><span class="tag">Fano Inequality</span><h3>费诺不等式</h3><p>H(X|Y)≤H(Pe)+Pe log(|X|-1)。</p></div>
+        <div class="glass card"><span class="tag">Data Processing</span><h3>数据处理不等式</h3><p>马尔可夫链下互信息单调不增。</p></div>
+        <div class="glass card"><span class="tag">Jaynes MaxEnt</span><h3>最大熵原理</h3><p>约束下选最大熵=最小偏置推断。</p></div>
+        <div class="glass card"><span class="tag">Boltzmann Dist</span><h3>玻尔兹曼分布</h3><p>最大熵导出 p∝exp(-βE)。</p></div>
+        <div class="glass card"><span class="tag">Gibbs Entropy</span><h3>吉布斯熵</h3><p>统计力学熵，对应最大熵。</p></div>
+        <div class="glass card"><span class="tag">Szilard Engine</span><h3>西拉德机</h3><p>1 bit 可提取 kT ln2 功。</p></div>
+        <div class="glass card"><span class="tag">Landauer</span><h3>Landauer 原理</h3><p>擦除 1 bit 至少耗 kT ln2。</p></div>
+      </div>
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</main>
+    <aside class="toc">
+      <h4>本馆目录</h4>
+      <a href="#origin">01 · 信息论的本源</a>
+      <a href="#entropy">02 · 熵</a>
+      <a href="#mi">03 · 互信息</a>
+      <a href="#channel">04 · 信道容量与三定理</a>
+      <a href="#draw">05 · 核心概念抽卡</a>
+      <a href="#cont">06 · 微分熵</a>
+      <a href="#aep">07 · 渐进均分性</a>
+      <a href="#fano">08 · 费诺不等式</a>
+      <a href="#moreineq">09 · 基本不等式</a>
+      <a href="#quotes">10 · 原典语录</a>
+      <a href="#geom">11 · 熵的几何直观</a>
+      <a href="#codeprec">12 · 编码定理精确形式</a>
+      <a href="#strongaep">13 · 强典型性与纠错</a>
+      <a href="#summary">14 · 本馆小结</a>
+      <a href="hub_master.html">↗ 返回 HUB</a>
+    </aside>
+  </div>
+</div>
+
+<footer>
+  <span class="pill">ONESHOT v2.0</span>
+  <span class="pill">信息论 · 主馆 01 科技深蓝</span>
+  <span class="pill">信源：Shannon 1948 / Britannica / Cover & Thomas</span>
+  <p style="margin-top:18px">本页所有"信息"均为概率结构，不含任何语义立场。</p>
+</footer>
+
+<script>
+const cards=[
+  {t:"熵的链式法则",b:"H(X₁,…,Xₙ)=Σ H(Xᵢ|X₁,…,Xᵢ₋₁) —— 多变量不确定性可逐级拆解，是序列建模的信息论基础。"},
+  {t:"互信息非负",b:"I(X;Y)=D_KL(p(x,y)‖p(x)p(y)) ≥ 0，且独立时取等号。这是所有"信息增益"度量的根。"},
+  {t:"数据处理不等式",b:"X→Y→Z 马尔可夫链 ⇒ I(X;Y)≥I(X;Z)。任何函数变换都无法创造关于 X 的新信息。"},
+  {t:"香农公式",b:"C=B·log₂(1+S/N)。噪声信道的可达速率上限，与调制方式无关，只取决于带宽与信噪比。"},
+  {t:"率失真下界",b:"允许失真 D 时最小速率 R(D)=min I(X;X̂)。有损压缩的极限，详见深潜馆 methodology。"},
+  {t:"KL 散度",b:"D_KL(P‖Q)=Σ p log(p/q)。非对称、非负，是互信息与最大熵的统一定义工具。"},
+  {t:"语义独立性",b:"信息论度量信号的统计结构，不评判真假。一句谎言若足够意外，信息与真话等值。"},
+  {t:"bit 单位",b:"二进制 digits。等概率基本符号下，1 bit 恰好把不确定性减半，是信息的原子。"}
+];
+const area=document.getElementById('drawArea'),btn=document.getElementById('drawBtn'),all=document.getElementById('drawAll');
+let shown=new Set();
+function render(list){area.innerHTML=list.map(c=>`<div class="glass card reveal"><span class="tag">公理</span><h3>${c.t}</h3><p>${c.b}</p></div>`).join('');}
+btn.onclick=()=>{const rest=cards.filter((_,i)=>!shown.has(i));if(!rest.length){shown.clear();return btn.onclick();}const idx=cards.indexOf(rest[Math.floor(Math.random()*rest.length)]);shown.add(idx);render([cards[idx]]);};
+all.onclick=()=>{shown=new Set(cards.map((_,i)=>i));render(cards);};
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
