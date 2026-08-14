@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L4 前沿 · 交叉与开放问题 | InfoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Info<span>Lab</span> · 信息论</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html" class="on">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Level 4 · Frontier</div>
+  <h1>L4 前沿：Shannon 之外</h1>
+  <p>L0–L3 是<strong>已经封顶的大厦</strong>。L4 是<strong>仍在施工的部分</strong>。所有前沿方向都有一个共同特征：Shannon 框架的三个隐含假设——<em>信源是经典概率分布</em>、<em>码长趋于无穷</em>、<em>目标是无损或固定失真复现</em>——至少有一条被打破。本页按"打破了哪条假设"来组织七个分支，并给出开放问题清单与三条可被证伪的预测。</p>
+  <div class="meta">
+    <i>学段：博士后 / 研究员 / 交叉学科专家</i><i>门槛：L3 全部 + 泛函分析 / 统计物理基础</i>
+    <i>骨架：ITW/ISIT 2025 主题图谱</i>
+    <i>产出：10 个开放问题 · 3 条可检验预测</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>L4 目录</h4>
+  <a href="#map">00 · 前沿定位图</a>
+  <a href="#quantum">01 · 量子 Shannon 理论</a>
+  <a href="#ait">02 · 算法信息论</a>
+  <a href="#maxent">03 · 最大熵原理</a>
+  <a href="#ib">04 · 信息瓶颈与争议</a>
+  <a href="#llm">05 · 大模型信息论</a>
+  <a href="#physics">06 · Landauer 与信息物理</a>
+  <a href="#open">07 · 开放问题清单</a>
+  <a href="#pred">08 · 可检验预测</a>
+  <a href="#quiz4">09 · 自检与作业</a>
+  <div class="grp">
+    <h4>跳转</h4>
+    <a href="l3_advanced.html">← L3 专业</a>
+    <a href="lab.html">🧪 实验室</a>
+    <a href="verify.html">✓ AI 检验</a>
+  </div>
+</aside>
+
+<main>
+
+<!-- ================= 00 定位图 ================= -->
+<section class="section" id="map">
+  <h2><span class="num">00</span>前沿定位图：哪条假设被打破了</h2>
+  <p class="lead">不要把前沿当成一堆零散话题。每一个分支都是对 Shannon 某条前提的<strong>定向拆除</strong>。记住这张表，前沿就有了骨架。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>分支</th><th>被打破的 Shannon 假设</th><th>新的基本对象</th><th>本站编号</th></tr></thead>
+    <tbody>
+      <tr><td>量子 Shannon 理论</td><td>信息载体是经典概率分布</td><td>密度算符 ρ · von Neumann 熵 S(ρ)</td><td>T31–T32</td></tr>
+      <tr><td>算法信息论</td><td>信源是随机的、有分布的</td><td>单个字符串 x · Kolmogorov 复杂度 K(x)</td><td>T33–T35</td></tr>
+      <tr><td>最大熵推断</td><td>分布 p(x) 事先已知</td><td>约束集合上的分布<em>选择原则</em></td><td>T36</td></tr>
+      <tr><td>信息瓶颈</td><td>目标是无损 / 人为指定失真</td><td>由第三方变量 Y 定义的"相关性"</td><td>T37</td></tr>
+      <tr><td>大模型信息论</td><td>信源平稳遍历、分布可写出</td><td>经验交叉熵 · 缩放律</td><td>T38</td></tr>
+      <tr><td>信息物理学</td><td>信息是无成本的抽象</td><td>k<sub>B</sub>T ln2 · 信息即热力学资源</td><td>T39</td></tr>
+      <tr><td>非渐近信息论</td><td>n → ∞</td><td>信道色散 V（已在 L3）</td><td>L3 §07</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note deep">
+    <b>为什么这样组织</b>
+    大多数教材把前沿写成"进阶话题清单"，读者记不住。用"被打破的假设"作索引，可以在遇到任何新论文时快速定位：先问它放松了哪条前提，再问放松之后新的基本量是什么。这也是本站<a href="method.html">方法论页</a>推荐的"假设拆解法"。
+  </div>
+</section>
+
+<!-- ================= 01 量子 ================= -->
+<section class="section" id="quantum">
+  <h2><span class="num">01</span>量子 Shannon 理论</h2>
+  <p class="lead">把概率分布换成密度算符，几乎所有 Shannon 量都有量子对应物——但<strong>其中一条最漂亮的性质坍塌了</strong>：单字母公式不再普遍成立。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · 密度算符与 von Neumann 熵</span>
+    <p>经典信源是概率向量 p；量子信源是<strong>密度算符</strong> ρ——半正定、迹为 1 的矩阵。当 ρ 为对角阵时退化为概率分布，因此量子信息论<em>包含</em>经典信息论。</p>
+    <div class="fml">S(ρ) = − Tr( ρ log₂ ρ ) = − Σᵢ λᵢ log₂ λᵢ    <span class="cm">λᵢ 为 ρ 的本征值</span></div>
+    <p>即 von Neumann 熵 = <strong>本征值谱的 Shannon 熵</strong>。纯态 ρ=|ψ⟩⟨ψ| 的 S=0（完全确定）；最大混合态 ρ=I/d 的 S=log d。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式 · 经典—量子对照字典</span>
+    <div class="tw">
+    <table>
+      <thead><tr><th>经典</th><th>量子</th><th>关键差别</th></tr></thead>
+      <tbody>
+        <tr><td>H(X)</td><td>S(ρ)</td><td>形式一致</td></tr>
+        <tr><td>H(X|Y) ≥ 0</td><td>S(A|B) = S(AB) − S(B) <strong>可为负</strong></td><td>负值 = 纠缠的签名</td></tr>
+        <tr><td>I(X;Y) ≤ min{H(X),H(Y)}</td><td>I(A;B) ≤ 2 min{S(A),S(B)}</td><td>上界翻倍（超密编码的根源）</td></tr>
+        <tr><td>D(p‖q) = Σ p log(p/q)</td><td>D(ρ‖σ) = Tr ρ(log ρ − log σ)</td><td>算符不对易，性质证明困难得多</td></tr>
+        <tr><td>次可加性 H(XY) ≤ H(X)+H(Y)</td><td>同样成立</td><td>—</td></tr>
+        <tr><td>条件化不增熵</td><td>强次可加性 S(ABC)+S(B) ≤ S(AB)+S(BC)</td><td>Lieb–Ruskai 1973，证明极难</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><b>S(A|B) &lt; 0 到底是什么意思？</b>取 Bell 态 (|00⟩+|11⟩)/√2：整体是纯态故 S(AB)=0，而约化态 ρ_B=I/2 故 S(B)=1，于是 S(A|B) = 0 − 1 = <strong>−1</strong>。<br>
+    Horodecki–Oppenheim–Winter (2005) 给出了操作意义：−S(A|B) 正是<strong>量子态合并</strong>协议中可以<em>回收</em>的纠缠比特数。经典世界里"知识最多让你完全确定"，量子世界里可以"超过完全确定"。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 T31 · Holevo 界（1973）</span>
+    <p>Alice 以概率 p<sub>x</sub> 制备量子态 ρ<sub>x</sub> 并发给 Bob，Bob 施加<em>任意</em> POVM 测量得到结果 Y。则</p>
+    <div class="fml">I(X;Y) ≤ χ ≜ S( Σ<sub>x</sub> p<sub>x</sub> ρ<sub>x</sub> ) − Σ<sub>x</sub> p<sub>x</sub> S(ρ<sub>x</sub>)</div>
+    <p><b>推论（极其反直觉）：</b>用 n 个量子比特，最多可靠传输 n 个<em>经典</em>比特。量子态虽然由连续复振幅描述、看似携带无穷信息，但<strong>可提取的经典信息严格受限</strong>。</p>
+    <p><b>归属：</b>A. S. Holevo, <i>Bounds for the quantity of information transmitted by a quantum communication channel</i>, Problemy Peredachi Informatsii, 9(3):3–11, 1973.</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明骨架 · Holevo 界</span>
+    <p>关键一步：把"测量"本身看成一个<strong>量子信道</strong>（CPTP 映射）𝓔，然后套用量子数据处理不等式。</p>
+    <div class="fml">构造经典—量子态  σ<sub>XA</sub> = Σ<sub>x</sub> p<sub>x</sub> |x⟩⟨x| ⊗ ρ<sub>x</sub>
+
+① 直接展开可验证   I(X;A)<sub>σ</sub> = χ
+
+② 测量 = 信道作用于 A：  Y = 𝓔(A)
+
+③ 量子 DPI：        I(X;Y) = I(X; 𝓔(A)) ≤ I(X;A) = χ   ∎</div>
+    <p><b>依赖链：</b>强次可加性（Lieb–Ruskai 1973）⟹ 量子数据处理不等式 ⟹ Holevo 界。<br>
+    与 L2 中"Fano ⟹ 逆定理"的结构完全平行：<em>一条熵不等式撑起整个不可能性论证</em>。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 T32 · HSW 定理与可加性的崩塌</span>
+    <p>量子信道 𝓝 的<strong>经典容量</strong>（Holevo–Schumacher–Westmoreland, 1996–1998）：</p>
+    <div class="fml">C(𝓝) = lim<sub>n→∞</sub> (1/n) · χ*( 𝓝<sup>⊗n</sup> )
+
+其中  χ*(𝓝) = max<sub>{p<sub>x</sub>, ρ<sub>x</sub>}</sub> χ( 𝓝(ρ<sub>x</sub>) )   称为 Holevo 容量</div>
+    <p><b>致命难点：</b>χ* 是否可加？如果可加，则 C = χ*，我们就得到了量子版的"单字母公式"。</p>
+    <p><b>Hastings (2009) 的反例：</b>用随机酉信道构造出 𝓝₁、𝓝₂ 使</p>
+    <div class="fml">χ*(𝓝₁ ⊗ 𝓝₂) &gt; χ*(𝓝₁) + χ*(𝓝₂)</div>
+    <p>因此量子信道的经典容量<strong>没有单字母公式</strong>，一般不可计算。这是经典与量子信息论最深的分歧：Shannon 世界里 C = max I(X;Y) 一行公式解决的问题，量子世界里是一个无穷维极限。</p>
+    <p><b>归属：</b>M. B. Hastings, <i>Superadditivity of communication capacity using entangled inputs</i>, Nature Physics 5:255–257, 2009.</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 量子信道的"三重容量"</span>
+    <div class="tw">
+    <table>
+      <thead><tr><th>容量</th><th>传输对象</th><th>公式</th><th>可加？单字母？</th></tr></thead>
+      <tbody>
+        <tr><td><strong>C</strong> 经典容量</td><td>经典比特</td><td>正则化 χ*</td><td>否（Hastings 2009）</td></tr>
+        <tr><td><strong>Q</strong> 量子容量</td><td>量子比特（保真态）</td><td>正则化相干信息 I<sub>c</sub> = −S(A|B)</td><td>否；且存在<strong>超激活</strong></td></tr>
+        <tr><td><strong>C<sub>E</sub></strong> 纠缠辅助容量</td><td>经典比特 + 免费纠缠</td><td>max<sub>ρ</sub> I(A;B)</td><td><strong>是，单字母</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><b>超激活（Smith–Yard, Science 2008）：</b>存在两个信道 Q(𝓝₁)=Q(𝓝₂)=0，但 Q(𝓝₁⊗𝓝₂) &gt; 0。<em>两条完全不能传量子信息的信道，并联起来却能传</em>。经典世界绝无此现象（经典容量严格可加）。</p>
+    <p><b>C<sub>E</sub> 为什么特别：</b>它是唯一具有干净单字母公式、可加、且形式与经典 C = max I(X;Y) 完全对应的量子容量，被称为"量子世界的 Shannon 公式"（Bennett–Shor–Smolin–Thapliyal 1999/2002）。<br>
+    深刻之处在于：<strong>把纠缠当作免费资源供应后，量子信道就"退回"到了经典信息论那种优美结构里</strong>——说明破坏单字母性的正是纠缠资源的稀缺。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 去极化信道的 Holevo 容量</span>
+    <p>d 维去极化信道 𝓝(ρ) = (1−p)ρ + p·I/d。取 d 个正交纯态等概率输入，输出态的本征值谱为 {(1−p)+p/d, p/d, …, p/d}，故</p>
+    <div class="fml">χ* = log₂ d − H( (1−p)+p/d, p/d, …, p/d )</div>
+    <p><b>数值（d=2, p=0.2）：</b>输出谱为 {0.9, 0.1}，S = H₂(0.1) = 0.469 bit，输入系综平均态为 I/2 故 S=1。<br>
+    χ* = 1 − 0.469 = <strong>0.531 bit/次使用</strong>。</p>
+    <p>对照 L1 学过的 BSC(0.1)：C = 1 − H₂(0.1) = 0.531。<em>数值完全一致</em>——因为在正交计算基上，去极化信道恰好退化为 BSC。这提供了一个"量子结果回归经典"的健全性检查。</p>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿 · 量子方向的活跃问题（2024–2026）</span>
+    <ul>
+      <li><strong>Q 的可判定性：</strong>目前连"给定信道，判断 Q &gt; 0 是否成立"都不知道是否可判定。这是信息论中罕见的<em>可计算性层面</em>的开放问题。</li>
+      <li><strong>非渐近量子信息论：</strong>量子版的信道色散。cq 信道（经典输入—量子输出）的二阶项已由 Tomamichel–Tan (2015) 解决，一般量子信道仍开放。</li>
+      <li><strong>qLDPC 好码：</strong>Panteleev–Kalachev (2022) 证明了渐近好的量子 LDPC 码存在，这是容错量子计算开销从多项式降到常数倍的关键。工程实现（解码器、布线）仍在攻关。</li>
+      <li><strong>量子网络信息论：</strong>量子中继、纠缠分发速率、量子互联网的容量区域——相当于量子版的 L3 §09，几乎全部开放。</li>
+      <li><strong>量子最优传输：</strong>量子 Wasserstein 距离，为量子机器学习提供几何工具。</li>
+    </ul>
+  </div>
+
+  <div class="vfy">
+    <span class="vbadge v-pass">AI-Science：T31/T32 归属与年份已核</span>
+    <span class="vbadge v-pass">AI-学术：Hastings 2009 / Smith–Yard 2008 出处完整</span>
+    <span class="vbadge v-note">AI-费曼：Bell 态负条件熵已给具体数值</span>
+  </div>
+</section>
+
+<!-- ================= 02 算法信息论 ================= -->
+<section class="section" id="ait">
+  <h2><span class="num">02</span>算法信息论：单个对象的信息量</h2>
+  <p class="lead">Shannon 熵回答"<em>一个信源</em>平均多少信息"，却答不了"<em>这一个</em>字符串有多少信息"。Solomonoff、Kolmogorov、Chaitin 三人独立给出了答案。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · Kolmogorov 复杂度</span>
+    <div class="fml">K<sub>U</sub>(x) = min { |p| : U(p) = x }    <span class="cm">U 为通用图灵机，|p| 为程序比特长度</span></div>
+    <p>即"能输出 x 的最短程序有多长"。</p>
+    <ul>
+      <li><code>0101…01</code>（重复 500 次）：K 很小，程序是"打印 01 五百遍"，约 O(log 500) 比特。</li>
+      <li>π 的前 100 万位：K 很小（Machin 公式几十行代码），尽管它<em>看起来</em>完全随机。</li>
+      <li>一串真随机的 1000 位：K ≈ 1000，没有比"直接把它写进程序"更短的办法。</li>
+    </ul>
+    <p><b>这是"随机性"的定义：</b>x 是随机的 ⟺ K(x) ≈ |x|，即它<strong>不可压缩</strong>。注意这个定义完全不涉及概率——这正是与 Shannon 框架的根本分野。</p>
+    <p><b>归属：</b>Solomonoff (1964), Kolmogorov (1965), Chaitin (1966)，三人独立。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 T33 · 不变性定理</span>
+    <p>对任意两台通用图灵机 U、V，存在常数 c（只依赖 U、V，<em>不依赖 x</em>）使</p>
+    <div class="fml">| K<sub>U</sub>(x) − K<sub>V</sub>(x) | ≤ c</div>
+    <p><b>证明思路：</b>U 上可以写一个 V 的模拟器，长度固定为 c。于是"V 上最短程序 + 模拟器"就是 U 上的一个合法程序。反向同理。∎</p>
+    <p><b>意义：</b>K(x) 在"相差常数"的意义下是<strong>客观量</strong>，不依赖编程语言选择。这一条让 K 从"编程技巧"升格为数学对象，通常省略下标写作 K(x)。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 T34 · K(x) 不可计算</span>
+    <p>不存在算法能对任意输入 x 输出 K(x)。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · Berry 悖论的形式化</span>
+    <p>反证。假设存在程序 <code>KC(x)</code> 计算 K(x)。构造程序 P，接受输入 n：</p>
+    <div class="fml">P(n):
+    for x in 所有字符串（按长度、字典序枚举）:
+        if KC(x) ≥ n:  return x</div>
+    <p>P 的长度为 |P| = c₀ + ⌈log₂ n⌉（c₀ 是固定代码长度，log n 用于编码 n）。<br>
+    但 P(n) 输出的那个 x 满足 K(x) ≥ n（构造保证），同时 x 又由长度 c₀+log₂n 的程序 P(n) 产生，故 K(x) ≤ c₀ + log₂ n。</p>
+    <div class="fml">n ≤ K(x) ≤ c₀ + log₂ n</div>
+    <p>对足够大的 n（因为 log₂n 增长远慢于 n），此式矛盾。故 <code>KC</code> 不存在。∎</p>
+    <p><b>与停机问题同源：</b>若能算 K，就能判定停机；反之亦然。<em>"最短描述"的不可计算性，是可计算性理论的核心限制在信息论中的投影。</em></p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 T35 · K 与 H 的桥梁</span>
+    <p>设 X₁,…,X<sub>n</sub> i.i.d. ~ p（有限字母表），则</p>
+    <div class="fml">(1/n) · E[ K(X₁…X<sub>n</sub> | n) ] ⟶ H(X)   ,   n → ∞</div>
+    <p>更精确地：H(X) ≤ (1/n)E[K(X<sup>n</sup>|n)] ≤ H(X) + |𝒳|·(log n)/n + O(1/n)。</p>
+    <p><b>意义（本页最重要的一条）：</b>算法信息论与 Shannon 信息论在<strong>期望意义下收敛到同一个答案</strong>。Shannon 熵就是 Kolmogorov 复杂度的期望极限。两套看似毫无关系的理论——一套基于概率、一套基于计算——描述的是同一个量。</p>
+    <p><b>出处：</b>Cover &amp; Thomas, <i>Elements of Information Theory</i>, 2nd ed., Theorem 14.3.1。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 三个衍生构造</span>
+    <p><strong>① 算法互信息</strong></p>
+    <div class="fml">I<sub>K</sub>(x : y) = K(x) + K(y) − K(x, y)</div>
+    <p>与 Shannon 互信息在 O(log) 项内对应。它度量"两个具体对象共享多少信息"，无需假设它们来自任何分布。</p>
+
+    <p><strong>② 归一化压缩距离 NCD</strong>（Cilibrasi–Vitányi 2005）</p>
+    <div class="fml">NCD(x,y) = [ C(xy) − min(C(x),C(y)) ] / max(C(x),C(y))</div>
+    <p>用真实压缩器 C（gzip / bzip2 / xz）近似 K。这是一个<strong>无参数、无训练</strong>的通用距离，被成功用于：线粒体基因组构建物种进化树、从翻译文本重建印欧语系族谱、音乐流派聚类、恶意软件家族分类。</p>
+
+    <p><strong>③ Chaitin 常数 Ω</strong></p>
+    <div class="fml">Ω = Σ<sub>{p : U(p) 停机}</sub> 2<sup>−|p|</sup>   ∈ (0,1)</div>
+    <p>一个"可定义但不可计算"的实数。它的前 n 位二进制展开，足以判定所有长度 ≤ n 的程序是否停机——因此 Ω 是"最大压缩的数学知识"，也是不可计算性的浓缩体。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 用 gzip 做零训练文本分类（可复现）</span>
+    <p>Jiang et al. (ACL Findings 2023) 的 "gzip + kNN"：在若干低资源语言数据集上，用<strong>十行代码</strong>超过了微调后的 BERT。核心就是 NCD。</p>
+    <pre><code>import gzip
+import numpy as np
+
+def C(s):                       # 压缩后长度，近似 K(s)
+    return len(gzip.compress(s.encode()))
+
+def ncd(x, y):
+    cx, cy = C(x), C(y)
+    cxy = C(x + " " + y)
+    return (cxy - min(cx, cy)) / max(cx, cy)
+
+def classify(test, train_texts, train_labels, k=3):
+    d = np.array([ncd(test, t) for t in train_texts])
+    idx = d.argsort()[:k]
+    votes = [train_labels[i] for i in idx]
+    return max(set(votes), key=votes.count)
+</code></pre>
+    <p><b>为什么有效：</b>同类文本共享词汇与句式 ⟹ 拼接后压缩率高 ⟹ NCD 小。这直接实现了"共享信息量"的度量。</p>
+    <p><b>需要诚实指出的批评：</b>后续复现（Opitz 2023 等）发现原论文的 kNN 在平局处理上有实现偏差，修正后优势缩小；且在高资源数据集上仍显著弱于神经模型。<em>本站将该结论标注为"部分成立"。</em></p>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿 · 算法信息论的当代回归</span>
+    <ul>
+      <li><strong>"压缩即智能"假说：</strong>Delétang et al. (DeepMind, 2023) <i>Language Modeling Is Compression</i> 证明 LLM 是强通用压缩器——仅在文本上训练的 Chinchilla-70B，把 ImageNet 图块压到 43.4%（PNG 为 58.5%），把 LibriSpeech 音频压到 16.4%（FLAC 为 30.3%）。说明它学到的是<em>跨模态的通用结构</em>。</li>
+      <li><strong>Solomonoff 归纳与 AIXI</strong>（Hutter）：用 2<sup>−K(h)</sup> 作为假设 h 的通用先验，得到理论上最优的通用预测器。不可计算，但为"什么是理想智能"提供了基准定义。</li>
+      <li><strong>最小描述长度 MDL</strong>（Rissanen）：模型选择原则"总描述长度 = 模型长度 + 数据在模型下的编码长度"，与贝叶斯证据、正则化在特定条件下等价。</li>
+      <li><strong>逻辑深度</strong>（Bennett）：K 大只说明"随机"，不说明"复杂"。逻辑深度定义为"从最短程序生成 x 所需的计算步数"，用于区分真随机噪声（K 大、深度浅）与生物体这类真正复杂的对象（K 中等、深度极大）。</li>
+      <li><strong>Hutter Prize：</strong>持续悬赏压缩 enwik9 的世界纪录，把"压缩即智能"变成了可量化的公开竞赛。</li>
+    </ul>
+  </div>
+
+  <div class="vfy">
+    <span class="vbadge v-pass">AI-Science：T33/T34 证明自洽</span>
+    <span class="vbadge v-warn">AI-学术：gzip+kNN 结论标为"部分成立"（存在复现争议）</span>
+    <span class="vbadge v-pass">AI-费曼：π 的例子已用于说明"看似随机 ≠ K 大"</span>
+  </div>
+</section>
+
+<!-- ================= 03 最大熵 ================= -->
+<section class="section" id="maxent">
+  <h2><span class="num">03</span>最大熵原理：从通信到推断</h2>
+  <p class="lead">Shannon 用熵度量通信；Jaynes 说熵还是<strong>推断的原则</strong>。这一步转向，把信息论送进了统计物理、统计学与机器学习。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · Jaynes 的转向（1957）</span>
+    <p>问题：我们只知道分布的若干矩约束 E[f<sub>k</sub>(X)] = μ<sub>k</sub>，满足约束的分布有无穷多个，该选哪个？</p>
+    <p><b>最大熵原理：</b>选<strong>熵最大</strong>的那个。理由——熵最大 = 不确定性最大 = <em>引入的额外假设最少</em>。任何比它熵更低的分布，都偷偷加入了数据未支持的信息。</p>
+    <p><b>归属：</b>E. T. Jaynes, <i>Information Theory and Statistical Mechanics</i>, Physical Review 106(4):620–630, 1957.</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 T36 · 最大熵分布必为指数族</span>
+    <p>在约束 E[f<sub>k</sub>(X)] = μ<sub>k</sub>（k=1..m）与归一化下，最大熵分布唯一且形如</p>
+    <div class="fml">p*(x) = (1/Z(λ)) · exp( Σ<sub>k</sub> λ<sub>k</sub> f<sub>k</sub>(x) )
+
+Z(λ) = Σ<sub>x</sub> exp( Σ<sub>k</sub> λ<sub>k</sub> f<sub>k</sub>(x) )   <span class="cm">配分函数</span></div>
+    <p>拉格朗日乘子 λ<sub>k</sub> 由约束反解。这正是统计学中的<strong>指数族</strong>、统计物理中的 <strong>Gibbs 分布</strong>。</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 证明 · 只用 Gibbs 不等式</span>
+    <p>设 p 为任一满足约束的分布，p* 为上述指数族形式且也满足约束。计算 KL 散度：</p>
+    <div class="fml">D(p‖p*) = Σ p log p − Σ p log p*
+
+        = −H(p) − Σ<sub>x</sub> p(x)[ Σ<sub>k</sub> λ<sub>k</sub>f<sub>k</sub>(x) − log Z ]
+
+        = −H(p) − Σ<sub>k</sub> λ<sub>k</sub> E<sub>p</sub>[f<sub>k</sub>] + log Z
+
+        = −H(p) − Σ<sub>k</sub> λ<sub>k</sub> μ<sub>k</sub> + log Z   <span class="cm">← 用了 p 满足约束</span></div>
+    <p>右端后两项<strong>只依赖约束值，与 p 无关</strong>。由 Gibbs 不等式 D(p‖p*) ≥ 0：</p>
+    <div class="fml">H(p) ≤ −Σ<sub>k</sub> λ<sub>k</sub> μ<sub>k</sub> + log Z = H(p*)</div>
+    <p>等号当且仅当 p = p*。∎</p>
+    <div class="note">
+      <b>值得回味</b>
+      整个证明只用了 L1 学过的 Gibbs 不等式 D ≥ 0，却一举推出了指数族统计、Boltzmann 分布与整个统计物理的分布形式。这是本站最推崇的"小工具撬动大结构"的范例。
+    </div>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式 · 最大熵分布速查表</span>
+    <div class="tw">
+    <table>
+      <thead><tr><th>约束条件</th><th>最大熵分布</th><th>最大熵值</th></tr></thead>
+      <tbody>
+        <tr><td>支撑集有限 {1..n}，无其他约束</td><td>均匀分布</td><td>log₂ n</td></tr>
+        <tr><td>支撑 [a,b]</td><td>均匀分布</td><td>log₂(b−a)</td></tr>
+        <tr><td>x ≥ 0，E[X]=μ</td><td>指数分布 (1/μ)e<sup>−x/μ</sup></td><td>log₂(μe)</td></tr>
+        <tr><td>E[X]=μ, Var[X]=σ²</td><td><strong>高斯 𝒩(μ,σ²)</strong></td><td>½ log₂(2πeσ²)</td></tr>
+        <tr><td>协方差矩阵 Σ 给定（n 维）</td><td>多元高斯</td><td>½ log₂((2πe)<sup>n</sup>|Σ|)</td></tr>
+        <tr><td>非负整数，E[X]=μ</td><td>几何分布</td><td>—</td></tr>
+        <tr><td>E[X] 与 E[log X] 给定</td><td>Gamma 分布</td><td>—</td></tr>
+        <tr><td>方向数据，E[cos θ], E[sin θ]</td><td>von Mises 分布</td><td>—</td></tr>
+        <tr><td>E[能量] = U</td><td><strong>Boltzmann e<sup>−βE</sup>/Z</strong></td><td>热力学熵 / k<sub>B</sub>ln2</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note deep">
+      <b>回头看 L1 的一个悬念</b>
+      L1 说"高斯是最坏噪声"，当时只给了结论。现在可以证明：加性噪声信道 C = max h(Y) − h(Z)，噪声功率固定时 h(Z) 越大则 C 越小；由 T36，二阶矩约束下高斯的微分熵最大，故高斯噪声使容量最小。<strong>高斯分布并不"自然"，它是二阶矩约束下的最大熵解</strong>——这才是它无处不在的真正原因。
+    </div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 最大熵 ⟺ 最大似然（凸对偶）</span>
+    <div class="fml">max<sub>p</sub> H(p)  s.t. E<sub>p</sub>[f<sub>k</sub>] = μ̂<sub>k</sub>（经验矩）
+        ⟺
+max<sub>λ</sub> Σ<sub>i</sub> log p<sub>λ</sub>(x<sub>i</sub>)   （指数族的最大似然）</div>
+    <p>原问题的凸对偶恰好是对偶参数上的最大似然。这条对偶是以下方法的共同理论基础：</p>
+    <ul>
+      <li><strong>逻辑回归</strong>就是最大熵分类器（约束为特征的经验期望）。</li>
+      <li><strong>最大熵马尔可夫模型 (MEMM)</strong> 与<strong>条件随机场 (CRF)</strong>，NLP 序列标注在神经网络之前的主力。</li>
+      <li><strong>Ising / Potts 模型拟合</strong>：给定一阶二阶统计量的最大熵模型。</li>
+    </ul>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · Jaynes 的骰子问题</span>
+    <p>一枚六面骰子，长期投掷的平均点数为 4.5（若公平应为 3.5）。问各面概率？</p>
+    <p>最大熵解形如 p(k) ∝ e<sup>λk</sup>。解 Σk e<sup>λk</sup> / Σe<sup>λk</sup> = 4.5，数值得 λ ≈ 0.3710：</p>
+    <div class="fml">p ≈ ( 0.0544, 0.0788, 0.1142, 0.1654, 0.2398, 0.3475 )
+
+H(p) ≈ 2.3279 bit   <span class="cm">对比均匀分布 log₂6 = 2.5850 bit</span></div>
+    <p>"平均点数是 4.5"这一条信息，<strong>消除了 2.5850 − 2.3279 = 0.2571 比特</strong>的不确定性。信息量在这里被具体地称量了出来。<em>（该数值由 <code>verify/numeric.py</code> 独立重算核对。）</em></p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：最大熵骰子求解器</div>
+    <div class="ctrl"><label for="me-mu">目标平均点数 μ</label><input type="range" id="me-mu" min="1.1" max="5.9" step="0.05" value="4.5"><span class="val" id="me-muv">4.50</span></div>
+    <canvas id="me-cv" data-h="250"></canvas>
+    <div class="readout" id="me-out"></div>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿 · 最大熵的现代形态</span>
+    <ul>
+      <li><strong>最大熵强化学习（SAC）：</strong>目标 = 期望回报 + α·策略熵。显式鼓励探索，且策略对扰动更鲁棒。这是 Soft Actor-Critic 成为连续控制主力算法的理论根据。</li>
+      <li><strong>最大熵逆强化学习</strong>（Ziebart et al. 2008）：从专家示范轨迹反推奖励函数，解决"多个奖励函数解释同一批轨迹"的歧义——选熵最大的那个。</li>
+      <li><strong>神经科学：</strong>Schneidman–Berry–Segev–Bialek (Nature 2006) 用<em>只含两两相关</em>的最大熵模型（即 Ising 模型），成功预测了视网膜神经元群体的联合活动统计。说明高阶相关在该系统中可忽略。</li>
+      <li><strong>蛋白质结构预测：</strong>直接耦合分析 (DCA) 从多序列比对反解 Potts 模型的最大熵参数，预测残基接触图。这是 AlphaFold 之前的主流路线，也是 AlphaFold 的重要输入特征来源。</li>
+      <li><strong>持续争议：</strong>最大熵是"客观推断原则"还是"另一种主观先验选择"？Jaynes 派与频率派的分歧至今未平息；批评者指出结果依赖于"用哪个测度定义熵"（Shore–Johnson 公理试图给出唯一性论证）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 04 信息瓶颈 ================= -->
+<section class="section" id="ib">
+  <h2><span class="num">04</span>信息瓶颈：与任务相关的压缩</h2>
+  <p class="lead">率失真理论需要人为指定失真函数 d(x,x̂)——但"什么算失真"往往正是我们不知道的。信息瓶颈说：让<strong>另一个变量 Y</strong> 来定义什么重要。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · IB 的问题设定</span>
+    <p>给定联合分布 p(x,y)。寻找 X 的压缩表示 T，满足马尔可夫链 <strong>Y → X → T</strong>（T 只能通过 X 看 Y），优化</p>
+    <div class="fml">min<sub>p(t|x)</sub>  I(X;T) − β · I(T;Y)</div>
+    <ul>
+      <li>第一项 I(X;T)：<strong>压缩代价</strong>，越小说明 T 丢掉的 X 越多。</li>
+      <li>第二项 I(T;Y)：<strong>相关性收益</strong>，越大说明 T 保留的"关于 Y 的信息"越多。</li>
+      <li>β：权衡旋钮。β→0 时 T 退化为常数（压到极致）；β→∞ 时 T 保留全部相关信息（保真优先）。</li>
+    </ul>
+    <p><b>与率失真的精确关系：</b>IB 就是失真函数取 d(x,t) = D<sub>KL</sub>[ p(y|x) ‖ p(y|t) ] 的率失真问题。<em>失真不再人为指定，而是由数据本身导出</em>。</p>
+    <p><b>归属：</b>Tishby, Pereira &amp; Bialek, <i>The Information Bottleneck Method</i>, Allerton 1999.</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 T37 · IB 自洽方程</span>
+    <p>最优解满足以下三式的不动点，可交替迭代求解（结构与 L3 的 Blahut–Arimoto 完全同构）：</p>
+    <div class="fml">① p(t|x) = p(t)/Z(x,β) · exp( −β · D<sub>KL</sub>[ p(y|x) ‖ p(y|t) ] )
+
+② p(t)   = Σ<sub>x</sub> p(x) p(t|x)
+
+③ p(y|t) = (1/p(t)) · Σ<sub>x</sub> p(x,y) p(t|x)</div>
+    <p><b>如何读第①式：</b>x 被分配到簇 t 的概率，由"<em>x 预测 Y 的方式</em>"与"<em>簇 t 预测 Y 的方式</em>"的 KL 距离决定。距离越近，分配概率越高。<br>
+    换句话说：<strong>对 Y 有相同预测含义的 x，被归为同一类</strong>。这是一个由目标变量驱动的软聚类算法。</p>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 信息平面与信息曲线</span>
+    <p>在 (I(X;T), I(T;Y)) 平面上，所有可行表示构成一个区域，其上边界称为<strong>信息曲线</strong>。它满足：</p>
+    <ol>
+      <li><strong>凹、单调递增</strong>，在工作点处的斜率恰为 1/β。</li>
+      <li>受 <strong>DPI 双重约束</strong>：I(T;Y) ≤ I(X;Y)（不能超过原始相关性）且 I(T;Y) ≤ I(X;T)（不能凭空造信息）。故曲线必在 45° 线之下、水平线 I(X;Y) 之下。</li>
+      <li>在 I(X;T) = H(X) 处饱和于 I(X;Y)——即 T=X 时无压缩、全保真。</li>
+    </ol>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：IB 信息平面</div>
+    <div class="ctrl"><label for="ib-b">权衡参数 β</label><input type="range" id="ib-b" min="0.3" max="12" step="0.1" value="3"><span class="val" id="ib-bv">3.0</span></div>
+    <div class="ctrl"><label for="ib-i">原始相关性 I(X;Y)</label><input type="range" id="ib-i" min="0.2" max="1.8" step="0.05" value="1"><span class="val" id="ib-iv">1.00</span></div>
+    <canvas id="ib-cv" data-h="270"></canvas>
+    <div class="readout" id="ib-out"></div>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿 · 深度学习的 IB 之争（必须看到两侧）</span>
+    <p><strong>主张方 · Tishby–Zaslavsky (2015)、Shwartz-Ziv–Tishby (2017)：</strong></p>
+    <ul>
+      <li>深度网络训练分两相：先"<em>拟合相</em>"（I(T;Y) 快速上升），后"<em>压缩相</em>"（I(X;T) 缓慢下降）。</li>
+      <li>压缩相占据了绝大部分训练时间，并被认为是<strong>泛化能力的来源</strong>：网络在丢弃与标签无关的输入细节。</li>
+      <li>各层在信息平面上的轨迹形成特征曲线，深层比浅层压缩更多。</li>
+    </ul>
+    <p><strong>反驳方 · Saxe et al. (ICLR 2018)：</strong></p>
+    <ul>
+      <li><strong>依赖激活函数：</strong>用 tanh（双侧饱和）观察到压缩，换成 ReLU 后压缩相经常<em>完全消失</em>，但泛化性能不变。说明压缩不是泛化的必要条件。</li>
+      <li><strong>测量伪影：</strong>对确定性网络 T = f(X)，若 X 连续则 I(X;T) 严格为 <em>∞</em>。实验中测得的有限值来自对激活值的<strong>分箱（binning）</strong>；改变 bin 宽度就能改变"有无压缩"的结论。这是最技术性、也最难反驳的一条。</li>
+      <li><strong>无因果证据：</strong>可以构造压缩但泛化差、以及不压缩但泛化好的网络。相关不等于因果。</li>
+    </ul>
+    <p><strong>后续的和解路线：</strong></p>
+    <ul>
+      <li><strong>变分信息瓶颈 VIB</strong>（Alemi et al. ICLR 2017）：给 I(X;T) 与 I(T;Y) 各找一个可优化的变分界，把 IB 变成 VAE 式的可训练目标。绕开了"测不准 I(X;T)"的问题——不测量，直接优化界。实测能提升对抗鲁棒性。</li>
+      <li><strong>V-information</strong>（Xu et al. ICLR 2020）：定义"在计算能力 𝒱 受限下可提取的信息"，对确定性映射不再发散，且随处理<em>可以增加</em>（符合"表示学习让信息更可用"的直觉）。</li>
+      <li><strong>信息论泛化界</strong>（Xu &amp; Raginsky, NeurIPS 2017）：<span style="white-space:nowrap">gen-err ≤ √( 2σ² I(S;W) / n )</span>，其中 S 是训练集、W 是学到的权重。用<em>算法与数据的互信息</em>直接界住泛化间隙——这是 IB 直觉最严格的形式化版本，但在过参数化模型上界过松。</li>
+    </ul>
+  </div>
+
+  <div class="note warn">
+    <b>学术诚实声明</b>
+    "信息瓶颈解释了深度学习的泛化"<strong>不是</strong>学界共识，而是一个活跃的争论。任何只引用 Tishby 一侧的教材或博客都是不完整的。本站在 <a href="verify.html">AI 检验页</a>把该条目明确标记为 <strong>争议 / 未定</strong>，并要求同时呈现 Saxe 的反驳。
+  </div>
+
+  <div class="vfy">
+    <span class="vbadge v-pass">AI-Science：T37 与 Blahut–Arimoto 的同构关系已核</span>
+    <span class="vbadge v-warn">AI-学术：IB 泛化解释 = 争议条目，双侧引用</span>
+    <span class="vbadge v-pass">AI-费曼：第①式已给"按预测方式聚类"的直观读法</span>
+  </div>
+</section>
+
+<!-- ================= 05 大模型 ================= -->
+<section class="section" id="llm">
+  <h2><span class="num">05</span>大模型的信息论：交叉熵、困惑度与缩放律</h2>
+  <p class="lead">LLM 的训练目标<em>就是</em>一个信息论量。理解这一点，loss 曲线、缩放律、温度、RLHF、蒸馏、量化都会变成同一套语言下的不同侧面。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · 训练目标 = 交叉熵</span>
+    <p>自回归语言模型最小化下一 token 的负对数似然：</p>
+    <div class="fml">L = − (1/N) Σ<sub>i</sub> log q(x<sub>i</sub> | x<sub>&lt;i</sub>)  =  Ĥ(p, q)   <span class="cm">经验交叉熵</span></div>
+    <p>而交叉熵有一个恒等分解（L1 已证）：</p>
+    <div class="fml">H(p, q) = H(p) + D<sub>KL</sub>( p ‖ q )
+          ↑           ↑
+    语言的真实熵    模型的无知</div>
+    <p><b>这条恒等式让 loss 曲线有了物理意义：</b>H(p) 是<strong>不可约的</strong>——语言本身的真实不确定性，模型再大也降不下去；训练能做的只是压缩 D<sub>KL</sub> 项。<em>loss 下降 = KL 缩小 = 模型逼近真实分布</em>。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Formula 公式 · 困惑度、比特与 BPC 的换算</span>
+    <div class="fml">PPL = exp( L<sub>nats</sub> ) = 2<sup>L<sub>bits</sub></sup>
+
+L<sub>bits</sub> = L<sub>nats</sub> / ln2 = log₂(PPL)
+
+BPC = L<sub>bits</sub> × ( #tokens / #characters )   <span class="cm">每字符比特数，跨分词器可比</span></div>
+    <p><b>英文文本熵估计的 75 年历史（一条连续研究线）：</b></p>
+    <div class="tw">
+    <table>
+      <thead><tr><th>方法 / 系统</th><th>BPC（英文）</th><th>来源</th></tr></thead>
+      <tbody>
+        <tr><td>27 字母均匀分布</td><td>4.75</td><td>log₂27</td></tr>
+        <tr><td>一阶字母频率</td><td>4.03</td><td>Shannon 1951</td></tr>
+        <tr><td>三阶（trigram）模型</td><td>≈ 2.8</td><td>Shannon 1951</td></tr>
+        <tr><td><strong>人类猜字母实验</strong></td><td>0.6 – 1.3</td><td>Shannon 1951</td></tr>
+        <tr><td>人类赌博法（更严格）</td><td>≈ 1.25</td><td>Cover &amp; King 1978</td></tr>
+        <tr><td>现代神经压缩（enwik8 类）</td><td>≈ 0.6 – 0.9</td><td>压缩基准排行榜</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note deep">
+      <b>血缘证据</b>
+      Shannon 1951 年用纸笔和人类被试设定的目标（0.6–1.3 BPC），在 2020 年代被神经网络逼近到同一区间。<strong>"语言熵的估计"这件事本身，就是从信息论直通深度学习的最短路径</strong>——中间没有任何范式断裂。
+    </div>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理/经验律 T38 · 神经缩放律的信息论解读</span>
+    <p>Kaplan et al. (2020) 与 Hoffmann et al. (2022, Chinchilla) 的经验拟合形式：</p>
+    <div class="fml">L(N, D) = E + A / N<sup>α</sup> + B / D<sup>β</sup>
+
+Chinchilla 拟合值：E ≈ 1.69 nats/token, A ≈ 406.4, α ≈ 0.34, B ≈ 410.7, β ≈ 0.28</div>
+    <p><b>三项的信息论对应（本站的核心解读）：</b></p>
+    <div class="tw">
+    <table>
+      <thead><tr><th>项</th><th>信息论含义</th><th>对应本站章节</th></tr></thead>
+      <tbody>
+        <tr><td><strong>E</strong></td><td>不可约熵 H(p)，语言的真实不确定性</td><td>L2 · Shannon 第一定理下界</td></tr>
+        <tr><td><strong>A/N<sup>α</sup></strong></td><td>近似误差：模型族表达力不足造成的 KL 下限</td><td>L3 · 率失真（受限表示的代价）</td></tr>
+        <tr><td><strong>B/D<sup>β</sup></strong></td><td>估计误差：有限样本造成的 KL</td><td>L3 · 有限块长 / 大偏差</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>总 loss = H(p) + D<sub>KL</sub>(p‖q)，而 KL 部分被分解为"表达力不足"+"数据不足"两个独立来源。<strong>Chinchilla 的最优配比结论（N 与 D 应同比例增长）</strong>，本质上是"让两个误差源保持平衡"。</p>
+    <p><b>可检验推论：</b>若 E 确实是语言真实熵，则任何模型的 loss 都不可能低于 E。见下文预测 <a href="#pred">P2</a>。</p>
+  </div>
+
+  <div class="lab">
+    <div class="lab-h">▶ 交互：缩放律与不可约熵墙</div>
+    <div class="ctrl"><label for="sc-d">数据量 log₁₀ D (tokens)</label><input type="range" id="sc-d" min="8" max="13" step="0.1" value="11"><span class="val" id="sc-dv">11.0</span></div>
+    <div class="ctrl"><label for="sc-n">参数量 log₁₀ N</label><input type="range" id="sc-n" min="6" max="12" step="0.1" value="9"><span class="val" id="sc-nv">9.0</span></div>
+    <canvas id="sc-cv" data-h="265"></canvas>
+    <div class="readout" id="sc-out"></div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 用信息论重读 LLM 现象清单</span>
+    <div class="tw">
+    <table>
+      <thead><tr><th>工程现象</th><th>信息论解释</th></tr></thead>
+      <tbody>
+        <tr><td>温度采样 T</td><td>q<sub>T</sub> ∝ q<sup>1/T</sup>，即<strong>退火</strong>。T→0 时熵→0（贪心），T→∞ 时熵→log|V|（均匀）。温度直接调节输出熵。</td></tr>
+        <tr><td>RLHF 的 KL 惩罚</td><td>目标 = E[r] − β·D<sub>KL</sub>(π‖π<sub>ref</sub>)，这<em>正是</em>最大熵/率失真的拉格朗日形式；闭式解 π* ∝ π<sub>ref</sub>·e<sup>r/β</sup> 是 Gibbs 分布（T36）。</td></tr>
+        <tr><td>知识蒸馏</td><td>最小化 D<sub>KL</sub>(teacher‖student)。软标签比硬标签多携带的，正是 teacher 分布中的额外熵信息。</td></tr>
+        <tr><td>投机解码</td><td>接受率由草稿模型与目标模型的<strong>总变差距离</strong>决定；Pinsker 不等式 TV ≤ √(D/2) 把它桥接到 KL。</td></tr>
+        <tr><td>量化 / 剪枝</td><td>本质是权重的<strong>有损压缩</strong>。率失真理论给出"每权重多少比特能保持性能"的理论下界。</td></tr>
+        <tr><td>长上下文收益递减</td><td>I(X<sub>t</sub> ; X<sub>t−k</sub>) 随距离 k 幂律衰减；超过某距离后新增上下文的边际互信息趋于 0。</td></tr>
+        <tr><td>幻觉</td><td>在 I(答案; 上下文) 很低的区域，模型仍输出低熵（高置信）分布——<strong>校准失效</strong>。信息论提供了"该多不确定"的标尺。</td></tr>
+        <tr><td>LLM 水印</td><td>在采样随机性中嵌入信息，可嵌容量 = 采样分布的熵。这是一个标准的<em>隐蔽信道容量</em>问题。</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿 · LLM × 信息论的开放方向</span>
+    <ul>
+      <li><strong>压缩率与能力的定量关系：</strong>Delétang et al. 证明了 LLM 是好压缩器，但"压缩率降低 x% ⟹ 下游能力提升多少"没有任何定理。见预测 <a href="#pred">P3</a>。</li>
+      <li><strong>涌现是否是度量伪影：</strong>Schaeffer, Miranda &amp; Koyejo (NeurIPS 2023 最佳论文) 指出：用离散、非线性的准确率指标会造出"涌现"，改用连续的信息论指标（BPC / token 编辑距离）后，曲线常常变得平滑。这直接影响"AI 能力是否会突变"的判断。</li>
+      <li><strong>模型崩溃：</strong>Shumailov et al. (Nature 2024) 显示递归用合成数据训练会丢失分布尾部。可用 KL 散度与熵坍缩速率定量刻画，但收敛条件的理论尚缺。</li>
+      <li><strong>RAG 的信息增益：</strong>检索的价值 = I(答案; 检索文档 | 参数记忆)。如何在真实系统中测量这个条件互信息，仍是开放工程问题。</li>
+      <li><strong>信息论泛化界的适用性：</strong>Xu–Raginsky 界在参数量 ≫ 样本量时几乎空洞。需要"算法依赖"的新界（如条件互信息 CMI 框架，Steinke–Zakynthinou 2020）。</li>
+    </ul>
+  </div>
+
+  <div class="vfy">
+    <span class="vbadge v-pass">AI-Science：交叉熵分解与 Chinchilla 拟合参数已核</span>
+    <span class="vbadge v-pass">AI-学术：Shannon 1951 / Cover–King 1978 数值有出处</span>
+    <span class="vbadge v-warn">AI-费曼：T38 为经验律非定理，已在标题标注</span>
+  </div>
+</section>
+
+<!-- ================= 06 信息物理 ================= -->
+<section class="section" id="physics">
+  <h2><span class="num">06</span>信息物理学：Landauer 原理与 Maxwell 妖</h2>
+  <p class="lead">前五节都在放松数学假设。这一节放松的是最后一条：<strong>信息不是免费的抽象，它是物理资源</strong>。</p>
+
+  <div class="el el-concept">
+    <span class="tag">Concept 概念 · Maxwell 妖悖论（1867）</span>
+    <p>一个"妖"守在气体容器隔板的小门旁，观察分子速度，只放快分子去左边、慢分子去右边。不做功却制造了温差 ⟹ 违反热力学第二定律。</p>
+    <p>Szilard (1929) 把它简化为<strong>单分子引擎</strong>：容器里只有一个分子，妖测量它在左半还是右半，然后插入活塞让气体等温膨胀，提取功 k<sub>B</sub>T ln2。循环可以无限进行——除非某处有隐藏成本。<br>
+    Szilard 的洞见：成本在于<strong>妖必须记录测量结果</strong>。但直到 Landauer 才说清楚代价具体在哪一步。</p>
+  </div>
+
+  <div class="el el-theorem">
+    <span class="tag">Theorem 定理 T39 · Landauer 原理（1961）</span>
+    <p>在温度 T 的环境中，<strong>擦除</strong>一比特信息，至少向环境耗散能量</p>
+    <div class="fml">E<sub>min</sub> = k<sub>B</sub> T ln 2  ≈ 2.87 × 10⁻²¹ J  （T = 300 K）
+                        ≈ 0.0179 eV
+                        ≈ 0.7 k<sub>B</sub>T</div>
+    <p>更一般地，把系统的信息熵从 H<sub>i</sub> 比特降到 H<sub>f</sub> 比特，最小耗散为 k<sub>B</sub>T ln2 · (H<sub>i</sub> − H<sub>f</sub>)。</p>
+    <p><b>归属：</b>R. Landauer, <i>Irreversibility and Heat Generation in the Computing Process</i>, IBM J. Res. Dev. 5(3):183–191, 1961.</p>
+  </div>
+
+  <div class="el el-proof">
+    <span class="tag">Proof 论证 · 相空间体积收缩</span>
+    <p>一个比特的两个逻辑状态占据相空间体积 2V（各占 V）。"擦除"= 无论初态如何都重置为 0，即把可达相空间压缩到 V。</p>
+    <div class="fml">ΔS<sub>系统</sub> = k<sub>B</sub> ln(V / 2V) = − k<sub>B</sub> ln 2
+
+第二定律：ΔS<sub>总</sub> = ΔS<sub>系统</sub> + ΔS<sub>环境</sub> ≥ 0
+
+⟹ ΔS<sub>环境</sub> ≥ k<sub>B</sub> ln 2  ⟹  Q = T·ΔS<sub>环境</sub> ≥ k<sub>B</sub>T ln 2  ∎</div>
+    <div class="note warn">
+      <b>最常见的三个误读</b>
+      ① Landauer <strong>不是</strong>说"计算耗能"，只说<em>逻辑不可逆</em>操作（擦除、AND、OR 等丢信息的门）耗能。<br>
+      ② Bennett (1973) 证明<strong>任何计算都可用可逆门重写</strong>（Toffoli / Fredkin 门），原则上耗能可趋于 0，代价是必须保留中间结果（空间换能量）。<br>
+      ③ 因此 Maxwell 妖悖论被彻底化解：妖的记忆终究要被擦除以完成循环，擦除代价 k<sub>B</sub>T ln2 恰好抵消它提取的功 k<sub>B</sub>T ln2。<em>第二定律安然无恙，但代价是必须把"信息"写进热力学。</em>
+    </div>
+  </div>
+
+  <div class="el el-coro">
+    <span class="tag">Corollary 推论 · 含信息的第二定律</span>
+    <p>Sagawa–Ueda (2010) 把第二定律推广为</p>
+    <div class="fml">⟨W<sub>ext</sub>⟩ ≤ −ΔF + k<sub>B</sub> T · I
+
+其中 I = 测量获得的<strong>互信息</strong>（nat）</div>
+    <p><b>读法：</b>测量得到的每 1 比特信息，最多可以换取 k<sub>B</sub>T ln2 的功。<strong>Shannon 互信息被直接写进了热力学第二定律</strong>——这是信息论与物理学最直接的接口，没有任何类比成分。</p>
+  </div>
+
+  <div class="el el-example">
+    <span class="tag">Example 例题 · 实验验证与工程距离</span>
+    <p><strong>实验：</strong></p>
+    <ul>
+      <li>Bérut et al. (Nature 483:187–189, 2012)：用光镊操控双势阱中的胶体微粒实现单比特擦除，测得耗散在慢速极限下确实趋近 k<sub>B</sub>T ln2。<em>Landauer 原理从思想实验变成了实测事实。</em></li>
+      <li>Jun, Gavrilov &amp; Bechhoefer (PRL 113:190601, 2014)：进一步提高精度，验证接近下界 &lt;1% 的偏差。</li>
+    </ul>
+    <p><strong>工程距离估算：</strong></p>
+    <div class="fml">当前 CMOS 单次开关耗能 ≈ 10⁻¹⁶ ~ 10⁻¹⁷ J
+Landauer 下界        ≈ 2.87 × 10⁻²¹ J
+比值                  ≈ 10⁴ ~ 10⁵ 倍</div>
+    <p>还有 4–5 个数量级空间——但要接近它需要近绝热、近可逆的电路，速度会急剧下降（涨落-耗散权衡）。</p>
+    <p><strong>数据中心的量级检查：</strong>假设全球每年执行 10²⁵ 次比特擦除，Landauer 总下界约 3 × 10⁴ J ≈ 0.008 kWh。<em>完全可忽略。</em>结论：当前计算能耗<strong>百分之百由工程非理想性主导</strong>，物理极限远未成为约束。这是一个重要的祛魅。</p>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿 · 信息热力学</span>
+    <ul>
+      <li><strong>随机热力学：</strong>Jarzynski 等式 ⟨e<sup>−βW</sup>⟩ = e<sup>−βΔF</sup> 与 Crooks 涨落定理的信息论版本；单条轨迹层面的熵产生可用 KL 散度表示：⟨Σ<sub>prod</sub>⟩ = D(P<sub>正向</sub> ‖ P<sub>逆向</sub>)。<strong>不可逆性 = 正逆轨迹分布的 KL 距离</strong>，这是极优雅的等式。</li>
+      <li><strong>自主 Maxwell 妖：</strong>不需要外部观察者，靠两个耦合系统之间的信息流实现的信息引擎，已有实验实现（单电子箱、超导线路）。</li>
+      <li><strong>生物中的信息代价：</strong>细胞信号转导、核糖体翻译的"每比特焦耳"效率；感官神经元的信息传输能耗。生物系统常在 10–100 k<sub>B</sub>T/bit 量级，远优于 CMOS。</li>
+      <li><strong>Margolus–Levitin 界：</strong>能量为 E 的系统每秒最多完成 2E/(πℏ) 次正交态演化 ⟹ 计算速度的物理上界。与 Bremermann 极限、Bekenstein 界一起构成"计算的宇宙学约束"。</li>
+      <li><strong>黑洞信息佯谬：</strong>Bekenstein–Hawking 熵 S = A/(4 l<sub>p</sub>²) 说明熵正比于<em>面积</em>而非体积（全息原理）。信息在蒸发中是否守恒？Page 曲线与量子极值面计算（2019–）给出了肯定的迹象。这是信息论触及基础物理的最深处。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 07 开放问题 ================= -->
+<section class="section" id="open">
+  <h2><span class="num">07</span>开放问题清单：一份可用的选题地图</h2>
+  <p class="lead">列出开放问题不是为了炫耀难度，而是给出<strong>可导航的研究地形</strong>。下表按"被攻击年限"排序——年限越长，越不适合作为新人的唯一课题。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>#</th><th>开放问题</th><th>提出年份</th><th>当前状态与核心障碍</th></tr></thead>
+    <tbody>
+      <tr><td><strong>O1</strong></td><td>一般广播信道 (BC) 的容量区域</td><td>1972</td><td>开放。退化 BC 已解决（Bergmans/Gallager）；非退化情形 Marton 内界与 Nair–El Gamal 外界之间的缝隙 50 年未闭合。</td></tr>
+      <tr><td><strong>O2</strong></td><td>干扰信道 (IC) 的容量区域</td><td>1975</td><td>开放。Han–Kobayashi 内界仍是最佳已知，最优性未证。仅有"1/2 比特近似"（Etkin–Tse–Wang 2008）与自由度刻画。</td></tr>
+      <tr><td><strong>O3</strong></td><td>中继信道容量</td><td>1971</td><td>开放。Cover–El Gamal (1979) 的 decode-forward / compress-forward 内界与 cut-set 外界至今未闭合。</td></tr>
+      <tr><td><strong>O4</strong></td><td>反馈能否增大 DMC 容量</td><td>1956</td><td><strong>已解决：不能</strong>（Shannon 1956）。但反馈能大幅改善误差指数与有限块长性能（Schalkwijk–Kailath）。列此以示对照。</td></tr>
+      <tr><td><strong>O5</strong></td><td>量子容量 Q 的单字母公式</td><td>1990s</td><td>开放且已知不可加（超激活）。可能根本不存在有限字母公式。</td></tr>
+      <tr><td><strong>O6</strong></td><td>"Q(𝓝) &gt; 0" 是否可判定</td><td>2000s</td><td>开放。这是可计算性层面的问题，罕见。</td></tr>
+      <tr><td><strong>O7</strong></td><td>二维约束信道容量（如 2D run-length）</td><td>1980s</td><td>开放。一维有转移矩阵谱方法，二维无对应工具；只有数值上下界。</td></tr>
+      <tr><td><strong>O8</strong></td><td>一般量子信道的二阶（色散）项</td><td>2010s</td><td>部分解决：cq 信道由 Tomamichel–Tan (2015) 给出；一般情形开放。</td></tr>
+      <tr><td><strong>O9</strong></td><td>压缩率与"智能能力"的定量关系</td><td>2020s</td><td>开放。最大障碍是"能力"缺乏形式定义。见预测 P3。</td></tr>
+      <tr><td><strong>O10</strong></td><td>过参数化模型的紧信息论泛化界</td><td>2017–</td><td>开放。Xu–Raginsky 界在 N ≫ n 时空洞；CMI 框架（Steinke–Zakynthinou 2020）是当前最有希望的路线。</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="el el-frontier">
+    <span class="tag">Frontier 前沿 · ITW / ISIT 2025 主题地图（按离核心的距离）</span>
+    <div class="grid g2">
+      <div class="card tight">
+        <span class="lv lv2">圈层 1 · 经典核心</span>
+        <p style="margin:9px 0 0;font-size:13.5px;color:var(--ink-2)">编码理论 · 网络信息论 · 有限块长 · 误差指数 · 率失真 · 通用压缩 · 约束信道</p>
+      </div>
+      <div class="card tight">
+        <span class="lv lv1">圈层 2 · 统计交叉</span>
+        <p style="margin:9px 0 0;font-size:13.5px;color:var(--ink-2)">信息论统计推断 · 假设检验 · 分布式估计 · 差分隐私 × 信息论 · 压缩感知 · 组合测试</p>
+      </div>
+      <div class="card tight">
+        <span class="lv lv0">圈层 3 · 学习交叉</span>
+        <p style="margin:9px 0 0;font-size:13.5px;color:var(--ink-2)">信息论泛化界 · 表示学习与 IB · 神经压缩 · 联邦学习通信效率 · 分布式优化通信下界</p>
+      </div>
+      <div class="card tight">
+        <span class="lv lv4">圈层 4 · 量子</span>
+        <p style="margin:9px 0 0;font-size:13.5px;color:var(--ink-2)">量子 Shannon 理论 · 量子纠错 / qLDPC · 量子密码 · 量子网络与中继</p>
+      </div>
+      <div class="card tight">
+        <span class="lv lv3">圈层 5 · 物理与生物</span>
+        <p style="margin:9px 0 0;font-size:13.5px;color:var(--ink-2)">信息热力学 · 生物信息处理 · 分子通信 · DNA 存储 · 神经编码</p>
+      </div>
+      <div class="card tight">
+        <span class="lv lv2">圈层 6 · 系统与安全</span>
+        <p style="margin:9px 0 0;font-size:13.5px;color:var(--ink-2)">物理层安全 · 秘密共享 · 编码计算 · 分布式存储码 · 语义 / 目标导向通信</p>
+      </div>
+    </div>
+    <div class="note deep">
+      <b>选题建议（给博士生）</b>
+      高产区几乎总在<strong>两个圈层的交界处</strong>——例如"有限块长 × 联邦学习通信下界"、"率失真 × 神经压缩"、"信息热力学 × 分子通信"、"量子 × 网络"。<br>
+      纯圈层 1 的问题（O1–O3）已被顶尖学者攻击 50 年，作为唯一课题风险极高；但作为"副线 + 一个新工具"（如用现代凸优化或机器学习辅助搜索反例）则是合理的。
+    </div>
+  </div>
+</section>
+
+<!-- ================= 08 可检验预测 ================= -->
+<section class="section" id="pred">
+  <h2><span class="num">08</span>三条可检验预测</h2>
+  <p class="lead">为了让本站不止于综述，我们给出三条<strong>可被实验证伪</strong>的陈述。它们不是新定理，而是把已有理论推到可测量之处。欢迎复现与反驳——反驳同样是本站的产出。检验脚本见 <a href="verify.html">AI 检验页</a>。</p>
+
+  <div class="el el-formula">
+    <span class="tag">Prediction P1 · 有限块长正规逼近的适用范围</span>
+    <p><b>陈述：</b>对任意二元输入 DMC，在 ε = 10⁻³、块长 n ∈ [200, 2000] 的范围内，最优码率 R*(n,ε) 与三阶正规逼近</p>
+    <div class="fml">R*(n,ε) ≈ C − √(V/n)·Q<sup>−1</sup>(ε) + (log₂ n)/(2n)</div>
+    <p>的相对偏差不超过 <strong>3%</strong>。</p>
+    <p><b>检验方式：</b>对 BSC(0.11) 与 BEC(0.5)，用 Polyanskiy–Poor–Verdú (2010) 的 metaconverse 上界与 RCU 可达界数值夹逼 R*，与上式对比。</p>
+    <p><b>可证伪点：</b>若在 n ∈ [200,2000] 内偏差超 3%，说明需要四阶修正项。<em>已知提示：n &lt; 100 时偏差确实明显增大，因此本预测特意把下界设在 200。</em></p>
+    <p><b>预计难度：</b>低（纯数值计算，一台笔记本即可）。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Prediction P2 · 英文文本熵的下界墙</span>
+    <p><b>陈述：</b>在标准英文语料（enwik8 / enwik9 / Pile 英文子集）上，任何模型的每字符比特数 <strong>BPC 不会低于 0.4</strong>；且历年最优 BPC 曲线应呈现<strong>渐近饱和</strong>而非持续线性下降。</p>
+    <p><b>依据：</b>Chinchilla 拟合的不可约项 E ≈ 1.69 nats/token ≈ 2.44 bit/token；按英文平均 ≈ 4 字符/token 换算得 ≈ 0.61 BPC，与 Shannon 1951 人类实验区间 (0.6–1.3) 及 Cover–King (1.25) 处于同一量级。取 0.4 作为保守下界。</p>
+    <p><b>检验方式：</b>追踪 Large Text Compression Benchmark 与 Hutter Prize 的历年最优 BPC，做趋势外推与饱和检验。</p>
+    <p><b>可证伪点：</b>若某系统在 enwik9 上达到 BPC &lt; 0.4，则说明：或者语言真实熵估计需要下修，或者该语料存在此前未察觉的冗余（重复文档、模板文本）。<em>两种情况都是有价值的发现。</em></p>
+    <p><b>预计难度：</b>低（数据已公开，只需整理与统计）。</p>
+  </div>
+
+  <div class="el el-formula">
+    <span class="tag">Prediction P3 · 压缩—能力相关性的族内 / 跨族分野</span>
+    <p><b>陈述：</b>在<strong>同一模型族内</strong>（固定架构与训练数据，仅改变参数量），held-out 文本的 BPC 与下游零样本任务平均分之间，Spearman 相关系数 |ρ| &gt; 0.9；<br>
+    但<strong>跨模型族</strong>比较时（不同架构、不同数据配方），该相关性显著下降至 |ρ| &lt; 0.7。</p>
+    <p><b>理论动机：</b>若"压缩即智能"的<em>强版本</em>成立，跨族相关也应该很高（因为压缩率是与实现无关的通用度量）。若只有族内成立，说明压缩率是<em>族内的有效代理指标</em>，但不是能力的充分刻画——数据配方等因素引入了 BPC 无法捕捉的差异。</p>
+    <p><b>检验方式：</b>用 Open LLM Leaderboard / HELM 的公开评测分，配对各模型公开报告的 perplexity（需归一到同一分词器与同一 held-out 语料，这是主要难点）。</p>
+    <p><b>可证伪点：</b>若跨族 |ρ| 也 &gt; 0.9，则强版本获得有力支持；若族内 |ρ| &lt; 0.7，则否定压缩率作为能力代理。</p>
+    <p><b>预计难度：</b>中（数据获取容易，但 BPC 的跨分词器归一化需谨慎处理，否则结论不可靠）。</p>
+  </div>
+
+  <div class="note">
+    <b>为什么要写预测</b>
+    综述型内容的最大风险是"看起来什么都懂，但不产生任何可被检验的承诺"。加入三条带证伪条件的预测，可以强制自己把模糊理解落到可测量的量上，也让 AI-Science 交叉检验有明确的攻击面。这是本站<a href="method.html">方法论</a>中"预测优先"环节的实践。
+  </div>
+</section>
+
+<!-- ================= 09 自检 ================= -->
+<section class="section" id="quiz4">
+  <h2><span class="num">09</span>自检与作业</h2>
+
+  <div class="quiz">
+    <div class="qh">自检 · 7 题</div>
+    <ol>
+      <li>为什么量子条件熵可以为负，而经典条件熵不能？负值的操作意义是什么？</li>
+      <li>K(x) 既然不可计算，算法信息论还有什么用？请给出三个理由。</li>
+      <li>为什么"给定方差下高斯熵最大"能推出"高斯噪声最难对抗"？</li>
+      <li>Saxe 等人反驳 IB 泛化解释的论证中，技术上最有力的一条是什么？</li>
+      <li>Landauer 原理是否意味着"计算必然耗能"？如果不是，正确表述是什么？</li>
+      <li>缩放律 L = E + A/N<sup>α</sup> + B/D<sup>β</sup> 三项分别对应信息论中的什么量？</li>
+      <li>为什么说 C<sub>E</sub>（纠缠辅助容量）是"量子世界的 Shannon 公式"？这说明了什么？</li>
+    </ol>
+  </div>
+
+  <details>
+    <summary>参考答案</summary>
+    <div class="dbody">
+      <p><b>1.</b> 经典 H(X|Y) = Σ<sub>y</sub> p(y)·H(X|Y=y) 是非负量的加权平均，必然 ≥ 0。量子 S(A|B) = S(AB) − S(B) 并非"条件态熵的平均"——纠缠使得整体可以比部分更确定：Bell 态 S(AB)=0 而 S(B)=1，故 S(A|B) = −1。<br>
+      操作意义（Horodecki–Oppenheim–Winter 2005）：−S(A|B) 是量子态合并协议中可以<em>回收</em>的纠缠比特数。经典世界"知识最多让你完全确定"；量子世界可以"超过完全确定"，多出来的部分以纠缠资源的形式兑现。</p>
+
+      <p><b>2.</b> ① <strong>不可能性结论：</strong>K 给出理论极限，例如可证明"不存在对所有串都有效的无损压缩器"（计数论证）。② <strong>可近似：</strong>用真实压缩器上界近似 K，产出 NCD 这类无参数距离，在系统发育、聚类、异常检测中实际可用。③ <strong>理论桥梁：</strong>定理 T35 说明 (1/n)E[K] → H，为 Shannon 熵提供了"单个对象"层面的解释，也为"学习即压缩"提供了形式基础。</p>
+
+      <p><b>3.</b> 加性噪声信道 C = max<sub>p(x)</sub>[h(Y) − h(Y|X)] = max h(Y) − h(Z)。噪声功率固定时，h(Z) 越大 C 越小。由最大熵定理 T36，在二阶矩（功率）约束下高斯的微分熵最大，故高斯噪声对应最小容量，即最难对抗。<br>
+      推论也很有用：<em>任何非高斯噪声，只要功率相同，容量都不低于 AWGN 情形</em>——所以 AWGN 假设给出的是安全（保守）的系统设计。</p>
+
+      <p><b>4.</b> 最有力的是<strong>测量伪影论证</strong>：对确定性网络 T = f(X)，若 X 是连续变量，则 I(X;T) 严格等于 ∞（T 完全决定于 X）。实验中报告的有限值，完全来自对激活值做的分箱离散化。改变 bin 宽度会改变"是否观察到压缩"的结论，因此"压缩相"可能是测量方法的产物而非网络的真实行为。<br>
+      其次是<strong>激活函数依赖</strong>：tanh 有压缩、ReLU 常常没有，而两者泛化性能相当 ⟹ 压缩非泛化的必要条件。<br>
+      这两条共同推动了后续研究转向变分 IB（不测量、直接优化界）与 V-information（重新定义"可提取信息"以避免发散）。</p>
+
+      <p><b>5.</b> 不是。Landauer 只说<strong>逻辑不可逆</strong>操作（擦除、AND、OR 等丢失信息的门）每比特至少耗散 k<sub>B</sub>T ln2。Bennett (1973) 证明任何计算都能用可逆门（Toffoli / Fredkin）改写，原则上耗能可趋于 0，代价是需要保存中间结果（空间换能量）。<br>
+      正确表述：<em>"丢弃信息"必然耗能，"处理信息"不必然耗能。</em>实际 CMOS 比该下界高 4–5 个数量级，瓶颈完全在工程而非物理。</p>
+
+      <p><b>6.</b> E ↔ 信源真实熵 H(p)，即 Shannon 第一定理给出的不可约下界；A/N<sup>α</sup> ↔ 近似误差，模型族表达力不足造成的 KL 下限，与率失真中"受限表示的代价"同构；B/D<sup>β</sup> ↔ 估计误差，有限样本造成的 KL，与有限块长 / 大偏差主题同源。<br>
+      合起来：总 loss = H(p) + D<sub>KL</sub>(p‖q)，而 KL 被分解为"表达力不足"与"数据不足"两个独立来源。Chinchilla 的"N 与 D 应同比例增长"结论，本质是让这两个误差源保持平衡。</p>
+
+      <p><b>7.</b> 因为 C<sub>E</sub> = max<sub>ρ</sub> I(A;B) 是唯一同时满足三条的量子容量：<strong>单字母</strong>（无需 lim(1/n) 正则化）、<strong>可加</strong>、<strong>形式与经典 C = max I(X;Y) 完全对应</strong>，因而实际可计算。<br>
+      而 C 与 Q 都需要正则化且不可加（Hastings 反例、Smith–Yard 超激活）。<br>
+      这说明：<em>破坏量子信息论优美结构的，正是纠缠这一资源的稀缺性</em>。一旦把纠缠当作免费供应，量子信道就"退回"到了 Shannon 的世界。这是理解量子信息论全貌的最佳单一视角。</p>
+    </div>
+  </details>
+
+  <div class="card">
+    <h4 style="margin-top:0">动手作业</h4>
+    <ol>
+      <li>实现 NCD 文本聚类：取 5 种语言各 20 段文本，用 gzip 计算 NCD 矩阵，做层次聚类，看能否重建语系树。</li>
+      <li>用最大熵原理推导 von Mises 分布（约束为 E[cos θ] 与 E[sin θ]），并数值验证其熵大于任何满足同样约束的其他分布。</li>
+      <li>实现 IB 迭代算法（T37 三式），在一个 |𝒳|=20、|𝒴|=3 的合成联合分布上扫描 β，画出真实的信息曲线，与本页的示意曲线对比。</li>
+      <li>复现预测 P1：对 BSC(0.11) 计算 PPV metaconverse 与 RCU 界，检验三阶正规逼近在 n∈[200,2000] 的相对偏差。</li>
+      <li>阅读 Saxe et al. (ICLR 2018) 全文，用 ReLU 与 tanh 各训练一个小网络，自己画信息平面轨迹，判断你观察到的是压缩还是分箱伪影。</li>
+      <li>估算你的笔记本电脑一次完整训练的能耗，与其执行的比特擦除次数对应的 Landauer 下界比较，算出比值。</li>
+    </ol>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="l3_advanced.html"><span class="lb">← 上一站</span>L3 专业 · 现代信息论</a>
+  <a class="nx" href="lab.html"><span class="lb">下一站 →</span>交互实验室 · 亲手调参</a>
+</div>
+
+<footer class="foot">
+  <p>L4 信源：Holevo 1973 · Schumacher–Westmoreland 1997 / Holevo 1998（HSW）· Lieb–Ruskai 1973（强次可加性）· Bennett–Shor–Smolin–Thapliyal 1999/2002（C<sub>E</sub>）· Smith–Yard 2008, Science（超激活）· <strong>Hastings 2009, Nature Physics</strong>（可加性反例）· Horodecki–Oppenheim–Winter 2005（态合并）· Tomamichel–Tan 2015 · Panteleev–Kalachev 2022（qLDPC）· Solomonoff 1964 / Kolmogorov 1965 / Chaitin 1966 · Li &amp; Vitányi <i>An Introduction to Kolmogorov Complexity</i> 4th ed. · Cilibrasi–Vitányi 2005（NCD）· Jiang et al. ACL Findings 2023（gzip+kNN）· Delétang et al. 2023（<i>Language Modeling Is Compression</i>）· <strong>Jaynes 1957, Phys. Rev. 106:620</strong> · Shore–Johnson 1980 · Schneidman et al. Nature 2006 · Ziebart et al. 2008（MaxEnt IRL）· <strong>Tishby–Pereira–Bialek 1999</strong> · Shwartz-Ziv–Tishby 2017 · <strong>Saxe et al. ICLR 2018</strong> · Alemi et al. ICLR 2017（VIB）· Xu et al. ICLR 2020（V-information）· Xu–Raginsky NeurIPS 2017 · Steinke–Zakynthinou 2020（CMI）· Shannon 1951（<i>Prediction and Entropy of Printed English</i>）· Cover–King 1978 · Kaplan et al. 2020 · <strong>Hoffmann et al. 2022（Chinchilla）</strong> · Schaeffer et al. NeurIPS 2023（涌现之争）· Shumailov et al. Nature 2024（模型崩溃）· <strong>Landauer 1961, IBM JRD 5:183</strong> · Bennett 1973/1982 · Szilard 1929 · Bérut et al. Nature 2012 · Jun et al. PRL 2014 · Sagawa–Ueda PRL 2010 · Margolus–Levitin 1998 · El Gamal &amp; Kim <i>Network Information Theory</i>（开放问题）· ITW/ISIT 2025 主题征稿。完整信源见 <code>source/edu_ladder_sources.md</code>。</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+(function(){
+
+  /* ---------- 最大熵骰子 ---------- */
+  var mc = document.getElementById('me-cv');
+  if(mc){
+    var mp = new ILPlot(mc, {xr:[0.5,6.5], yr:[0,0.45], xlabel:'点数 k', ylabel:'概率 p(k)'});
+    function meanOf(l){
+      var z=0,s=0,k;
+      for(k=1;k<=6;k++){ var e=Math.exp(l*k); z+=e; s+=k*e; }
+      return s/z;
+    }
+    ILBind(['me-mu'], function(){
+      var mu = +document.getElementById('me-mu').value;
+      document.getElementById('me-muv').textContent = mu.toFixed(2);
+      // 二分求 lambda
+      var lo=-6, hi=6, m, i;
+      for(i=0;i<200;i++){ m=(lo+hi)/2; if(meanOf(m)<mu) lo=m; else hi=m; }
+      var lam=(lo+hi)/2, z=0, p=[], k;
+      for(k=1;k<=6;k++) z+=Math.exp(lam*k);
+      for(k=1;k<=6;k++) p.push(Math.exp(lam*k)/z);
+      var H = ILMath.H(p);
+
+      mp.resize(); mp.clear(); mp.axes(6,5);
+      var cols=[];
+      for(k=0;k<6;k++) cols.push('#a78bfa');
+      mp.bars(p, cols);
+      // 均匀参考线
+      var x=mp.ctx, Y=mp.py(1/6);
+      x.save(); x.strokeStyle='#34d399'; x.setLineDash([5,4]); x.lineWidth=1.3;
+      x.beginPath(); x.moveTo(mp.pad.l, Y); x.lineTo(mp.w-mp.pad.r, Y); x.stroke(); x.restore();
+      x.fillStyle='#34d399'; x.font='10.5px ui-monospace,monospace';
+      x.textAlign='left'; x.textBaseline='bottom';
+      x.fillText('均匀 1/6', mp.pad.l+6, Y-4);
+      // 数值标注
+      x.fillStyle='#e8edf7'; x.textAlign='center'; x.textBaseline='bottom';
+      for(k=0;k<6;k++){
+        var bw=(mp.w-mp.pad.l-mp.pad.r)/6;
+        x.fillText(p[k].toFixed(3), mp.pad.l+bw*(k+0.5), mp.py(p[k])-5);
+      }
+      document.getElementById('me-out').innerHTML =
+        '拉格朗日乘子 λ = <b>'+lam.toFixed(4)+'</b>　·　最大熵 H = <b>'+H.toFixed(4)+'</b> bit'+
+        '　·　均匀上限 log₂6 = 2.5850 bit<br>'+
+        '约束"平均点数 = '+mu.toFixed(2)+'"消除了 <b>'+(2.5850-H).toFixed(4)+'</b> bit 的不确定性。'+
+        (Math.abs(mu-3.5)<0.03 ? '　（μ=3.5 时约束不含任何信息，回到均匀分布）' : '');
+    });
+  }
+
+  /* ---------- IB 信息平面 ---------- */
+  var ic = document.getElementById('ib-cv');
+  if(ic){
+    var ip = new ILPlot(ic, {xr:[0,2], yr:[0,1.2],
+      xlabel:'I(X;T)  ←压缩得越狠越靠左', ylabel:'I(T;Y)  保留的相关信息'});
+    ILBind(['ib-b','ib-i'], function(){
+      var beta = +document.getElementById('ib-b').value;
+      var IXY  = +document.getElementById('ib-i').value;
+      document.getElementById('ib-bv').textContent = beta.toFixed(1);
+      document.getElementById('ib-iv').textContent = IXY.toFixed(2);
+      var k = 1.6;
+      function f(t){ return Math.min(t, IXY*(1-Math.exp(-k*t))); }
+
+      ip.yr = [0, Math.max(1.0, IXY*1.3)];
+      ip.resize(); ip.clear(); ip.axes(5,5);
+      // 45 度 DPI 约束线
+      ip.line(function(t){ return t; }, '#3a4763', 1.2);
+      // I(X;Y) 上限
+      var x = ip.ctx, Yc = ip.py(IXY);
+      x.save(); x.strokeStyle='#34d399'; x.setLineDash([5,4]); x.lineWidth=1.3;
+      x.beginPath(); x.moveTo(ip.pad.l, Yc); x.lineTo(ip.w-ip.pad.r, Yc); x.stroke(); x.restore();
+      x.fillStyle='#34d399'; x.font='10.5px ui-monospace,monospace';
+      x.textAlign='right'; x.textBaseline='bottom';
+      x.fillText('I(X;Y) = '+IXY.toFixed(2), ip.w-ip.pad.r-4, Yc-4);
+      // 信息曲线
+      ip.line(f, '#a78bfa', 2.4);
+      // 工作点：切线斜率 = 1/beta -> IXY*k*exp(-k t) = 1/beta
+      var arg = 1/(beta*IXY*k);
+      var t0 = (arg>0 && arg<1) ? -Math.log(arg)/k : (arg>=1 ? 0 : 2);
+      if(!isFinite(t0) || t0<0) t0 = 0;
+      if(t0>2) t0 = 2;
+      var y0 = f(t0);
+      // 切线
+      var sl = 1/beta, dl = 0.45;
+      x.save(); x.strokeStyle='#fbbf24'; x.setLineDash([4,4]); x.lineWidth=1.2;
+      x.beginPath();
+      x.moveTo(ip.px(Math.max(0,t0-dl)), ip.py(y0 - sl*Math.min(dl,t0)));
+      x.lineTo(ip.px(Math.min(2,t0+dl)), ip.py(y0 + sl*Math.min(dl,2-t0)));
+      x.stroke(); x.restore();
+      ip.dot(t0, y0, '#f472b6', 'β='+beta.toFixed(1));
+
+      var eff = t0>1e-6 ? (y0/t0) : 0;
+      document.getElementById('ib-out').innerHTML =
+        '工作点：I(X;T) = <b>'+t0.toFixed(3)+'</b> bit（压缩代价）　·　I(T;Y) = <b>'+y0.toFixed(3)+'</b> bit（相关收益）<br>'+
+        '切线斜率 = 1/β = <b>'+sl.toFixed(3)+'</b>　·　信息效率 I(T;Y)/I(X;T) = <b>'+eff.toFixed(3)+'</b>　'+
+        '（上限 1，由 DPI 给出的 45° 线约束）<br>'+
+        '<span style="color:var(--ink-3)">β 越小越偏向压缩（左下），β 越大越偏向保真（右上）。曲线为示意形状，真实曲线需迭代 T37 求解。</span>';
+    });
+  }
+
+  /* ---------- 缩放律 ---------- */
+  var sc = document.getElementById('sc-cv');
+  if(sc){
+    var E=1.69, A=406.4, alpha=0.3392, B=410.7, beta2=0.2849;
+    function Lfn(N, D){ return E + A/Math.pow(N,alpha) + B/Math.pow(D,beta2); }
+    var sp = new ILPlot(sc, {xr:[6,12], yr:[1.5,4.2],
+      xlabel:'log₁₀ 参数量 N', ylabel:'loss (nats/token)'});
+    ILBind(['sc-n','sc-d'], function(){
+      var ln = +document.getElementById('sc-n').value;
+      var ld = +document.getElementById('sc-d').value;
+      document.getElementById('sc-nv').textContent = ln.toFixed(1);
+      document.getElementById('sc-dv').textContent = ld.toFixed(1);
+      var N = Math.pow(10,ln), D = Math.pow(10,ld);
+      var cur = Lfn(N,D);
+      var termN = A/Math.pow(N,alpha), termD = B/Math.pow(D,beta2);
+
+      sp.resize(); sp.clear(); sp.axes(6,5);
+      // 不可约熵墙
+      var x = sp.ctx, Ye = sp.py(E);
+      x.save(); x.strokeStyle='#f472b6'; x.setLineDash([6,4]); x.lineWidth=1.6;
+      x.beginPath(); x.moveTo(sp.pad.l, Ye); x.lineTo(sp.w-sp.pad.r, Ye); x.stroke(); x.restore();
+      x.fillStyle='#f472b6'; x.font='10.5px ui-monospace,monospace';
+      x.textAlign='left'; x.textBaseline='bottom';
+      x.fillText('不可约熵 E = 1.69  ←  语言真实熵 H(p)，任何模型都穿不过', sp.pad.l+6, Ye-5);
+      // 数据无限时的曲线
+      sp.line(function(v){ return Lfn(Math.pow(10,v), 1e14); }, '#3a4763', 1.4);
+      // 当前 D 下的曲线
+      sp.line(function(v){ return Lfn(Math.pow(10,v), D); }, '#a78bfa', 2.4);
+      sp.dot(ln, cur, '#fbbf24', 'N=10^'+ln.toFixed(1));
+
+      document.getElementById('sc-out').innerHTML =
+        'L = <b>'+cur.toFixed(4)+'</b> nats/token  =  <b>'+(cur/Math.LN2).toFixed(4)+'</b> bit/token'+
+        '　·　PPL = <b>'+Math.exp(cur).toFixed(2)+'</b><br>'+
+        '分解：不可约 E = <b>'+E.toFixed(3)+'</b>（'+(100*E/cur).toFixed(1)+'%）'+
+        '　+ 近似误差 A/N^α = <b>'+termN.toFixed(4)+'</b>'+
+        '　+ 估计误差 B/D^β = <b>'+termD.toFixed(4)+'</b><br>'+
+        '<span style="color:var(--ink-3)">'+
+        (termN > termD*1.5 ? '当前<b style="color:var(--warn)">参数量</b>是瓶颈 → 应加大模型' :
+         termD > termN*1.5 ? '当前<b style="color:var(--warn)">数据量</b>是瓶颈 → 应加大数据' :
+         '两个误差源大致平衡 → 接近 Chinchilla 最优配比') +
+        '　·　灰线为 D=10¹⁴（数据近乎无限）时的极限曲线。</span>';
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
