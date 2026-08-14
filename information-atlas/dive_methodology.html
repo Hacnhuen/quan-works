@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深潜馆 · 方法论 | ONESHOT 信息论</title>
+<style>
+:root{--bg-0:#08060f;--bg-1:#100a1d;--bg-2:#18102b;--ink:#eee9ff;--ink-dim:#b6a9d8;--line:rgba(150,120,255,.22);--accent:#8b6bff;--accent-2:#b9a4ff;--glow:rgba(139,107,255,.4);--glass:rgba(24,16,43,.45);--radius:20px;--maxw:1120px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Mono","PingFang SC",sans-serif;background:var(--bg-0);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1000px 800px at 14% 10%,rgba(139,107,255,.22),transparent 60%),linear-gradient(160deg,var(--bg-0),var(--bg-1) 55%,var(--bg-2))}
+.fluid-bg::before{content:"";position:absolute;width:44vw;height:44vw;left:-6vw;top:-4vw;border-radius:50%;filter:blur(70px);background:radial-gradient(circle,rgba(139,107,255,.42),transparent 70%);animation:f 26s ease-in-out infinite}
+@keyframes f{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.07)}66%{transform:translate(-3vw,2vh) scale(.97)}}
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);background:linear-gradient(180deg,rgba(8,6,15,.9),rgba(8,6,15,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:15px}.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:80px 0 50px;text-align:center}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:22px;background:var(--glass)}
+.hero h1{font-size:clamp(32px,5.4vw,60px);font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#c4b3ff 60%,#b9a4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:680px;margin:22px auto 0;color:var(--ink-dim);font-size:16px}
+.section{padding:54px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px}.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px}.section-head h2{font-size:clamp(22px,3.2vw,34px);font-weight:750}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:26px;backdrop-filter:blur(16px);box-shadow:0 20px 50px -28px rgba(0,0,0,.85);transition:transform .4s,border-color .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(185,164,255,.45)}
+.grid{display:grid;gap:20px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:880px){.g2,.g3{grid-template-columns:1fr}}
+.card h3{font-size:18px;font-weight:700;margin-bottom:10px;color:#fff}.card p{color:var(--ink-dim);font-size:14px}.card .tag{display:inline-block;font-size:11px;color:var(--accent-2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.formula{background:linear-gradient(180deg,rgba(24,16,43,.7),rgba(12,8,22,.7));border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;padding:18px 20px;margin:16px 0;font-family:"SF Mono",ui-monospace,monospace;font-size:13.5px;color:#e3dcff;overflow-x:auto;white-space:pre-wrap}
+.step{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
+.step .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--accent);color:#0a0613;font-weight:800;display:grid;place-items:center;font-size:14px}
+.step .b{color:var(--ink-dim);font-size:14px;padding-top:6px}
+.callout{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(120deg,rgba(139,107,255,.12),rgba(185,164,255,.05));margin:20px 0;font-size:14px;color:#e6deff}.callout b{color:#fff}
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal-up.in{opacity:1;transform:none}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:36px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div>
+<header class="topbar"><div class="inner">
+  <div class="brand">ONESHOT · 信息论图集<small>深潜馆 · 方法论</small></div>
+  <nav class="nav"><a href="#ib-derive">IB 推导</a><a href="#ba">BA 算法</a><a href="hub_master.html">↗ HUB</a></nav>
+</div></header>
+<div class="wrap">
+  <section class="hero"><span class="kicker">Deep Dive · Methodology</span><h1>把公式推到底</h1><p class="lead">深潜馆之一：信息瓶颈方法的完整数学推导与率失真理论的 Blahut-Arimoto 算法实现。这是主馆 06 背后的"引擎室"。</p></section>
+
+  <section class="section" id="ib-derive">
+    <div class="section-head"><span class="num">01</span><h2>信息瓶颈：从变分原理到自洽方程</h2></div>
+    <p style="color:var(--ink-dim);margin-bottom:18px">给定输入 X、相关变量 Y（联合分布 p(x,y)），寻找压缩表示 T 使 I(X;T) 最小、I(T;Y) 最大。引入 Lagrange 乘子 beta（权衡），得 IB 泛函：</p>
+    <div class="formula">L[p(t|x)] = I(X;T) - beta*I(T;Y)
+= Sigma p(x,y)p(t|x) log [ p(t|x) / (p(t) * p(y|t)^beta) ]</div>
+    <p style="color:var(--ink-dim);margin:14px 0">对 p(t|x) 变分求极值，加归一化约束，用归一化消去乘子（记 Z(x;beta)），得三条自洽方程：</p>
+    <div class="formula">编码器:  p(t|x) = p(t) / Z(x;beta) * exp( -beta * D_KL[ p(y|x) || p(y|t) ] )   ... (Eq.16)
+边缘:    p(t)   = Sigma_x p(x) p(t|x)                                       ... (Eq.17)
+解码器:  p(y|t) = (1/p(t)) Sigma_x p(x,y) p(t|x)                            ... (Eq.27)</div>
+    <div class="step"><div class="n">1</div><div class="b"><b>初始化</b>：取均匀或随机 p(t)。</div></div>
+    <div class="step"><div class="n">2</div><div class="b"><b>迭代</b>：用 (16) 更新 p(t|x) -&gt; 用 (17) 更新 p(t) -&gt; 用 (27) 更新 p(y|t)，直至收敛。</div></div>
+    <div class="step"><div class="n">3</div><div class="b"><b>扫描 beta</b>：从大到小改变 beta，得到 IB 曲线上的各工作点 (I(X;T), I(T;Y))。</div></div>
+    <div class="callout"><b>退火二阶相变（Eq.34）：</b>当 beta 连续增大、对表征做"确定性退火"时，相关结构在临界 beta* 处突然涌现——类比 Ising 模型的有序-无序相变。</div>
+  </section>
+
+  <section class="section" id="ba">
+    <div class="section-head"><span class="num">02</span><h2>率失真：Blahut-Arimoto 算法</h2></div>
+    <div class="formula">R(D) = min_{p(x_hat|x): E[d]&lt;=D} I(X;X_hat)
+
+Lagrangian:  F(beta) = min_{p(x_hat|x)} [ I(X;X_hat) + beta * E[d(X,X_hat)] ]</div>
+    <p style="color:var(--ink-dim);margin-bottom:14px">与 IB 同源，beta 即逆温度。最优解（自洽方程）：</p>
+    <div class="formula">p*(x_hat|x) = p(x_hat) * exp( -beta * d(x,x_hat) ) / Z(x,beta)
+其中 Z(x,beta) = Sigma_{x_hat'} p(x_hat') exp( -beta * d(x,x_hat') )</div>
+    <div class="grid g2">
+      <div class="glass card"><span class="tag">E 步</span><h3>编码更新</h3><p>p(x_hat|x) = p(x_hat)*exp(-beta*d) / Sigma p(x_hat')*exp(-beta*d)</p></div>
+      <div class="glass card"><span class="tag">M 步</span><h3>边缘更新</h3><p>p(x_hat) = Sigma_x p(x)*p(x_hat|x)</p></div>
+    </div>
+    <div class="step"><div class="n">1</div><div class="b">选 beta，初始化 p(x_hat)（如均匀）。</div></div>
+    <div class="step"><div class="n">2</div><div class="b">交替 E/M 直至收敛（线性收敛，几十步即可）。</div></div>
+    <div class="step"><div class="n">3</div><div class="b">计算该点 R、D，扫描 beta 得完整 R(D) 曲线。</div></div>
+    <div class="callout"><b>数值技巧：</b>在对数空间算 Z（LogSumExp 防溢出）；beta 用对数尺度；以前一个 beta 的收敛解作下一 beta 的初值，加速扫描。</div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="num">03</span><h2>方法论词条 · 扩展字典</h2></div>
+    <div class="grid g3">
+      <div class="glass card"><span class="tag">Variational</span><h3>变分推导</h3><p>对 p(t|x) 变分求极值，加归一化得 IB 自洽方程。</p></div>
+      <div class="glass card"><span class="tag">Self-Consist</span><h3>自洽方程</h3><p>p(t|x) 正比 p(t)exp(-beta D_KL)；迭代至收敛。</p></div>
+      <div class="glass card"><span class="tag">Encoder</span><h3>编码器更新</h3><p>用 (Eq.16) 由 p(t) 更新 p(t|x)。</p></div>
+      <div class="glass card"><span class="tag">Marginal</span><h3>边缘更新</h3><p>用 (Eq.17) 由 p(t|x) 更新 p(t)。</p></div>
+      <div class="glass card"><span class="tag">Decoder</span><h3>解码器更新</h3><p>用 (Eq.27) 由 p(t|x) 更新 p(y|t)。</p></div>
+      <div class="glass card"><span class="tag">BA E-step</span><h3>BA E 步</h3><p>p(x_hat|x) 正比 p(x_hat)exp(-beta d)。</p></div>
+      <div class="glass card"><span class="tag">BA M-step</span><h3>BA M 步</h3><p>p(x_hat)=Sigma p(x)p(x_hat|x)。</p></div>
+      <div class="glass card"><span class="tag">LogSumExp</span><h3>数值稳定</h3><p>Z 用 LogSumExp 防溢出。</p></div>
+      <div class="glass card"><span class="tag">Annealing</span><h3>退火相变</h3><p>beta 增大诱发二阶相变。</p></div>
+      <div class="glass card"><span class="tag">Convex</span><h3>凸优化</h3><p>I 双凹双凸，交替收敛。</p></div>
+    </div>
+  </section>
+</div>
+<footer><span class="pill">ONESHOT v2.0</span><span class="pill">深潜馆 · 方法论</span><span class="pill">信源：arXiv:physics/0004057 · 率失真教程</span></footer>
+<script>const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));</script>
+</body>
+</html>
