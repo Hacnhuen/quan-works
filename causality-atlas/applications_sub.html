@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>应用深潜馆 · CausalGuard 源码剖析 + 基准实测</title>
+<style>
+  :root{
+    --bg:#0B1437; --card:#132053; --accent:#22D3EE; --ink:#E7ECF5; --muted:#9AA7C7;
+    --gold:#E8A33D; --line:rgba(139,162,199,.18); --radius:14px;
+    --font-sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1000px 600px at 85% -8%,rgba(34,211,238,.14),transparent 60%),var(--bg);
+    color:var(--ink); font-family:var(--font-sans); line-height:1.65; -webkit-font-smoothing:antialiased}
+  body::before{content:""; position:fixed; inset:0; z-index:-1; opacity:.4;
+    background-image:linear-gradient(90deg,transparent 95%,rgba(34,211,238,.05) 96%); background-size:42px 42px}
+  .wrap{max-width:1140px; margin:0 auto; padding:0 24px}
+  section{padding:80px 0; border-bottom:1px solid var(--line)}
+  h1{font-size:clamp(30px,4.5vw,46px); font-weight:700; letter-spacing:-.02em}
+  h2{font-size:27px; font-weight:700; margin-bottom:6px}
+  h3{font-size:18px; font-weight:600; margin:22px 0 8px; color:#fff}
+  .sub{color:var(--muted); font-size:15px; margin-top:8px}
+  .eyebrow{font-family:var(--font-mono); font-size:12px; color:var(--gold); letter-spacing:.16em; text-transform:uppercase}
+  .lead{font-size:17px; color:#C9D4EC; max-width:780px}
+  .grid{display:grid; gap:16px; margin-top:22px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  .card{background:linear-gradient(160deg,var(--card),#0E1A40); border:1px solid var(--line);
+    border-radius:var(--radius); padding:20px; transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .card:hover{transform:translateY(-3px); border-color:rgba(34,211,238,.5)}
+  .card h4{font-size:16px; margin-bottom:6px; color:#fff}
+  .card p{font-size:13.5px; color:var(--muted)}
+  .card code{color:var(--gold); font-family:var(--font-mono)}
+  .tree-file{border-left:3px solid var(--accent); padding-left:14px; margin-top:14px}
+  .tree-file .f{font-family:var(--font-mono); color:var(--accent); font-size:14px}
+  .tree-file .d{font-size:13.5px; color:var(--muted); margin:4px 0 0}
+  pre{background:#060A18; border:1px solid var(--line); border-radius:12px; padding:18px; overflow:auto;
+    font-family:var(--font-mono); font-size:13px; line-height:1.6; color:#BFE3FF; margin:14px 0}
+  .pre-head{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
+  .copy{background:rgba(34,211,238,.14); border:1px solid rgba(34,211,238,.4); color:#BFE3FF;
+    font-size:12px; padding:5px 12px; border-radius:999px; cursor:pointer}
+  .copy:hover{background:rgba(34,211,238,.3)}
+  table{width:100%; border-collapse:collapse; margin-top:16px; font-size:13px}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
+  th{background:rgba(34,211,238,.1); color:#C9D4EC; font-weight:600}
+  td code{color:var(--gold)}
+  .bar{height:10px; border-radius:999px; background:rgba(255,255,255,.06); overflow:hidden; margin-top:8px}
+  .bar>i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--gold))}
+  .topbar{position:sticky; top:0; z-index:20; backdrop-filter:blur(16px);
+    background:rgba(11,20,55,.75); border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; padding:13px 24px}
+  .brand{font-family:var(--font-mono); font-size:14px; color:#fff}
+  .brand b{color:var(--accent)}
+  .nav a{color:var(--muted); text-decoration:none; font-size:13px; margin-left:15px}
+  .nav a:hover{color:#fff}
+  .overflow-links{display:flex; flex-wrap:wrap; gap:12px; margin-top:24px}
+  .ol{display:inline-flex; align-items:center; gap:8px; background:rgba(34,211,238,.12);
+    border:1px solid rgba(34,211,238,.35); color:#CFEFF7; text-decoration:none; padding:10px 16px;
+    border-radius:999px; font-size:14px; transition:.25s}
+  .ol:hover{background:rgba(34,211,238,.25); transform:translateY(-2px)}
+  @media(max-width:768px){ .g2,.g3{grid-template-columns:1fr} .nav{display:none} }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <div class="brand">Causal<b>Guard</b> · 应用深潜馆</div>
+  <div class="nav"><a href="#anatomy">源码剖析</a><a href="#bench">基准实测</a>
+  <a href="#access">接入</a><a href="#limits">边界</a><a href="#annex">互通</a></div>
+</div></div>
+
+<!-- 概览 -->
+<section id="overview"><div class="wrap">
+  <span class="eyebrow">Applications Deep Annex</span>
+  <h1>应用深潜馆</h1>
+  <p class="lead">CausalGuard 源码逐文件剖析、基准实测数据、三种接入方式，以及诚实的能力边界。全部基于本项目可运行代码（零第三方依赖）。</p>
+</div></section>
+
+<!-- 源码剖析 -->
+<section id="anatomy"><div class="wrap">
+  <span class="eyebrow">01 · Source Anatomy</span>
+  <h2>CausalGuard 源码逐文件剖析</h2>
+  <div class="grid g2">
+    <div class="card">
+      <div class="tree-file"><div class="f">core/scm.py</div>
+        <div class="d">DAG 构建、d-分离检验、后门/前门识别、SCM 三层查询（关联/干预/反事实）。形式化可信锚点。</div></div>
+    </div>
+    <div class="card">
+      <div class="tree-file"><div class="f">core/fallacies.py</div>
+        <div class="d">12 类因果谬误检测（F01–F12）+ 因果阶梯分级（Rung1→Rung2 越级等）。</div></div>
+    </div>
+    <div class="card">
+      <div class="tree-file"><div class="f">core/graph_extract.py</div>
+        <div class="d">文本 → 因果 DAG（规则 + LLM 抽取）。把自然语言变成可计算图。</div></div>
+    </div>
+    <div class="card">
+      <div class="tree-file"><div class="f">llm/client.py</div>
+        <div class="d">零依赖 OpenAI 兼容客户端，端点不可用时自动降级离线模式。</div></div>
+    </div>
+    <div class="card">
+      <div class="tree-file"><div class="f">llm/prompts.py</div>
+        <div class="d">CausalCoT / CausalPoT 思维链 + 降级重写提示词。</div></div>
+    </div>
+    <div class="card">
+      <div class="tree-file"><div class="f">pipeline.py</div>
+        <div class="d">七阶段守护管线总调度：S1 PROMPT_AUDIT → S7 REPAIR。</div></div>
+    </div>
+    <div class="card">
+      <div class="tree-file"><div class="f">adapters.py</div>
+        <div class="d">装饰器 / drop-in / HTTP 网关三种接入方式。</div></div>
+    </div>
+    <div class="card">
+      <div class="tree-file"><div class="f">cli.py + demo.py</div>
+        <div class="d">命令行与五个离线演示，无需任何 LLM 即可运行。</div></div>
+    </div>
+  </div>
+  <pre id="a1"># 七阶段守护管线（语义层 + 形式化层分工）
+S1 PROMPT_AUDIT  → 审计输入提示词
+S2 CAUSAL_PROMPT → 注入因果约束
+S3 GENERATE      → 生成回复
+S4 CLAIM_AUDIT   → 抽取因果主张
+S5 GRAPH_BUILD   → LLM 构建 DAG（擅长语义）
+S6 IDENTIFY      → do-演算识别（形式化，不依赖 LLM，可信锚点）
+S7 REPAIR        → 反事实修复 / 重写</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">pipeline.py · 七阶段</span><button class="copy" data-t="a1">复制</button></div>
+</div></section>
+
+<!-- 基准实测 -->
+<section id="bench"><div class="wrap">
+  <span class="eyebrow">02 · Benchmark</span>
+  <h2>基准实测数据</h2>
+  <div class="grid g2">
+    <div class="card"><h4>B1 识别正确性</h4><p>CLadder-style，12 DAG。结果 <b style="color:var(--gold)">100.0%</b></p><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="card"><h4>B2 谬误判别</h4><p>Corr2Cause-style，18 条。结果 <b style="color:var(--gold)">F1 = 1.000</b></p><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="card"><h4>B3 阶梯分级</h4><p>Pearl Rung，7 条。结果 <b style="color:var(--gold)">100.0%</b></p><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="card"><h4>单元测试</h4><p>44 项，<b style="color:var(--gold)">全部通过</b></p><div class="bar"><i style="width:100%"></i></div></div>
+  </div>
+  <pre id="a2"># 运行全部基准与测试
+python3 benchmarks/run_benchmark.py
+python3 -m unittest discover -s tests -v
+
+# 关键数值（README 实测）
+真因果效应      : +0.500
+朴素关联误报    : +1.865   (放大 3.7×)
+后门调整恢复    : +0.507   (误差 1.4%)</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">benchmarks / tests</span><button class="copy" data-t="a2">复制</button></div>
+  <p class="sub">B1 是形式化算法正确性测试（唯一标准答案，必须 100%）。B2/B3 受限于自建评测集规模，视为无回归的健全性检查，非泛化能力声明。</p>
+
+  <h3 style="margin-top:26px">项目文件 ↔ 主流工具对照</h3>
+  <p class="sub">CausalGuard 以零依赖形式化引擎定位，与下列成熟库互补而非替代。对照表帮助判断何时直接用库、何时套本中间件做合规护栏。</p>
+  <table>
+    <tr><th>CausalGuard 模块</th><th>等价/互补工具</th><th>差异点</th></tr>
+    <tr><td><code>core/scm.py</code></td><td>DoWhy / CausalNex</td><td>零依赖，自带三层查询与识别</td></tr>
+    <tr><td><code>core/fallacies.py</code></td><td>CausalNLP</td><td>聚焦 LLM 输出的合规审计</td></tr>
+    <tr><td><code>core/graph_extract.py</code></td><td>causal-learn</td><td>文本→DAG 抽取而非纯数据发现</td></tr>
+    <tr><td><code>llm/client.py</code></td><td>OpenAI SDK</td><td>自带离线降级，无需 API key</td></tr>
+    <tr><td><code>adapters.py</code></td><td>—</td><td>唯一提供 HTTP 网关 + 装饰器护栏</td></tr>
+  </table>
+</div></section>
+
+<!-- 接入 -->
+<section id="access"><div class="wrap">
+  <span class="eyebrow">03 · Integration</span>
+  <h2>三种接入方式</h2>
+  <h3>① 装饰器</h3>
+  <pre id="a3">from causalguard.adapters import causal_guarded
+from causalguard import Policy
+
+@causal_guarded(policy=Policy.ANNOTATE)
+def ask(q: str) -> str:
+    return my_llm(q)</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">adapters.py</span><button class="copy" data-t="a3">复制</button></div>
+  <h3>② OpenAI drop-in</h3>
+  <pre id="a4">from causalguard.adapters import GuardedChat
+chat = GuardedChat(policy=Policy.REWRITE)
+resp = chat.create(model="gpt-4", messages=[{"role":"user","content":"..."}])
+resp["causalguard"]   # {'verdict':'high_risk','risk_score':0.8,'fallacies':['F01','F02']}
+chat.stats()          # {'turns':2,'avg_risk':0.66,'fallacy_histogram':{'F02':2,'F01':1}}</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">adapters.py</span><button class="copy" data-t="a4">复制</button></div>
+  <h3>③ HTTP 网关</h3>
+  <pre id="a5">python3 -c "from causalguard.adapters import serve; serve(port=8899)"
+# POST /v1/chat/completions  OpenAI 兼容
+# POST /v1/causal/audit      纯审计 {"text":"..."}
+# GET  /v1/causal/stats      会话因果健康度
+# 处置：annotate / rewrite / block / off</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">adapters.py</span><button class="copy" data-t="a5">复制</button></div>
+  <div class="card" style="margin-top:16px"><h4>离线降级</h4>
+    <p>端点不可用时自动降级为离线模式，审计/识别/SCM 全部功能不受影响。接真实 LLM 只需设 <code>CAUSALGUARD_LLM_BASE</code> 等环境变量（LM Studio / Ollama / vLLM 皆可）。</p></div>
+</div></section>
+
+<!-- 边界 -->
+<section id="limits"><div class="wrap">
+  <span class="eyebrow">04 · Boundaries</span>
+  <h2>能力边界（诚实声明）</h2>
+  <div class="grid g2">
+    <div class="card"><h4>漏检风险</h4><p>谬误检测基于语言模式，存在漏检；接真实 LLM 后 S5 抽取质量显著提升。</p></div>
+    <div class="card"><h4>评测集规模</h4><p>自建且规模小，B2/B3 不足以声称泛化能力。</p></div>
+    <div class="card"><h4>识别覆盖</h4><p>仅后门 + 前门，未实现完整 ID 算法（Shpitser & Pearl 2006）。</p></div>
+    <div class="card"><h4>反事实效率</h4><p>反事实用拒绝采样，高维证据下接受率低。</p></div>
+  </div>
+  <div class="card" style="margin-top:16px; border-left:3px solid var(--gold)"><h4>最重要的一条</h4>
+    <p>本系统检测的是<strong>因果表述的合规性</strong>，不是<strong>因果结论的真伪</strong>。它能指出"你没有证据支持这个断言"，但不能告诉你"这个因果关系是否真实存在"。</p></div>
+</div></section>
+
+<!-- 互通 -->
+<section id="annex" style="border-bottom:none"><div class="wrap">
+  <span class="eyebrow">Interop</span>
+  <h2>返回所有主馆</h2>
+  <div class="overflow-links">
+    <a class="ol" href="causality_s01_tech_deepblue.html">科技深蓝主馆</a>
+    <a class="ol" href="causality_s02_academic_ink.html">学术墨蓝主馆</a>
+    <a class="ol" href="causality_s03_glass_sky.html">玻璃天青主馆</a>
+    <a class="ol" href="methodology_sub.html">→ 方法论深潜馆</a>
+    <a class="ol" href="causality_hub_master.html">⌂ HUB 总入口</a>
+  </div>
+</div></section>
+
+<script>
+  document.querySelectorAll('.copy').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const t=document.getElementById(b.dataset.t).innerText;
+      navigator.clipboard.writeText(t).then(()=>{ b.textContent='已复制'; setTimeout(()=>b.textContent='复制',1400); });
+    });
+  });
+</script>
+</body>
+</html>
