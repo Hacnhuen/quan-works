@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教育和AI · 玻璃天青拟态研究图集</title>
+<style>
+/* ============================================================
+   玻璃天青拟态 glass_sky · 教育和AI 研究图集
+   bg #EAF6FB / card rgba(255,255,255,.55) / accent #0EA5E9
+   次色 #0284C7 + #7DD3FC / Sans 大字号
+   ============================================================ */
+
+:root {
+  --bg: #EAF6FB;
+  --bg-soft: #D6EEF8;
+  --card: rgba(255, 255, 255, 0.55);
+  --card-strong: rgba(255, 255, 255, 0.72);
+  --card-weak: rgba(255, 255, 255, 0.38);
+  --accent: #0EA5E9;
+  --accent-deep: #0284C7;
+  --accent-light: #7DD3FC;
+  --accent-soft: rgba(14, 165, 233, 0.14);
+  --ink: #0B2A3B;
+  --ink-soft: #1E4A63;
+  --ink-mute: #4A6B7E;
+  --line: rgba(14, 165, 233, 0.18);
+  --shadow-sm: 0 4px 14px rgba(2, 132, 199, 0.10);
+  --shadow-md: 0 10px 30px rgba(2, 132, 199, 0.14);
+  --shadow-lg: 0 22px 60px rgba(2, 132, 199, 0.18);
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC",
+               "Helvetica Neue", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(125, 211, 252, 0.45) 0%, transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(14, 165, 233, 0.30) 0%, transparent 46%),
+    radial-gradient(circle at 78% 88%, rgba(2, 132, 199, 0.22) 0%, transparent 50%),
+    radial-gradient(circle at 20% 82%, rgba(125, 211, 252, 0.30) 0%, transparent 48%),
+    linear-gradient(160deg, #EAF6FB 0%, #D6EEF8 50%, #CFE9F6 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* 页面级流动背景 */
+.bg-dynamic {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: url('images/s05_frosted_glass_shards_sky_blue_gradient_soft_caustics_light_a__landscape_16_9.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.22;
+  animation: flow-breathe 22s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+@keyframes flow-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.20; }
+  50% { transform: scale(1.08); opacity: 0.30; }
+}
+
+/* 顶部导航 */
+.glass-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(234, 246, 251, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.nav-brand {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-deep);
+  letter-spacing: -0.02em;
+}
+.nav-brand span { color: var(--accent); }
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.nav-links a {
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 7px 12px;
+  border-radius: 999px;
+  transition: all 0.25s var(--ease);
+  white-space: nowrap;
+}
+.nav-links a:hover {
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  transform: translateY(-1px);
+}
+
+/* 容器 */
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* Hero */
+.hero {
+  padding: 72px 0 56px;
+  text-align: center;
+}
+.eyebrow {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: var(--ink);
+  margin-bottom: 22px;
+}
+.hero h1 .grad {
+  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-deep) 60%, #0369A1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p.lead {
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  color: var(--ink-soft);
+  max-width: 760px;
+  margin: 0 auto 30px;
+  line-height: 1.7;
+}
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.hero-chips .chip {
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--card-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+/* 章节 */
+section.chapter {
+  padding: 64px 0;
+  scroll-margin-top: 80px;
+}
+.sec-head {
+  margin-bottom: 36px;
+}
+.sec-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  margin-bottom: 8px;
+}
+.sec-head h2 {
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+.sec-head p.sub {
+  font-size: 1.05rem;
+  color: var(--ink-mute);
+  max-width: 780px;
+}
+
+/* 玻璃卡片基础 */
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* KPI 网格 */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.kpi-card {
+  padding: 30px 26px;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.kpi-label {
+  font-size: 14px;
+  color: var(--ink-mute);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.kpi-value {
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.kpi-note {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* 通用网格 */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+
+.card-pad { padding: 28px 26px; }
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+.card-title .ic {
+  display: inline-block;
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  text-align: center;
+  line-height: 30px;
+  font-size: 15px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.card-text { font-size: 0.97rem; color: var(--ink-soft); line-height: 1.65; }
+.card-text p { margin-bottom: 8px; }
+
+/* 阶梯表 */
+.ladder {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.ladder-step {
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.ladder-step::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+}
+.ladder-step.l1::before { background: linear-gradient(90deg, #7DD3FC, #38BDF8); }
+.ladder-step.l2::before { background: linear-gradient(90deg, #38BDF8, #0EA5E9); }
+.ladder-step.l3::before { background: linear-gradient(90deg, #0EA5E9, #0284C7); }
+.ladder-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+.l1 .ladder-tag { background: rgba(125,211,252,0.22); color: #0369A1; }
+.l2 .ladder-tag { background: rgba(14,165,233,0.18); color: #0284C7; }
+.l3 .ladder-tag { background: rgba(2,132,199,0.20); color: #075985; }
+.ladder-step h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.ladder-step ul {
+  list-style: none;
+  margin-top: 10px;
+}
+.ladder-step ul li {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  padding: 6px 0 6px 22px;
+  position: relative;
+}
+.ladder-step ul li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 10px;
+  top: 9px;
+}
+
+/* 人物肖像 */
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+.person {
+  padding: 18px;
+  text-align: center;
+  transition: transform 0.3s var(--ease);
+}
+.person:hover { transform: translateY(-4px); }
+.person img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+  background: var(--bg-soft);
+}
+.person h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.person .role {
+  font-size: 12.5px;
+  color: var(--accent-deep);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.person .bio {
+  font-size: 12.5px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+}
+
+/* 框架栈 */
+.stack {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+.stack-card {
+  padding: 24px 20px;
+}
+.stack-card .num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.stack-card h4 {
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+.stack-card p {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+/* 表格 */
+.tbl {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--card-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.tbl th, .tbl td {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 0.93rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.tbl th {
+  background: rgba(14,165,233,0.12);
+  color: var(--accent-deep);
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.03em;
+}
+.tbl tr:last-child td { border-bottom: none; }
+.tbl td:first-child { font-weight: 600; color: var(--ink); }
+
+/* 范式对比 */
+.paradigm-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+.paradigm-card {
+  padding: 28px 26px;
+}
+.paradigm-card.old { border-left: 5px solid #94A3B8; }
+.paradigm-card.new { border-left: 5px solid var(--accent); }
+.paradigm-card h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+.paradigm-card .era {
+  font-size: 12px;
+  color: var(--accent-deep);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.paradigm-card ul { list-style: none; }
+.paradigm-card ul li {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  padding: 5px 0 5px 18px;
+  position: relative;
+}
+.paradigm-card ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* LLM 教育大模型 */
+.llm-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+.llm-card {
+  padding: 28px 26px;
+}
+.llm-card .badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+}
+.llm-card h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.llm-card .meta {
+  font-size: 12.5px;
+  color: var(--ink-mute);
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+}
+.llm-card p { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 8px; }
+
+/* 公平与伦理 */
+.fair-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+.fair-card {
+  padding: 28px 26px;
+  border-left: 5px solid var(--accent);
+}
+.fair-card h4 {
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.fair-card p { font-size: 0.93rem; color: var(--ink-soft); margin-bottom: 8px; }
+
+/* UNESCO 4级 */
+.unesco-levels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+.unesco-lvl {
+  padding: 22px 18px;
+  text-align: center;
+}
+.unesco-lvl .star {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+}
+.unesco-lvl h5 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--accent-deep);
+}
+.unesco-lvl p {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* 多模态 */
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+.modal-card {
+  padding: 24px 18px;
+  text-align: center;
+}
+.modal-card .emo {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.modal-card h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.modal-card p {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* 时间线 */
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent-light), var(--accent), var(--accent-deep));
+  border-radius: 3px;
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 40px;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -34px;
+  top: 8px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.tl-body {
+  padding: 26px;
+}
+.tl-body img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  background: var(--bg-soft);
+}
+.tl-year {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-deep);
+  margin-bottom: 6px;
+}
+.tl-body h4 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.tl-body p {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+/* 应用案例 */
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.app-card {
+  padding: 24px 22px;
+}
+.app-card .tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-deep);
+  background: var(--accent-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+}
+.app-card h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.app-card p {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+/* 5D 评估 */
+.eval-dim {
+  margin-bottom: 26px;
+  padding: 28px 26px;
+}
+.eval-dim .dim-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.eval-dim h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.eval-dim .dim-score {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-deep);
+  background: var(--accent-soft);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+.eval-subs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.eval-sub {
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.45);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+}
+.eval-sub .sn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.eval-sub h5 {
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin: 4px 0 6px;
+  color: var(--ink);
+}
+.eval-sub p {
+  font-size: 0.82rem;
+  color: var(--ink-mute);
+  line-height: 1.5;
+}
+.anchor-bar {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.anchor-bar span {
+  width: 16px; height: 6px;
+  border-radius: 3px;
+  background: var(--bg-soft);
+}
+.anchor-bar span.on { background: var(--accent); }
+
+/* 工具链 */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.tool-card {
+  padding: 24px 22px;
+}
+.tool-card .logo {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+.tool-card h4 {
+  font-size: 1.12rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.tool-card .pos {
+  font-size: 12px;
+  color: var(--accent-deep);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.tool-card .row {
+  font-size: 0.83rem;
+  color: var(--ink-soft);
+  margin-bottom: 5px;
+}
+.tool-card .row b { color: var(--ink); font-weight: 600; }
+
+/* 名人技能 */
+.celeb-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.celeb-card {
+  padding: 28px 26px;
+}
+.celeb-card .who {
+  font-size: 12px;
+  color: var(--accent-deep);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.celeb-card h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.celeb-card .def {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: rgba(14,165,233,0.08);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent);
+}
+.celeb-card h5 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 12px 0 8px;
+}
+.celeb-card ol {
+  padding-left: 18px;
+}
+.celeb-card ol li {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+.celeb-card .limit {
+  font-size: 0.84rem;
+  color: var(--ink-mute);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+.celeb-card .limit b { color: #B45309; }
+
+/* 社交文案 */
+.platform-block { margin-bottom: 36px; }
+.platform-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-left: 14px;
+  border-left: 4px solid var(--accent);
+  color: var(--ink);
+}
+.platform-title .pn {
+  font-size: 12px;
+  color: var(--ink-mute);
+  font-weight: 500;
+  margin-left: 8px;
+}
+.copy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.copy-card {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 20px;
+}
+.copy-card .angle {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-deep);
+  background: var(--accent-soft);
+  padding: 3px 9px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+}
+.copy-card .copy-text {
+  font-size: 0.9rem;
+  color: var(--ink);
+  line-height: 1.68;
+  margin-bottom: 12px;
+}
+.copy-card .skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.copy-card .sk-chip {
+  font-size: 10.5px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(125,211,252,0.22);
+  color: #0369A1;
+  font-weight: 600;
+}
+
+/* 参考文献 */
+.ref-list {
+  padding: 30px 28px;
+}
+.ref-list ol {
+  padding-left: 22px;
+}
+.ref-list ol li {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+  line-height: 1.65;
+}
+.ref-list ol li b { color: var(--ink); }
+
+/* 信源评定 */
+.src-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+.src-card {
+  padding: 24px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.src-card .grade {
+  flex-shrink: 0;
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff;
+}
+.grade.s { background: linear-gradient(135deg, #0EA5E9, #0284C7); }
+.grade.a { background: linear-gradient(135deg, #38BDF8, #0EA5E9); }
+.grade.b { background: linear-gradient(135deg, #7DD3FC, #38BDF8); color: #075985; }
+.src-card .src-body h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.src-card .src-body p {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* 底部深潜馆链接 */
+.subnav {
+  margin: 50px 0 30px;
+  padding: 40px 32px;
+  text-align: center;
+}
+.subnav h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.subnav p {
+  font-size: 0.98rem;
+  color: var(--ink-mute);
+  margin-bottom: 26px;
+}
+.subnav-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+.subnav-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.25s var(--ease);
+}
+.subnav-links a:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.subnav-links a.ghost {
+  background: var(--card-strong);
+  color: var(--accent-deep);
+  border: 1px solid var(--accent);
+}
+
+/* 页脚 */
+footer {
+  padding: 40px 0 60px;
+  text-align: center;
+  color: var(--ink-mute);
+  font-size: 0.86rem;
+}
+footer .meta-line {
+  margin-bottom: 6px;
+}
+
+/* 引用块 */
+blockquote.feyn {
+  padding: 22px 26px;
+  border-left: 4px solid var(--accent);
+  background: rgba(14,165,233,0.08);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 20px 0;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+blockquote.feyn cite {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--accent-deep);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* 标签 */
+.tag-inline {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .people-grid { grid-template-columns: repeat(3, 1fr); }
+  .stack, .modal-grid { grid-template-columns: repeat(3, 1fr); }
+  .app-grid, .tool-grid { grid-template-columns: repeat(2, 1fr); }
+  .celeb-grid { grid-template-columns: repeat(2, 1fr); }
+  .unesco-levels { grid-template-columns: repeat(2, 1fr); }
+  .eval-subs { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  body { font-size: 16px; }
+  .nav-inner { padding: 12px 18px; }
+  .nav-links { gap: 4px; }
+  .nav-links a { font-size: 12px; padding: 6px 9px; }
+  .wrap { padding: 0 18px; }
+  .hero { padding: 48px 0 36px; }
+  section.chapter { padding: 44px 0; }
+  .kpi-grid, .grid-2, .grid-3, .grid-4, .grid-5,
+  .ladder, .people-grid, .stack, .modal-grid, .app-grid,
+  .tool-grid, .celeb-grid, .llm-grid, .fair-grid, .src-grid,
+  .paradigm-row, .copy-grid, .unesco-levels, .eval-subs {
+    grid-template-columns: 1fr !important;
+  }
+  .kpi-value { font-size: 2.1rem; }
+  .subnav-links a { width: 100%; justify-content: center; }
+}
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-soft); }
+::-webkit-scrollbar-thumb {
+  background: var(--accent-light);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-dynamic { animation: none !important; }
+  * { transition: none !important; }
+}
+</style>
+<style id="apple-ui-layer">
+:root{--font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue",system-ui,sans-serif;--apple-accent:#5ac8fa;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:28px;--shadow-sm:0 1px 3px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.06);--shadow-lg:0 12px 32px rgba(0,0,0,.08);--ease-apple:cubic-bezier(0.4,0,0.2,1);--ease-apple-spring:cubic-bezier(0.34,1.56,0.64,1);}
+*{transition:all .3s var(--ease-apple);}
+body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased;}
+.card{border-radius:var(--radius-lg);box-shadow:var(--shadow-md);transition:box-shadow .3s var(--ease-apple),transform .3s var(--ease-apple);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+.btn,.btn-primary{border-radius:var(--radius-sm);transition:all .15s cubic-bezier(0,0,0.2,1);}
+.btn:active,.btn-primary:active{transform:scale(.97);}
+.glass-nav,.sidebar{background:rgba(220,240,255,.72);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.6);}
+html{scroll-behavior:smooth;}
+section{scroll-snap-align:start;}
+a{position:relative;transition:color .3s var(--ease-apple);}
+.card-spotlight{position:relative;overflow:hidden;}
+.card-spotlight::before{content:'';position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(90,200,250,.1) 0%,transparent 70%);left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s var(--ease-apple);}
+.card-spotlight:hover::before{opacity:1;}
+</style>
+<style id="bg-dynamic-layer">
+.bg-dynamic{position:fixed;inset:0;z-index:-2;background-image:url('images/s05_education_ai_frosted_glass_shards_sky_blue_gradient_soft_cau__landscape_16_9.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.25;will-change:transform,background-position,opacity;transform:translateZ(0);backface-visibility:hidden;}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(234,246,251,.6) 0%,rgba(234,246,251,.85) 50%,rgba(234,246,251,.6) 100%);}
+@keyframes flow-rotate{0%{transform:rotate(0deg) scale(1.2);}100%{transform:rotate(360deg) scale(1.2);}}
+.bg-dynamic.anim-rotate{animation:flow-rotate 120s linear infinite;}
+@media (prefers-reduced-motion:reduce){.bg-dynamic,.bg-dynamic.anim-rotate{animation:none!important;}}
+body > *:not(.bg-dynamic):not(.bg-overlay){position:relative;z-index:1;}
+</style>
+</head>
+<body>
+<div class="bg-dynamic anim-rotate"></div>
+<div class="bg-overlay"></div>
+<div class="bg-dynamic"></div>
+
+<!-- ============ 顶部导航 ============ -->
+<nav class="glass-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">教育和AI · <span>玻璃天青图集</span></div>
+    <div class="nav-links">
+      <a href="#ch00">概览</a>
+      <a href="#ch01">能力阶梯</a>
+      <a href="#ch02">人物</a>
+      <a href="#ch03">技术框架</a>
+      <a href="#ch04">方法论</a>
+      <a href="#ch05">范式</a>
+      <a href="#ch06">教育大模型</a>
+      <a href="#ch07">公平伦理</a>
+      <a href="#ch08">多模态</a>
+      <a href="#ch09">时间线</a>
+      <a href="#ch10">应用</a>
+      <a href="#ch11">评估</a>
+      <a href="#ch12">工具链</a>
+      <a href="#ch13">思想家</a>
+      <a href="#ch14">社交文案</a>
+      <a href="#ch15">文献</a>
+      <a href="#ch16">信源</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ Hero ============ -->
+<header class="hero wrap">
+  <span class="eyebrow">EDUCATION × AI · 2026 研究图集</span>
+  <h1>当 <span class="grad">教育遇见人工智能</span><br>一场关于学习本质的重新定义</h1>
+  <p class="lead">从 1960 年 PLATO 终端到 2025 年教育专用大模型，AI 正在把"一对千"的课堂改写成"千人千面"的学习。本图集以玻璃天青拟态视觉，整合 10 篇前沿论文、8 大产品案例与 4500 字费曼式分析，呈现教育 AI 的能力阶梯、技术框架、公平伦理与未来范式。</p>
+  <div class="hero-chips">
+    <span class="chip">10 位关键人物</span>
+    <span class="chip">9 事件时间线</span>
+    <span class="chip">5 大技术栈</span>
+    <span class="chip">8 行业案例</span>
+    <span class="chip">5D × 21 指标</span>
+    <span class="chip">36 条社交文案</span>
+    <span class="chip">UNESCO AI 素养框架</span>
+  </div>
+</header>
+
+<!-- ============================================================
+     章节 00 · 概览 + KPI
+     ============================================================ -->
+<section class="chapter wrap" id="ch00">
+  <div class="sec-head">
+    <div class="sec-num">00 · OVERVIEW & KPI</div>
+    <h2>全球教育 AI 一图速览</h2>
+    <p class="sub">六张卡片浓缩教育 AI 的市场体量、用户规模、效率增益、教师采用、成本变化与地理覆盖，数据综合自研究报告中 2023–2028 区间的预测与实证。</p>
+  </div>
+  <div class="kpi-grid">
+    <div class="glass kpi-card">
+      <div class="kpi-label">全球教育 AI 市场规模</div>
+      <div class="kpi-value">$500亿</div>
+      <div class="kpi-note">2028 年预计，2023 年为 200 亿美元，年复合增长率约 20%</div>
+    </div>
+    <div class="glass kpi-card">
+      <div class="kpi-label">全球用户总数</div>
+      <div class="kpi-value">10亿+</div>
+      <div class="kpi-note">Khan Academy 1 亿+、Duolingo 5 亿+、作业帮 4 亿+，多平台叠加</div>
+    </div>
+    <div class="glass kpi-card">
+      <div class="kpi-label">学习效率提升</div>
+      <div class="kpi-value">30–50%</div>
+      <div class="kpi-note">Khan Academy 实测 30%、Squirrel AI 提升约 50%，Carnegie Learning 数学 15%</div>
+    </div>
+    <div class="glass kpi-card">
+      <div class="kpi-label">教师采用率</div>
+      <div class="kpi-value">~60%</div>
+      <div class="kpi-note">ChatGPT 发布后全球教师群体尝试过 AI 工具的比例持续攀升</div>
+    </div>
+    <div class="glass kpi-card">
+      <div class="kpi-label">教育内容成本降低</div>
+      <div class="kpi-value">30–40%</div>
+      <div class="kpi-note">生成式 AI 让教材、练习题、多媒体内容生产边际成本趋近于零</div>
+    </div>
+    <div class="glass kpi-card">
+      <div class="kpi-label">覆盖国家与地区</div>
+      <div class="kpi-value">190+</div>
+      <div class="kpi-note">Khan Academy 覆盖 190 国，Duolingo 支持 40+ 语言，亚太增速最快</div>
+    </div>
+  </div>
+  <blockquote class="feyn">
+    AI 教育不是要替代教师，而是要增强教师的能力。AI 应该做"机械性工作"，教师应该做"创造性工作"。
+    <cite>— 费曼式分析核心发现</cite>
+  </blockquote>
+</section>
+
+<!-- ============================================================
+     章节 01 · 教育AI能力阶梯
+     ============================================================ -->
+<section class="chapter wrap" id="ch01">
+  <div class="sec-head">
+    <div class="sec-num">01 · CAPABILITY LADDER</div>
+    <h2>教育 AI 能力阶梯：从辅助到自主</h2>
+    <p class="sub">借鉴因果阶梯思想，把教育 AI 划分为 L1 辅助、L2 增强、L3 自主三阶段。每一级不只是技术升级，更是"谁拥有教学决策权"的转移。</p>
+  </div>
+  <div class="ladder">
+    <div class="glass ladder-step l1">
+      <span class="ladder-tag">L1 · ASSIST 辅助</span>
+      <h3>AI 作为效率工具</h3>
+      <p style="font-size:0.92rem;color:var(--ink-soft);margin-bottom:10px;">决策权仍在教师手中，AI 只承担重复性、机械性劳动，把教师从批改、统计中解放出来。</p>
+      <ul>
+        <li>自动批改作业与客观题评分</li>
+        <li>学习资源检索与推荐</li>
+        <li>基础问答与知识点查询</li>
+        <li>学习数据统计与可视化</li>
+        <li>考勤、排课等教务自动化</li>
+      </ul>
+      <p style="font-size:0.82rem;color:var(--ink-mute);margin-top:12px;">代表：早期 Khan Academy 练习系统、作业帮拍照搜题</p>
+    </div>
+    <div class="glass ladder-step l2">
+      <span class="ladder-tag">L2 · AUGMENT 增强</span>
+      <h3>AI 作为认知伙伴</h3>
+      <p style="font-size:0.92rem;color:var(--ink-soft);margin-bottom:10px;">AI 开始参与教学决策，根据学生状态实时调整内容与路径，教师转为"引导者"与"设计者"。</p>
+      <ul>
+        <li>个性化学习路径动态生成</li>
+        <li>自适应难度调节与即时反馈</li>
+        <li>苏格拉底式提问引导思考</li>
+        <li>多模态学习状态识别</li>
+        <li>写作、编程等开放任务辅导</li>
+      </ul>
+      <p style="font-size:0.82rem;color:var(--ink-mute);margin-top:12px;">代表：Khanmigo、Duolingo Max、Carnegie Learning</p>
+    </div>
+    <div class="glass ladder-step l3">
+      <span class="ladder-tag">L3 · AUTONOMY 自主</span>
+      <h3>AI 作为教学主体</h3>
+      <p style="font-size:0.92rem;color:var(--ink-soft);margin-bottom:10px;">AI 在特定领域内自主完成"教—学—评"闭环，教师退守为"伦理守门人"与"意义赋予者"。</p>
+      <ul>
+        <li>自主课程设计与内容生成</li>
+        <li>长程学习目标规划与追踪</li>
+        <li>跨学科知识图谱自主构建</li>
+        <li>情感与动机的主动干预</li>
+        <li>教学策略的自我反思与优化</li>
+      </ul>
+      <p style="font-size:0.82rem;color:var(--ink-mute);margin-top:12px;">代表：2025 教育专用大模型、探索中的自主导师系统</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 02 · 10位关键人物肖像
+     ============================================================ -->
+<section class="chapter wrap" id="ch02">
+  <div class="sec-head">
+    <div class="sec-num">02 · KEY PEOPLE</div>
+    <h2>塑造教育 AI 的十位关键人物</h2>
+    <p class="sub">从非营利教育的先驱到认知科学的奠基者，这十位人物的思想与实践构成了今天教育 AI 的底座。肖像均由 AI 居中绘制，呈现上半身构图。</p>
+  </div>
+  <div class="people-grid">
+    <div class="glass person">
+      <img src="images/s05_salman_khan__portrait_4_3.jpg" alt="Salman Khan" loading="lazy">
+      <h4>Salman Khan</h4>
+      <div class="role">Khanmigo 创始人</div>
+      <div class="bio">2008 年创办可汗学院，2023 年推出 AI 导师 Khanmigo，主张"AI 让一对一辅导惠及所有人"。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_andrew_ng__portrait_4_3.jpg" alt="Andrew Ng" loading="lazy">
+      <h4>Andrew Ng</h4>
+      <div class="role">Coursera 联合创始人</div>
+      <div class="bio">Stanford 教授，2012 年联合创办 Coursera，推动 MOOC 浪潮，后创立 DeepLearning.AI 普及 AI 教育。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_daphne_koller__portrait_4_3.jpg" alt="Daphne Koller" loading="lazy">
+      <h4>Daphne Koller</h4>
+      <div class="role">Coursera 联合创始人</div>
+      <div class="bio">Stanford 教授，2012 年与吴恩达共创 Coursera，致力于用概率图模型与大数据推动个性化学习。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_sebastian_thrun__portrait_4_3.jpg" alt="Sebastian Thrun" loading="lazy">
+      <h4>Sebastian Thrun</h4>
+      <div class="role">Udacity 创始人</div>
+      <div class="bio">Google X 创始人、Stanford 教授，2011 年开设线上 AI 课吸引 16 万人，后创办 Udacity 推广终身学习。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_sugata_mitra__portrait_4_3.jpg" alt="Sugata Mitra" loading="lazy">
+      <h4>Sugata Mitra</h4>
+      <div class="role">"墙中洞"实验发起者</div>
+      <div class="bio">2013 年 TED 奖得主，提出"自我组织学习环境"(SOLE)，证明儿童在无教师指导下可自主习得知识。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_ken_robinson__portrait_4_3.jpg" alt="Ken Robinson" loading="lazy">
+      <h4>Ken Robinson</h4>
+      <div class="role">创造力教育倡导者</div>
+      <div class="bio">史上最高播放 TED 演讲者，主张教育应培育创造力而非标准化，提醒 AI 时代别让技术扼杀好奇心。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_benjamin_bloom__portrait_4_3.jpg" alt="Benjamin Bloom" loading="lazy">
+      <h4>Benjamin Bloom</h4>
+      <div class="role">"2 Sigma"问题提出者</div>
+      <div class="bio">1984 年发现一对一辅导能让平均学生超越 98% 的班级学生，提出"2 Sigma 问题"——AI 能否规模化复制。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_erik_mazur__portrait_4_3.jpg" alt="Erik Mazur" loading="lazy">
+      <h4>Erik Mazur</h4>
+      <div class="role">同伴教学法创立者</div>
+      <div class="bio">Harvard 物理教授，1990 年代发明 Peer Instruction，把课堂从"讲授"转为"同伴讨论"，影响 AI 协作学习设计。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_john_anderson__portrait_4_3.jpg" alt="John Anderson" loading="lazy">
+      <h4>John Anderson</h4>
+      <div class="role">ACT-R 认知架构创立者</div>
+      <div class="bio">CMU 教授，创立 ACT-R 认知架构，为智能辅导系统提供"程序性-陈述性"知识建模理论基石。</div>
+    </div>
+    <div class="glass person">
+      <img src="images/s05_justin_reich__portrait_4_3.jpg" alt="Justin Reich" loading="lazy">
+      <h4>Justin Reich</h4>
+      <div class="role">MIT 教育研究者</div>
+      <div class="bio">MIT 数字学习主任，研究大规模在线学习中的不平等，提醒 AI 教育别让"数字鸿沟"变成"智能鸿沟"。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 03 · 教育AI技术框架
+     ============================================================ -->
+<section class="chapter wrap" id="ch03">
+  <div class="sec-head">
+    <div class="sec-num">03 · TECHNICAL FRAMEWORK</div>
+    <h2>教育 AI 五大技术栈</h2>
+    <p class="sub">从检索增强到学生建模，五个技术栈彼此叠加，共同支撑个性化、可解释、低幻觉的教育智能体。</p>
+  </div>
+  <div class="stack">
+    <div class="glass stack-card">
+      <div class="num">STACK 01</div>
+      <h4>RAG 检索增强生成</h4>
+      <p>把教材、课标、习题库向量化后注入提示上下文，让大模型"看着课本答题"，显著降低幻觉，提供可验证的信息来源。学术图书馆案例显示，AI 检索能有效呈现具备结构化元数据的资源。</p>
+    </div>
+    <div class="glass stack-card">
+      <div class="num">STACK 02</div>
+      <h4>知识图谱</h4>
+      <p>构建学科知识点之间的前置、依赖、关联关系，支撑学习路径规划与诊断。Squirrel AI 用知识图谱实现"精准知识点覆盖"，把一门课拆成上千个可诊断的节点。</p>
+    </div>
+    <div class="glass stack-card">
+      <div class="num">STACK 03</div>
+      <h4>多模态学习分析</h4>
+      <p>融合眼动、表情、语音、笔迹、姿态五路信号，实时推断学生的注意、困惑、情绪状态，为自适应干预提供比"答题正确率"更丰富的状态画像。</p>
+    </div>
+    <div class="glass stack-card">
+      <div class="num">STACK 04</div>
+      <h4>LLM 教育微调</h4>
+      <p>在通用大模型基础上，用课标对齐的指令数据、苏格拉底对话数据、学科专项数据进行监督微调与 RLHF，让模型学会"引导"而非"直接给答案"。</p>
+    </div>
+    <div class="glass stack-card">
+      <div class="num">STACK 05</div>
+      <h4>学生建模</h4>
+      <p>用贝叶斯知识追踪(BKT)、深度知识追踪(DKT)等方法，动态估计学生对每个知识点的掌握概率，是个性化推荐的"状态机"内核。</p>
+    </div>
+  </div>
+  <div class="glass card-pad" style="margin-top:22px;">
+    <div class="card-title"><span class="ic">⚙</span>技术栈协同：一个典型的教育 AI 请求链路</div>
+    <div class="card-text">
+      <p><b>1. 理解</b>　多模态分析捕捉学生状态 → <b>2. 检索</b>　RAG 从知识图谱与教材库调取相关内容 → <b>3. 推理</b>　教育微调 LLM 结合学生模型生成引导式回应 → <b>4. 反馈</b>　更新学生掌握概率，调整下一题难度与路径。</p>
+      <p>这条链路把"感知—记忆—推理—行动"四步串成闭环，让 AI 导师既有"知识"也有"眼力"，既能讲题也能察言观色。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 04 · 方法论 3大家族
+     ============================================================ -->
+<section class="chapter wrap" id="ch04">
+  <div class="sec-head">
+    <div class="sec-num">04 · METHODOLOGY FAMILIES</div>
+    <h2>教育 AI 的三大家族</h2>
+    <p class="sub">教育 AI 并非凭空诞生，它站在传统教学设计、学习科学与计算教育学三股思潮的交汇处。三者各有侧重，又彼此借鉴。</p>
+  </div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th style="width:18%;">维度</th>
+        <th>传统教学设计</th>
+        <th>学习科学</th>
+        <th>计算教育学</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>核心关切</td>
+        <td>如何把目标—活动—评价设计成有序流程</td>
+        <td>学习在脑中如何发生，环境如何促进它</td>
+        <td>用数据与模型量化、预测、优化教育现象</td>
+      </tr>
+      <tr>
+        <td>代表理论</td>
+        <td>Addie 模型、逆向设计、Bloom 分类学</td>
+        <td>建构主义、情境学习、社会文化理论</td>
+        <td>知识追踪、教育数据挖掘、学习分析</td>
+      </tr>
+      <tr>
+        <td>研究方法</td>
+        <td>设计研究、课例打磨、专家评议</td>
+        <td>质性民族志、设计实验、微观发生分析</td>
+        <td>大规模日志分析、随机对照试验、建模仿真</td>
+      </tr>
+      <tr>
+        <td>数据观</td>
+        <td>数据是设计的佐证，非主角</td>
+        <td>数据需嵌入情境，警惕去情境化</td>
+        <td>数据是一等公民，模型即理论</td>
+      </tr>
+      <tr>
+        <td>对 AI 的态度</td>
+        <td>AI 是教学设计的新工具，需服务目标</td>
+        <td>关注 AI 是否促进深度理解而非表面效率</td>
+        <td>拥抱 AI 作为建模与个性化的引擎</td>
+      </tr>
+      <tr>
+        <td>典型局限</td>
+        <td>设计依赖经验，难以规模化个性化</td>
+        <td>质性结论难直接转化为工程系统</td>
+        <td>易陷入"易测指标优化"，忽视意义建构</td>
+      </tr>
+      <tr>
+        <td>对 AI 教育的贡献</td>
+        <td>提供教学目标与评价的"骨架"</td>
+        <td>提醒 AI 别沦为"教育表演"的货物崇拜</td>
+        <td>提供知识追踪与个性化推荐"引擎"</td>
+      </tr>
+    </tbody>
+  </table>
+  <blockquote class="feyn">
+    费曼会问：你测的是"考试分数"还是"真正理解"？大多数 AI 教育研究在优化容易测量的东西，但教育真正重要的——好奇心、创造力、批判性思维——恰恰难以测量。
+    <cite>— 费曼式分析 · 反自欺原则</cite>
+  </blockquote>
+</section>
+
+<!-- ============================================================
+     章节 05 · 4范式联表
+     ============================================================ -->
+<section class="chapter wrap" id="ch05">
+  <div class="sec-head">
+    <div class="sec-num">05 · PARADIGM PAIRS</div>
+    <h2>四范式联表：课堂的四次跃迁</h2>
+    <p class="sub">从粉笔黑板到 AI 自主，教育范式经历四次跃迁。两两对照，看清"变了什么"与"没变什么"。</p>
+  </div>
+
+  <div class="paradigm-row">
+    <div class="glass paradigm-card old">
+      <h4>传统课堂</h4>
+      <div class="era">前 2000—2010 · 粉笔与讲台</div>
+      <ul>
+        <li>一对多讲授，进度统一</li>
+        <li>教材为权威，教师为知识源</li>
+        <li>纸笔作业，周期性考试</li>
+        <li>反馈延迟以"天"计</li>
+        <li>个性化≈教师凭经验照顾</li>
+      </ul>
+    </div>
+    <div class="glass paradigm-card new">
+      <h4>在线教育</h4>
+      <div class="era">2011—2021 · MOOC 与视频课</div>
+      <ul>
+        <li>规模从百人到百万人</li>
+        <li>视频 + 测验 + 论坛三件套</li>
+        <li>学习数据首次大规模留存</li>
+        <li>完成率成为新痛点(常低于 10%)</li>
+        <li>个性化仍弱，"千人一录像"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="paradigm-row">
+    <div class="glass paradigm-card old">
+      <h4>AI 辅助</h4>
+      <div class="era">2022.11—2024 · ChatGPT 时刻</div>
+      <ul>
+        <li>AI 承担批改、答疑、内容生成</li>
+        <li>教师用 AI 备课、出题、写评语</li>
+        <li>学生用 AI 查询、润色、辩论</li>
+        <li>决策权仍在人，AI 是"超级助理"</li>
+        <li>学术诚信与幻觉问题浮现</li>
+      </ul>
+    </div>
+    <div class="glass paradigm-card new">
+      <h4>AI 自主</h4>
+      <div class="era">2025— · 教育专用大模型</div>
+      <ul>
+        <li>AI 主导"教—学—评"闭环</li>
+        <li>千人千面的路径与内容</li>
+        <li>多模态实时感知学生状态</li>
+        <li>教师转向伦理守门与意义赋予</li>
+        <li>公平、隐私、依赖性成核心议题</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 06 · 教育大模型
+     ============================================================ -->
+<section class="chapter wrap" id="ch06">
+  <div class="sec-head">
+    <div class="sec-num">06 · EDUCATION LLM</div>
+    <h2>教育大模型：从通用到专用</h2>
+    <p class="sub">通用大模型"什么都会一点"，教育场景却需要"课标对齐、苏格拉底式引导、低幻觉、可审计"。教育专用大模型应运而生。</p>
+  </div>
+  <div class="llm-grid">
+    <div class="glass llm-card">
+      <span class="badge">非营利 · K12</span>
+      <h4>Khanmigo</h4>
+      <div class="meta">Khan Academy · 2023.3 · GPT-4 教育微调</div>
+      <p><b>定位：</b>面向 K12 学生的苏格拉底式 AI 导师，拒绝直接给答案，改为步步追问。</p>
+      <p><b>技术：</b>基于 GPT-4，叠加可汗学院课程库 RAG，强化"引导而非代答"的对话策略。</p>
+      <p><b>特色：</b>教师可看到对话记录，家长模式可监控使用，强调安全与透明。</p>
+    </div>
+    <div class="glass llm-card">
+      <span class="badge">学科专项 · 数学</span>
+      <h4>好未来 MathGPT</h4>
+      <div class="meta">好未来 · 2024 · 数学专项大模型</div>
+      <p><b>定位：</b>聚焦数学解题与讲解的专项大模型，追求步骤严谨与可验证。</p>
+      <p><b>技术：</b>在海量数学题与解法上预训练，结合形式化验证降低计算幻觉。</p>
+      <p><b>特色：</b>对中式数学竞赛、教材习题适配更好，支持图文混合输入。</p>
+    </div>
+    <div class="glass llm-card">
+      <span class="badge">国产通用 · 全学科</span>
+      <h4>智谱清言教育版</h4>
+      <div class="meta">智谱 AI · 2024 · GLM 教育微调</div>
+      <p><b>定位：</b>面向中国 K12 与高校的全学科教育助手，对齐国内课标。</p>
+      <p><b>技术：</b>基于 GLM 系列微调，注入教材、课标、真题语料，本地化部署可选。</p>
+      <p><b>特色：</b>支持中文作文批改、古诗文讲解、学科知识图谱导航。</p>
+    </div>
+    <div class="glass llm-card">
+      <span class="badge">方法论 · 微调范式</span>
+      <h4>教育微调通用范式</h4>
+      <div class="meta">行业共性 · 2024—2025</div>
+      <p><b>定位：</b>不单指某模型，而是把通用 LLM 改造成"教育专用"的一套方法。</p>
+      <p><b>技术：</b>课标对齐 SFT + 苏格拉底对话 RLHF + 学科专项继续预训练 + RAG 注入教材。</p>
+      <p><b>特色：</b>核心是"行为塑形"——让模型学会提问、等待、纠错，而非直接吐答案。</p>
+    </div>
+  </div>
+  <div class="glass card-pad" style="margin-top:22px;">
+    <div class="card-title"><span class="ic">📐</span>教育大模型的技术架构共性</div>
+    <div class="card-text">
+      <p><b>数据层：</b>教材语料库 + 课标知识图谱 + 历年真题 + 苏格拉底对话示范 → 向量化与结构化存储。</p>
+      <p><b>模型层：</b>通用基座 LLM + 学科继续预训练 + 指令微调 + RLHF(以"引导质量"为奖励)。</p>
+      <p><b>推理层：</b>RAG 检索 + 学生状态注入 + 安全护栏(不直接给答案、不输出有害内容)。</p>
+      <p><b>应用层：</b>对话辅导 + 作文批改 + 路径规划 + 学情看板，全部留痕可审计。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 07 · 教育公平与伦理
+     ============================================================ -->
+<section class="chapter wrap" id="ch07">
+  <div class="sec-head">
+    <div class="sec-num">07 · FAIRNESS & ETHICS</div>
+    <h2>教育公平与伦理：AI 时代的四道关</h2>
+    <p class="sub">技术越强大，越要追问"谁被落下"。数字鸿沟、算法偏见、隐私保护、素养分级——四道关卡决定 AI 教育是普惠还是加剧不平等。</p>
+  </div>
+  <div class="fair-grid">
+    <div class="glass fair-card">
+      <h4>① 数字鸿沟</h4>
+      <p>设备、带宽、算力的差异让发达地区学生先用上 AI 导师，偏远地区却被"智能鸿沟"甩开。Justin Reich 提醒：在线教育初期就观察到优势学生获益更多，AI 可能放大这一效应。</p>
+      <p><b>对策：</b>公共算力补贴、离线轻量模型、开放教育资源。</p>
+    </div>
+    <div class="glass fair-card">
+      <h4>② 算法偏见</h4>
+      <p>训练数据中的性别、地域、文化偏见会被模型继承，在推荐路径、作文评分、能力推断中歧视特定群体。研究指出性别偏见、地域偏见、文化偏见三类最常见。</p>
+      <p><b>对策：</b>数据多样化、公平性约束、定期审计、人工复核。</p>
+    </div>
+    <div class="glass fair-card">
+      <h4>③ 隐私保护</h4>
+      <p>学生数据含个人信息、学习行为、甚至情绪与生物信号，泄露与滥用风险极高。临床教育案例(FMRP-LEAN)展示了 HIPAA 合规的数据治理范例：自托管 + 边缘隔离 + 加密隧道。</p>
+      <p><b>对策：</b>数据加密、匿名化、最小化收集、访问权限、联邦学习。</p>
+    </div>
+    <div class="glass fair-card">
+      <h4>④ 素养分级</h4>
+      <p>会用 AI 不等于懂 AI。UNESCO 提出 AI 素养四级框架，从"能操作"到"能治理"，对应不同能力层级。EU AI Act 第 4 条已于 2025-02-02 生效，要求提供方与使用方具备足够 AI 素养。</p>
+      <p><b>对策：</b>分龄素养课程、教师培训、治理参与机制。</p>
+    </div>
+  </div>
+
+  <h3 style="margin:36px 0 8px;font-size:1.3rem;font-weight:700;">UNESCO AI 素养四级框架</h3>
+  <p style="color:var(--ink-mute);margin-bottom:18px;font-size:0.95rem;">从基础操作到治理参与，四级递进，对应"用—懂—创—治"四种姿态。</p>
+  <div class="unesco-levels">
+    <div class="glass unesco-lvl">
+      <div class="star">●</div>
+      <h5>基础素养</h5>
+      <p>能操作 AI 工具完成基本任务，了解其能与不能，识别常见风险。</p>
+    </div>
+    <div class="glass unesco-lvl">
+      <div class="star">●●</div>
+      <h5>应用能力</h5>
+      <p>能在学习、工作中熟练运用 AI，理解原理梗概，做基本的批判性评估。</p>
+    </div>
+    <div class="glass unesco-lvl">
+      <div class="star">●●●</div>
+      <h5>共创能力</h5>
+      <p>能与 AI 协作创造新内容、新方案，参与 AI 工具的设计与改进。</p>
+    </div>
+    <div class="glass unesco-lvl">
+      <div class="star">●●●●</div>
+      <h5>治理能力</h5>
+      <p>能参与 AI 政策制定、伦理审查与风险评估，对系统负起责任。</p>
+    </div>
+  </div>
+  <div class="glass card-pad" style="margin-top:22px;">
+    <div class="card-title"><span class="ic">⚖</span>EU AI Act 第 4 条 · 2025-02-02 生效</div>
+    <div class="card-text">
+      <p>欧盟《人工智能法案》第 4 条于 2025 年 2 月 2 日生效，要求 AI 系统提供方与使用方确保相关人员具备足够的 AI 素养——即理解 AI 的基本原理、能力边界、风险与伦理影响。</p>
+      <p>对教育领域意味着：学校引入 AI 工具前，须保证教师与学生达到对应素养级别，否则可能违规。这把"AI 素养"从软倡议升级为硬义务。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 08 · 多模态学习分析
+     ============================================================ -->
+<section class="chapter wrap" id="ch08">
+  <div class="sec-head">
+    <div class="sec-num">08 · MULTIMODAL LEARNING ANALYTICS</div>
+    <h2>多模态学习分析：五路信号读懂学生</h2>
+    <p class="sub">单看答题正确率只能看到"结果"，五模态融合才能看见"过程"——学生在哪里走神、哪里困惑、哪里顿悟。</p>
+  </div>
+  <div class="modal-grid">
+    <div class="glass modal-card">
+      <div class="emo">👁</div>
+      <h4>眼动</h4>
+      <p>注视点、瞳孔直径、扫视路径，揭示注意力分配与认知负荷。看哪里、看多久，比"做对没"更早暴露困惑。</p>
+    </div>
+    <div class="glass modal-card">
+      <div class="emo">😊</div>
+      <h4>表情</h4>
+      <p>面部动作编码(FACS)识别皱眉、微笑、茫然等微表情，推断情绪状态，为情感干预提供触发信号。</p>
+    </div>
+    <div class="glass modal-card">
+      <div class="emo">🎙</div>
+      <h4>语音</h4>
+      <p>语调、语速、停顿、犹豫词，反映自信与理解程度。语言学习场景还能评估发音与流利度。</p>
+    </div>
+    <div class="glass modal-card">
+      <div class="emo">✍</div>
+      <h4>笔迹</h4>
+      <p>书写压力、速度、停顿、涂改，刻画解题思路的流畅度与卡点，数学与作文批改尤其受益。</p>
+    </div>
+    <div class="glass modal-card">
+      <div class="emo">🧍</div>
+      <h4>姿态</h4>
+      <p>头部朝向、身体前倾后仰、手势，判断投入度与疲劳，课堂与远程学习皆可采集。</p>
+    </div>
+  </div>
+  <div class="glass card-pad" style="margin-top:22px;">
+    <div class="card-title"><span class="ic">🔀</span>五模态融合的难点与原则</div>
+    <div class="card-text">
+      <p><b>难点一：异构对齐。</b>五路信号采样率、维度、语义各不相同，需用时间戳对齐与跨模态注意力机制融合。</p>
+      <p><b>难点二：噪声与隐私。</b>面部与生物信号极其敏感，须在端侧脱敏、最小化上传，遵守隐私法规。</p>
+      <p><b>难点三：可解释性。</b>多模态融合模型易成黑箱，教育场景要求"为什么判断学生困惑"必须可解释，否则教师无法采信。</p>
+      <p><b>原则：</b>多模态是手段不是目的——它应服务于"更准的学生建模"，而非 surveillance 式的全监控。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 09 · 时间线
+     ============================================================ -->
+<section class="chapter wrap" id="ch09">
+  <div class="sec-head">
+    <div class="sec-num">09 · TIMELINE</div>
+    <h2>教育 AI 九大里程碑</h2>
+    <p class="sub">从 1960 年的 PLATO 终端到 2025 年的教育专用大模型，每一次跃迁都重新定义了"学习可以在哪里发生"。</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_1960_plato__landscape_4_3.jpg" alt="1960 PLATO" loading="lazy">
+        <div class="tl-year">1960</div>
+        <h4>PLATO · 计算机辅助教育的起点</h4>
+        <p>伊利诺伊大学启动 PLATO 系统，用大型终端与橙色等离子显示屏实现首次大规模计算机辅助教学。它预示了在线讨论、协作学习、自适应练习等今天习以为常的概念，是所有教育 AI 的"祖师爷"。</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_1984_bloom_2_sigma__landscape_4_3.jpg" alt="1984 Bloom 2 Sigma" loading="lazy">
+        <div class="tl-year">1984</div>
+        <h4>Bloom 提出"2 Sigma 问题"</h4>
+        <p>教育心理学家 Benjamin Bloom 发表研究：接受一对一辅导的学生，平均成绩超过传统班级 98% 的学生，效应量达 2 个标准差。他由此提出"2 Sigma 问题"——如何在不牺牲规模的前提下复制一对一辅导的效果？这正是今天 AI 导师要回答的核心命题。</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_2008_khan_academy__landscape_4_3.jpg" alt="2008 Khan Academy" loading="lazy">
+        <div class="tl-year">2008</div>
+        <h4>Khan Academy 上线 · 非营利教育的全球实验</h4>
+        <p>Salman Khan 把给表妹辅导数学的视频放到 YouTube，意外催生可汗学院。免费、碎片化、按需观看的视频课，让"随时随地学习"成为现实，至今覆盖 190 多个国家、1 亿多用户。</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_2011_stanford_mooc__landscape_4_3.jpg" alt="2011 Stanford MOOC" loading="lazy">
+        <div class="tl-year">2011</div>
+        <h4>Stanford AI 课 · MOOC 元年</h4>
+        <p>Sebastian Thrun 与 Peter Norvig 在 Stanford 开设的《人工智能导论》线上版吸引 16 万人注册，引爆 MOOC 浪潮。Thrun 随后创办 Udacity，Andrew Ng 与 Daphne Koller 次年创办 Coursera，"把顶尖大学课堂搬上网"成为共识。</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_2012_coursera_edx__landscape_4_3.jpg" alt="2012 Coursera edX" loading="lazy">
+        <div class="tl-year">2012</div>
+        <h4>Coursera 与 edX · 高教在线化定型</h4>
+        <p>2012 年 Coursera 与 edX 先后正式运营，把常春藤课程免费送到全球。这一年被称为"MOOC 之年"，但也暴露完成率低、个性化弱的硬伤——为后来 AI 介入埋下伏笔。</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_2020_covid__landscape_4_3.jpg" alt="2020 COVID 在线" loading="lazy">
+        <div class="tl-year">2020</div>
+        <h4>COVID 倒逼全球在线教学</h4>
+        <p>疫情让全球 16 亿学生被迫居家学习，一夜之间在线教育从"可选项"变成"必选项"。钉钉、Zoom、腾讯会议成为课堂，教师被迫掌握数字工具，为两年后 AI 工具的快速普及铺平了认知与基础设施之路。</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_2022_11_chatgpt__landscape_4_3.jpg" alt="2022.11 ChatGPT" loading="lazy">
+        <div class="tl-year">2022.11</div>
+        <h4>ChatGPT 发布 · 教育的"AI 时刻"</h4>
+        <p>2022 年 11 月 30 日，ChatGPT 上线，5 天破百万用户。教育界先是恐慌(作弊、代写)，随后是反思与接纳。它第一次让"人人都有一个万能助手"成为现实，也第一次把"AI 素养"推上必修议程。</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_2023_3_khanmigo__landscape_4_3.jpg" alt="2023.3 Khanmigo" loading="lazy">
+        <div class="tl-year">2023.3</div>
+        <h4>Khanmigo 上线 · 首个主流 AI 苏格拉底导师</h4>
+        <p>可汗学院推出 Khanmigo，定位为"不直接给答案"的 AI 导师。它把 Bloom 的"2 Sigma"理想首次规模化落地——每个学生都能拥有一个耐心、24 小时在线、步步引导的私人教练，被视为教育专用 AI 的开端。</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="glass tl-body">
+        <img src="images/s05_2024_unesco_ai__landscape_4_3.jpg" alt="2024 UNESCO AI素养框架" loading="lazy">
+        <div class="tl-year">2024 / 2025</div>
+        <h4>UNESCO 素养框架 · 教育专用大模型</h4>
+        <p>2024 年 UNESCO 发布《学生人工智能能力框架》，把 AI 素养分为基础、应用、共创、治理四级；同年 EU AI Act 第 4 条于 2025-02-02 生效。2025 年，好未来 MathGPT、智谱教育版等专用大模型密集落地，标志着教育 AI 进入"专用模型"时代。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 10 · 8行业案例
+     ============================================================ -->
+<section class="chapter wrap" id="ch10">
+  <div class="sec-head">
+    <div class="sec-num">10 · INDUSTRY APPLICATIONS</div>
+    <h2>教育 AI 八大行业场景</h2>
+    <p class="sub">从 K12 到企业培训，从特殊教育到教师发展，AI 正在渗透学习的每一个细分场景。八个案例展示"专用化"与"个性化"如何落地。</p>
+  </div>
+  <div class="app-grid">
+    <div class="glass app-card">
+      <span class="tag">K12</span>
+      <h4>个性化辅导</h4>
+      <p><b>代表：</b>Khanmigo、Squirrel AI</p>
+      <p>知识图谱 + 学生建模实现"千人千面"路径，把 Bloom 2 Sigma 理想在数学、英语等学科规模化落地。</p>
+    </div>
+    <div class="glass app-card">
+      <span class="tag">高教</span>
+      <h4>高校 AI 助教 · Harvard CS50</h4>
+      <p><b>代表：</b>CS50 Duck / dbot</p>
+      <p>Harvard 经典 CS50 课引入 AI 助教答疑、代码审查，让每个学生都有"助教陪练"，缓解师生比压力。</p>
+    </div>
+    <div class="glass app-card">
+      <span class="tag">职教</span>
+      <h4>技能训练</h4>
+      <p><b>代表：</b>虚拟仿真实验</p>
+      <p>AI 模拟数控机床、医疗操作、电力检修等高风险场景，学员在虚拟环境反复试错，零成本零风险。</p>
+    </div>
+    <div class="glass app-card">
+      <span class="tag">企培</span>
+      <h4>企业培训</h4>
+      <p><b>代表：</b>Century Tech 企培版</p>
+      <p>个性化培训计划 + 技能 gap 分析 + 学习效果评估，ROI 可量化，企业愿意为可衡量的能力提升买单。</p>
+    </div>
+    <div class="glass app-card">
+      <span class="tag">特教</span>
+      <h4>特殊教育</h4>
+      <p><b>代表：</b>语音转写 + 情感识别</p>
+      <p>为听障、自闭、读写障碍学生提供转写、朗读、情绪提示等辅助，让"因材施教"真正落到每个孩子。</p>
+    </div>
+    <div class="glass app-card">
+      <span class="tag">语言</span>
+      <h4>语言学习</h4>
+      <p><b>代表：</b>Duolingo Max</p>
+      <p>Roleplay 角色扮演 + 语法解释 + 发音评估，AI 扮演对话伙伴，让"开口练"不再稀缺。</p>
+    </div>
+    <div class="glass app-card">
+      <span class="tag">STEM</span>
+      <h4>STEM 教育</h4>
+      <p><b>代表：</b>MathGPT、编程陪练</p>
+      <p>数学解题步骤推演、编程代码审查与调试，AI 既当陪练又当批改员，覆盖"算—证—编"全链路。</p>
+    </div>
+    <div class="glass app-card">
+      <span class="tag">师训</span>
+      <h4>教师专业发展</h4>
+      <p><b>代表：</b>MagicSchool AI</p>
+      <p>帮教师备课、出题、写教案、做 IEP，把行政负担减半，让教师把时间还给"育人"本身。</p>
+    </div>
+  </div>
+  <blockquote class="feyn">
+    真正的教育 AI 应该：暴露学生的无知(不是告诉"错了"，而是让学生自己发现"我错了")；促进深度思考(不是给答案，而是问问题)；培养好奇心(不是完成任务，而是让学生想继续探索)。
+    <cite>— 费曼式分析 · 避免货物崇拜</cite>
+  </blockquote>
+</section>
+
+<!-- ============================================================
+     章节 11 · 5D评估
+     ============================================================ -->
+<section class="chapter wrap" id="ch11">
+  <div class="sec-head">
+    <div class="sec-num">11 · 5D EVALUATION</div>
+    <h2>5D 评估量规：教育 AI 的 21 把尺子</h2>
+    <p class="sub">五个维度、二十一项子指标，每项配 1–5 分锚点。它不是给方法排名，而是让选择者看清每个方法的"代价"。</p>
+  </div>
+
+  <div class="glass eval-dim">
+    <div class="dim-head">
+      <h3>D1 · 理论严谨性</h3>
+      <span class="dim-score">4 子指标</span>
+    </div>
+    <div class="eval-subs">
+      <div class="eval-sub">
+        <span class="sn">D1.1</span>
+        <h5>数学基础</h5>
+        <p>是否有公理化定义与形式化证明。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D1.2</span>
+        <h5>假设透明</h5>
+        <p>核心假设是否显式列出且可检验。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D1.3</span>
+        <h5>理论保证</h5>
+        <p>是否给出收敛性、一致性等保证。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D1.4</span>
+        <h5>可证伪</h5>
+        <p>能否设计反例或反实验推翻结论。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass eval-dim">
+    <div class="dim-head">
+      <h3>D2 · 实践效果</h3>
+      <span class="dim-score">5 子指标</span>
+    </div>
+    <div class="eval-subs">
+      <div class="eval-sub">
+        <span class="sn">D2.1</span>
+        <h5>学习增益</h5>
+        <p>实测前后测分数提升幅度。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D2.2</span>
+        <h5>鲁棒性</h5>
+        <p>面对噪声、分布漂移的表现。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D2.3</span>
+        <h5>稳定性</h5>
+        <p>多次运行结果方差是否可控。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D2.4</span>
+        <h5>置信区间</h5>
+        <p>能否给出估计的不确定性区间。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D2.5</span>
+        <h5>假设检验</h5>
+        <p>是否支持显著性检验与效应量。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass eval-dim">
+    <div class="dim-head">
+      <h3>D3 · 计算效率</h3>
+      <span class="dim-score">4 子指标</span>
+    </div>
+    <div class="eval-subs">
+      <div class="eval-sub">
+        <span class="sn">D3.1</span>
+        <h5>时间复杂度</h5>
+        <p>推理与训练的时间开销。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D3.2</span>
+        <h5>空间复杂度</h5>
+        <p>显存与存储占用。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D3.3</span>
+        <h5>可扩展</h5>
+        <p>能否支撑百万级并发学生。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D3.4</span>
+        <h5>并行性</h5>
+        <p>是否易于分布式训练与推理。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass eval-dim">
+    <div class="dim-head">
+      <h3>D4 · 可解释性</h3>
+      <span class="dim-score">4 子指标</span>
+    </div>
+    <div class="eval-subs">
+      <div class="eval-sub">
+        <span class="sn">D4.1</span>
+        <h5>透明度</h5>
+        <p>内部决策机制是否可观测。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D4.2</span>
+        <h5>可理解</h5>
+        <p>输出是否能让教师与学生看懂。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D4.3</span>
+        <h5>工具支持</h5>
+        <p>是否配套可视化与诊断工具。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D4.4</span>
+        <h5>可审计</h5>
+        <p>能否留存决策记录供事后复核。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass eval-dim">
+    <div class="dim-head">
+      <h3>D5 · 适用范围</h3>
+      <span class="dim-score">4 子指标</span>
+    </div>
+    <div class="eval-subs">
+      <div class="eval-sub">
+        <span class="sn">D5.1</span>
+        <h5>数据类型</h5>
+        <p>能处理文本、图像、日志等哪些数据。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D5.2</span>
+        <h5>问题规模</h5>
+        <p>适合小班教学还是百万级平台。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D5.3</span>
+        <h5>场景适配</h5>
+        <p>能迁移到多少学科与学段。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="eval-sub">
+        <span class="sn">D5.4</span>
+        <h5>数据需求</h5>
+        <p>冷启动所需的最小数据量。</p>
+        <div class="anchor-bar"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:0.86rem;color:var(--ink-mute);margin-top:8px;">锚点说明：实心方块数代表该方法在该子指标上的典型得分(1–5 分)，满分 5 分表示该维度表现优异。评分基于研究报告与费曼分析的综合判断，供选型参考而非绝对排名。</p>
+</section>
+
+<!-- ============================================================
+     章节 12 · 8工具链
+     ============================================================ -->
+<section class="chapter wrap" id="ch12">
+  <div class="sec-head">
+    <div class="sec-num">12 · TOOLCHAIN</div>
+    <h2>八大教育 AI 工具卡</h2>
+    <p class="sub">每张卡含定位、技术栈、适用场景，覆盖国际与国产、通用与专用、K12 与高校，构成 2026 年教育 AI 工具版图。</p>
+  </div>
+  <div class="tool-grid">
+    <div class="glass tool-card">
+      <div class="logo">🦊</div>
+      <h4>Khanmigo</h4>
+      <div class="pos">K12 苏格拉底导师</div>
+      <p class="row"><b>定位：</b>不直接给答案的 AI 导师</p>
+      <p class="row"><b>技术：</b>GPT-4 + 可汗课程库 RAG</p>
+      <p class="row"><b>场景：</b>K12 全学科辅导、教师备课</p>
+      <p class="row"><b>特色：</b>对话留痕、家长模式、安全护栏</p>
+    </div>
+    <div class="glass tool-card">
+      <div class="logo">🦜</div>
+      <h4>Duolingo Max</h4>
+      <div class="pos">语言学习 AI 伙伴</div>
+      <p class="row"><b>定位：</b>角色扮演 + 解释的语伴</p>
+      <p class="row"><b>技术：</b>GPT-4 + 语音识别 + 游戏化</p>
+      <p class="row"><b>场景：</b>口语练习、语法讲解、阅读理解</p>
+      <p class="row"><b>特色：</b>Roleplay 对话、解释我的答案</p>
+    </div>
+    <div class="glass tool-card">
+      <div class="logo">🎓</div>
+      <h4>Coursera Coach</h4>
+      <div class="pos">高校在线课程助教</div>
+      <p class="row"><b>定位：</b>课程内 AI 答疑与导学</p>
+      <p class="row"><b>技术：</b>课程 transcript RAG + LLM</p>
+      <p class="row"><b>场景：</b>MOOC 答疑、学习规划、测验讲解</p>
+      <p class="row"><b>特色：</b>紧扣本课程内容、降低幻觉</p>
+    </div>
+    <div class="glass tool-card">
+      <div class="logo">💬</div>
+      <h4>ChatGPT Edu</h4>
+      <div class="pos">高校机构级 ChatGPT</div>
+      <p class="row"><b>定位：</b>面向大学的合规 ChatGPT</p>
+      <p class="row"><b>技术：</b>GPT-4o + 数据隔离 + 管理后台</p>
+      <p class="row"><b>场景：</b>科研、教学、行政、学生写作</p>
+      <p class="row"><b>特色：</b>对话不被用于训练、SSO 接入</p>
+    </div>
+    <div class="glass tool-card">
+      <div class="logo">✨</div>
+      <h4>Gemini Education</h4>
+      <div class="pos">Google 教育版 Gemini</div>
+      <p class="row"><b>定位：</b>接入 Workspace 的教育助手</p>
+      <p class="row"><b>技术：</b>Gemini 多模态 + Docs/Classroom 集成</p>
+      <p class="row"><b>场景：</b>备课、写邮件、做幻灯片、图像理解</p>
+      <p class="row"><b>特色：</b>多模态强、与谷歌生态无缝</p>
+    </div>
+    <div class="glass tool-card">
+      <div class="logo">🪄</div>
+      <h4>MagicSchool AI</h4>
+      <div class="pos">教师减负工具集</div>
+      <p class="row"><b>定位：</b>帮教师写教案、出题、做 IEP</p>
+      <p class="row"><b>技术：</b>LLM + 数十个教育专用 Prompt 模板</p>
+      <p class="row"><b>场景：</b>备课、差异化教学、特教 IEP</p>
+      <p class="row"><b>特色：</b>模板丰富、上手快、面向教师</p>
+    </div>
+    <div class="glass tool-card">
+      <div class="logo">🇨🇳</div>
+      <h4>智谱清言教育版</h4>
+      <div class="pos">国产全学科教育助手</div>
+      <p class="row"><b>定位：</b>对齐国内课标的教育大模型</p>
+      <p class="row"><b>技术：</b>GLM 微调 + 教材 RAG + 知识图谱</p>
+      <p class="row"><b>场景：</b>中文作文、古诗文、K12 全科</p>
+      <p class="row"><b>特色：</b>本地化部署、中文理解强</p>
+    </div>
+    <div class="glass tool-card">
+      <div class="logo">🔢</div>
+      <h4>好未来 MathGPT</h4>
+      <div class="pos">数学专项大模型</div>
+      <p class="row"><b>定位：</b>步骤严谨的数学解题与讲解</p>
+      <p class="row"><b>技术：</b>数学语料预训练 + 形式化验证</p>
+      <p class="row"><b>场景：</b>数学竞赛、教材习题、图文混合题</p>
+      <p class="row"><b>特色：</b>计算幻觉低、中式数学适配好</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 13 · 6位教育思想家
+     ============================================================ -->
+<section class="chapter wrap" id="ch13">
+  <div class="sec-head">
+    <div class="sec-num">13 · CELEB THINKING SKILLS</div>
+    <h2>六位教育思想家的思维技能</h2>
+    <p class="sub">这些思想早于 AI，却是 AI 教育的"元认知层"。理解它们，才能判断 AI 工具是在真育人，还是在搞货物崇拜。</p>
+  </div>
+  <div class="celeb-grid">
+    <div class="glass celeb-card">
+      <div class="who">Benjamin Bloom · 1956/1984</div>
+      <h4>掌握学习 Mastery Learning</h4>
+      <div class="def">只要给予足够时间与合适反馈，几乎所有学生都能掌握绝大部分学习目标——差异在"学多久"而非"能不能"。</div>
+      <h5>行动步骤</h5>
+      <ol>
+        <li>把课程拆成可测的小目标</li>
+        <li>每阶段做形成性测验与反馈</li>
+        <li>未达标者给矫正活动，达标者给深化活动</li>
+        <li>进入下一阶段前确保掌握度达标</li>
+      </ol>
+      <div class="limit"><b>局限：</b>对课程进度统一的高压体制难落地；2 Sigma 在大规模课堂仍难复制。</div>
+    </div>
+    <div class="glass celeb-card">
+      <div class="who">Lev Vygotsky · 1934</div>
+      <h4>最近发展区 ZPD</h4>
+      <div class="def">学生独立能做的水平与在有经验者引导下能做的水平之间的差距，是学习最该发生的"甜区"。</div>
+      <h5>行动步骤</h5>
+      <ol>
+        <li>诊断学生当前独立水平</li>
+        <li>识别其潜在可达水平</li>
+        <li>提供"脚手架"任务填平差距</li>
+        <li>随能力增长逐步撤除脚手架</li>
+      </ol>
+      <div class="limit"><b>局限：</b>ZPD 边界难精确测量；依赖教师诊断力，AI 估计易有偏差。</div>
+    </div>
+    <div class="glass celeb-card">
+      <div class="who">Jean Piaget · 1950s</div>
+      <h4>认知发展建构主义</h4>
+      <div class="def">儿童通过同化与顺应主动建构知识，认知发展分阶段(感知运动—前运算—具体运算—形式运算)。</div>
+      <h5>行动步骤</h5>
+        <ol>
+        <li>判断学生所处认知阶段</li>
+        <li>提供与其阶段匹配的具象/抽象材料</li>
+        <li>设置认知冲突引发顺应</li>
+        <li>让学生自主探索而非直接告知</li>
+      </ol>
+      <div class="limit"><b>局限：</b>阶段论被批过于刚性；低估儿童能力、忽视文化差异。</div>
+    </div>
+    <div class="glass celeb-card">
+      <div class="who">Erik Mazur · 1990s</div>
+      <h4>同伴教学 Peer Instruction</h4>
+      <div class="def">先用概念测试题让学生独立作答，再让同伴讨论后重答，利用"教别人"深化理解。</div>
+      <h5>行动步骤</h5>
+      <ol>
+        <li>讲授前抛出概念性选择题</li>
+        <li>学生独立投票(可借助 AI 收集)</li>
+        <li>若正确率 30–70%，安排同伴讨论</li>
+        <li>重新投票后讲解争议点</li>
+      </ol>
+      <div class="limit"><b>局限：</b>依赖高质量概念题；大班与异步在线场景难组织讨论。</div>
+    </div>
+    <div class="glass celeb-card">
+      <div class="who">Sugata Mitra · 1999</div>
+      <h4>自我组织学习 SOLE</h4>
+      <div class="def">把电脑嵌入墙洞，儿童在无教师指导下能自主学会使用——学习是自组织的，教师是"鼓励者"而非"讲授者"。</div>
+      <h5>行动步骤</h5>
+      <ol>
+        <li>抛出一个大而开放的好问题</li>
+        <li>让学生分组自由上网探索</li>
+        <li>组间分享发现，教师只做"祖母式鼓励"</li>
+        <li>追问而非评判，激发深度思考</li>
+      </ol>
+      <div class="limit"><b>局限：</b>对基础设施依赖高；基础技能(读写算)仍需显式教学。</div>
+    </div>
+    <div class="glass celeb-card">
+      <div class="who">John Anderson · 1976/1990s</div>
+      <h4>ACT-R 认知架构</h4>
+      <div class="def">把知识分为陈述性(事实)与程序性(规则)，通过"产生式"模拟人脑学习，是智能辅导系统的理论基石。</div>
+      <h5>行动步骤</h5>
+      <ol>
+        <li>把学科知识编码为产生式规则</li>
+        <li>追踪学生掌握每条规则的概率</li>
+        <li>据规则依赖图安排练习顺序</li>
+        <li>用"幂律遗忘曲线"安排复习时机</li>
+      </ol>
+      <div class="limit"><b>局限：</b>把学习简化为规则习得，忽视情境与意义；建模成本高。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 14 · 社交文案 6×6=36
+     ============================================================ -->
+<section class="chapter wrap" id="ch14">
+  <div class="sec-head">
+    <div class="sec-num">14 · SOCIAL COPIES</div>
+    <h2>六平台 × 六角度 = 36 条传播文案</h2>
+    <p class="sub">微博 / 小红书 / X / B站 / 知乎 / 公众号，每平台六条不同角度，每条标注 Skill 组合。排序用"第N篇/其N"自然编号。</p>
+  </div>
+
+  <!-- 微博 -->
+  <div class="platform-block">
+    <h3 class="platform-title">微博 <span class="pn">Weibo · 6 条</span></h3>
+    <div class="copy-grid">
+      <div class="glass copy-card">
+        <span class="angle">emotional_hook</span>
+        <p class="copy-text">第1篇｜老师批改1000道题要3小时，AI只要10分钟。但请等等——批改的目的是检查对错，还是帮助学生理解？如果AI只说"第5题错了"却说不出"为什么错"，那不过是教育界的货物崇拜：有形式，没灵魂。</p>
+        <div class="skills"><span class="sk-chip">emotion_hook</span><span class="sk-chip">feynman_translate</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">workplace_growth</span>
+        <p class="copy-text">第2篇｜与其担心AI抢饭碗，不如想清楚：哪些是你该交给机器的机械活，哪些是只有人能做的创造活。把批改交给AI，把"看见每个孩子"留给自己——这才是教师职场的新分工。</p>
+        <div class="skills"><span class="sk-chip">scene_immersion</span><span class="sk-chip">callback_ending</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">academic_rigor</span>
+        <p class="copy-text">第3篇｜Bloom(1984)发现一对一辅导让学生超越班级98%同龄人，效应量2σ。Khan Academy实测AI个性化学习效率提升30%。问题来了：我们测的是分数，还是真正理解？多数研究在优化"易测指标"。</p>
+        <div class="skills"><span class="sk-chip">academic_rigor</span><span class="sk-chip">number_anchor</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">counterfactual_twist</span>
+        <p class="copy-text">第4篇｜如果1960年PLATO就铺到了每所学校，今天的课堂会是什么样？历史给了我们60年，我们却等到ChatGPT才慌张。其实AI教育不缺技术，缺的是想清楚"教什么"的勇气。</p>
+        <div class="skills"><span class="sk-chip">counterintuition</span><span class="sk-chip">story_arc</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">personal_decision</span>
+        <p class="copy-text">第5篇｜孩子要不要用AI写作业？我的判断标准只有一条：用完之后，他能不能关掉AI自己讲一遍。能，就是脚手架；不能，就是拐杖。工具无罪，关键看是"练脑"还是"替脑"。</p>
+        <div class="skills"><span class="sk-chip">scene_immersion</span><span class="sk-chip">listicle_efficiency</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">viral_quote</span>
+        <p class="copy-text">第6篇｜"如果你不能把一个东西解释给大一新生听，说明你自己没真正理解。"费曼这句话，恰好是检验AI教育产品的试金石——讲不清"为什么"，再炫酷也只是表演。</p>
+        <div class="skills"><span class="sk-chip">celebrity_effect</span><span class="sk-chip">callback_ending</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B站 -->
+  <div class="platform-block">
+    <h3 class="platform-title">B站 <span class="pn">Bilibili · 6 条</span></h3>
+    <div class="copy-grid">
+      <div class="glass copy-card">
+        <span class="angle">emotional_hook</span>
+        <p class="copy-text">第1篇｜【硬核科普】1960年，伊利诺伊大学用一台冰箱大的终端，第一次让计算机"教"学生。65年后，ChatGPT让每个人口袋里都装了个老师。这期视频，我用5个真实案例告诉你：AI教育到底是革命，还是一场精致的货物崇拜？</p>
+        <div class="skills"><span class="sk-chip">story_arc</span><span class="sk-chip">feynman_translate</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">workplace_growth</span>
+        <p class="copy-text">第2篇｜【职场向】当老师5年，我用AI省下60%备课时间。但说实话，最值钱的不是省时间，是AI逼我重新想清楚：到底什么是我非教不可的、什么是可以让学生自学的。这期分享我的"人机分工"清单，弹幕扣1要模板。</p>
+        <div class="skills"><span class="sk-chip">scene_immersion</span><span class="sk-chip">listicle_efficiency</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">academic_rigor</span>
+        <p class="copy-text">第3篇｜【学术向】Bloom的2 Sigma问题到底是什么？通俗讲：一对一辅导能让普通生碾压98%的同学。AI导师(Khanmigo)正在试着规模化这件事。但请注意，它用的不是"直接给答案"，而是苏格拉底式追问+RAG对着课本——本期拆解它的技术架构。</p>
+        <div class="skills"><span class="sk-chip">academic_rigor</span><span class="sk-chip">analogy_bridge</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">counterfactual_twist</span>
+        <p class="copy-text">第4篇｜【反转】如果2020年没有疫情，AI教育会来得这么快吗？那一年16亿学生被迫上网课，老师第一次大规模学会用数字工具。可以说，没有COVID的"强制补课"，就没有ChatGPT发布后教育界的快速拥抱。历史的剧本，比你想的更偶然。</p>
+        <div class="skills"><span class="sk-chip">story_arc</span><span class="sk-chip">counterintuition</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">personal_decision</span>
+        <p class="copy-text">第5篇｜【决策向】考研要不要用AI？我的建议是：用它帮你梳理框架、查漏补缺，但绝对不要让它替你写论述题。判断标准很简单——考场上没有AI，你能不能写出70分的答案？能，就用；不能，先练基本功。本期给一套"AI辅助考研"的实操流程。</p>
+        <div class="skills"><span class="sk-chip">listicle_efficiency</span><span class="sk-chip">scene_immersion</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">viral_quote</span>
+        <p class="copy-text">第6篇｜【金句】费曼说："如果你不能用大白话解释，说明你没真正理解。"这句话同时也是检验所有AI教育产品的标尺——讲不清"为什么"的AI，再炫酷也只是表演。本期视频，我用3个产品案例，带你一眼看穿"真导师"和"假辅导"。</p>
+        <div class="skills"><span class="sk-chip">celebrity_effect</span><span class="sk-chip">feynman_translate</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 知乎 -->
+  <div class="platform-block">
+    <h3 class="platform-title">知乎 <span class="pn">Zhihu · 6 条</span></h3>
+    <div class="copy-grid">
+      <div class="glass copy-card">
+        <span class="angle">emotional_hook</span>
+        <p class="copy-text">第1篇｜如何看待ChatGPT对教育的冲击？我的回答可能有点反常识：真正的冲击不是"学生用它代写"，而是"它逼着每个老师重新回答——我课堂上讲的东西，到底有多少是AI讲不了的？"想清楚这点，就知道该把精力放在哪了。</p>
+        <div class="skills"><span class="sk-chip">counterintuition</span><span class="sk-chip">feynman_translate</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">workplace_growth</span>
+        <p class="copy-text">第2篇｜作为一线教师，我如何看待AI？结论先行：AI是放大器，不是替代者。它放大好老师"看见每个学生"的能力，也放大懒老师"流水线敷衍"的惯性。工具本身不改变教学质量的方向，它只是让方向跑得更快。所以问题从来不是AI，是人。</p>
+        <div class="skills"><span class="sk-chip">academic_rigor</span><span class="sk-chip">callback_ending</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">academic_rigor</span>
+        <p class="copy-text">第3篇｜从技术角度，教育AI的五大技术栈如何协同？RAG负责"对着课本答题"降低幻觉；知识图谱负责"规划学习路径"；多模态分析负责"读懂学生状态"；LLM教育微调负责"学会引导而非代答"；学生建模(BKT/DKT)负责"追踪掌握概率"。五层叠加，才是一个完整的教育AI闭环。</p>
+        <div class="skills"><span class="sk-chip">academic_rigor</span><span class="sk-chip">analogy_bridge</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">counterfactual_twist</span>
+        <p class="copy-text">第4篇｜如果Bloom的2 Sigma问题在1984年就被认真对待，今天的教育会怎样？他发现一对一辅导能让普通生超过98%的同学，可60年过去规模化仍是难题。直到Khanmigo出现，我们才第一次有机会回答这个"古老"的问题——AI能否让每个孩子都拥有私人导师？</p>
+        <div class="skills"><span class="sk-chip">story_arc</span><span class="sk-chip">number_anchor</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">personal_decision</span>
+        <p class="copy-text">第5篇｜家长该不该让孩子用AI学习？我的判断框架：分年龄、分用途。小学阶段，AI更适合做"陪练"而非"导师"，重点保护思考习惯；初高中，可以逐步引入RAG型工具辅助查漏补缺；大学以上，AI应成为"学术伙伴"。核心原则始终是：用完关掉，能不能自己复述。</p>
+        <div class="skills"><span class="sk-chip">listicle_efficiency</span><span class="sk-chip">feynman_translate</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">viral_quote</span>
+        <p class="copy-text">第6篇｜Ken Robinson在那场史上最高播放的TED里说："学校正在扼杀创造力。"把这句话放进AI时代格外刺耳——如果AI只让刷题更高效、只让标准化更精准，那它就是在用最先进的技术，继续做最该被淘汰的事。技术该服务于育人，不是相反。</p>
+        <div class="skills"><span class="sk-chip">celebrity_effect</span><span class="sk-chip">counterintuition</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 小红书 -->
+  <div class="platform-block">
+    <h3 class="platform-title">小红书 <span class="pn">Xiaohongshu · 6 条</span></h3>
+    <div class="copy-grid">
+      <div class="glass copy-card">
+        <span class="angle">emotional_hook</span>
+        <p class="copy-text">第1篇｜天哪，我才发现AI辅导的真相😭 不是AI有多神，而是它终于让"一对一辅导"不再是富人家孩子的特权。Khanmigo那种"不直接给答案、步步追问"的样子，像极了一个耐心的家教哥哥。教育的公平，可能就藏在这层玻璃里。</p>
+        <div class="skills"><span class="sk-chip">emotion_hook</span><span class="sk-chip">mass_translate</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">workplace_growth</span>
+        <p class="copy-text">第2篇｜姐妹们听劝，做老师这行别和AI比速度，比"看见"。批改、出题、写教案这些机械活，统统交给MagicSchool；把省下的时间拿去观察哪个孩子今天没笑、哪个眼神在飘——这才是AI抢不走的硬实力。</p>
+        <div class="skills"><span class="sk-chip">listicle_efficiency</span><span class="sk-chip">scene_immersion</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">academic_rigor</span>
+        <p class="copy-text">第3篇｜认真科普一下｜Bloom的"2 Sigma问题"：一对一辅导能让平均生超过98%的同学。AI导师(Khanmigo 2023)正在试着把这件事规模化。关键是它用RAG对着课本答题、用苏格拉底式追问——不是为了给答案，是为了让你自己想明白。</p>
+        <div class="skills"><span class="sk-chip">academic_rigor</span><span class="sk-chip">feynman_translate</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">counterfactual_twist</span>
+        <p class="copy-text">第4篇｜反转了｜我们以为AI会让教育更卷，结果它最先消灭的是"刷题"。当AI能秒出解题步骤，"会做题"就不值钱了；值钱的是"会提问""会判断答案对不对"。所以别再让孩子刷题了，让他多问"为什么"。</p>
+        <div class="skills"><span class="sk-chip">counterintuition</span><span class="sk-chip">scene_immersion</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">personal_decision</span>
+        <p class="copy-text">第5篇｜纠结要不要给孩子买AI学习机？先问自己三个问题：它能不能关掉AI自己讲一遍？它的内容对不对齐课标？它会不会偷偷收集孩子数据？三条都过，才值得买。工具是脚手架还是拐杖，全看你怎么用。</p>
+        <div class="skills"><span class="sk-chip">listicle_efficiency</span><span class="sk-chip">feynman_translate</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">viral_quote</span>
+        <p class="copy-text">第6篇｜"教育的目的不是填满水桶，而是点燃火焰。"AI能一秒填满水桶，但点火的活，还得靠人。别让技术把孩子变成更高效的"容器"，要让他成为更会燃烧的"火种"。</p>
+        <div class="skills"><span class="sk-chip">celebrity_effect</span><span class="sk-chip">emotion_hook</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- X (Twitter) -->
+  <div class="platform-block">
+    <h3 class="platform-title">X / Twitter <span class="pn">x_twitter · 6 条</span></h3>
+    <div class="copy-grid">
+      <div class="glass copy-card">
+        <span class="angle">emotional_hook</span>
+        <p class="copy-text">第1篇｜Bloom 1984: one-on-one tutoring lifts the average student above 98% of class — a 2σ effect. Khanmigo 2023 is the first serious attempt to scale it. The question isn't "can AI tutor?" but "can it tutor *with understanding*?"</p>
+        <div class="skills"><span class="sk-chip">number_anchor</span><span class="sk-chip">academic_rigor</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">workplace_growth</span>
+        <p class="copy-text">第2篇｜Teachers: stop racing AI on grading speed. You'll lose. Race on the thing only humans do — noticing the kid who didn't smile today. Let MagicSchool grade; you go be human. That's the new job description.</p>
+        <div class="skills"><span class="sk-chip">feynman_translate</span><span class="sk-chip">callback_ending</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">academic_rigor</span>
+        <p class="copy-text">第3篇｜RAG + knowledge graph + student modeling = the modern edu-AI stack. RAG reduces hallucination by anchoring to textbook; KG plans learning paths; BKT/DKT tracks mastery probability. Each layer has 20+ years of prior work behind it.</p>
+        <div class="skills"><span class="sk-chip">academic_rigor</span><span class="sk-chip">analogy_bridge</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">counterfactual_twist</span>
+        <p class="copy-text">第4篇｜Counterfactual: if PLATO (1960) had reached every school, would we have waited until ChatGPT to panic? We had 60 years. The bottleneck was never tech — it was deciding what teaching is *for*.</p>
+        <div class="skills"><span class="sk-chip">counterintuition</span><span class="sk-chip">story_arc</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">personal_decision</span>
+        <p class="copy-text">第5篇｜Deciding if your kid should use AI for homework? One test: can they turn it off and explain the answer themselves? Yes = scaffold. No = crutch. The tool is neutral; the parenting isn't.</p>
+        <div class="skills"><span class="sk-chip">scene_immersion</span><span class="sk-chip">listicle_efficiency</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">viral_quote</span>
+        <p class="copy-text">第6篇｜"If you can't explain it to a freshman, you don't understand it." — Feynman. The same test applies to every AI tutor: if it can't explain *why*, it's theater, not teaching.</p>
+        <div class="skills"><span class="sk-chip">celebrity_effect</span><span class="sk-chip">callback_ending</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 公众号 / WeChat -->
+  <div class="platform-block">
+    <h3 class="platform-title">公众号 / WeChat <span class="pn">wechat · 6 条</span></h3>
+    <div class="copy-grid">
+      <div class="glass copy-card">
+        <span class="angle">emotional_hook</span>
+        <p class="copy-text">第1篇｜写这篇文章前，我问了一位教了20年数学的老师：AI来了，你怕吗？她笑了笑说："怕什么，它又不会看见小宇今天没交作业是因为爸妈吵架了。"那一刻我懂了——教育的核心从来不是讲题，是"看见"。AI能讲题，但"看见"这回事，还得靠人。</p>
+        <div class="skills"><span class="sk-chip">story_arc</span><span class="sk-chip">emotion_hook</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">workplace_growth</span>
+        <p class="copy-text">第2篇｜教师如何与AI分工？我的实践框架：AI负责"三备"——备资料、备题目、备讲稿；我负责"三看"——看状态、看困惑、看成长。机器做机械的，人做有温度的。这不是妥协，是回归教育本质——把省下的时间，还给每一个具体的孩子。</p>
+        <div class="skills"><span class="sk-chip">listicle_efficiency</span><span class="sk-chip">feynman_translate</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">academic_rigor</span>
+        <p class="copy-text">第3篇｜教育AI的技术栈，可以拆成五层：RAG(检索增强)让模型"看着课本答题"降低幻觉；知识图谱规划学习路径；多模态分析读懂学生状态；LLM教育微调让模型"学会引导"；学生建模(BKT/DKT)追踪掌握概率。五层叠加，才是完整闭环。本文逐层拆解。</p>
+        <div class="skills"><span class="sk-chip">academic_rigor</span><span class="sk-chip">number_anchor</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">counterfactual_twist</span>
+        <p class="copy-text">第4篇｜假如2023年Khanmigo没有坚持"苏格拉底式追问"，而是直接给答案，会怎样？它会变成另一个"搜题神器"，让学生更依赖、更懒得思考。一个微小的产品设计选择，决定了AI是"脚手架"还是"拐杖"。这或许是教育AI最被低估的决策点。</p>
+        <div class="skills"><span class="sk-chip">counterintuition</span><span class="sk-chip">story_arc</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">personal_decision</span>
+        <p class="copy-text">第5篇｜给孩子选AI学习工具，我只看三点：第一，它会不会直接给答案(给答案的pass掉)；第二，它的内容对不对齐课标(乱编的pass掉)；第三，它收不收孩子数据(不透明的pass掉)。三点全过才考虑。教育工具的底线，是"别害孩子"。</p>
+        <div class="skills"><span class="sk-chip">listicle_efficiency</span><span class="sk-chip">callback_ending</span></div>
+      </div>
+      <div class="glass copy-card">
+        <span class="angle">viral_quote</span>
+        <p class="copy-text">第6篇｜Bloom说："任何学生，只要给予足够时间和合适反馈，都能掌握绝大部分目标。"AI第一次让这句话有了规模化的可能。但请记住——技术只是让"因材施教"变得可行，真正决定它是否发生的，永远是站在孩子身边的那个人。</p>
+        <div class="skills"><span class="sk-chip">celebrity_effect</span><span class="sk-chip">callback_ending</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 15 · 参考文献
+     ============================================================ -->
+<section class="chapter wrap" id="ch15">
+  <div class="sec-head">
+    <div class="sec-num">15 · REFERENCES</div>
+    <h2>参考文献</h2>
+    <p class="sub">本图集内容综合自以下研究报告、学术论文与案例分析，按主题归类。</p>
+  </div>
+  <div class="glass ref-list">
+    <ol>
+      <li><b>Bloom, B. S.</b> (1984). The 2 Sigma Problem: The Search for Methods of Group Instruction as Effective as One-to-One Tutoring. <i>Educational Researcher</i>, 13(6), 4–16. — 提出"2 Sigma 问题"，奠定一对一辅导规模化命题。</li>
+      <li><b>Anderson, J. R.</b> (1996). ACT: A Simple Theory of Complex Cognition. <i>American Psychologist</i>, 51(4), 355–365. — ACT-R 认知架构，智能辅导系统的理论基石。</li>
+      <li><b>Vygotsky, L. S.</b> (1978). Mind in Society: The Development of Higher Psychological Processes. Harvard University Press. — 最近发展区(ZPD)与脚手架理论。</li>
+      <li><b>Piaget, J.</b> (1952). The Origins of Intelligence in Children. International Universities Press. — 认知发展建构主义四阶段。</li>
+      <li><b>Mazur, E.</b> (1997). Peer Instruction: A User's Manual. Prentice Hall. — 同伴教学法(Peer Instruction)。</li>
+      <li><b>Mitra, S.</b> (2005). Self-Organising Systems for Mass Computer Literacy: Finding the Hole in the Wall. <i>Journal of Educational Development</i>. — "墙中洞"实验与 SOLE。</li>
+      <li><b>Robinson, K.</b> (2006). Do Schools Kill Creativity? TED Talk. — 创造力教育倡导。</li>
+      <li><b>Kim, H. M., & Stanislaw, S.</b> (2026). Understanding Generative AI-mediated User Engagement with Academic Library Resources. arXiv:2607.20328. — 生成式 AI 作为学术图书馆资源发现路径的实证研究。</li>
+      <li><b>McCord, E., Pedapati, E., & ElSayed, Z.</b> (2026). FMRP-LEAN: A HIPAA-Compliant AI-Augmented LIMS Architecture for End-to-End Clinical Assay Workflow Optimization. arXiv:2607.20382. — HIPAA 合规的 AI 增强实验室信息管理系统。</li>
+      <li><b>Chakrabarty, T., Liu, X., Ginsburg, J. C., & Dhillon, P.</b> (2026). Generative AI floods and dilutes the market for books. arXiv:2607.20349. — 生成式 AI 对图书市场的影响。</li>
+      <li><b>UNESCO.</b> (2024). AI Competency Framework for Students. — UNESCO 学生 AI 能力四级框架(基础—应用—共创—治理)。</li>
+      <li><b>European Union.</b> (2024). EU AI Act, Article 4 (effective 2025-02-02). — 欧盟人工智能法案第 4 条 AI 素养义务。</li>
+      <li><b>OECD.</b> (2024). Opportunities, guidelines and guardrails on effective and equitable use of AI in education. — OECD 教育领域 AI 应用指南。</li>
+      <li><b>Khan, S.</b> (2023). Khanmigo: Bringing the Benefits of One-on-One Tutoring to All. Khan Academy Blog. — Khanmigo 的设计理念与苏格拉底式引导策略。</li>
+      <li><b>Reich, J.</b> (2020). Failure to Disrupt: Why Technology Alone Can't Transform Education. Harvard University Press. — 在线教育的不平等与局限。</li>
+      <li><b>AI与教育研究项目组.</b> (2026). AI与教育应用深度研究报告. 内部研究报告, 约15000字. — 全球教育 AI 市场现状、技术架构、挑战与趋势。</li>
+      <li><b>AI教育研究团队.</b> (2026). AI与教育应用深度分析报告. 内部分析报告. — LLM 在教育中的应用模式、实施挑战与最佳实践。</li>
+      <li><b>费曼式分析.</b> (2026). 费曼式AI与教育分析报告. 内部分析, 约4500字. — 货物崇拜批判、反自欺原则与具象化思考。</li>
+      <li><b>LLM Wiki.</b> (2026). LLM在教育中的应用研究. 概念词条. — 智能辅导、自动评估、个性化推荐的技术实现方案。</li>
+      <li><b>AI教育案例分析.</b> (2026). AI教育应用案例分析. 案例集. — Khan Academy、Duolingo、Carnegie Learning 等 8 产品案例。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================
+     章节 16 · 权威信源评定
+     ============================================================ -->
+<section class="chapter wrap" id="ch16">
+  <div class="sec-head">
+    <div class="sec-num">16 · SOURCE AUTHORITY</div>
+    <h2>权威信源评定</h2>
+    <p class="sub">本图集引用的信源按权威等级标注：S 级为国际组织/顶级期刊/法案，A 级为同行评议论文与权威机构报告，B 级为行业报告与产品官方资料。</p>
+  </div>
+  <div class="src-grid">
+    <div class="glass src-card">
+      <div class="grade s">S</div>
+      <div class="src-body">
+        <h4>UNESCO 联合国教科文组织</h4>
+        <p>学生 AI 能力框架(2024)，国际教育政策权威，AI 素养四级划分的来源。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade s">S</div>
+      <div class="src-body">
+        <h4>EU AI Act 欧盟人工智能法案</h4>
+        <p>第 4 条 2025-02-02 生效，将 AI 素养从软倡议升级为法律义务。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade s">S</div>
+      <div class="src-body">
+        <h4>OECD 经济合作与发展组织</h4>
+        <p>教育领域 AI 应用指南，跨国比较与政策建议的权威来源。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade s">S</div>
+      <div class="src-body">
+        <h4>Educational Researcher (期刊)</h4>
+        <p>Bloom (1984) "2 Sigma 问题"原始发表地，教育研究顶级期刊。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade a">A</div>
+      <div class="src-body">
+        <h4>arXiv 预印本库</h4>
+        <p>2026-07-22 最新论文：Kim & Stanislaw(图书馆AI)、McCord 等(临床LIMS)、Chakrabarty 等(图书市场)。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade a">A</div>
+      <div class="src-body">
+        <h4>Harvard University Press</h4>
+        <p>Justin Reich《Failure to Disrupt》(2020)，在线教育不平等的权威著作。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade a">A</div>
+      <div class="src-body">
+        <h4>AAAI / IEEE 会议</h4>
+        <p>智能辅导系统(ITS)、教育数据挖掘(EDM)领域顶会，知识追踪与认知建模前沿。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade a">A</div>
+      <div class="src-body">
+        <h4>Carnegie Mellon University (CMU)</h4>
+        <p>John Anderson ACT-R 实验室，认知架构与智能辅导系统发源地。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade b">B</div>
+      <div class="src-body">
+        <h4>Khan Academy 官方资料</h4>
+        <p>Khanmigo 设计理念、产品文档与博客，一手产品信息来源。</p>
+      </div>
+    </div>
+    <div class="glass src-card">
+      <div class="grade b">B</div>
+      <div class="src-body">
+        <h4>行业研究报告</h4>
+        <p>全球教育 AI 市场规模(200亿→500亿)、用户数(10亿+)等数据来源。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     底部深潜馆链接
+     ============================================================ -->
+<div class="wrap">
+  <div class="glass subnav">
+    <h3>继续深潜 · 四座子结构专题馆</h3>
+    <p>主馆之外，四座深潜馆分别从方法论、应用案例、评估量规与四层架构四个维度展开更详尽的代码与数据。</p>
+    <div class="subnav-links">
+      <a href="methodology_sub.html">📘 方法论深潜馆</a>
+      <a href="applications_sub.html">📗 应用案例代码馆</a>
+      <a href="evaluation_sub.html">📙 五维评估量规馆</a>
+      <a href="four_layer_sub.html" class="ghost">🟣 四层架构分析馆</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     页脚
+     ============================================================ -->
+<footer class="wrap">
+  <div class="meta-line">教育和AI · 玻璃天青拟态研究图集</div>
+  <div class="meta-line">风格 glass_sky · 17 章 · 10 位人物 · 9 事件时间线 · 36 条社交文案</div>
+  <div class="meta-line">单文件 HTML · CSS/JS 全内联 · 图片走 AI 绘图 API · 响应式</div>
+  <div class="meta-line">生成日期 2026-07-31 · 内容综合自研究报告、学术论文与案例分析</div>
+</footer>
+
+<script>
+// 章节锚点平滑滚动已由 html { scroll-behavior: smooth } 实现
+// 导航高亮：滚动时自动标记当前章节
+(function() {
+  var navLinks = document.querySelectorAll('.nav-links a');
+  var sections = document.querySelectorAll('section.chapter');
+  if (!('IntersectionObserver' in window)) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var id = entry.target.id;
+        navLinks.forEach(function(link) {
+          if (link.getAttribute('href') === '#' + id) {
+            link.style.background = 'rgba(14,165,233,0.14)';
+            link.style.color = '#0284C7';
+          } else {
+            link.style.background = '';
+            link.style.color = '';
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(function(sec) { observer.observe(sec); });
+})();
+
+// 卡片鼠标光晕跟随
+document.querySelectorAll('.glass').forEach(function(card) {
+  card.addEventListener('mousemove', function(e) {
+    var r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+</script>
+<script id="apple-ui-interactions">
+document.querySelectorAll('.card-spotlight').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`);});});
+</script>
+
+</body>
+</html>
