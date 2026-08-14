@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CausalGuard · 因果研究图集 · 玻璃天青</title>
+<style>
+  :root{
+    --bg:#EAF6FB; --card:rgba(255,255,255,.55); --accent:#0EA5E9; --ink:#0B2A3A; --muted:#3E6B80;
+    --blue:#0284C7; --cyan:#7DD3FC; --line:rgba(2,132,199,.18); --radius:18px;
+    --font-sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(900px 600px at 10% 0%, rgba(125,211,252,.35), transparent 60%),
+      radial-gradient(800px 500px at 100% 10%, rgba(14,165,233,.18), transparent 55%),
+      var(--bg);
+    color:var(--ink); font-family:var(--font-sans); line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{content:""; position:fixed; inset:0; z-index:-1; opacity:.5; pointer-events:none;
+    background:radial-gradient(circle at 20% 30%, rgba(255,255,255,.6), transparent 40%),
+               radial-gradient(circle at 80% 70%, rgba(255,255,255,.5), transparent 40%);}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px}
+  section{padding:80px 0; border-bottom:1px solid var(--line)}
+  h1{font-size:clamp(34px,5vw,54px); font-weight:700; letter-spacing:-.03em; line-height:1.12}
+  h2{font-size:30px; font-weight:700; margin-bottom:6px; letter-spacing:-.02em}
+  h3{font-size:20px; font-weight:700; margin:26px 0 12px}
+  .sub{color:var(--muted); font-size:16px; margin-top:8px}
+  .tag{display:inline-block; font-family:var(--font-mono); font-size:12px; color:var(--blue);
+    border:1px solid var(--line); padding:3px 10px; border-radius:999px; margin-bottom:16px}
+  .eyebrow{font-family:var(--font-mono); font-size:12px; color:var(--accent); letter-spacing:.16em; text-transform:uppercase}
+  .lead{font-size:19px; color:#0E3A4F; max-width:760px}
+  .glass{background:var(--card); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.6);
+    border-radius:var(--radius); box-shadow:0 8px 30px rgba(2,132,199,.08)}
+  .kpi{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:26px}
+  .kpi .k{padding:22px}
+  .kpi .num{font-size:34px; font-weight:700; font-family:var(--font-mono); color:var(--blue)}
+  .kpi .num.a{color:var(--accent)} .kpi .num.w{color:#fff; text-shadow:0 1px 8px rgba(2,132,199,.4)}
+  .kpi .lab{font-size:13px; color:var(--muted); margin-top:4px}
+  .grid{display:grid; gap:16px; margin-top:22px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  .card{padding:22px; transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .card:hover{transform:translateY(-4px)}
+  .card h4{font-size:16px; margin-bottom:6px; color:#0B2A3A}
+  .card p{font-size:14px; color:var(--muted)}
+  /* 费曼翻译 */
+  .feyn{display:flex; align-items:flex-start; gap:14px; padding:18px; margin-top:14px}
+  .feyn .lv{font-family:var(--font-mono); font-size:12px; color:var(--blue); white-space:nowrap; padding-top:2px}
+  .feyn .arrow{color:var(--accent); font-size:20px}
+  .feyn .txt{font-size:15px}
+  /* 社交文案 */
+  .platform-block{margin-top:34px}
+  .platform-title{display:flex; align-items:center; gap:12px; font-size:22px; margin-bottom:14px}
+  .platform-title .badge{font-family:var(--font-mono); font-size:12px; color:#fff; background:var(--accent);
+    padding:3px 10px; border-radius:999px}
+  .copy-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .copy-grid.row2-center .c:nth-child(4),
+  .copy-grid.row2-center .c:nth-child(5){grid-column:auto; grid-column:1 / span 1; margin-left:calc(50% + 7px); width:calc(100% + 100% + 14px)}
+  .copy-card{padding:18px; position:relative; overflow:hidden; background:
+    linear-gradient(180deg, rgba(255,255,255,.55), rgba(234,246,251,.8));
+    border:1px solid rgba(255,255,255,.7)}
+  .copy-card::before{content:""; position:absolute; inset:0; z-index:0;
+    background:linear-gradient(180deg, rgba(125,211,252,.18), rgba(14,165,233,.06)); }
+  .copy-card>*{position:relative; z-index:1}
+  .copy-card p{font-size:14px; color:#0E3A4F; line-height:1.62}
+  .skill-chip{display:inline-block; margin-top:12px; font-family:var(--font-mono); font-size:11px;
+    color:var(--blue); border:1px solid var(--line); padding:3px 9px; border-radius:999px; background:rgba(255,255,255,.5)}
+  .overflow-links{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px}
+  .ol{display:inline-flex; align-items:center; gap:8px; background:rgba(14,165,233,.12);
+    border:1px solid rgba(14,165,233,.35); color:var(--blue); text-decoration:none; padding:10px 16px;
+    border-radius:999px; font-size:14px; transition:.25s}
+  .ol:hover{background:rgba(14,165,233,.22); transform:translateY(-2px)}
+  .topbar{position:sticky; top:0; z-index:20; backdrop-filter:blur(16px);
+    background:rgba(234,246,251,.7); border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; padding:13px 24px}
+  .brand{font-family:var(--font-mono); font-size:14px; color:#0B2A3A}
+  .brand b{color:var(--accent)}
+  .nav a{color:var(--muted); text-decoration:none; font-size:13px; margin-left:16px}
+  .nav a:hover{color:var(--blue)}
+  @media(max-width:768px){ .kpi,.g2,.g3,.copy-grid{grid-template-columns:1fr}
+    .copy-grid.row2-center .c:nth-child(4),
+    .copy-grid.row2-center .c:nth-child(5){margin-left:0; width:auto; grid-column:auto}
+    .nav{display:none} }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <div class="brand">Causal<b>Guard</b> · 玻璃天青</div>
+  <div class="nav"><a href="#overview">概览</a><a href="#feyn">费曼翻译</a><a href="#social">社交文案</a>
+  <a href="#celeb">名人技能</a><a href="#overflow">深潜</a></div>
+</div></div>
+
+<!-- 00 OVERVIEW + KPI -->
+<section id="overview"><div class="wrap">
+  <span class="tag">STYLE 03 · glass_sky</span>
+  <span class="eyebrow">Causal Research Atlas</span>
+  <h1>用大白话讲清因果<br/>—— 像侦探破案</h1>
+  <p class="lead">因果推断就像侦探破案：相关是"两个人总在一起出现"，因果是"一个人真的让另一人发生了什么"。本馆用最通俗的语言 + 25 条社交文案，把 CausalGuard 的硬核能力讲给所有人听。</p>
+  <div class="kpi">
+    <div class="k glass"><div class="num a">+1.865</div><div class="lab">LLM 朴素关联对真效应 +0.500 的放大</div></div>
+    <div class="k glass"><div class="num">12</div><div class="lab">类因果谬误像 12 种"假线索"</div></div>
+    <div class="k glass"><div class="num a">100%</div><div class="lab">B1 识别基准（形式化算法）</div></div>
+    <div class="k glass"><div class="num">0</div><div class="lab">第三方依赖，手机也能跑</div></div>
+    <div class="k glass"><div class="num a">7</div><div class="lab">阶段守护管线守对话</div></div>
+    <div class="k glass"><div class="num">44</div><div class="lab">单元测试全绿</div></div>
+  </div>
+</div></section>
+
+<!-- 01 FEYNMAN -->
+<section id="feyn"><div class="wrap">
+  <span class="eyebrow">01 · Feynman Translate</span>
+  <h2>费曼翻译术：把公式说成人话</h2>
+  <p class="sub">术语降级三步法：专家词 → 行业词 → 生活词。用 12 岁能懂的话讲清楚。</p>
+  <div class="feyn glass"><div class="lv">专家词</div><div class="arrow">→</div>
+    <div class="txt"><code>P(Y | do(x))</code> —— "干预 X 后 Y 的概率"</div></div>
+  <div class="feyn glass"><div class="lv">生活词</div><div class="arrow">→</div>
+    <div class="txt">"如果我强制改变 X，Y 会怎样？"</div></div>
+  <div class="feyn glass"><div class="lv">反事实</div><div class="arrow">→</div>
+    <div class="txt">"如果当时没做那件事，现在会怎样？"（平行宇宙剪辑）</div></div>
+  <div class="feyn glass"><div class="lv">混杂</div><div class="arrow">→</div>
+    <div class="txt">"藏起来的第三方因素"——比如'爱喝咖啡的人也更有钱'，钱才是长寿的真凶</div></div>
+  <div class="feyn glass"><div class="lv">对撞</div><div class="arrow">→</div>
+    <div class="txt">"别在中间硬插一脚"——选秀里'又漂亮又有才华'被录取，分开看反而负相关</div></div>
+  <div class="feyn glass"><div class="lv">辛普森</div><div class="arrow">→</div>
+    <div class="txt">"把数据搅在一起就变味了"——整体趋势和分组趋势可能完全相反，先分层再看</div></div>
+  <div class="feyn glass"><div class="lv">中介</div><div class="arrow">→</div>
+    <div class="txt">"别去调整那个传话的人"——药→血管→血压，调了'血管'就切断了药的作用路</div></div>
+  <div class="feyn glass"><div class="lv">SCM</div><div class="arrow">→</div>
+    <div class="txt">"给世界一套物理方程式"——每个变量 = 原因 + 随机噪声，反事实就是换掉某个因重算</div></div>
+</div></section>
+
+<!-- 14 SOCIAL -->
+<section id="social"><div class="wrap">
+  <span class="eyebrow">14 · Social Copies</span>
+  <h2>社交文案 · 5 平台 × 5 条</h2>
+  <p class="sub">每条文案叠加 ≥2 个传播技能（费曼翻译术 / 名人效应 / 反常识 / 数字锚定等），全程无版本编号。</p>
+
+  <!-- 微博 -->
+  <div class="platform-block">
+    <h3 class="platform-title">微博 <span class="badge">5 篇</span></h3>
+    <div class="copy-grid row2-center">
+      <div class="copy-card"><p>你以为"喝咖啡的人更长寿"=咖啡能延寿？错！真相是：爱喝咖啡的人往往更有钱、更注重健康——钱才是隐藏元凶。这就是因果推断要抓的"混杂变量"。Pearl 说：没有因果，AI 永远是统计鹦鹉。</p><span class="skill-chip">emotion_hook + celebrity_effect</span></div>
+      <div class="copy-card"><p>LLM 训练目标是"猜下一个词"，纯关联。所以它会把"咖啡和长寿相关"直接说成因果，把真效应 +0.500 放大到 +1.865，3.7 倍！CausalGuard 一行装饰器就给对话装上因果安检。</p><span class="skill-chip">counterintuition + number_anchor</span></div>
+      <div class="copy-card"><p>do(x) 用 12 岁能懂的话讲：就是"如果我强制把 X 改成某个值"。比如强制让所有人每天喝 2 杯咖啡，再看寿命——这才是真因果，不是看谁本来就喝。</p><span class="skill-chip">feynman_translate + callback_ending</span></div>
+      <div class="copy-card"><p>相关≠因果，但 90% 的人每天都在犯。相亲时对方说"我前任都说我脾气好"——这是选择偏差，你只听到被留下的好评。理性一点：问问他前任为什么是"前任"。</p><span class="skill-chip">counterintuition + scene_immersion</span></div>
+      <div class="copy-card"><p>2011 图灵奖、2021 诺奖，因果推断站上 AI 之巅。CausalGuard 用 0 依赖 Python 把 Pearl 阶梯做成了可跑的中间件：44 测试全绿，B1 识别 100%。</p><span class="skill-chip">academic_rigor + number_anchor</span></div>
+    </div>
+  </div>
+
+  <!-- 小红书 -->
+  <div class="platform-block">
+    <h3 class="platform-title">小红书 <span class="badge">5 篇</span></h3>
+    <div class="copy-grid row2-center">
+      <div class="copy-card"><p>宝子们，别再被"XX 导致 YY"忽悠了！因果关系图 = 谁影响了谁的关系图。一图看懂：咖啡→长寿？其实是钱→咖啡+钱→长寿。三步自查：有隐藏第三方吗？时间对吗？样本偏了吗？</p><span class="skill-chip">mass_translate + scene_immersion</span></div>
+      <div class="copy-card"><p>因果推断 3 个必知概念 + 5 步实操清单📝：①关联≠因果 ②混杂要调 ③反事实想"如果没做"。实操：找主张→画因果图→查后门→调变量→看效应差多少。收藏这篇就够了！</p><span class="skill-chip">listicle_efficiency + emotion_hook</span></div>
+      <div class="copy-card"><p>用大白话讲 do-演算：专家说 P(Y|do(x))，我说"如果我强制改变 X，Y 会怎样"。类比桥梁：因果推断像侦探破案，反事实像平行宇宙剪辑。是不是一下就懂了？</p><span class="skill-chip">feynman_translate + analogy_bridge</span></div>
+      <div class="copy-card"><p>假设你跳槽：现公司说"离职的人都混得差"——这是幸存者偏差，你只看到留下的。因果思维教你问：那些"本来就该走"的人去哪了？别被老板的因果话术骗了。</p><span class="skill-chip">academic_rigor + feynman_translate</span></div>
+      <div class="copy-card"><p>买房还是租房？用因果想：不是"买房的人更有钱"，是"有钱→能买房+有钱→生活好"。别把结果当原因。CausalGuard 的 12 类谬误里，F03 因果倒置专门管这个。</p><span class="skill-chip">personal_decision + counterintuition</span></div>
+    </div>
+  </div>
+
+  <!-- X / Twitter -->
+  <div class="platform-block">
+    <h3 class="platform-title">X (Twitter) <span class="badge">5 篇</span></h3>
+    <div class="copy-grid row2-center">
+      <div class="copy-card"><p>"Without causality, AI is just a statistical parrot." — Judea Pearl. LLMs optimize log P(xₜ|x&lt;ₜ): pure association. CausalGuard bolts Pearl's ladder onto any LLM with zero deps. 100% on B1 identification.</p><span class="skill-chip">celebrity_effect + number_anchor</span></div>
+      <div class="copy-card"><p>Pearl called deep learning "curve fitting." Harsh? Maybe. But P(y|x) ≠ P(y|do(x)) ≠ P(yₓ|x',y') — proven by Bareinboim et al. 2022. More data never buys you the higher rung. CausalGuard enforces this.</p><span class="skill-chip">controversy_debate + feynman_translate</span></div>
+      <div class="copy-card"><p>Naive association reports +1.865 for a true effect of +0.500 (3.7× inflation). Backdoor adjustment recovers +0.507 (1.4% error). One decorator: @causal_guarded. That's the whole pitch.</p><span class="skill-chip">counterintuition + viral_quote</span></div>
+      <div class="copy-card"><p>Thread 🧵 on do-calculus 3 rules (Pearl 1995, Biometrika): ① insertion ② deletion ③ exchange. Each消去 a do(). When no do() left → identifiable. CausalGuard's identify_effect finds the minimal adjustment set automatically.</p><span class="skill-chip">academic_rigor + celebrity_effect</span></div>
+      <div class="copy-card"><p>12 causal fallacies F01–F12, each with a citation. F07 collider (Berkson): conditioning on a collider OPENS a spurious path. Most ML pipelines do this by accident. CausalGuard flags it.</p><span class="skill-chip">technical_thread + number_anchor</span></div>
+    </div>
+  </div>
+
+  <!-- B站 -->
+  <div class="platform-block">
+    <h3 class="platform-title">B站 <span class="badge">5 篇</span></h3>
+    <div class="copy-grid row2-center">
+      <div class="copy-card"><p>【故事】1988 年 Pearl 在 UCLA 孤军奋战创造 do-演算，30 年后拿下图灵奖。他用一句大白话定义了因果：如果我强制改变 X，Y 会怎样？本期用动画讲清因果三阶梯。</p><span class="skill-chip">story_arc + feynman_translate</span></div>
+      <div class="copy-card"><p>你把"我前任都说我脾气好"当优点？这是选择偏差！把读者放进相亲场景：你只听到被留下的好评。因果思维教你问前任为什么是"前任"。弹幕扣 1 你中过招。</p><span class="skill-chip">scene_immersion + analogy_bridge</span></div>
+      <div class="copy-card"><p>"咖啡延寿"是假的？真凶是钱！第一句震惊：你信了十年的养生常识可能是错的。真相：混杂变量藏在背后。这期用 CausalGuard 现场审计这句话。</p><span class="skill-chip">emotion_hook + story_arc</span></div>
+      <div class="copy-card"><p>把 do-演算翻译成日常语言：专家词→行业词→生活词。类比桥梁：因果推断像侦探破案，反事实像平行宇宙剪辑。12 岁能懂，收藏起来讲给家人听。</p><span class="skill-chip">academic_rigor + story_arc</span></div>
+      <div class="copy-card"><p>从 1748 Hume "原因与结果" 讲到 2026 CausalGuard：因果思想史一口气看完。Hume 播种，Pearl 收获，今天我们用 0 依赖代码让每次对话过因果安检。</p><span class="skill-chip">nostalgia_history + feynman_translate</span></div>
+    </div>
+  </div>
+
+  <!-- 知乎 -->
+  <div class="platform-block">
+    <h3 class="platform-title">知乎 <span class="badge">5 篇</span></h3>
+    <div class="copy-grid row2-center">
+      <div class="copy-card"><p>Pearl 说深度学习只是"曲线拟合"——他错了吗？从因果阶梯看：LLM 停在 Rung1 关联，永远训不出 Rung2 干预与 Rung3 反事实。Bareinboim (2022) 已证明低层无法唯一确定高层。这恰恰是 CausalGuard 存在的理由。</p><span class="skill-chip">celebrity_effect + controversy_debate</span></div>
+      <div class="copy-card"><p>为什么"相关≠因果"却人人都犯？因为大脑是关联机器。CausalGuard 用 12 类谬误 F01–F12 把常见错误编号：F01 相关当因果、F02 忽略混杂、F07 对撞条件化……每条附文献。工程上怎么落地？见正文。</p><span class="skill-chip">controversy_debate + number_anchor</span></div>
+      <div class="copy-card"><p>do-演算三规则（Pearl 1995, Biometrika）：插入/删除/交换。后门准则即规则二的直接应用。CausalGuard 的 identify_effect 自动找最小调整集：P(Y|do(T))=Σ_Z P(Y|T,Z)P(Z)。这才是可识别性的本质。</p><span class="skill-chip">feynman_translate + listicle_efficiency</span></div>
+      <div class="copy-card"><p>因果推断 3 个必知概念 + 5 步实操：①关联≠因果 ②混杂必调 ③反事实想"如果没做"。实操：找主张→画 DAG→查后门→调变量→看效应差。附 CausalGuard 装饰器一行接入代码。</p><span class="skill-chip">academic_rigor + feynman_translate</span></div>
+      <div class="copy-card"><p>从 Hume (1748) 到 CausalGuard (2026)：因果思想 278 年。Rubin 的 RCM 与 Pearl 的 SCM 两派长期对话，Angrist & Imbens (1995) 的 LATE 与 Heckman 的 MTE 互补。今天我们用代码把理论跑起来——44 测试全绿。</p><span class="skill-chip">nostalgia_history + academic_rigor</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 CELEB SKILLS -->
+<section id="celeb"><div class="wrap">
+  <span class="eyebrow">05 · Celeb Skills</span>
+  <h2>名人思维 · 行动步骤</h2>
+  <div class="grid g3">
+    <div class="card glass"><h4>Pearl · 阶梯</h4><p>遇到因果主张先问"它在第几层？"Rung1 关联不能当 Rung2 因果。</p></div>
+    <div class="card glass"><h4>Feynman · 翻译</h4><p>用 12 岁能懂的话重写 do(x)：强制改变 X 会怎样。</p></div>
+    <div class="card glass"><h4>Musk · 第一性原理</h4><p>剥离"相关≠因果"的妥协，追问物理基本事实。</p></div>
+    <div class="card glass"><h4>Munger · 多元模型</h4><p>因果+经济+心理交叉审视，避免锤子思维。</p></div>
+    <div class="card glass"><h4>Dalio · 二阶思维</h4><p>画干预 X→Y→Z 的连锁路径，看连锁反应。</p></div>
+    <div class="card glass"><h4>Taleb · 反脆弱</h4><p>用反事实做 stress test：如果当时没做会怎样。</p></div>
+  </div>
+</div></section>
+
+<!-- OVERFLOW -->
+<section id="overflow" style="border-bottom:none"><div class="wrap">
+  <span class="eyebrow">Deep Annex</span>
+  <h2>深潜馆入口</h2>
+  <div class="overflow-links">
+    <a class="ol" href="methodology_sub.html">→ 方法论深潜馆 · 3 大家族 × 12 方法</a>
+    <a class="ol" href="applications_sub.html">→ 应用深潜馆 · CausalGuard 源码剖析 + 基准</a>
+    <a class="ol" href="causality_hub_master.html">⌂ 返回 HUB 总入口</a>
+    <a class="ol" href="causality_s01_tech_deepblue.html">科技深蓝主馆</a>
+    <a class="ol" href="causality_s02_academic_ink.html">学术墨蓝主馆</a>
+  </div>
+</div></section>
+</body>
+</html>
