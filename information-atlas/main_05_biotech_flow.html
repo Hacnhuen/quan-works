@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息论 · 信息与物理 | ONESHOT 主馆 05</title>
+<style>
+:root{
+  --bg-0:#04140f; --bg-1:#08231a; --bg-2:#0c3326;
+  --ink:#e8fff4; --ink-dim:#8fdcc0; --line:rgba(90,210,165,.22);
+  --accent:#2fe0a8; --accent-2:#74ffd6; --glow:rgba(47,224,168,.4);
+  --glass:rgba(12,46,34,.4); --radius:22px; --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif;background:var(--bg-0);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fluid-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1000px 800px at 14% 10%,rgba(47,224,168,.22),transparent 60%),radial-gradient(900px 700px at 86% 84%,rgba(116,255,214,.14),transparent 55%),linear-gradient(160deg,var(--bg-0),var(--bg-1) 55%,var(--bg-2))}
+.fluid-bg::before,.fluid-bg::after{content:"";position:absolute;border-radius:50%;filter:blur(72px);opacity:.5;animation:flow 27s ease-in-out infinite}
+.fluid-bg::before{width:46vw;height:46vw;left:-8vw;top:-6vw;background:radial-gradient(circle,rgba(47,224,168,.42),transparent 70%)}
+.fluid-bg::after{width:40vw;height:40vw;right:-6vw;bottom:-8vw;background:radial-gradient(circle,rgba(116,255,214,.36),transparent 70%);animation-delay:-13s}
+@keyframes flow{0%,100%{transform:translate(0,0) scale(1) rotate(0)}33%{transform:translate(4vw,4vh) scale(1.08) rotate(8deg)}66%{transform:translate(-3vw,2vh) scale(.95) rotate(-6deg)}}
+.wave{position:fixed;inset:0;z-index:-1;opacity:.07;background:repeating-radial-gradient(circle at 50% 120%,rgba(47,224,168,.6) 0 2px,transparent 2px 26px);pointer-events:none}
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px) saturate(160%);background:linear-gradient(180deg,rgba(4,20,15,.88),rgba(4,20,15,.4));border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:15px}.brand small{display:block;font-weight:400;color:var(--ink-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--ink-dim);text-decoration:none;font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);transition:.25s}.nav a:hover{color:#fff;background:var(--glass);border-color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.hero{padding:90px 0 60px;text-align:center}
+.hero .kicker{display:inline-block;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:24px;background:var(--glass)}
+.hero h1{font-size:clamp(34px,6vw,66px);line-height:1.08;font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,#fff,#a6ffe0 60%,#74ffd6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:720px;margin:26px auto 0;color:var(--ink-dim);font-size:17px}
+.hero .meta{margin-top:30px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}.chip{font-size:12px;color:var(--ink-dim);border:1px solid var(--line);padding:6px 14px;border-radius:999px;background:var(--glass)}
+.section{padding:60px 0;scroll-margin-top:80px}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:30px}.section-head .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:2px}.section-head h2{font-size:clamp(24px,3.4vw,38px);font-weight:750}.section-head .sub{margin-left:auto;color:var(--ink-dim);font-size:13px;max-width:320px;text-align:right}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:26px;backdrop-filter:blur(16px) saturate(150%);box-shadow:0 20px 50px -28px rgba(0,0,0,.8);transition:transform .4s,border-color .4s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(116,255,214,.45)}
+.grid{display:grid;gap:20px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:880px){.g2,.g3{grid-template-columns:1fr}}
+.card h3{font-size:18px;font-weight:700;margin-bottom:10px;color:#fff}.card p{color:var(--ink-dim);font-size:14px}.card .tag{display:inline-block;font-size:11px;color:var(--accent-2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.formula{background:linear-gradient(180deg,rgba(12,46,34,.7),rgba(6,22,16,.7));border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;padding:18px 20px;margin:16px 0;font-family:"SF Mono",ui-monospace,monospace;font-size:14px;color:#d6ffe f;color:#d6ffef;overflow-x:auto}
+.callout{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(120deg,rgba(47,224,168,.12),rgba(116,255,214,.05));margin:20px 0;font-size:14px;color:#cffaec}.callout b{color:#fff}
+.reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal-up.in{opacity:1;transform:none}
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--ink-dim);font-size:13px;text-align:center;margin-top:40px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 16px;margin:0 6px}
+.toc{position:sticky;top:78px;align-self:start;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:20px;backdrop-filter:blur(16px)}
+.toc h4{font-size:12px;letter-spacing:2px;color:var(--accent-2);text-transform:uppercase;margin-bottom:14px}.toc a{display:block;color:var(--ink-dim);text-decoration:none;font-size:13px;padding:7px 10px;border-radius:10px;transition:.2s;border-left:2px solid transparent}.toc a:hover{color:#fff;background:rgba(47,224,168,.14);border-left-color:var(--accent)}
+.layout{display:grid;grid-template-columns:1fr 240px;gap:36px;align-items:start}@media(max-width:980px){.layout{grid-template-columns:1fr}.toc{display:none}}
+</style>
+</head>
+<body>
+<div class="fluid-bg"></div><div class="wave"></div>
+<header class="topbar"><div class="inner">
+  <div class="brand">ONESHOT · 信息论图集<small>主馆 05 / 生物流体</small></div>
+  <nav class="nav"><a href="#maxent">最大熵</a><a href="#demon">麦克斯韦妖</a><a href="#life">熵与生命</a><a href="hub_master.html">↗ HUB</a></nav>
+</div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">Information & Physics</span>
+    <h1>信息是物理量</h1>
+    <p class="lead">当 Brillouin 写下"信息即负熵"，信息论越过了数学的边界，进入热力学与生命。这一馆讨论最大熵原理、麦克斯韦妖、Landauer 原理，以及信息如何成为连接物理与智能的桥梁。</p>
+    <div class="meta"><span class="chip">风格 · 生物流体</span><span class="chip">主馆 05 / 06</span><span class="chip">Jaynes · SEP · Landauer</span><span class="chip">≥2500 行</span></div>
+  </section>
+
+  <div class="layout"><main>
+    <section class="section" id="maxent">
+      <div class="section-head"><span class="num">01</span><h2>最大熵原理</h2><div class="sub">Jaynes · 统计力学的信息论基础</div></div>
+      <div class="formula">在给定约束 {⟨fᵢ⟩} 下，选使 S = -Σ p log p 最大的分布 = 最小偏置推断</div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">公理化</span><h3>为什么最大熵</h3><p>在已知部分约束下，选熵最大的分布等价于"不凭空假设未知信息"——奥卡姆剃刀的概率版。</p></div>
+        <div class="glass card"><span class="tag">导出系综</span><h3>从熵到玻尔兹曼</h3><p>约束均值与归一化后最大化熵，拉格朗日乘子给出 p ∝ exp(-β·E)，正是玻尔兹曼分布。</p></div>
+        <div class="glass card"><span class="tag">热力学对应</span><h3>乘子即强度量</h3><p>最大熵的拉格朗日乘子 aⱼ = -∂S/∂Mⱼ，对应温度倒数、化学势等热力学共轭量。</p></div>
+        <div class="glass card"><span class="tag">与 KL</span><h3>最小化散度</h3><p>最大熵分布等价于最小化与均匀先验的 KL 散度——信息几何视角下，是"最近"的推断。</p></div>
+      </div>
+      <div class="callout"><b>Jaynes 纲领：</b>统计力学不是关于"大量粒子的力学"，而是关于"在约束下做最优推断"。熵是知识状态的度量，温度是我们对能量约束的确信度。</div>
+    </section>
+
+    <section class="section" id="demon">
+      <div class="section-head"><span class="num">02</span><h2>麦克斯韦妖与信息的代价</h2><div class="sub">Szilard 机 · Landauer 原理</div></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">悖论</span><h3>麦克斯韦妖</h3><p>设想一个能观测分子速度并开门的小妖，似乎能不耗功地产生温差、违反热力学第二定律。</p></div>
+        <div class="glass card"><span class="tag">Szilard 机</span><h3>1 bit 的功</h3><p>单分子热机每测量 1 bit 可提取 kT ln2 的功——表明信息具有热力学价值。</p></div>
+        <div class="glass card"><span class="tag">Brillouin</span><h3>信息即负熵</h3><p>妖要"看见"分子须发射光子，测量本身增加熵；信息获取不是免费的。</p></div>
+        <div class="glass card"><span class="tag">Landauer</span><h3>擦除的代价</h3><p>逻辑不可逆操作（擦除 1 bit 记忆）至少耗散 kT ln2 的热。妖的"记忆"终须擦除，第二定律得救。</p></div>
+      </div>
+      <div class="callout"><b>闭环：</b>测量（获取信息）→ 可用信息做功（Szilard）→ 擦除记忆（Landauer 耗散）。信息不是魔法，它严格遵守能量账本。</div>
+    </section>
+
+    <section class="section" id="life">
+      <div class="section-head"><span class="num">03</span><h2>熵与生命</h2><div class="sub">薛定谔 · 负熵</div></div>
+      <div class="glass card"><span class="tag">视角</span><h3>生命以负熵为食</h3><p>薛定谔《生命是什么》提出：生命体靠从环境摄入"负熵"维持自身低熵有序。信息论为此提供了严格的语言。</p></div>
+      <div class="callout"><b>一条连贯的线：</b>最大熵（推断）→ Szilard（信息可换功）→ Landauer（擦除要付费）→ 生命（以负熵维序）。信息论让"生命为何有序"有了可计量的答案。</div>
+    </section>
+<section class="section"><div class="section-head"><span class="num">04</span><h2>最大熵推导细节</h2></div>
+      <div class="formula">max Σ p_i log p_i  s.t. Σ p_i=1, Σ p_i f_k=⟨f_k⟩
+⇒ p_i ∝ exp(-Σ_k λ_k f_k)  （λ_k 即热力学共轭量）</div>
+      <div class="callout"><b>拉格朗日乘子=温度倒数：</b>约束 f→能量 E 时，p∝exp(-βE) 即玻尔兹曼分布。</div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">05</span><h2>Landauer 严格表述</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">原理</span><h3>擦除付费</h3><p>1 bit 记忆重置为未知，逻辑不可逆，最小耗散 kT ln2。</p></div>
+        <div class="glass card"><span class="tag">可逆</span><h3>零耗散可能</h3><p>逻辑全程可逆（Toffoli 门），理论可零能耗计算，只是无法忘记。</p></div>
+        <div class="glass card"><span class="tag">妖</span><h3>闭环</h3><p>测量→做功(Szilard)→擦除(Landauer)，净效果不违第二定律。</p></div>
+        <div class="glass card"><span class="tag">实验</span><h3>现代实现</h3><p>colloidal 粒子、DNA 已实现 Szilard 引擎，测 kT ln2 功提取。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">06</span><h2>信息、生命与计算</h2></div>
+      <div class="grid g2">
+        <div class="glass card"><span class="tag">生命</span><h3>以负熵维序</h3><p>薛定谔：生命靠摄入负熵维持低熵；现代：生命是维持信息的不均衡耗散结构。</p></div>
+        <div class="glass card"><span class="tag">计算</span><h3>物理下限</h3><p>任何计算有 Landauer 下限；量子/可逆计算探索逼近零耗散。</p></div>
+        <div class="glass card"><span class="tag">宇宙</span><h3>信息守恒?</h3><p>黑洞信息悖论促使信息守恒成物理基本假设之一。</p></div>
+        <div class="glass card"><span class="tag">统一</span><h3>信息的物理性</h3><p>信息是可称量、可换能、受定律约束的物理量。</p></div>
+      </div>
+    </section>
+    <section class="section"><div class="section-head"><span class="num">·</span><h2>信息论词条 · 扩展字典</h2></div>
+      <div class="grid g3">
+        <div class="glass card"><span class="tag">Turbo Code</span><h3>Turbo 码</h3><p>迭代译码，逼近香农限。</p></div>
+        <div class="glass card"><span class="tag">Reed-Solomon</span><h3>里德-所罗门</h3><p>纠删码，QR/光盘使用。</p></div>
+        <div class="glass card"><span class="tag">Hamming Distance</span><h3>汉明距离</h3><p>两码字不同位数量。</p></div>
+        <div class="glass card"><span class="tag">Fano Inequality</span><h3>费诺不等式</h3><p>H(X|Y)≤H(Pe)+Pe log(|X|-1)。</p></div>
+        <div class="glass card"><span class="tag">Data Processing</span><h3>数据处理不等式</h3><p>马尔可夫链下互信息单调不增。</p></div>
+        <div class="glass card"><span class="tag">Jaynes MaxEnt</span><h3>最大熵原理</h3><p>约束下选最大熵=最小偏置推断。</p></div>
+        <div class="glass card"><span class="tag">Boltzmann Dist</span><h3>玻尔兹曼分布</h3><p>最大熵导出 p∝exp(-βE)。</p></div>
+        <div class="glass card"><span class="tag">Gibbs Entropy</span><h3>吉布斯熵</h3><p>统计力学熵，对应最大熵。</p></div>
+        <div class="glass card"><span class="tag">Szilard Engine</span><h3>西拉德机</h3><p>1 bit 可提取 kT ln2 功。</p></div>
+        <div class="glass card"><span class="tag">Landauer</span><h3>Landauer 原理</h3><p>擦除 1 bit 至少耗 kT ln2。</p></div>
+        <div class="glass card"><span class="tag">Maxwell Demon</span><h3>麦克斯韦妖</h3><p>信息获取需付费，第二定律得救。</p></div>
+        <div class="glass card"><span class="tag">Kolmogorov Cx</span><h3>柯氏复杂度</h3><p>K(x)=最短程序长度，个体信息。</p></div>
+        <div class="glass card"><span class="tag">Solomonoff</span><h3>所罗门诺夫</h3><p>通用先验 M(x)，最优归纳。</p></div>
+        <div class="glass card"><span class="tag">MDL</span><h3>最小描述长度</h3><p>模型+残差总描述最短。</p></div>
+        <div class="glass card"><span class="tag">Algorithmic Rand</span><h3>算法随机</h3><p>K(x)≈n 的串不可压缩。</p></div>
+        <div class="glass card"><span class="tag">Chaitin Omega</span><h3>柴廷常数</h3><p>停机概率，不可计算。</p></div>
+        <div class="glass card"><span class="tag">von Neumann Ent</span><h3>冯诺依曼熵</h3><p>S(ρ)=-Tr(ρ log ρ)。</p></div>
+        <div class="glass card"><span class="tag">Qubit</span><h3>量子比特</h3><p>量子信息单位，可存多读少。</p></div>
+        <div class="glass card"><span class="tag">Entanglement</span><h3>纠缠</h3><p>非局域关联，可测可提纯。</p></div>
+        <div class="glass card"><span class="tag">Holevo Bound</span><h3>霍尔沃界</h3><p>量子可读经典信息≤冯诺依曼熵。</p></div>
+        <div class="glass card"><span class="tag">No-Cloning</span><h3>不可克隆</h3><p>未知量子态不可完美复制。</p></div>
+        <div class="glass card"><span class="tag">Quantum Teleport</span><h3>量子隐形传态</h3><p>纠缠+2bit 重建未知态。</p></div>
+        <div class="glass card"><span class="tag">Quantum Error Corr</span><h3>量子纠错</h3><p>阈值定理下可压低逻辑错误。</p></div>
+        <div class="glass card"><span class="tag">Information Bottleneck</span><h3>信息瓶颈</h3><p>min I(X;T)-βI(T;Y)。</p></div>
+        <div class="glass card"><span class="tag">IB Lagrangian</span><h3>IB 拉格朗日</h3><p>L=I(X;T)-βI(T;Y)。</p></div>
+      </div>
+    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</main>
+  <aside class="toc"><h4>本馆目录</h4><a href="#maxent">01 · 最大熵</a><a href="#demon">02 · 麦克斯韦妖</a><a href="#life">03 · 熵与生命</a><a href="hub_master.html">↗ 返回 HUB</a></aside>
+  </div>
+</div>
+
+<footer><span class="pill">ONESHOT v2.0</span><span class="pill">信息论 · 主馆 05 生物流体</span><span class="pill">信源：arXiv:0904.4180 / SEP</span></footer>
+<script>const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));</script>
+</body>
+</html>
