@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L0 启蒙 · 算法 | AlgoLab</title>
+<link rel="stylesheet" href="assets/core.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html">Algo<span>Lab</span> · 算法</a>
+  <nav class="navlinks">
+    <a href="index.html">总览</a>
+    <a href="l0_intuition.html" class="on">L0 启蒙</a>
+    <a href="l1_foundation.html">L1 基础</a>
+    <a href="l2_theorems.html">L2 完备</a>
+    <a href="l3_advanced.html">L3 专业</a>
+    <a href="l4_frontier.html">L4 前沿</a>
+    <a href="lab.html">实验室</a>
+    <a href="method.html">方法论</a>
+    <a href="verify.html">AI 检验</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">L0 · Intuition</div>
+  <h1>启蒙：算法就是"把事情做对的步骤"</h1>
+  <p>这一层不要求任何数学。我们用具象的游戏和小故事，建立对<strong>步骤、顺序、比较、贪心、二分</strong>的直觉——这些是后面所有复杂算法的种子。</p>
+  <div class="meta">
+    <i>不看公式</i><i>只建手感</i><i>2 个实验室</i><i>对标中学/入门</i>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <h4>本页目录</h4>
+  <a href="#guess">01 · 猜数字与二分</a>
+  <a href="#sort">02 · 排序的直觉</a>
+  <a href="#greedy">03 · 贪心第一感</a>
+  <a href="#state">04 · 状态与步骤</a>
+  <a href="#lab1">05 · 实验室 01</a>
+  <a href="#lab2">06 · 实验室 02</a>
+  <a href="#quiz">07 · 自检</a>
+  <div class="grp"><h4>跳转</h4>
+    <a href="index.html">← 总览</a>
+    <a href="l1_foundation.html">去 L1 基础 →</a>
+    <a href="lab.html">交互实验室</a>
+  </div>
+</aside>
+<main>
+
+<section class="section" id="guess">
+  <h2><span class="num">01</span>猜数字：二分是怎么省力的</h2>
+  <p class="lead">想象我在 1–100 里想了一个数，你每次只能问"比 x 大吗？"。怎么问最省次数？</p>
+  <div class="el el-concept">
+    <span class="tag">概念 · 二分搜索</span>
+    <p>每次都猜<strong>中间</strong>那个数。无论答案如何，都能砍掉一半可能。100 个数，每问一次减半：100 → 50 → 25 → 13 → 7 → 4 → 2 → 1，最多 <strong>7 次</strong>。</p>
+    <p>为什么是 7？因为 2⁷ = 128 &gt; 100。推广：在 n 个数里找 1 个，最多需要 ⌈log₂ n⌉ 次。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 手算到底</span>
+    <p>目标 = 73。问 50（太大？否，&gt;50）→ 区间 [51,100]；问 75（&gt;75？否）→ [51,75]；问 63（&gt;63？是）→ [64,75]；问 69（是）→ [70,75]；问 72（是）→ [73,75]；问 74（否）→ 73。共 <strong>6 次</strong>。最坏才是 7 次（⌈log₂100⌉=7）。</p>
+  </div>
+  <div class="note">
+    <b>直觉要点</b>
+    "每次砍一半"是算法里最强大的想法之一。它在 L2 的最短路、L3 的分治、甚至信息论里反复出现——<strong>把不确定性减半</strong>。
+  </div>
+</section>
+
+<section class="section" id="sort">
+  <h2><span class="num">02</span>排序：最少要比几次？</h2>
+  <p class="lead">把一叠乱序的牌排好，至少要比较多少次？这引出了算法里第一个"下界"。</p>
+  <div class="el el-concept">
+    <span class="tag">概念 · 比较排序下界</span>
+    <p>3 张牌，可能的顺序有 3! = 6 种。每比一次最多排除一半可能。要分清 6 种，至少需要 ⌈log₂ 6⌉ = 3 次比较——但这只是信息论下界，实际排序往往要更多。n 张牌需要至少 ⌈log₂(n!)⌉ 次比较，约等于 n log₂ n。</p>
+  </div>
+  <div class="el el-example">
+    <span class="tag">示例 · 3 张牌</span>
+    <p>牌 a,b,c。先比 a:b，再比小的与 c……最差 3 次能排好。数很大时（如 100 张），下界约 ⌈log₂(100!)⌉ ≈ 525 次，而归并排序用约 100·log₂100 ≈ 665 次——很接近下界。</p>
+  </div>
+  <div class="note deep">
+    <b>通往大师</b>
+    这个"下界"在 L1 会变成严格的 Ω(n log n) 证明（决策树高度），在 L3 会与信息论（熵）打通。先记住感觉：<em>排序不可能比 n log n 更快</em>。
+  </div>
+</section>
+
+<section class="section" id="greedy">
+  <h2><span class="num">03</span>贪心第一感：每一步都选"当下最好"</h2>
+  <p class="lead">贪心 = 每一步做局部最优选择，希望最后全局也最优。有时对，有时错——关键是知道什么时候对。</p>
+  <div class="el el-concept">
+    <span class="tag">概念 · 贪心</span>
+    <p><strong>对的例子（换硬币）</strong>：用 25/10/5/1 分的硬币凑 67 分。每次拿能拿的最大面额：25+25+10+5+1+1=67，6 枚，确实最少。因为当硬币体系是"规范"的（canonical），贪心最优。</p>
+    <p><strong>错的例子</strong>：若面额是 {1, 3, 4}，要凑 6 分。贪心拿 4，剩 2 只能 1+1 → 4+1+1 = 3 枚；但最优是 3+3 = 2 枚。贪心在这里翻车。</p>
+  </div>
+  <div class="note">
+    <b>核心教训</b>
+    贪心好不好，<em>不能凭感觉</em>，要证明（L2 的贪心选择性质 + 最优子结构）。这正是算法思维：把"感觉对"变成"能证明对"。
+  </div>
+</section>
+
+<section class="section" id="state">
+  <h2><span class="num">04</span>状态与步骤：算法到底是什么</h2>
+  <p class="lead">剥离所有术语，算法的本质就三件事。</p>
+  <div class="el el-concept">
+    <span class="tag">概念 · 算法三要素</span>
+    <div class="fml">① 输入：明确的数据（一张图、一个数组、一个数）
+② 步骤：有限、确定、可机械执行的操作序列
+③ 输出：对输入给出正确结果，且保证在有限步内停下</div>
+    <p>更进一步，评价一个算法看两件事：<strong>对不对</strong>（正确性）和<strong>快不快</strong>（效率/复杂度）。后面四层都在把这两件事做到极致。</p>
+  </div>
+</section>
+
+<!-- 实验室 01 -->
+<section class="section" id="lab1">
+  <h2><span class="num">05</span>实验室 01 · 二分找数要几次</h2>
+  <p class="lead">拖动"总数 n"，看最坏询问次数 ⌈log₂ n⌉ 怎么随 n 增长。</p>
+  <div class="lab">
+    <div class="lab-h">BINARY SEARCH · WORST-CASE DEPTH</div>
+    <div class="ctrl">
+      <label>总数 n（个）</label>
+      <input type="range" id="b-n" min="2" max="1000" value="100" step="1">
+      <span class="val" id="b-nv">100</span>
+    </div>
+    <canvas data-h="240" id="b-cv"></canvas>
+    <div class="readout" id="b-out"></div>
+  </div>
+</section>
+
+<!-- 实验室 02 -->
+<section class="section" id="lab2">
+  <h2><span class="num">06</span>实验室 02 · 比较排序下界</h2>
+  <p class="lead">拖动 n，看 ⌈log₂(n!)⌉（理论最少比较次数）与 n·log₂n 的关系。</p>
+  <div class="lab">
+    <div class="lab-h">COMPARISON SORT LOWER BOUND</div>
+    <div class="ctrl">
+      <label>数组长度 n</label>
+      <input type="range" id="s-n" min="2" max="200" value="16" step="1">
+      <span class="val" id="s-nv">16</span>
+    </div>
+    <canvas data-h="240" id="s-cv"></canvas>
+    <div class="readout" id="s-out"></div>
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <h2><span class="num">07</span>自检 · 你真的懂了吗</h2>
+  <div class="quiz">
+    <div class="qh">QUIZ · 试着不看上文答出来</div>
+    <ol>
+      <li>在 1–1000 里猜一个数，用二分最多要几次？为什么？</li>
+      <li>为什么"换硬币"有时贪心会失败（举一个面额集合）？</li>
+      <li>排序的下界大约是多少（用 n 表示）？它和"信息"有什么关系？</li>
+      <li>算法除了"对不对"，还要看什么？</li>
+    </ol>
+    <details><summary>答案</summary><div class="dbody">
+      <p>1. ⌈log₂ 1000⌉ = 10 次（2¹⁰=1024&gt;1000）。每次减半不确定性。</p>
+      <p>2. 面额 {1,3,4} 凑 6：贪心 4+1+1=3 枚，最优 3+3=2 枚。说明局部最优≠全局最优。</p>
+      <p>3. 约 n log₂ n（严格 Ω(n log n)）。因为要分辨 n! 种顺序，每比较减半信息，最少 ⌈log₂(n!)⌉ ≈ n log₂ n 次。</p>
+      <p>4. 还看"快不快"——即时间/空间复杂度（L1 正式定义）。</p>
+    </div></details>
+  </div>
+</section>
+
+<div class="pager">
+  <a href="index.html"><span class="lb">← 上一站</span>总览 · 知识图谱</a>
+  <a class="nx" href="l1_foundation.html"><span class="lb">下一站 →</span>L1 基础 · 范式与数据结构</a>
+</div>
+
+<footer class="foot">
+  <p>L0 启蒙层刻意不使用形式化定理/公式块，只建立直觉与手感。所有数字（⌈log₂n⌉、下界）均由实验室交互实时计算，可对照 <code>verify/numeric.py</code> 复跑。</p>
+</footer>
+
+</main>
+</div>
+
+<script src="assets/core.js"></script>
+<script>
+  // 实验室 01：二分最坏深度
+  (function(){
+    var nEl=document.getElementById('b-n'), nv=document.getElementById('b-nv'),
+        cv=document.getElementById('b-cv'), out=document.getElementById('b-out');
+    var plot=new ILPlot(cv,{xr:[0,1000],yr:[0,11],xlabel:'n',ylabel:'⌈log₂n⌉'});
+    function render(){
+      var n=+nEl.value; nv.textContent=n;
+      var d=Math.ceil(ILMath.log2(n));
+      plot.resize();plot.clear();plot.axes(5,5);
+      // 画散点：对每个 2..n 累计
+      for(var k=2;k<=n;k++){
+        plot.dot(k, Math.ceil(ILMath.log2(k)), '#38bdf8');
+      }
+      plot.dot(n,d,'#fbbf24');
+      out.innerHTML='n = <b>'+n+'</b>　最坏询问次数 ⌈log₂n⌉ = <b>'+d+'</b><br>'+
+        '2^'+d+' = '+Math.pow(2,d)+' ≥ '+n+'（足够覆盖所有可能）';
+    }
+    ILBind(['b-n'],render);
+  })();
+
+  // 实验室 02：比较排序下界
+  (function(){
+    var nEl=document.getElementById('s-n'), nv=document.getElementById('s-nv'),
+        cv=document.getElementById('s-cv'), out=document.getElementById('s-out');
+    var plot=new ILPlot(cv,{xr:[0,200],yr:[0,1400],xlabel:'n',ylabel:'比较次数'});
+    function lbf(n){ // log2(n!)
+      var s=0; for(var k=2;k<=n;k++) s+=ILMath.log2(k); return s;
+    }
+    function render(){
+      var n=+nEl.value; nv.textContent=n;
+      var lb=Math.ceil(lbf(n)), nl=n*ILMath.log2(n);
+      plot.resize();plot.clear();plot.axes(5,5);
+      for(var k=2;k<=n;k++){
+        plot.dot(k, Math.ceil(lbf(k)), '#34d399');
+      }
+      plot.dot(n, lb, '#fbbf24');
+      plot.line(function(x){return x*ILMath.log2(x);}, '#38bdf8', 1.5);
+      out.innerHTML='n = <b>'+n+'</b>　下界 ⌈log₂(n!)⌉ = <b>'+lb+'</b> 次<br>'+
+        '近似 n·log₂n = '+nl.toFixed(1)+' 次（归并排序实际约 '+Math.round(n*ILMath.log2(n))+' 次，很接近）';
+    }
+    ILBind(['s-n'],render);
+  })();
+</script>
+</body>
+</html>
