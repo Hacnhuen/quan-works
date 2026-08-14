@@ -1,0 +1,2556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>方法论深潜馆 · Methodology Deep Annex · 教育和AI</title>
+<meta name="description" content="教育AI方法论深潜：3大家族12方法、6维超表、8步决策树、Python实现与复制按钮">
+<style>
+/* ========== 全局变量：统一深蓝（与所有主馆兼容） ========== */
+:root{
+  --bg:#0B1437;
+  --bg-2:#0F1A45;
+  --card:#132053;
+  --card-2:#172760;
+  --line:#22347A;
+  --line-soft:#1A2A60;
+  --accent:#3B82F6;
+  --accent-2:#60A5FA;
+  --accent-glow:rgba(59,130,246,.55);
+  --second:#E8A33D;
+  --third:#8B5CF6;
+  --teal:#2DD4BF;
+  --text:#DCE3F2;
+  --text-dim:#8C9BC4;
+  --text-faint:#5C6B96;
+  --ok:#34D399;
+  --warn:#F59E0B;
+  --danger:#EF4444;
+  --code-bg:#0A1233;
+  --code-border:#1E2F66;
+  --mono:'JetBrains Mono','SF Mono','Menlo','Consolas','Courier New',monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.78;
+  font-size:15px;
+  overflow-x:hidden;
+  position:relative;
+}
+/* 网格背景 */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(59,130,246,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(59,130,246,.045) 1px,transparent 1px);
+  background-size:52px 52px;
+  pointer-events:none;
+  z-index:0;
+  mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 85%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 85%);
+}
+/* 微光晕 */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(900px 500px at 15% -5%,rgba(59,130,246,.10),transparent 60%),
+    radial-gradient(700px 400px at 95% 8%,rgba(139,92,246,.08),transparent 60%);
+  pointer-events:none;
+  z-index:1;
+}
+main,header,nav,footer,section{position:relative;z-index:2}
+
+/* ========== 顶部导航 ========== */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,20,55,.88);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:1320px;margin:0 auto;
+  padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.brand{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--mono);
+  color:var(--text);
+  font-size:14px;letter-spacing:.4px;
+}
+.brand-mark{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--accent),var(--third));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:700;font-family:var(--sans);
+  box-shadow:0 4px 18px var(--accent-glow);
+  font-size:15px;
+}
+.brand small{color:var(--text-dim);font-size:11px;display:block;margin-top:2px;letter-spacing:.6px}
+.top-nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.top-nav a{
+  font-family:var(--mono);
+  font-size:12px;
+  padding:7px 12px;
+  border-radius:7px;
+  color:var(--text-dim);
+  text-decoration:none;
+  border:1px solid var(--line-soft);
+  background:rgba(19,32,83,.5);
+  transition:all .18s ease;
+  white-space:nowrap;
+}
+.top-nav a:hover{
+  color:var(--accent-2);
+  border-color:var(--accent);
+  background:rgba(59,130,246,.12);
+  transform:translateY(-1px);
+}
+.top-nav a.sub-link{
+  color:var(--second);
+  border-color:rgba(232,163,61,.35);
+  background:rgba(232,163,61,.06);
+}
+.top-nav a.sub-link:hover{
+  color:var(--second);
+  border-color:var(--second);
+  background:rgba(232,163,61,.14);
+}
+.top-nav a.current{
+  color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--third));
+  border-color:transparent;
+}
+
+/* ========== 容器 ========== */
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+
+/* ========== Hero ========== */
+.hero{
+  padding:72px 0 48px;
+  border-bottom:1px solid var(--line-soft);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  top:-120px;right:-80px;
+  width:520px;height:520px;
+  background:radial-gradient(circle,rgba(59,130,246,.18),transparent 65%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--accent-2);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.hero-eyebrow::before{
+  content:"";width:36px;height:1px;background:var(--accent);
+}
+.hero h1{
+  font-size:clamp(34px,5vw,56px);
+  line-height:1.12;
+  font-weight:800;
+  letter-spacing:-.5px;
+  margin-bottom:20px;
+  background:linear-gradient(120deg,#fff 30%,var(--accent-2) 70%,var(--third));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero h1 .en{
+  display:block;
+  font-size:clamp(15px,2vw,21px);
+  font-weight:500;
+  letter-spacing:.5px;
+  margin-top:10px;
+  -webkit-text-fill-color:var(--text-dim);
+  background:none;
+}
+.hero p.lead{
+  font-size:17px;
+  color:var(--text-dim);
+  max-width:780px;
+  margin-bottom:28px;
+}
+.hero-stats{
+  display:flex;gap:14px;flex-wrap:wrap;
+}
+.stat-pill{
+  display:flex;flex-direction:column;
+  padding:14px 20px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  min-width:120px;
+}
+.stat-pill .n{
+  font-family:var(--mono);
+  font-size:26px;font-weight:700;
+  color:var(--accent-2);
+  line-height:1;
+}
+.stat-pill .l{
+  font-size:12px;color:var(--text-dim);margin-top:6px;
+  letter-spacing:.3px;
+}
+
+/* ========== 区段 ========== */
+section{padding:64px 0;border-bottom:1px solid var(--line-soft)}
+.section-head{margin-bottom:36px;max-width:880px}
+.section-head .tag{
+  font-family:var(--mono);
+  font-size:12px;color:var(--second);
+  letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:10px;display:block;
+}
+.section-head h2{
+  font-size:clamp(26px,3.4vw,38px);
+  font-weight:700;
+  letter-spacing:-.3px;
+  margin-bottom:14px;
+  color:#fff;
+}
+.section-head p{color:var(--text-dim);font-size:16px}
+
+/* ========== 家族卡片 ========== */
+.families{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.family-card{
+  background:linear-gradient(180deg,var(--card),var(--card-2));
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .25s ease,border-color .25s ease;
+}
+.family-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.family-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--accent);
+}
+.family-card.fam-b::before{background:var(--second)}
+.family-card.fam-c::before{background:var(--third)}
+.family-card .fam-id{
+  font-family:var(--mono);font-size:12px;
+  color:var(--text-faint);letter-spacing:1.5px;
+  margin-bottom:8px;
+}
+.family-card h3{
+  font-size:21px;color:#fff;font-weight:700;margin-bottom:6px;
+}
+.family-card .fam-en{
+  font-family:var(--mono);font-size:12px;color:var(--accent-2);
+  margin-bottom:14px;letter-spacing:.3px;
+}
+.family-card.fam-b .fam-en{color:var(--second)}
+.family-card.fam-c .fam-en{color:var(--third)}
+.family-card p{color:var(--text-dim);font-size:14px;margin-bottom:14px}
+.family-card ul{list-style:none;padding:0;margin:0}
+.family-card ul li{
+  font-size:13px;color:var(--text);
+  padding:6px 0;border-top:1px dashed var(--line-soft);
+  display:flex;justify-content:space-between;gap:8px;
+}
+.family-card ul li:first-child{border-top:none}
+.family-card ul li .mi{
+  font-family:var(--mono);font-size:11px;color:var(--text-faint);
+}
+
+/* ========== 方法卡片 ========== */
+.method-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:32px;
+  margin-bottom:28px;
+  position:relative;
+  overflow:hidden;
+}
+.method-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--accent);
+}
+.method-card.fam-b::before{background:var(--second)}
+.method-card.fam-c::before{background:var(--third)}
+.method-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;margin-bottom:20px;
+  padding-bottom:18px;border-bottom:1px solid var(--line-soft);
+}
+.method-head-left{flex:1;min-width:240px}
+.method-num{
+  font-family:var(--mono);font-size:12px;
+  color:var(--text-faint);letter-spacing:1.5px;
+  display:block;margin-bottom:6px;
+}
+.method-card h3{
+  font-size:24px;color:#fff;font-weight:700;
+  margin-bottom:4px;letter-spacing:-.2px;
+}
+.method-en{
+  font-family:var(--mono);font-size:13px;color:var(--accent-2);
+  letter-spacing:.3px;
+}
+.method-card.fam-b .method-en{color:var(--second)}
+.method-card.fam-c .method-en{color:var(--third)}
+.method-family-tag{
+  font-family:var(--mono);font-size:11px;
+  padding:6px 12px;border-radius:20px;
+  background:rgba(59,130,246,.14);
+  color:var(--accent-2);
+  border:1px solid rgba(59,130,246,.3);
+  white-space:nowrap;letter-spacing:.5px;
+}
+.method-card.fam-b .method-family-tag{
+  background:rgba(232,163,61,.12);color:var(--second);
+  border-color:rgba(232,163,61,.3);
+}
+.method-card.fam-c .method-family-tag{
+  background:rgba(139,92,246,.14);color:var(--third);
+  border-color:rgba(139,92,246,.3);
+}
+
+.method-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-bottom:22px;
+}
+.method-field{
+  background:var(--bg-2);
+  border:1px solid var(--line-soft);
+  border-radius:10px;
+  padding:16px 18px;
+}
+.method-field.full{grid-column:1 / -1}
+.method-field .lbl{
+  font-family:var(--mono);font-size:11px;
+  color:var(--second);letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.method-field .lbl::before{content:"▸";color:var(--accent)}
+.method-field p{color:var(--text);font-size:14px;line-height:1.7}
+.method-field .formula{
+  font-family:var(--mono);font-size:13px;
+  background:var(--code-bg);
+  padding:10px 12px;border-radius:7px;
+  color:var(--teal);border:1px solid var(--code-border);
+  overflow-x:auto;display:block;
+}
+.method-field ul{padding-left:18px;color:var(--text);font-size:14px}
+.method-field ul li{margin:3px 0}
+.method-field .paper{
+  font-family:var(--mono);font-size:12px;color:var(--text-dim);
+  display:block;padding:5px 0;border-bottom:1px dashed var(--line-soft);
+}
+.method-field .paper:last-child{border-bottom:none}
+.method-field .paper b{color:var(--accent-2);font-weight:600}
+
+/* ========== 代码块 ========== */
+.code-block{
+  position:relative;
+  margin-top:8px;
+  border:1px solid var(--code-border);
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--code-bg);
+}
+.code-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;
+  background:rgba(15,26,69,.9);
+  border-bottom:1px solid var(--code-border);
+}
+.code-head .lang{
+  font-family:var(--mono);font-size:12px;
+  color:var(--text-dim);letter-spacing:.5px;
+  display:flex;align-items:center;gap:8px;
+}
+.code-head .lang::before{
+  content:"";width:10px;height:10px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 8px var(--accent-glow);
+}
+.copy-btn{
+  font-family:var(--mono);font-size:12px;
+  padding:6px 14px;
+  background:rgba(59,130,246,.14);
+  color:var(--accent-2);
+  border:1px solid rgba(59,130,246,.35);
+  border-radius:7px;
+  cursor:pointer;
+  transition:all .18s ease;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.copy-btn:hover{
+  background:rgba(59,130,246,.26);
+  border-color:var(--accent);
+  transform:translateY(-1px);
+}
+.copy-btn.copied{
+  background:rgba(52,211,153,.18);
+  color:var(--ok);
+  border-color:rgba(52,211,153,.45);
+}
+.copy-btn .icon{font-size:13px}
+.code-block pre{
+  margin:0;
+  padding:18px 20px;
+  overflow-x:auto;
+  font-family:var(--mono);
+  font-size:13px;
+  line-height:1.65;
+  color:#E6EDF7;
+}
+.code-block pre code{font-family:inherit;background:none;padding:0}
+/* 代码高亮 */
+.tok-kw{color:#C792EA;font-weight:600}
+.tok-str{color:#C3E88D}
+.tok-num{color:#F78C6C}
+.tok-com{color:#5C6B96;font-style:italic}
+.tok-fn{color:#82AAFF}
+.tok-cls{color:#FFCB6B}
+.tok-op{color:#89DDFF}
+.tok-var{color:#E6EDF7}
+
+/* ========== 超表 ========== */
+.super-table-wrap{
+  overflow-x:auto;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--card);
+}
+table.super-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  min-width:1100px;
+}
+table.super-table thead{
+  background:linear-gradient(180deg,var(--card-2),var(--card));
+}
+table.super-table th{
+  padding:14px 14px;
+  text-align:left;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--accent-2);
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  border-bottom:2px solid var(--accent);
+  white-space:nowrap;
+  position:sticky;top:0;
+}
+table.super-table th:first-child{color:#fff}
+table.super-table td{
+  padding:12px 14px;
+  border-bottom:1px solid var(--line-soft);
+  color:var(--text);
+  vertical-align:top;
+  line-height:1.6;
+}
+table.super-table tbody tr:hover{background:rgba(59,130,246,.06)}
+table.super-table td:first-child{
+  font-weight:600;color:#fff;
+  border-right:1px solid var(--line-soft);
+  white-space:nowrap;
+}
+table.super-table td .tag-cell{
+  display:inline-block;font-family:var(--mono);
+  font-size:11px;padding:2px 8px;border-radius:10px;
+  background:rgba(59,130,246,.12);color:var(--accent-2);
+  border:1px solid rgba(59,130,246,.25);
+  margin:1px 2px;white-space:nowrap;
+}
+table.super-table td .tag-cell.ok{color:var(--ok);background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.25)}
+table.super-table td .tag-cell.warn{color:var(--warn);background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25)}
+table.super-table td .tag-cell.danger{color:var(--danger);background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25)}
+table.super-table tbody tr.fam-a td:first-child{border-left:3px solid var(--accent)}
+table.super-table tbody tr.fam-b td:first-child{border-left:3px solid var(--second)}
+table.super-table tbody tr.fam-c td:first-child{border-left:3px solid var(--third)}
+
+/* ========== SVG 决策树 ========== */
+.decision-tree-wrap{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:24px;
+  overflow-x:auto;
+}
+.decision-tree-wrap svg{display:block;max-width:100%;height:auto}
+.tree-legend{
+  display:flex;gap:14px;flex-wrap:wrap;
+  margin-top:18px;padding-top:16px;
+  border-top:1px solid var(--line-soft);
+}
+.tree-legend .lg{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--text-dim);
+  font-family:var(--mono);
+}
+.tree-legend .swatch{
+  width:18px;height:18px;border-radius:5px;
+  border:1px solid var(--line);
+}
+
+/* ========== 决策步骤表 ========== */
+.steps-list{
+  display:grid;grid-template-columns:1fr;gap:12px;
+  margin-top:24px;
+}
+.step-row{
+  display:grid;
+  grid-template-columns:60px 1fr 1fr;
+  gap:16px;align-items:center;
+  padding:14px 18px;
+  background:var(--bg-2);
+  border:1px solid var(--line-soft);
+  border-radius:10px;
+  border-left:3px solid var(--accent);
+}
+.step-row .sn{
+  font-family:var(--mono);font-size:18px;font-weight:700;
+  color:var(--accent-2);text-align:center;
+}
+.step-row .q{font-weight:600;color:#fff;font-size:14px}
+.step-row .a{color:var(--text-dim);font-size:13px;font-family:var(--mono)}
+
+/* ========== 对比说明 ========== */
+.compare-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+}
+.compare-card{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:22px;
+}
+.compare-card h4{
+  font-size:16px;color:#fff;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.compare-card h4 .dot{
+  width:9px;height:9px;border-radius:50%;background:var(--accent);
+}
+.compare-card.fam-b h4 .dot{background:var(--second)}
+.compare-card.fam-c h4 .dot{background:var(--third)}
+.compare-card p{color:var(--text-dim);font-size:13px;margin-bottom:10px}
+.compare-card .when{
+  font-family:var(--mono);font-size:12px;
+  color:var(--accent-2);
+  padding:8px 10px;background:var(--bg-2);border-radius:7px;
+  border:1px dashed var(--line);
+}
+
+/* ========== 参考文献 ========== */
+.refs-list{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:24px 28px;
+}
+.refs-list ol{padding-left:22px;color:var(--text);font-size:13px;line-height:1.9}
+.refs-list ol li{margin:6px 0;padding-left:4px}
+.refs-list ol li b{color:var(--accent-2)}
+.refs-list ol li i{color:var(--text-dim)}
+
+/* ========== 页脚 ========== */
+footer{
+  padding:56px 0 40px;
+  background:var(--bg-2);
+  border-top:1px solid var(--line);
+}
+.footer-grid{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;
+  margin-bottom:32px;
+}
+.footer-brand h4{
+  font-size:18px;color:#fff;margin-bottom:8px;
+}
+.footer-brand p{color:var(--text-dim);font-size:13px}
+.footer-col h5{
+  font-family:var(--mono);font-size:11px;
+  color:var(--second);letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:12px;
+}
+.footer-col a{
+  display:block;font-size:13px;color:var(--text-dim);
+  text-decoration:none;padding:5px 0;
+  border-bottom:1px dashed var(--line-soft);
+  transition:color .15s ease;
+}
+.footer-col a:hover{color:var(--accent-2)}
+.footer-bottom{
+  padding-top:22px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+  gap:14px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:12px;color:var(--text-faint);
+}
+.footer-bottom a{color:var(--accent-2);text-decoration:none}
+
+/* ========== 响应式 ========== */
+@media (max-width:980px){
+  .families{grid-template-columns:1fr}
+  .method-grid{grid-template-columns:1fr}
+  .compare-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr;gap:24px}
+  .top-nav{display:none}
+  .hero{padding:48px 0 32px}
+  section{padding:48px 0}
+  .step-row{grid-template-columns:50px 1fr;}
+  .step-row .a{grid-column:1 / -1}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .method-card{padding:22px 18px}
+  .stat-pill{min-width:100px;flex:1}
+  .topbar-inner{padding:12px 16px}
+  .brand{font-size:12px}
+}
+</style>
+<style id="apple-ui-layer">
+:root{--font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue",system-ui,sans-serif;--font-mono:"SF Mono","JetBrains Mono",Menlo,monospace;--apple-accent:#3B82F6;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);--ease-apple:cubic-bezier(0.4,0,0.2,1);}
+*{transition:all .3s var(--ease-apple);}
+body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased;}
+.card{border-radius:var(--radius-md);box-shadow:var(--shadow-md);transition:box-shadow .3s var(--ease-apple),transform .3s var(--ease-apple);}
+.card:hover{transform:translateY(-2px);}
+.btn,.btn-primary{border-radius:var(--radius-sm);transition:all .15s cubic-bezier(0,0,0.2,1);}
+.btn:active,.btn-primary:active{transform:scale(.97);}
+.glass-nav{backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);}
+html{scroll-behavior:smooth;}
+section{scroll-snap-align:start;}
+pre,code{font-family:var(--font-mono);}
+.card-spotlight{position:relative;overflow:hidden;}
+.card-spotlight::before{content:'';position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(59,130,246,.1) 0%,transparent 70%);left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s var(--ease-apple);}
+.card-spotlight:hover::before{opacity:1;}
+</style>
+<style id="bg-dynamic-layer">
+.bg-dynamic{position:fixed;inset:0;z-index:-2;background-image:url('images/methodology_education_ai_algorithm_flowchart_mathematical_formula_probab__landscape_16_9.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.25;will-change:transform,background-position,opacity;transform:translateZ(0);backface-visibility:hidden;}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,20,55,.6) 0%,rgba(11,20,55,.85) 50%,rgba(11,20,55,.6) 100%);}
+@keyframes flow-pan-y{0%{background-position:50% 0%;}100%{background-position:50% 100%;}}
+.bg-dynamic.anim-pan-y{animation:flow-pan-y 50s linear infinite;background-size:100% 200%;}
+@media (prefers-reduced-motion:reduce){.bg-dynamic,.bg-dynamic.anim-pan-y{animation:none!important;}}
+body > *:not(.bg-dynamic):not(.bg-overlay){position:relative;z-index:1;}
+</style>
+</head>
+<body>
+<div class="bg-dynamic anim-pan-y"></div>
+<div class="bg-overlay"></div>
+
+<!-- ========== 顶部导航 ========== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        方法论深潜馆
+        <small>METHODOLOGY · DEEP · ANNEX</small>
+      </div>
+    </div>
+    <nav class="top-nav" aria-label="主馆与深潜馆导航">
+      <a href="eduai_s01_tech_deepblue.html">S01 技术深蓝</a>
+      <a href="eduai_s02_academic_ink.html">S02 学术墨韵</a>
+      <a href="eduai_s03_minimal_gold.html">S03 极简金线</a>
+      <a href="eduai_s04_cyber_indigo.html">S04 赛博靛蓝</a>
+      <a href="eduai_s05_glass_sky.html">S05 玻璃天穹</a>
+      <a href="eduai_s06_magazine_slate.html">S06 杂志岩灰</a>
+      <a href="methodology_sub.html" class="sub-link current">方法论深潜</a>
+      <a href="applications_sub.html" class="sub-link">应用深潜</a>
+      <a href="evaluation_sub.html" class="sub-link">评估深潜</a>
+      <a href="four_layer_sub.html" class="sub-link">四层架构</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ========== Hero ========== -->
+<section class="hero" style="border-bottom:1px solid var(--line-soft)">
+  <div class="wrap">
+    <span class="hero-eyebrow">METHODOLOGY DEEP ANNEX · 方法论深潜</span>
+    <h1>
+      方法论深潜馆 · 教育和AI
+      <span class="en">Methodology Deep Annex — 3 Families × 12 Methods × 6 Dimensions × 8-Step Decision Tree</span>
+    </h1>
+    <p class="lead">
+      本馆把"教育AI"拆成三条方法论家族：传统教学设计、学习科学、计算教育学。每一条家族下面展开四个具体方法，
+      从 Bloom 掌握学习法到深度知识追踪 DKT，从 Gagné 九事件到 IRT 自适应测试。每个方法配定义、核心公式、
+      适用场景、数据需求、局限、代表论文，以及一段可直接复制运行的 Python 代码。最后用一张 8 步 SVG 决策树
+      把"问题类型 → 数据条件 → 方法选择"的判断路径一次画清楚。
+    </p>
+    <div class="hero-stats">
+      <div class="stat-pill"><span class="n">3</span><span class="l">方法论家族</span></div>
+      <div class="stat-pill"><span class="n">12</span><span class="l">教育AI方法</span></div>
+      <div class="stat-pill"><span class="n">6</span><span class="l">对比维度</span></div>
+      <div class="stat-pill"><span class="n">8</span><span class="l">决策树步数</span></div>
+      <div class="stat-pill"><span class="n">12</span><span class="l">Python 实现</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 概述 ========== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">01 · OVERVIEW</span>
+      <h2>为什么把教育AI拆成三大家族</h2>
+      <p>
+        AI在教育里的方法论不是铁板一块。有人在做"怎么教"的教学设计研究（Bloom、Gagné 那一脉），
+        有人在做"学生怎么学"的学习科学研究（建构主义、同伴教学那一脉），还有人在做"用数据建模学习者"的
+        计算教育学研究（知识追踪、IRT、EDM 那一脉）。三大家族各有理论根基、各有数据需求、各有局限，
+        把它们放在一起对照，才能避免"用错方法解错问题"的常见错误。
+      </p>
+    </div>
+
+    <div class="families">
+      <div class="family-card fam-a">
+        <div class="fam-id">FAMILY · A</div>
+        <h3>传统教学设计</h3>
+        <div class="fam-en">Traditional Instructional Design</div>
+        <p>以教学目标分类学和条件—学习理论为基础，强调显性教学序列、掌握阈值和事件化教学。来源是教育心理学与课程论。</p>
+        <ul>
+          <li><span>Bloom 掌握学习法</span><span class="mi">A1</span></li>
+          <li><span>直接教学法</span><span class="mi">A2</span></li>
+          <li><span>精熟学习</span><span class="mi">A3</span></li>
+          <li><span>Gagné 九事件教学设计</span><span class="mi">A4</span></li>
+        </ul>
+      </div>
+      <div class="family-card fam-b">
+        <div class="fam-id">FAMILY · B</div>
+        <h3>学习科学</h3>
+        <div class="fam-en">Learning Sciences</div>
+        <p>以建构主义、社会文化和认知科学为基础，强调学生在真实情境中主动建构知识、同伴互动和探究。关注的是"学"而不是"教"。</p>
+        <ul>
+          <li><span>建构主义探究学习</span><span class="mi">B1</span></li>
+          <li><span>同伴教学 Peer Instruction</span><span class="mi">B2</span></li>
+          <li><span>自我组织学习环境 SOLE</span><span class="mi">B3</span></li>
+          <li><span>项目式学习 PBL</span><span class="mi">B4</span></li>
+        </ul>
+      </div>
+      <div class="family-card fam-c">
+        <div class="fam-id">FAMILY · C</div>
+        <h3>计算教育学</h3>
+        <div class="fam-en">Computational Pedagogy</div>
+        <p>以概率图模型、深度学习、心理测量学和教育数据挖掘为基础，把学习者建模成可估计、可预测、可推荐的计算对象。</p>
+        <ul>
+          <li><span>知识追踪 BKT/DKT</span><span class="mi">C1</span></li>
+          <li><span>自适应测试 IRT</span><span class="mi">C2</span></li>
+          <li><span>教育数据挖掘 EDM</span><span class="mi">C3</span></li>
+          <li><span>学习分析 LA</span><span class="mi">C4</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 方法详解：家族 A ========== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">02 · FAMILY A · 传统教学设计</span>
+      <h2>家族 A · 传统教学设计四法</h2>
+      <p>Bloom 掌握学习法、直接教学法、精熟学习、Gagné 九事件教学设计。它们的共同假设是：教学是可以被显性设计的事件序列，学生达成掌握阈值即可进入下一单元。</p>
+    </div>
+
+    <!-- 方法 A1：Bloom 掌握学习法 -->
+    <article class="method-card fam-a">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · A1</span>
+          <h3>Bloom 掌握学习法</h3>
+          <div class="method-en">Bloom's Mastery Learning</div>
+        </div>
+        <span class="method-family-tag">FAMILY A</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>Bloom (1968) 提出：只要给予足够时间与适当反馈矫正，绝大多数学生都能掌握学习内容。核心是把课程拆成小单元，每个单元配诊断测验，未达标的学生进入矫正学习，达标后进入下一单元。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">掌握判据：mean(score_i) ≥ θ 且 cycle ≥ 2<br>矫正触发：if mean &lt; θ → remediate<br>达标比例：M = Σ mastered / Σ skills</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>K12 基础学科的单元教学</li>
+            <li>有明确知识点的自适应练习系统</li>
+            <li>形成性评价主导的课堂</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>每学生每技能的多次答题记录</li>
+            <li>技能清单与目标映射</li>
+            <li>掌握阈值 θ（通常 0.75–0.85）</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>假设学习是离散单元的累加</li>
+            <li>对元认知和高阶思维难以掌握化</li>
+            <li>矫正资源消耗大，规模化困难</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Bloom, B.S.</b> (1968). <i>Learning for Mastery.</i> Evaluation Comment, 1(2).</span>
+          <span class="paper"><b>Guskey, T.R.</b> (2007). <i>Closing Achievement Gaps: Revisiting Benjamin S. Bloom's "Learning for Mastery."</i> Journal of Advanced Academics.</span>
+          <span class="paper"><b>Block, J.H.</b> (1971). <i>Mastery Learning: Theory and Practice.</i> Holt Rinehart &amp; Winston.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · bloom_mastery.py</span>
+          <button class="copy-btn" data-copy="code-a1"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-a1"><code><span class="tok-com"># Bloom 掌握学习法：诊断 → 反馈 → 矫正 → 复测循环</span>
+<span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+
+<span class="tok-kw">class</span> <span class="tok-cls">BloomMasteryTracker</span>:
+    <span class="tok-str">"""追踪学生在各技能上的掌握状态，触发矫正学习"""</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, mastery_threshold=<span class="tok-num">0.80</span>, min_cycles=<span class="tok-num">2</span>):
+        self.threshold = mastery_threshold
+        self.min_cycles = min_cycles
+        self.students = {}
+
+    <span class="tok-kw">def</span> <span class="tok-fn">register</span>(self, student_id, skill_list):
+        self.students[student_id] = {
+            s: {<span class="tok-str">'scores'</span>: [], <span class="tok-str">'mastered'</span>: <span class="tok-kw">False</span>, <span class="tok-str">'cycle'</span>: <span class="tok-num">0</span>}
+            <span class="tok-kw">for</span> s <span class="tok-kw">in</span> skill_list
+        }
+
+    <span class="tok-kw">def</span> <span class="tok-fn">record</span>(self, student_id, skill, score):
+        rec = self.students[student_id][skill]
+        rec[<span class="tok-str">'scores'</span>].append(score)
+        rec[<span class="tok-str">'cycle'</span>] += <span class="tok-num">1</span>
+        mean = np.mean(rec[<span class="tok-str">'scores'</span>])
+        <span class="tok-kw">if</span> mean &gt;= self.threshold <span class="tok-kw">and</span> rec[<span class="tok-str">'cycle'</span>] &gt;= self.min_cycles:
+            rec[<span class="tok-str">'mastered'</span>] = <span class="tok-kw">True</span>
+        <span class="tok-kw">return</span> self.diagnose(student_id, skill)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">diagnose</span>(self, student_id, skill):
+        rec = self.students[student_id][skill]
+        mean = np.mean(rec[<span class="tok-str">'scores'</span>])
+        gap = <span class="tok-fn">max</span>(<span class="tok-num">0</span>, self.threshold - mean)
+        <span class="tok-kw">return</span> {
+            <span class="tok-str">'skill'</span>: skill, <span class="tok-str">'mean'</span>: <span class="tok-fn">round</span>(mean, <span class="tok-num">3</span>),
+            <span class="tok-str">'gap'</span>: <span class="tok-fn">round</span>(gap, <span class="tok-num">3</span>), <span class="tok-str">'mastered'</span>: rec[<span class="tok-str">'mastered'</span>],
+            <span class="tok-str">'cycle'</span>: rec[<span class="tok-str">'cycle'</span>],
+            <span class="tok-str">'action'</span>: <span class="tok-str">'advance'</span> <span class="tok-kw">if</span> rec[<span class="tok-str">'mastered'</span>] <span class="tok-kw">else</span> <span class="tok-str">'remediate'</span>
+        }
+
+    <span class="tok-kw">def</span> <span class="tok-fn">class_mastery_rate</span>(self):
+        all_skills = [s <span class="tok-kw">for</span> stu <span class="tok-kw">in</span> self.students.<span class="tok-fn">values</span>() <span class="tok-kw">for</span> s <span class="tok-kw">in</span> stu]
+        mastered = <span class="tok-fn">sum</span>(<span class="tok-num">1</span> <span class="tok-kw">for</span> s <span class="tok-kw">in</span> all_skills <span class="tok-kw">if</span> s[<span class="tok-str">'mastered'</span>])
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(mastered / <span class="tok-fn">max</span>(<span class="tok-fn">len</span>(all_skills), <span class="tok-num">1</span>), <span class="tok-num">3</span>)
+
+tracker = <span class="tok-cls">BloomMasteryTracker</span>(mastery_threshold=<span class="tok-num">0.80</span>)
+tracker.<span class="tok-fn">register</span>(<span class="tok-str">'S001'</span>, [<span class="tok-str">'algebra'</span>, <span class="tok-str">'geometry'</span>, <span class="tok-str">'statistics'</span>])
+<span class="tok-kw">for</span> skill, score <span class="tok-kw">in</span> [(<span class="tok-str">'algebra'</span>,<span class="tok-num">0.72</span>),(<span class="tok-str">'algebra'</span>,<span class="tok-num">0.85</span>),(<span class="tok-str">'geometry'</span>,<span class="tok-num">0.90</span>)]:
+    <span class="tok-fn">print</span>(tracker.<span class="tok-fn">record</span>(<span class="tok-str">'S001'</span>, skill, score))
+<span class="tok-fn">print</span>(<span class="tok-str">'class mastery:'</span>, tracker.<span class="tok-fn">class_mastery_rate</span>())</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 A2：直接教学法 -->
+    <article class="method-card fam-a">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · A2</span>
+          <h3>直接教学法</h3>
+          <div class="method-en">Direct Instruction (DI)</div>
+        </div>
+        <span class="method-family-tag">FAMILY A</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>Engelmann 自 1960 年代发展的脚本化、快节奏、显性教学法。教师按脚本发出信号，学生群体齐答，错误率超过阈值即重教。其核心是"无错学习"和"小步快频反馈"。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">正确率：r = n_correct / n_total<br>保真度：F = Σ correct / Σ (correct+errors)<br>推进规则：if r ≥ 0.85 → next step</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>语音、识字、计算等基础技能</li>
+            <li>需要高频反馈的低年级课堂</li>
+            <li>特殊教育与补救教学</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>脚本步骤与学生响应记录</li>
+            <li>每步的对错计数</li>
+            <li>推进阈值（通常 0.85）</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>脚本僵化，难以处理开放探究</li>
+            <li>对教师培训成本高</li>
+            <li>易被批评为机械训练</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Engelmann, S.</b> &amp; <b>Carnine, D.</b> (1982). <i>Theory of Instruction: Principles and Applications.</i></span>
+          <span class="paper"><b>Project Follow Through</b> (1977). <i>Evaluation of the Follow Through Programs.</i> Stanford Research Institute.</span>
+          <span class="paper"><b>Stockard, J.</b> et al. (2018). <i>The Effectiveness of Direct Instruction Curricula.</i> Review of Educational Research.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · direct_instruction.py</span>
+          <button class="copy-btn" data-copy="code-a2"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-a2"><code><span class="tok-com"># 直接教学法：脚本化教学序列 + 推进规则</span>
+<span class="tok-kw">class</span> <span class="tok-cls">DirectInstructionScript</span>:
+    <span class="tok-str">"""脚本化、快节奏、显性教学，按正确率推进或重教"""</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, advance_threshold=<span class="tok-num">0.85</span>):
+        self.threshold = advance_threshold
+        self.script = []
+        self.current_step = <span class="tok-num">0</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">add_step</span>(self, name, teacher_signal, expected_response, duration_s):
+        self.script.<span class="tok-fn">append</span>({
+            <span class="tok-str">'step'</span>: <span class="tok-fn">len</span>(self.script) + <span class="tok-num">1</span>,
+            <span class="tok-str">'name'</span>: name, <span class="tok-str">'signal'</span>: teacher_signal,
+            <span class="tok-str">'expected'</span>: expected_response, <span class="tok-str">'duration'</span>: duration_s,
+            <span class="tok-str">'errors'</span>: <span class="tok-num">0</span>, <span class="tok-str">'correct'</span>: <span class="tok-num">0</span>
+        })
+
+    <span class="tok-kw">def</span> <span class="tok-fn">observe</span>(self, step_idx, n_correct, n_total):
+        s = self.script[step_idx]
+        s[<span class="tok-str">'correct'</span>] += n_correct
+        s[<span class="tok-str">'errors'</span>] += (n_total - n_correct)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">step_rate</span>(self, step_idx):
+        s = self.script[step_idx]
+        total = s[<span class="tok-str">'correct'</span>] + s[<span class="tok-str">'errors'</span>]
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(s[<span class="tok-str">'correct'</span>] / <span class="tok-fn">max</span>(total, <span class="tok-num">1</span>), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">fidelity</span>(self):
+        total = <span class="tok-fn">sum</span>(s[<span class="tok-str">'correct'</span>] + s[<span class="tok-str">'errors'</span>] <span class="tok-kw">for</span> s <span class="tok-kw">in</span> self.script)
+        correct = <span class="tok-fn">sum</span>(s[<span class="tok-str">'correct'</span>] <span class="tok-kw">for</span> s <span class="tok-kw">in</span> self.script)
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(correct / <span class="tok-fn">max</span>(total, <span class="tok-num">1</span>), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">next_action</span>(self):
+        <span class="tok-kw">if</span> self.current_step &gt;= <span class="tok-fn">len</span>(self.script):
+            <span class="tok-kw">return</span> <span class="tok-str">'script_complete'</span>
+        rate = self.<span class="tok-fn">step_rate</span>(self.current_step)
+        <span class="tok-kw">if</span> rate &gt;= self.threshold:
+            self.current_step += <span class="tok-num">1</span>
+            <span class="tok-kw">return</span> <span class="tok-str">f'advance_to_step_{self.current_step}'</span>
+        <span class="tok-kw">return</span> <span class="tok-str">f'repeat_step_{self.script[self.current_step]["step"]}'</span>
+
+di = <span class="tok-cls">DirectInstructionScript</span>()
+di.<span class="tok-fn">add_step</span>(<span class="tok-str">'signal'</span>, <span class="tok-str">'Point to letter A'</span>, <span class="tok-str">'say /a/'</span>, <span class="tok-num">5</span>)
+di.<span class="tok-fn">add_step</span>(<span class="tok-str">'model'</span>, <span class="tok-str">'I say /a/, you say /a/'</span>, <span class="tok-str">'echo /a/'</span>, <span class="tok-num">8</span>)
+di.<span class="tok-fn">add_step</span>(<span class="tok-str">'test'</span>, <span class="tok-str">'Your turn: /a/'</span>, <span class="tok-str">'say /a/'</span>, <span class="tok-num">5</span>)
+di.<span class="tok-fn">observe</span>(<span class="tok-num">0</span>, <span class="tok-num">18</span>, <span class="tok-num">20</span>); di.<span class="tok-fn">observe</span>(<span class="tok-num">1</span>, <span class="tok-num">20</span>, <span class="tok-num">20</span>); di.<span class="tok-fn">observe</span>(<span class="tok-num">2</span>, <span class="tok-num">19</span>, <span class="tok-num">20</span>)
+<span class="tok-fn">print</span>(<span class="tok-str">'fidelity:'</span>, di.<span class="tok-fn">fidelity</span>(), <span class="tok-str">'next:'</span>, di.<span class="tok-fn">next_action</span>())</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 A3：精熟学习 -->
+    <article class="method-card fam-a">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · A3</span>
+          <h3>精熟学习</h3>
+          <div class="method-en">Mastery Learning (Unit-based)</div>
+        </div>
+        <span class="method-family-tag">FAMILY A</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>Bloom 提出的精熟学习是把课程拆成学习单元，每单元配两次形成性测验：A 卷诊断、矫正学习、B 卷复测。学生最终掌握状态取两次测验的最佳成绩，达到掌握标准即通过该单元。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">best(o) = max(formA_o, formB_o)<br>mastered(o) = best(o) ≥ θ<br>需矫正集 = {o | formA_o &lt; θ}</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>有清晰目标的单元教学</li>
+            <li>形成性评价体系完备的学校</li>
+            <li>补救教学与课后辅导</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>单元目标清单</li>
+            <li>每目标两次形成性测验分数</li>
+            <li>掌握标准 θ（通常 0.75）</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>需要双倍测验时间</li>
+            <li>矫正资源依赖教师人力</li>
+            <li>对高阶能力目标难以量化</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Bloom, B.S.</b> (1976). <i>Human Characteristics and School Learning.</i> McGraw-Hill.</span>
+          <span class="paper"><b>Anderson, L.W.</b> &amp; <b>Block, J.H.</b> (1987). <i>Mastery Learning Models.</i> International Encyclopedia of Teaching and Teacher Education.</span>
+          <span class="paper"><b>Guskey, T.R.</b> (1985). <i>Implementing Mastery Learning.</i> Wadsworth.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · mastery_unit.py</span>
+          <button class="copy-btn" data-copy="code-a3"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-a3"><code><span class="tok-com"># 精熟学习单元：诊断A → 矫正 → 复测B → 最终状态</span>
+<span class="tok-kw">class</span> <span class="tok-cls">MasteryUnit</span>:
+    <span class="tok-str">"""单个学习单元的精熟学习流程跟踪"""</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, unit_name, objectives, criterion=<span class="tok-num">0.75</span>):
+        self.unit = unit_name
+        self.objectives = objectives
+        self.criterion = criterion
+        self.formative_a = {o: <span class="tok-kw">None</span> <span class="tok-kw">for</span> o <span class="tok-kw">in</span> objectives}
+        self.formative_b = {o: <span class="tok-kw">None</span> <span class="tok-kw">for</span> o <span class="tok-kw">in</span> objectives}
+
+    <span class="tok-kw">def</span> <span class="tok-fn">administer_a</span>(self, scores):
+        <span class="tok-kw">for</span> o, s <span class="tok-kw">in</span> scores.<span class="tok-fn">items</span>():
+            self.formative_a[o] = s
+
+    <span class="tok-kw">def</span> <span class="tok-fn">administer_b</span>(self, scores):
+        <span class="tok-kw">for</span> o, s <span class="tok-kw">in</span> scores.<span class="tok-fn">items</span>():
+            self.formative_b[o] = s
+
+    <span class="tok-kw">def</span> <span class="tok-fn">diagnose</span>(self):
+        <span class="tok-kw">return</span> {o: (s, <span class="tok-str">'mastered'</span> <span class="tok-kw">if</span> s &gt;= self.criterion <span class="tok-kw">else</span> <span class="tok-str">'remediate'</span>)
+                <span class="tok-kw">for</span> o, s <span class="tok-kw">in</span> self.formative_a.<span class="tok-fn">items</span>() <span class="tok-kw">if</span> s <span class="tok-kw">is not None</span>}
+
+    <span class="tok-kw">def</span> <span class="tok-fn">corrective_targets</span>(self):
+        <span class="tok-kw">return</span> [o <span class="tok-kw">for</span> o, s <span class="tok-kw">in</span> self.formative_a.<span class="tok-fn">items</span>()
+                <span class="tok-kw">if</span> s <span class="tok-kw">is not None</span> <span class="tok-kw">and</span> s &lt; self.criterion]
+
+    <span class="tok-kw">def</span> <span class="tok-fn">final_status</span>(self):
+        out = {}
+        <span class="tok-kw">for</span> o <span class="tok-kw">in</span> self.objectives:
+            a, b = self.formative_a[o], self.formative_b[o]
+            candidates = [x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> (a, b) <span class="tok-kw">if</span> x <span class="tok-kw">is not None</span>]
+            best = <span class="tok-fn">max</span>(candidates) <span class="tok-kw">if</span> candidates <span class="tok-kw">else None</span>
+            out[o] = {<span class="tok-str">'formA'</span>: a, <span class="tok-str">'formB'</span>: b, <span class="tok-str">'best'</span>: best,
+                      <span class="tok-str">'mastered'</span>: best <span class="tok-kw">is not None</span> <span class="tok-kw">and</span> best &gt;= self.criterion}
+        <span class="tok-kw">return</span> out
+
+    <span class="tok-kw">def</span> <span class="tok-fn">unit_pass_rate</span>(self):
+        st = self.<span class="tok-fn">final_status</span>()
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(<span class="tok-fn">sum</span>(<span class="tok-num">1</span> <span class="tok-kw">for</span> v <span class="tok-kw">in</span> st.<span class="tok-fn">values</span>() <span class="tok-kw">if</span> v[<span class="tok-str">'mastered'</span>]) / <span class="tok-fn">len</span>(st), <span class="tok-num">3</span>)
+
+unit = <span class="tok-cls">MasteryUnit</span>(<span class="tok-str">'quadratic_equations'</span>, [<span class="tok-str">'factoring'</span>,<span class="tok-str">'formula'</span>,<span class="tok-str">'graphing'</span>], <span class="tok-num">0.75</span>)
+unit.<span class="tok-fn">administer_a</span>({<span class="tok-str">'factoring'</span>:<span class="tok-num">0.6</span>, <span class="tok-str">'formula'</span>:<span class="tok-num">0.9</span>, <span class="tok-str">'graphing'</span>:<span class="tok-num">0.5</span>})
+<span class="tok-fn">print</span>(<span class="tok-str">'需矫正:'</span>, unit.<span class="tok-fn">corrective_targets</span>())
+unit.<span class="tok-fn">administer_b</span>({<span class="tok-str">'factoring'</span>:<span class="tok-num">0.85</span>, <span class="tok-str">'graphing'</span>:<span class="tok-num">0.8</span>})
+<span class="tok-fn">print</span>(<span class="tok-str">'最终:'</span>, unit.<span class="tok-fn">final_status</span>())
+<span class="tok-fn">print</span>(<span class="tok-str">'单元通过率:'</span>, unit.<span class="tok-fn">unit_pass_rate</span>())</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 A4：Gagné 九事件 -->
+    <article class="method-card fam-a">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · A4</span>
+          <h3>Gagné 九事件教学设计</h3>
+          <div class="method-en">Nine Events of Instruction</div>
+        </div>
+        <span class="method-family-tag">FAMILY A</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>Gagné 在《学习的条件》中提出九个教学事件，对应九个内部学习过程：唤起注意、告知目标、激活先备、呈现刺激、提供指导、引出表现、提供反馈、评估表现、促进迁移。教师按此序列设计每一节课。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">覆盖率：C = Σ filled(events) / 9<br>总时长：T = Σ duration(event_i)<br>完整性：C = 1 → 完整教案</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>单节课或单次教学活动设计</li>
+            <li>企业培训与微课开发</li>
+            <li>教学设计评审清单</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>九事件的活动描述</li>
+            <li>每事件的时长与素材</li>
+            <li>评估结果（用于反馈与迁移）</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>线性序列假设过强</li>
+            <li>对探究式学习适配较弱</li>
+            <li>缺乏个性化机制</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Gagné, R.M.</b> (1985). <i>The Conditions of Learning and Theory of Instruction.</i> 4th ed. Holt Rinehart.</span>
+          <span class="paper"><b>Gagné, R.M., Briggs, L.J., &amp; Wager, W.W.</b> (1992). <i>Principles of Instructional Design.</i> Harcourt Brace.</span>
+          <span class="paper"><b>Reigeluth, C.M.</b> (1999). <i>Instructional-Design Theories and Models.</i> Vol. II. Lawrence Erlbaum.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · gagne_nine_events.py</span>
+          <button class="copy-btn" data-copy="code-a4"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-a4"><code><span class="tok-com"># Gagné 九事件教学设计：教案规划与完整性检查</span>
+<span class="tok-kw">class</span> <span class="tok-cls">NineEventsPlanner</span>:
+    <span class="tok-str">"""九事件教学设计：从唤起注意到促进迁移"""</span>
+    EVENTS = [
+        (<span class="tok-str">'gain_attention'</span>, <span class="tok-str">'唤起注意'</span>),
+        (<span class="tok-str">'inform_objectives'</span>, <span class="tok-str">'告知目标'</span>),
+        (<span class="tok-str">'stimulate_recall'</span>, <span class="tok-str">'激活先备'</span>),
+        (<span class="tok-str">'present_content'</span>, <span class="tok-str">'呈现刺激'</span>),
+        (<span class="tok-str">'provide_guidance'</span>, <span class="tok-str">'提供指导'</span>),
+        (<span class="tok-str">'elicit_performance'</span>, <span class="tok-str">'引出表现'</span>),
+        (<span class="tok-str">'provide_feedback'</span>, <span class="tok-str">'提供反馈'</span>),
+        (<span class="tok-str">'assess_performance'</span>, <span class="tok-str">'评估表现'</span>),
+        (<span class="tok-str">'enhance_transfer'</span>, <span class="tok-str">'促进迁移'</span>),
+    ]
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, lesson_title):
+        self.title = lesson_title
+        self.plan = [{<span class="tok-str">'event'</span>: k, <span class="tok-str">'label'</span>: l, <span class="tok-str">'activity'</span>: <span class="tok-str">''</span>,
+                      <span class="tok-str">'material'</span>: <span class="tok-str">''</span>, <span class="tok-str">'duration_min'</span>: <span class="tok-num">0</span>}
+                     <span class="tok-kw">for</span> k, l <span class="tok-kw">in</span> self.EVENTS]
+
+    <span class="tok-kw">def</span> <span class="tok-fn">set_event</span>(self, idx, activity, material, duration_min):
+        self.plan[idx].<span class="tok-fn">update</span>({<span class="tok-str">'activity'</span>: activity, <span class="tok-str">'material'</span>: material,
+                                    <span class="tok-str">'duration_min'</span>: duration_min})
+
+    <span class="tok-kw">def</span> <span class="tok-fn">total_duration</span>(self):
+        <span class="tok-kw">return</span> <span class="tok-fn">sum</span>(p[<span class="tok-str">'duration_min'</span>] <span class="tok-kw">for</span> p <span class="tok-kw">in</span> self.plan)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">coverage</span>(self):
+        filled = <span class="tok-fn">sum</span>(<span class="tok-num">1</span> <span class="tok-kw">for</span> p <span class="tok-kw">in</span> self.plan <span class="tok-kw">if</span> p[<span class="tok-str">'activity'</span>])
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(filled / <span class="tok-fn">len</span>(self.plan), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">missing_events</span>(self):
+        <span class="tok-kw">return</span> [p[<span class="tok-str">'label'</span>] <span class="tok-kw">for</span> p <span class="tok-kw">in</span> self.plan <span class="tok-kw">if</span> <span class="tok-kw">not</span> p[<span class="tok-str">'activity'</span>]]
+
+    <span class="tok-kw">def</span> <span class="tok-fn">render</span>(self):
+        lines = [<span class="tok-str">f'教案: {self.title}'</span>, <span class="tok-str">'-'</span> * <span class="tok-num">44</span>]
+        <span class="tok-kw">for</span> i, p <span class="tok-kw">in</span> <span class="tok-fn">enumerate</span>(self.plan, <span class="tok-num">1</span>):
+            act = p[<span class="tok-str">'activity'</span>] <span class="tok-kw">or</span> <span class="tok-str">'[未设计]'</span>
+            lines.<span class="tok-fn">append</span>(<span class="tok-str">f"{i}. {p['label']} [{p['duration_min']}min] {act}"</span>)
+        <span class="tok-kw">return</span> <span class="tok-str">'\n'</span>.<span class="tok-fn">join</span>(lines)
+
+planner = <span class="tok-cls">NineEventsPlanner</span>(<span class="tok-str">'光合作用入门'</span>)
+planner.<span class="tok-fn">set_event</span>(<span class="tok-num">0</span>, <span class="tok-str">'播放叶绿体动画'</span>, <span class="tok-str">'video_chloroplast.mp4'</span>, <span class="tok-num">3</span>)
+planner.<span class="tok-fn">set_event</span>(<span class="tok-num">1</span>, <span class="tok-str">'展示学习目标'</span>, <span class="tok-str">'slide_obj.pdf'</span>, <span class="tok-num">2</span>)
+planner.<span class="tok-fn">set_event</span>(<span class="tok-num">2</span>, <span class="tok-str">'提问:植物吃什么'</span>, <span class="tok-str">'oral_qa'</span>, <span class="tok-num">4</span>)
+planner.<span class="tok-fn">set_event</span>(<span class="tok-num">3</span>, <span class="tok-str">'讲解光反应'</span>, <span class="tok-str">'slide_light.pdf'</span>, <span class="tok-num">10</span>)
+planner.<span class="tok-fn">set_event</span>(<span class="tok-num">5</span>, <span class="tok-str">'小组画图'</span>, <span class="tok-str">'worksheet.docx'</span>, <span class="tok-num">8</span>)
+planner.<span class="tok-fn">set_event</span>(<span class="tok-num">6</span>, <span class="tok-str">'巡视反馈'</span>, <span class="tok-str">'checklist.xlsx'</span>, <span class="tok-num">6</span>)
+<span class="tok-fn">print</span>(planner.<span class="tok-fn">render</span>())
+<span class="tok-fn">print</span>(<span class="tok-str">'覆盖率:'</span>, planner.<span class="tok-fn">coverage</span>(), <span class="tok-str">'缺失:'</span>, planner.<span class="tok-fn">missing_events</span>())
+<span class="tok-fn">print</span>(<span class="tok-str">'总时长:'</span>, planner.<span class="tok-fn">total_duration</span>(), <span class="tok-str">'min'</span>)</code></pre>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ========== 方法详解：家族 B ========== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">03 · FAMILY B · 学习科学</span>
+      <h2>家族 B · 学习科学四法</h2>
+      <p>建构主义探究学习、同伴教学、自我组织学习环境 SOLE、项目式学习 PBL。它们的共同假设是：学习是学生在情境中主动建构知识，同伴互动和真实任务是关键驱动力。</p>
+    </div>
+
+    <!-- 方法 B1：建构主义探究学习 -->
+    <article class="method-card fam-b">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · B1</span>
+          <h3>建构主义探究学习</h3>
+          <div class="method-en">Constructivist Inquiry Learning (5E Model)</div>
+        </div>
+        <span class="method-family-tag">FAMILY B</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>基于皮亚杰与维果茨基的建构主义，学习者在真实情境中通过探究主动建构知识。常用 5E 模型：Engage（投入）→ Explore（探究）→ Explain（解释）→ Elaborate（拓展）→ Evaluate（评价），由 BSCS 生物课程开发。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">阶段覆盖：C = Σ filled(phases) / 5<br>探究深度：D = mean(score(artifact))<br>完整性：C = 1 ∧ D ≥ 0.7</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>科学实验与探究课</li>
+            <li>跨学科主题学习</li>
+            <li>概念转变教学</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>各阶段的驱动问题与产物</li>
+            <li>学生产物的评分量规</li>
+            <li>概念转变的前后测</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>耗时，课时紧张难落地</li>
+            <li>评价主观性强</li>
+            <li>对教师引导能力要求高</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Bybee, R.W.</b> et al. (2006). <i>The BSCS 5E Instructional Model.</i> BSCS Press.</span>
+          <span class="paper"><b>Piaget, J.</b> (1970). <i>Genetic Epistemology.</i> Columbia University Press.</span>
+          <span class="paper"><b>Vygotsky, L.S.</b> (1978). <i>Mind in Society.</i> Harvard University Press.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · five_e_inquiry.py</span>
+          <button class="copy-btn" data-copy="code-b1"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-b1"><code><span class="tok-com"># 5E 探究学习模型：投入→探究→解释→拓展→评价</span>
+<span class="tok-kw">class</span> <span class="tok-cls">FiveEInquiry</span>:
+    <span class="tok-str">"""追踪5E各阶段的设计与产物，评估探究深度"""</span>
+    PHASES = [<span class="tok-str">'engage'</span>, <span class="tok-str">'explore'</span>, <span class="tok-str">'explain'</span>, <span class="tok-str">'elaborate'</span>, <span class="tok-str">'evaluate'</span>]
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, topic):
+        self.topic = topic
+        self.phases = {p: {<span class="tok-str">'prompt'</span>: <span class="tok-str">''</span>, <span class="tok-str">'artifact'</span>: <span class="tok-str">''</span>} <span class="tok-kw">for</span> p <span class="tok-kw">in</span> self.PHASES}
+        self.artifacts = []
+
+    <span class="tok-kw">def</span> <span class="tok-fn">set_phase</span>(self, phase, prompt, expected_artifact):
+        self.phases[phase][<span class="tok-str">'prompt'</span>] = prompt
+        self.phases[phase][<span class="tok-str">'artifact'</span>] = expected_artifact
+
+    <span class="tok-kw">def</span> <span class="tok-fn">submit_artifact</span>(self, phase, student_id, content):
+        self.artifacts.<span class="tok-fn">append</span>({<span class="tok-str">'phase'</span>: phase, <span class="tok-str">'student'</span>: student_id,
+                                    <span class="tok-str">'content'</span>: content, <span class="tok-str">'score'</span>: <span class="tok-kw">None</span>})
+
+    <span class="tok-kw">def</span> <span class="tok-fn">score_phase</span>(self, phase, rubric_fn):
+        <span class="tok-kw">for</span> a <span class="tok-kw">in</span> self.artifacts:
+            <span class="tok-kw">if</span> a[<span class="tok-str">'phase'</span>] == phase:
+                a[<span class="tok-str">'score'</span>] = <span class="tok-fn">rubric_fn</span>(a[<span class="tok-str">'content'</span>])
+
+    <span class="tok-kw">def</span> <span class="tok-fn">inquiry_depth</span>(self):
+        scored = [a[<span class="tok-str">'score'</span>] <span class="tok-kw">for</span> a <span class="tok-kw">in</span> self.artifacts <span class="tok-kw">if</span> a[<span class="tok-str">'score'</span>] <span class="tok-kw">is not None</span>]
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(<span class="tok-fn">sum</span>(scored) / <span class="tok-fn">max</span>(<span class="tok-fn">len</span>(scored), <span class="tok-num">1</span>), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">coverage</span>(self):
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(<span class="tok-fn">sum</span>(<span class="tok-num">1</span> <span class="tok-kw">for</span> p <span class="tok-kw">in</span> self.phases.<span class="tok-fn">values</span>() <span class="tok-kw">if</span> p[<span class="tok-str">'prompt'</span>]) / <span class="tok-fn">len</span>(self.PHASES), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">report</span>(self):
+        <span class="tok-kw">return</span> {<span class="tok-str">'topic'</span>: self.topic, <span class="tok-str">'coverage'</span>: self.<span class="tok-fn">coverage</span>(),
+                <span class="tok-str">'artifacts'</span>: <span class="tok-fn">len</span>(self.artifacts), <span class="tok-str">'depth'</span>: self.<span class="tok-fn">inquiry_depth</span>()}
+
+inq = <span class="tok-cls">FiveEInquiry</span>(<span class="tok-str">'水循环'</span>)
+inq.<span class="tok-fn">set_phase</span>(<span class="tok-str">'engage'</span>, <span class="tok-str">'观察蒸发实验'</span>, <span class="tok-str">'观察记录'</span>)
+inq.<span class="tok-fn">set_phase</span>(<span class="tok-str">'explore'</span>, <span class="tok-str">'小组设计冷凝装置'</span>, <span class="tok-str">'设计草图'</span>)
+inq.<span class="tok-fn">set_phase</span>(<span class="tok-str">'explain'</span>, <span class="tok-str">'用自己的话解释循环'</span>, <span class="tok-str">'概念图'</span>)
+inq.<span class="tok-fn">submit_artifact</span>(<span class="tok-str">'engage'</span>, <span class="tok-str">'S01'</span>, <span class="tok-str">'看到水汽凝结在盖子上'</span>)
+inq.<span class="tok-fn">submit_artifact</span>(<span class="tok-str">'explain'</span>, <span class="tok-str">'S01'</span>, <span class="tok-str">'蒸发→冷凝→降水'</span>)
+inq.<span class="tok-fn">score_phase</span>(<span class="tok-str">'explain'</span>, <span class="tok-kw">lambda</span> c: <span class="tok-num">0.8</span> <span class="tok-kw">if</span> <span class="tok-str">'→'</span> <span class="tok-kw">in</span> c <span class="tok-kw">else</span> <span class="tok-num">0.5</span>)
+<span class="tok-fn">print</span>(inq.<span class="tok-fn">report</span>())</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 B2：同伴教学 -->
+    <article class="method-card fam-b">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · B2</span>
+          <h3>同伴教学 Peer Instruction</h3>
+          <div class="method-en">Peer Instruction (Mazur)</div>
+        </div>
+        <span class="method-family-tag">FAMILY B</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>Mazur 在哈佛物理课提出：教师抛出一个 ConcepTest 概念题，学生先独立作答（R1），再与邻座讨论 2–3 分钟后再次作答（R2），最后教师解释。讨论窗口在 R1 正确率介于 30%–70% 时效果最佳。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">归一化增益：g = (R2 − R1) / (1 − R1)<br>讨论窗口：0.3 ≤ R1 ≤ 0.7<br>分布：p(c) = count(c) / N</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>大班讲座型课堂</li>
+            <li>物理、化学等概念密集学科</li>
+            <li>翻转课堂的课堂环节</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>每学生两轮作答记录</li>
+            <li>题目的正确选项</li>
+            <li>讨论时长记录</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>依赖高质量概念题设计</li>
+            <li>R1 过高或过低时讨论失效</li>
+            <li>难以覆盖全部认知层级</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Mazur, E.</b> (1997). <i>Peer Instruction: A User's Manual.</i> Prentice Hall.</span>
+          <span class="paper"><b>Crouch, C.H.</b> &amp; <b>Mazur, E.</b> (2001). <i>Peer Instruction: Ten years of experience and results.</i> American Journal of Physics.</span>
+          <span class="paper"><b>Lasry, N.</b> (2008). <i>Clickers or flashcards: Is there really a difference?</i> The Physics Teacher.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · peer_instruction.py</span>
+          <button class="copy-btn" data-copy="code-b2"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-b2"><code><span class="tok-com"># 同伴教学：ConcepTest → 个体作答 → 讨论 → 再作答 → 解释</span>
+<span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+
+<span class="tok-kw">class</span> <span class="tok-cls">PeerInstruction</span>:
+    <span class="tok-str">"""追踪两轮作答分布、归一化增益与讨论窗口质量"""</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, conceptest_id, choices=[<span class="tok-str">'A'</span>,<span class="tok-str">'B'</span>,<span class="tok-str">'C'</span>,<span class="tok-str">'D'</span>]):
+        self.cid = conceptest_id
+        self.choices = choices
+        self.round1 = {}
+        self.round2 = {}
+        self.correct = <span class="tok-kw">None</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">set_correct</span>(self, choice):
+        self.correct = choice
+
+    <span class="tok-kw">def</span> <span class="tok-fn">collect_r1</span>(self, responses):
+        self.round1 = <span class="tok-fn">dict</span>(responses)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">collect_r2</span>(self, responses):
+        self.round2 = <span class="tok-fn">dict</span>(responses)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">_rate</span>(self, d):
+        <span class="tok-kw">return</span> <span class="tok-fn">sum</span>(<span class="tok-num">1</span> <span class="tok-kw">for</span> v <span class="tok-kw">in</span> d.<span class="tok-fn">values</span>() <span class="tok-kw">if</span> v == self.correct) / <span class="tok-fn">max</span>(<span class="tok-fn">len</span>(d), <span class="tok-num">1</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">distribution</span>(self, which):
+        d = self.round1 <span class="tok-kw">if</span> which == <span class="tok-num">1</span> <span class="tok-kw">else</span> self.round2
+        n = <span class="tok-fn">max</span>(<span class="tok-fn">len</span>(d), <span class="tok-num">1</span>)
+        <span class="tok-kw">return</span> {c: <span class="tok-fn">round</span>(<span class="tok-fn">list</span>(d.<span class="tok-fn">values</span>()).<span class="tok-fn">count</span>(c) / n, <span class="tok-num">3</span>) <span class="tok-kw">for</span> c <span class="tok-kw">in</span> self.choices}
+
+    <span class="tok-kw">def</span> <span class="tok-fn">gain</span>(self):
+        r1, r2 = self.<span class="tok-fn">_rate</span>(self.round1), self.<span class="tok-fn">_rate</span>(self.round2)
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>((r2 - r1) / <span class="tok-fn">max</span>(<span class="tok-num">1</span> - r1, <span class="tok-num">1e-6</span>), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">discussion_window</span>(self):
+        r1 = self.<span class="tok-fn">_rate</span>(self.round1)
+        <span class="tok-kw">if</span> <span class="tok-num">0.3</span> &lt;= r1 &lt;= <span class="tok-num">0.7</span>:
+            <span class="tok-kw">return</span> <span class="tok-str">'optimal'</span>
+        <span class="tok-kw">return</span> <span class="tok-str">'redesign_question'</span>
+
+pi = <span class="tok-cls">PeerInstruction</span>(<span class="tok-str">'CT_007'</span>)
+pi.<span class="tok-fn">set_correct</span>(<span class="tok-str">'C'</span>)
+pi.<span class="tok-fn">collect_r1</span>({<span class="tok-str">'S1'</span>:<span class="tok-str">'A'</span>,<span class="tok-str">'S2'</span>:<span class="tok-str">'B'</span>,<span class="tok-str">'S3'</span>:<span class="tok-str">'C'</span>,<span class="tok-str">'S4'</span>:<span class="tok-str">'A'</span>,<span class="tok-str">'S5'</span>:<span class="tok-str">'C'</span>,
+               <span class="tok-str">'S6'</span>:<span class="tok-str">'B'</span>,<span class="tok-str">'S7'</span>:<span class="tok-str">'C'</span>,<span class="tok-str">'S8'</span>:<span class="tok-str">'A'</span>,<span class="tok-str">'S9'</span>:<span class="tok-str">'B'</span>,<span class="tok-str">'S10'</span>:<span class="tok-str">'C'</span>})
+pi.<span class="tok-fn">collect_r2</span>({<span class="tok-str">'S1'</span>:<span class="tok-str">'C'</span>,<span class="tok-str">'S2'</span>:<span class="tok-str">'C'</span>,<span class="tok-str">'S3'</span>:<span class="tok-str">'C'</span>,<span class="tok-str">'S4'</span>:<span class="tok-str">'C'</span>,<span class="tok-str">'S5'</span>:<span class="tok-str">'C'</span>,
+               <span class="tok-str">'S6'</span>:<span class="tok-str">'C'</span>,<span class="tok-str">'S7'</span>:<span class="tok-str">'C'</span>,<span class="tok-str">'S8'</span>:<span class="tok-str">'A'</span>,<span class="tok-str">'S9'</span>:<span class="tok-str">'B'</span>,<span class="tok-str">'S10'</span>:<span class="tok-str">'C'</span>})
+<span class="tok-fn">print</span>(<span class="tok-str">'R1分布:'</span>, pi.<span class="tok-fn">distribution</span>(<span class="tok-num">1</span>))
+<span class="tok-fn">print</span>(<span class="tok-str">'R2分布:'</span>, pi.<span class="tok-fn">distribution</span>(<span class="tok-num">2</span>))
+<span class="tok-fn">print</span>(<span class="tok-str">'归一化增益:'</span>, pi.<span class="tok-fn">gain</span>(), <span class="tok-str">'窗口:'</span>, pi.<span class="tok-fn">discussion_window</span>())</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 B3：SOLE -->
+    <article class="method-card fam-b">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · B3</span>
+          <h3>自我组织学习环境 SOLE</h3>
+          <div class="method-en">Self-Organized Learning Environment (Mitra)</div>
+        </div>
+        <span class="method-family-tag">FAMILY B</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>Sugata Mitra 提出"墙洞实验"和"云端学校"：教师抛出一个大问题（Big Question），学生自由分组、自主上网探究、自我组织分工，最后展示成果。教师只做鼓励者（"Granny Cloud"），不直接教学。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">涌现分：E = groups_with_log / total_groups<br>可信度：C = mean(evidence_count)<br>分组：ceil(N / group_size)</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>开放性探究问题</li>
+            <li>跨学科与好奇心驱动学习</li>
+            <li>资源受限地区教育</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>大问题与分组名单</li>
+            <li>检索日志（query、来源、片段）</li>
+            <li>展示成果与证据数</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>易产生信息真伪问题</li>
+            <li>学习目标难以保证</li>
+            <li>对网络与设备依赖强</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Mitra, S.</b> (2013). <i>The School in the Cloud: The Future of Learning.</i> TED Books.</span>
+          <span class="paper"><b>Mitra, S.</b> &amp; <b>Dangwal, R.</b> (2010). <i>Limits to self-organising systems of learning.</i> British Journal of Educational Technology.</span>
+          <span class="paper"><b>Mitra, S.</b> (2005). <i>Self-organising systems for mass computer literacy.</i> IJCEELL.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · sole_session.py</span>
+          <button class="copy-btn" data-copy="code-b3"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-b3"><code><span class="tok-com"># SOLE 自我组织学习环境：大问题 → 分组 → 自主探究 → 展示</span>
+<span class="tok-kw">import</span> math
+
+<span class="tok-kw">class</span> <span class="tok-cls">SOLESession</span>:
+    <span class="tok-str">"""追踪分组、检索日志、展示成果与涌现质量"""</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, big_question, group_size=<span class="tok-num">4</span>, duration_min=<span class="tok-num">45</span>):
+        self.question = big_question
+        self.group_size = group_size
+        self.duration = duration_min
+        self.groups = {}
+        self.presentations = []
+
+    <span class="tok-kw">def</span> <span class="tok-fn">form_groups</span>(self, student_ids):
+        <span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-num">0</span>, <span class="tok-fn">len</span>(student_ids), self.group_size):
+            gid = <span class="tok-str">f'G{len(self.groups)+1}'</span>
+            self.groups[gid] = {<span class="tok-str">'members'</span>: student_ids[i:i+self.group_size], <span class="tok-str">'log'</span>: []}
+
+    <span class="tok-kw">def</span> <span class="tok-fn">record_search</span>(self, group_id, query, source_url, snippet):
+        self.groups[group_id][<span class="tok-str">'log'</span>].<span class="tok-fn">append</span>({<span class="tok-str">'query'</span>: query, <span class="tok-str">'source'</span>: source_url,
+                                           <span class="tok-str">'snippet'</span>: snippet})
+
+    <span class="tok-kw">def</span> <span class="tok-fn">present</span>(self, group_id, answer, evidence_count):
+        self.presentations.<span class="tok-fn">append</span>({<span class="tok-str">'group'</span>: group_id, <span class="tok-str">'answer'</span>: answer,
+                                       <span class="tok-str">'evidence'</span>: evidence_count})
+
+    <span class="tok-kw">def</span> <span class="tok-fn">emergence_score</span>(self):
+        <span class="tok-kw">if</span> <span class="tok-kw">not</span> self.groups: <span class="tok-kw">return</span> <span class="tok-num">0</span>
+        with_log = <span class="tok-fn">sum</span>(<span class="tok-num">1</span> <span class="tok-kw">for</span> g <span class="tok-kw">in</span> self.groups.<span class="tok-fn">values</span>() <span class="tok-kw">if</span> g[<span class="tok-str">'log'</span>])
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(with_log / <span class="tok-fn">len</span>(self.groups), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">credibility</span>(self):
+        <span class="tok-kw">if</span> <span class="tok-kw">not</span> self.presentations: <span class="tok-kw">return</span> <span class="tok-num">0</span>
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(<span class="tok-fn">sum</span>(p[<span class="tok-str">'evidence'</span>] <span class="tok-kw">for</span> p <span class="tok-kw">in</span> self.presentations) / <span class="tok-fn">len</span>(self.presentations), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">report</span>(self):
+        <span class="tok-kw">return</span> {<span class="tok-str">'question'</span>: self.question, <span class="tok-str">'groups'</span>: <span class="tok-fn">len</span>(self.groups),
+                <span class="tok-str">'emergence'</span>: self.<span class="tok-fn">emergence_score</span>(), <span class="tok-str">'credibility'</span>: self.<span class="tok-fn">credibility</span>()}
+
+sole = <span class="tok-cls">SOLESession</span>(<span class="tok-str">'为什么彩虹是弧形的？'</span>, group_size=<span class="tok-num">4</span>, duration_min=<span class="tok-num">45</span>)
+sole.<span class="tok-fn">form_groups</span>([<span class="tok-str">'Ava'</span>,<span class="tok-str">'Bo'</span>,<span class="tok-str">'Cy'</span>,<span class="tok-str">'Di'</span>,<span class="tok-str">'Eo'</span>,<span class="tok-str">'Fa'</span>,<span class="tok-str">'Gu'</span>,<span class="tok-str">'He'</span>])
+sole.<span class="tok-fn">record_search</span>(<span class="tok-str">'G1'</span>, <span class="tok-str">'光的折射波长'</span>, <span class="tok-str">'https://ex.com/optics'</span>, <span class="tok-str">'不同波长折射角不同'</span>)
+sole.<span class="tok-fn">record_search</span>(<span class="tok-str">'G1'</span>, <span class="tok-str">'观察者视角几何'</span>, <span class="tok-str">'https://ex.com/geo'</span>, <span class="tok-str">'圆锥对顶角42度'</span>)
+sole.<span class="tok-fn">present</span>(<span class="tok-str">'G1'</span>, <span class="tok-str">'阳光经水滴折射反射，观察者看到42度圆锥'</span>, <span class="tok-num">3</span>)
+<span class="tok-fn">print</span>(sole.<span class="tok-fn">report</span>())</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 B4：PBL -->
+    <article class="method-card fam-b">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · B4</span>
+          <h3>项目式学习 PBL</h3>
+          <div class="method-en">Project-Based Learning</div>
+        </div>
+        <span class="method-family-tag">FAMILY B</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>Buck Institute（现为 PBLWorks）系统化的项目式学习：以一个驱动问题（Driving Question）为核心，学生通过里程碑式探究产出真实作品（Artifact），最终公开展示并接受评价。强调持续探究、真实情境、学生声音与选择。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">进度：P = Σ done_milestones / Σ milestones<br>综合分：O = 0.35·content + 0.20·collab + 0.25·craft + 0.20·present</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>跨学科主题周/学期项目</li>
+            <li>STEM 与创客教育</li>
+            <li>职业能力培养</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>里程碑与交付物清单</li>
+            <li>团队作品文件与质量分</li>
+            <li>多维度量规评分</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>评价信度低、耗时长</li>
+            <li>团队搭便车问题</li>
+            <li>对课时和资源要求高</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Thomas, J.W.</b> (2000). <i>A Review of Research on Project-Based Learning.</i> Autodesk Foundation.</span>
+          <span class="paper"><b>Krajcik, J.S.</b> &amp; <b>Blumenfeld, P.</b> (2006). <i>Project-Based Learning.</i> In Cambridge Handbook of the Learning Sciences.</span>
+          <span class="paper"><b>Hmelo-Silver, C.E.</b> (2004). <i>Problem-Based Learning: What and How Do Students Learn?</i> Educational Psychology Review.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · pbl_project.py</span>
+          <button class="copy-btn" data-copy="code-b4"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-b4"><code><span class="tok-com"># 项目式学习 PBL：驱动问题 → 里程碑 → 作品 → 量规评价</span>
+<span class="tok-kw">class</span> <span class="tok-cls">PBLProject</span>:
+    <span class="tok-str">"""追踪里程碑进度与多维度量规评分"""</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self, driving_question, duration_weeks=<span class="tok-num">4</span>):
+        self.dq = driving_question
+        self.weeks = duration_weeks
+        self.milestones = []
+        self.artifacts = []
+        self.rubric = {<span class="tok-str">'content'</span>:<span class="tok-num">0</span>, <span class="tok-str">'collaboration'</span>:<span class="tok-num">0</span>,
+                       <span class="tok-str">'craft'</span>:<span class="tok-num">0</span>, <span class="tok-str">'presentation'</span>:<span class="tok-num">0</span>}
+
+    <span class="tok-kw">def</span> <span class="tok-fn">add_milestone</span>(self, name, deliverable, due_week):
+        self.milestones.<span class="tok-fn">append</span>({<span class="tok-str">'name'</span>:name, <span class="tok-str">'deliverable'</span>:deliverable,
+                                    <span class="tok-str">'due'</span>:due_week, <span class="tok-str">'done'</span>:<span class="tok-kw">False</span>})
+
+    <span class="tok-kw">def</span> <span class="tok-fn">submit_artifact</span>(self, milestone_idx, team_id, file_path, quality_score):
+        self.artifacts.<span class="tok-fn">append</span>({<span class="tok-str">'team'</span>:team_id, <span class="tok-str">'milestone'</span>:milestone_idx,
+                                     <span class="tok-str">'file'</span>:file_path, <span class="tok-str">'quality'</span>:quality_score})
+        self.milestones[milestone_idx][<span class="tok-str">'done'</span>] = <span class="tok-kw">True</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">assess</span>(self, scores):
+        <span class="tok-kw">for</span> k <span class="tok-kw">in</span> self.rubric:
+            <span class="tok-kw">if</span> k <span class="tok-kw">in</span> scores: self.rubric[k] = scores[k]
+
+    <span class="tok-kw">def</span> <span class="tok-fn">progress</span>(self):
+        done = <span class="tok-fn">sum</span>(<span class="tok-num">1</span> <span class="tok-kw">for</span> m <span class="tok-kw">in</span> self.milestones <span class="tok-kw">if</span> m[<span class="tok-str">'done'</span>])
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(done / <span class="tok-fn">max</span>(<span class="tok-fn">len</span>(self.milestones), <span class="tok-num">1</span>), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">overall</span>(self):
+        w = {<span class="tok-str">'content'</span>:<span class="tok-num">0.35</span>, <span class="tok-str">'collaboration'</span>:<span class="tok-num">0.20</span>,
+             <span class="tok-str">'craft'</span>:<span class="tok-num">0.25</span>, <span class="tok-str">'presentation'</span>:<span class="tok-num">0.20</span>}
+        <span class="tok-kw">return</span> <span class="tok-fn">round</span>(<span class="tok-fn">sum</span>(self.rubric[k] * w[k] <span class="tok-kw">for</span> k <span class="tok-kw">in</span> w), <span class="tok-num">3</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">report</span>(self):
+        <span class="tok-kw">return</span> {<span class="tok-str">'driving_question'</span>: self.dq, <span class="tok-str">'progress'</span>: self.<span class="tok-fn">progress</span>(),
+                <span class="tok-str">'overall'</span>: self.<span class="tok-fn">overall</span>(), <span class="tok-str">'rubric'</span>: self.rubric}
+
+pbl = <span class="tok-cls">PBLProject</span>(<span class="tok-str">'如何为社区设计节水方案？'</span>, <span class="tok-num">4</span>)
+pbl.<span class="tok-fn">add_milestone</span>(<span class="tok-str">'社区用水调研'</span>, <span class="tok-str">'调研报告'</span>, <span class="tok-num">1</span>)
+pbl.<span class="tok-fn">add_milestone</span>(<span class="tok-str">'方案设计'</span>, <span class="tok-str">'设计图+预算'</span>, <span class="tok-num">2</span>)
+pbl.<span class="tok-fn">add_milestone</span>(<span class="tok-str">'原型制作'</span>, <span class="tok-str">'原型+测试数据'</span>, <span class="tok-num">3</span>)
+pbl.<span class="tok-fn">add_milestone</span>(<span class="tok-str">'公开展示'</span>, <span class="tok-str">'展示海报+演讲'</span>, <span class="tok-num">4</span>)
+pbl.<span class="tok-fn">submit_artifact</span>(<span class="tok-num">0</span>, <span class="tok-str">'T1'</span>, <span class="tok-str">'survey_team1.pdf'</span>, <span class="tok-num">0.85</span>)
+pbl.<span class="tok-fn">submit_artifact</span>(<span class="tok-num">1</span>, <span class="tok-str">'T1'</span>, <span class="tok-str">'design_team1.pdf'</span>, <span class="tok-num">0.78</span>)
+pbl.<span class="tok-fn">assess</span>({<span class="tok-str">'content'</span>:<span class="tok-num">0.85</span>, <span class="tok-str">'collaboration'</span>:<span class="tok-num">0.80</span>, <span class="tok-str">'craft'</span>:<span class="tok-num">0.78</span>, <span class="tok-str">'presentation'</span>:<span class="tok-num">0.82</span>})
+<span class="tok-fn">print</span>(pbl.<span class="tok-fn">report</span>())</code></pre>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ========== 方法详解：家族 C ========== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">04 · FAMILY C · 计算教育学</span>
+      <h2>家族 C · 计算教育学四法</h2>
+      <p>知识追踪 BKT/DKT、自适应测试 IRT、教育数据挖掘 EDM、学习分析 LA。它们把学习者建模成可估计、可预测、可推荐的计算对象，是 AI 教育的核心技术骨架。</p>
+    </div>
+
+    <!-- 方法 C1：BKT/DKT -->
+    <article class="method-card fam-c">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · C1</span>
+          <h3>知识追踪 BKT / DKT</h3>
+          <div class="method-en">Bayesian / Deep Knowledge Tracing</div>
+        </div>
+        <span class="method-family-tag">FAMILY C</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>知识追踪根据学生答题序列估计其对每个技能的掌握概率。BKT 用隐马尔可夫模型，参数为初始掌握、学习率、猜测、失误、遗忘；DKT（Piech 2015）用 LSTM 把答题序列映射到技能掌握概率向量，突破 BKT 的单技能独立假设。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">BKT 更新：P(L_t|obs) ∝ P(obs|L_t)P(L_t)<br>DKT：h_t = LSTM(x_t, h_{t-1})<br>p(k) = σ(W_k · h_t)</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>智能辅导系统的下一题推荐</li>
+            <li>自适应练习与诊断</li>
+            <li>大规模在线课程学习者建模</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>学生×题目×技能×对错的时序数据</li>
+            <li>BKT 需技能标注；DKT 可端到端</li>
+            <li>DKT 通常需万级以上交互</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>BKT 假设技能独立，难处理先决关系</li>
+            <li>DKT 黑箱，可解释性弱</li>
+            <li>对猜测与失误的辨识不稳定</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Corbett, A.T.</b> &amp; <b>Anderson, J.R.</b> (1995). <i>Knowledge Tracing: Modeling the Acquisition of Human Knowledge.</i> User Modeling.</span>
+          <span class="paper"><b>Piech, C.</b> et al. (2015). <i>Deep Knowledge Tracing.</i> NeurIPS.</span>
+          <span class="paper"><b>Yeung, C.K.</b> (2019). <i>Deep-IRT: Make Deep Knowledge Tracing Explainable.</i> AIED.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · pybkt_knowledge_tracing.py</span>
+          <button class="copy-btn" data-copy="code-c1"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-c1"><code><span class="tok-com"># BKT 知识追踪：pyBKT 拟合参数 + 5折交叉验证 + 预测</span>
+<span class="tok-com"># pip install pyBKT</span>
+<span class="tok-kw">from</span> pyBKT.models <span class="tok-kw">import</span> Model
+<span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+<span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
+
+np.random.<span class="tok-fn">seed</span>(<span class="tok-num">42</span>)
+n_students, n_steps = <span class="tok-num">200</span>, <span class="tok-num">30</span>
+skills = [<span class="tok-str">'algebra'</span>, <span class="tok-str">'fractions'</span>, <span class="tok-str">'geometry'</span>]
+rows = []
+<span class="tok-kw">for</span> sid <span class="tok-kw">in</span> <span class="tok-fn">range</span>(n_students):
+    skill = np.random.<span class="tok-fn">choice</span>(skills)
+    mastered = np.random.<span class="tok-fn">rand</span>() &lt; <span class="tok-num">0.3</span>          <span class="tok-com"># 初始掌握概率</span>
+    <span class="tok-kw">for</span> t <span class="tok-kw">in</span> <span class="tok-fn">range</span>(n_steps):
+        <span class="tok-kw">if</span> <span class="tok-kw">not</span> mastered <span class="tok-kw">and</span> np.random.<span class="tok-fn">rand</span>() &lt; <span class="tok-num">0.15</span>:  <span class="tok-com"># 学习率</span>
+            mastered = <span class="tok-kw">True</span>
+        p_correct = <span class="tok-num">0.9</span> <span class="tok-kw">if</span> mastered <span class="tok-kw">else</span> <span class="tok-num">0.2</span>     <span class="tok-com"># 猜测/失误</span>
+        correct = <span class="tok-fn">int</span>(np.random.<span class="tok-fn">rand</span>() &lt; p_correct)
+        rows.<span class="tok-fn">append</span>({<span class="tok-str">'user_id'</span>:sid, <span class="tok-str">'skill_name'</span>:skill,
+                     <span class="tok-str">'correct'</span>:correct, <span class="tok-str">'order_id'</span>:t})
+
+df = pd.<span class="tok-cls">DataFrame</span>(rows)
+model = <span class="tok-cls">Model</span>()
+model.<span class="tok-fn">fit</span>(data=df, forgets=<span class="tok-kw">True</span>)          <span class="tok-com"># 含遗忘参数</span>
+<span class="tok-fn">print</span>(<span class="tok-str">'=== BKT 参数估计 ==='</span>)
+<span class="tok-kw">for</span> sk <span class="tok-kw">in</span> skills:
+    params = model.<span class="tok-fn">params</span>().<span class="tok-fn">query</span>(<span class="tok-str">f"skill_name == '{sk}'"</span>)
+    <span class="tok-fn">print</span>(<span class="tok-str">f'[{sk}]'</span>); <span class="tok-fn">print</span>(params.<span class="tok-fn">to_string</span>(index=<span class="tok-kw">False</span>))
+
+acc = model.<span class="tok-fn">crossvalidate</span>(data=df, folds=<span class="tok-num">5</span>)      <span class="tok-com"># 5折交叉验证</span>
+<span class="tok-fn">print</span>(<span class="tok-str">'=== 5折交叉验证 ==='</span>)
+<span class="tok-fn">print</span>(acc.<span class="tok-fn">to_string</span>(index=<span class="tok-kw">False</span>))
+
+new_seq = pd.<span class="tok-cls">DataFrame</span>([
+    {<span class="tok-str">'user_id'</span>:<span class="tok-num">999</span>,<span class="tok-str">'skill_name'</span>:<span class="tok-str">'algebra'</span>,<span class="tok-str">'correct'</span>:<span class="tok-num">1</span>,<span class="tok-str">'order_id'</span>:<span class="tok-num">0</span>},
+    {<span class="tok-str">'user_id'</span>:<span class="tok-num">999</span>,<span class="tok-str">'skill_name'</span>:<span class="tok-str">'algebra'</span>,<span class="tok-str">'correct'</span>:<span class="tok-num">0</span>,<span class="tok-str">'order_id'</span>:<span class="tok-num">1</span>},
+    {<span class="tok-str">'user_id'</span>:<span class="tok-num">999</span>,<span class="tok-str">'skill_name'</span>:<span class="tok-str">'algebra'</span>,<span class="tok-str">'correct'</span>:<span class="tok-num">1</span>,<span class="tok-str">'order_id'</span>:<span class="tok-num">2</span>}])
+preds = model.<span class="tok-fn">predict</span>(data=new_seq)
+<span class="tok-fn">print</span>(<span class="tok-str">'=== 下次答题预测 ==='</span>)
+<span class="tok-fn">print</span>(preds[[<span class="tok-str">'user_id'</span>,<span class="tok-str">'skill_name'</span>,<span class="tok-str">'correct'</span>,<span class="tok-str">'state_probability'</span>]])</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 C2：IRT -->
+    <article class="method-card fam-c">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · C2</span>
+          <h3>自适应测试 IRT</h3>
+          <div class="method-en">Item Response Theory &amp; Computerized Adaptive Testing</div>
+        </div>
+        <span class="method-family-tag">FAMILY C</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>项目反应理论（IRT）把学生能力 θ 和题目参数（区分度 a、难度 b、猜测 c）建模到同一量表上，3PL 模型预测答对概率。计算机化自适应测试（CAT）用 Fisher 信息量选题，用最少题目达到目标能力估计精度。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">3PL：P(θ) = c + (1−c) / (1 + e^{−1.7a(θ−b)})<br>Fisher信息：I(θ) = a²·(Q/P)·(θ−b)²<br>CAT选题：argmax I_i(θ̂)</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>标准化考试（GRE、GMAT）</li>
+            <li>自适应练习与诊断</li>
+            <li>题库等值与链接</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>学生×题目对错矩阵</li>
+            <li>题库规模 ≥ 100 题</li>
+            <li>样本量 ≥ 500（3PL 稳定估计）</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>假设局部独立性</li>
+            <li>多维能力难以单 θ 刻画</li>
+            <li>题库建设与等值成本高</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Lord, F.M.</b> (1980). <i>Applications of Item Response Theory to Practical Testing Problems.</i> Erlbaum.</span>
+          <span class="paper"><b>Wainer, H.</b> et al. (2000). <i>Computerized Adaptive Testing: A Primer.</i> 2nd ed. Lawrence Erlbaum.</span>
+          <span class="paper"><b>vanderLinden, W.J.</b> &amp; <b>Glas, C.A.W.</b> (2010). <i>Elements of Adaptive Testing.</i> Springer.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · pyirt_adaptive_test.py</span>
+          <button class="copy-btn" data-copy="code-c2"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-c2"><code><span class="tok-com"># IRT 3PL 拟合 + 自适应选题(CAT) 用 Fisher 信息量</span>
+<span class="tok-com"># pip install pyirt  (或 py-irt)</span>
+<span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+<span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
+
+np.random.<span class="tok-fn">seed</span>(<span class="tok-num">7</span>)
+n_students, n_items = <span class="tok-num">500</span>, <span class="tok-num">40</span>
+true_theta = np.random.<span class="tok-fn">normal</span>(<span class="tok-num">0</span>, <span class="tok-num">1</span>, n_students)
+true_a = np.random.<span class="tok-fn">uniform</span>(<span class="tok-num">0.6</span>, <span class="tok-num">1.8</span>, n_items)   <span class="tok-com"># 区分度</span>
+true_b = np.random.<span class="tok-fn">normal</span>(<span class="tok-num">0</span>, <span class="tok-num">1</span>, n_items)        <span class="tok-com"># 难度</span>
+true_c = np.random.<span class="tok-fn">uniform</span>(<span class="tok-num">0.1</span>, <span class="tok-num">0.3</span>, n_items)    <span class="tok-com"># 猜测</span>
+
+<span class="tok-kw">def</span> <span class="tok-fn">prob3pl</span>(theta, a, b, c):
+    <span class="tok-kw">return</span> c + (<span class="tok-num">1</span> - c) / (<span class="tok-num">1</span> + np.<span class="tok-fn">exp</span>(-<span class="tok-num">1.7</span> * a * (theta - b)))
+
+records = []
+<span class="tok-kw">for</span> sid, th <span class="tok-kw">in</span> <span class="tok-fn">enumerate</span>(true_theta):
+    <span class="tok-kw">for</span> iid <span class="tok-kw">in</span> <span class="tok-fn">range</span>(n_items):
+        p = <span class="tok-fn">prob3pl</span>(th, true_a[iid], true_b[iid], true_c[iid])
+        c = <span class="tok-fn">int</span>(np.random.<span class="tok-fn">rand</span>() &lt; p)
+        records.<span class="tok-fn">append</span>((sid, iid, c))
+df = pd.<span class="tok-cls">DataFrame</span>(records, columns=[<span class="tok-str">'user'</span>,<span class="tok-str">'item'</span>,<span class="tok-str">'correct'</span>])
+
+<span class="tok-com"># 用 pyirt 拟合 3PL（接口因包实现而异，此处示意）</span>
+<span class="tok-kw">try</span>:
+    <span class="tok-kw">from</span> pyirt <span class="tok-kw">import</span> irt_param
+    param = <span class="tok-fn">irt_param</span>(df[<span class="tok-str">'user'</span>].<span class="tok-fn">values</span>, df[<span class="tok-str">'item'</span>].<span class="tok-fn">values</span>,
+                       df[<span class="tok-str">'correct'</span>].<span class="tok-fn">values</span>, model=<span class="tok-str">'3pl'</span>, max_iter=<span class="tok-num">200</span>)
+    items_df = pd.<span class="tok-cls">DataFrame</span>(param[<span class="tok-str">'item_param'</span>])
+    <span class="tok-fn">print</span>(items_df.<span class="tok-fn">head</span>(<span class="tok-num">8</span>))
+<span class="tok-kw">except</span> <span class="tok-cls">Exception</span> <span class="tok-kw">as</span> e:
+    <span class="tok-fn">print</span>(<span class="tok-str">'pyirt 不可用，用真值演示 CAT 选题:'</span>, e)
+    items_df = pd.<span class="tok-cls">DataFrame</span>({<span class="tok-str">'a'</span>:true_a, <span class="tok-str">'b'</span>:true_b, <span class="tok-str">'c'</span>:true_c})
+
+<span class="tok-kw">def</span> <span class="tok-fn">fisher_info</span>(theta, a, b, c):
+    p = <span class="tok-fn">prob3pl</span>(theta, a, b, c); q = <span class="tok-num">1</span> - p
+    <span class="tok-kw">return</span> (a**<span class="tok-num">2</span>) * (q/p) * ((theta - b)**<span class="tok-num">2</span>)
+
+<span class="tok-kw">def</span> <span class="tok-fn">cat_next</span>(theta, pool, administered):
+    best, best_info = <span class="tok-kw">None</span>, -<span class="tok-num">1</span>
+    <span class="tok-kw">for</span> iid, row <span class="tok-kw">in</span> pool.<span class="tok-fn">iterrows</span>():
+        <span class="tok-kw">if</span> iid <span class="tok-kw">in</span> administered: <span class="tok-kw">continue</span>
+        info = <span class="tok-fn">fisher_info</span>(theta, row[<span class="tok-str">'a'</span>], row[<span class="tok-str">'b'</span>], row[<span class="tok-str">'c'</span>])
+        <span class="tok-kw">if</span> info &gt; best_info: best_info, best = info, iid
+    <span class="tok-kw">return</span> best, <span class="tok-fn">round</span>(best_info, <span class="tok-num">4</span>)
+
+pool = items_df.<span class="tok-fn">copy</span>()
+<span class="tok-fn">print</span>(<span class="tok-str">'θ=0 时推荐题:'</span>, <span class="tok-fn">cat_next</span>(<span class="tok-num">0.0</span>, pool, <span class="tok-fn">set</span>()))
+<span class="tok-fn">print</span>(<span class="tok-str">'θ=1 时推荐题:'</span>, <span class="tok-fn">cat_next</span>(<span class="tok-num">1.0</span>, pool, <span class="tok-fn">set</span>()))</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 C3：EDM -->
+    <article class="method-card fam-c">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · C3</span>
+          <h3>教育数据挖掘 EDM</h3>
+          <div class="method-en">Educational Data Mining</div>
+        </div>
+        <span class="method-family-tag">FAMILY C</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>EDM 用机器学习、统计和数据挖掘技术从教育数据中提取模式。典型任务包括：学业风险预警（分类）、学习者画像（聚类）、行为序列模式挖掘、特征重要性分析。常与 LMS 日志、点击流数据结合。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">分类：ŷ = argmax P(y|X)<br>聚类：argmin Σ‖x_i − μ_c‖²<br>重要性：I(f) = Σ ΔGini(f)</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>MOOC 退课/挂科预警</li>
+            <li>学习者行为画像分群</li>
+            <li>LMS 数据洞察报告</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>结构化行为特征矩阵</li>
+            <li>标签（如是否退课）用于监督学习</li>
+            <li>样本量 ≥ 数千更稳定</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>相关性 ≠ 因果</li>
+            <li>历史偏见会被模型放大</li>
+            <li>特征工程依赖领域知识</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Baker, R.S.</b> (2010). <i>Data Mining for Education.</i> International Encyclopedia of Education.</span>
+          <span class="paper"><b>Romero, C.</b> &amp; <b>Ventura, S.</b> (2013). <i>Data Mining in Education.</i> WIREs Data Mining and Knowledge Discovery.</span>
+          <span class="paper"><b>Peña-Ayala, A.</b> (2014). <i>Educational Data Mining: A Survey and a Data Mining-based Student Analysis Model.</i> IEEE Access.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · edm_sklearn.py</span>
+          <button class="copy-btn" data-copy="code-c3"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-c3"><code><span class="tok-com"># EDM：风险预警分类 + 学习者聚类 + 特征重要性</span>
+<span class="tok-com"># pip install scikit-learn pandas numpy</span>
+<span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+<span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
+<span class="tok-kw">from</span> sklearn.ensemble <span class="tok-kw">import</span> GradientBoostingClassifier
+<span class="tok-kw">from</span> sklearn.cluster <span class="tok-kw">import</span> KMeans
+<span class="tok-kw">from</span> sklearn.model_selection <span class="tok-kw">import</span> train_test_split
+<span class="tok-kw">from</span> sklearn.metrics <span class="tok-kw">import</span> classification_report, roc_auc_score
+<span class="tok-kw">from</span> sklearn.preprocessing <span class="tok-kw">import</span> StandardScaler
+
+np.random.<span class="tok-fn">seed</span>(<span class="tok-num">11</span>)
+n = <span class="tok-num">2000</span>
+<span class="tok-com"># V1-V8 为数据集变量名（白名单）</span>
+data = pd.<span class="tok-cls">DataFrame</span>({
+    <span class="tok-str">'V1'</span>: np.random.<span class="tok-fn">randint</span>(<span class="tok-num">0</span>, <span class="tok-num">60</span>, n),    <span class="tok-com"># 视频观看时长</span>
+    <span class="tok-str">'V2'</span>: np.random.<span class="tok-fn">randint</span>(<span class="tok-num">0</span>, <span class="tok-num">30</span>, n),    <span class="tok-com"># 论坛发帖数</span>
+    <span class="tok-str">'V3'</span>: np.random.<span class="tok-fn">rand</span>(n),              <span class="tok-com"># 作业平均分</span>
+    <span class="tok-str">'V4'</span>: np.random.<span class="tok-fn">randint</span>(<span class="tok-num">0</span>, <span class="tok-num">20</span>, n),    <span class="tok-com"># 重试次数</span>
+    <span class="tok-str">'V5'</span>: np.random.<span class="tok-fn">randint</span>(<span class="tok-num">0</span>, <span class="tok-num">100</span>, n),   <span class="tok-com"># 登录次数</span>
+    <span class="tok-str">'V6'</span>: np.random.<span class="tok-fn">rand</span>(n),              <span class="tok-com"># 出勤率</span>
+    <span class="tok-str">'V7'</span>: np.random.<span class="tok-fn">randint</span>(<span class="tok-num">0</span>, <span class="tok-num">10</span>, n),    <span class="tok-com"># 提问次数</span>
+    <span class="tok-str">'V8'</span>: np.random.<span class="tok-fn">rand</span>(n),              <span class="tok-com"># 期末成绩</span>
+})
+data[<span class="tok-str">'at_risk'</span>] = ((data[<span class="tok-str">'V3'</span>]&lt;<span class="tok-num">0.5</span>) &amp; (data[<span class="tok-str">'V6'</span>]&lt;<span class="tok-num">0.6</span>)).<span class="tok-fn">astype</span>(<span class="tok-fn">int</span>)
+
+X = data[[<span class="tok-str">'V1'</span>,<span class="tok-str">'V2'</span>,<span class="tok-str">'V3'</span>,<span class="tok-str">'V4'</span>,<span class="tok-str">'V5'</span>,<span class="tok-str">'V6'</span>,<span class="tok-str">'V7'</span>]].<span class="tok-fn">values</span>
+y = data[<span class="tok-str">'at_risk'</span>].<span class="tok-fn">values</span>
+X_tr, X_te, y_tr, y_te = <span class="tok-fn">train_test_split</span>(X, y, test_size=<span class="tok-num">0.2</span>, stratify=y)
+
+clf = <span class="tok-cls">GradientBoostingClassifier</span>(n_estimators=<span class="tok-num">200</span>, max_depth=<span class="tok-num">4</span>, learning_rate=<span class="tok-num">0.05</span>)
+clf.<span class="tok-fn">fit</span>(X_tr, y_tr)
+y_pred = clf.<span class="tok-fn">predict</span>(X_te)
+y_prob = clf.<span class="tok-fn">predict_proba</span>(X_te)[:,<span class="tok-num">1</span>]
+<span class="tok-fn">print</span>(<span class="tok-str">'=== 风险预警分类报告 ==='</span>)
+<span class="tok-fn">print</span>(<span class="tok-fn">classification_report</span>(y_te, y_pred, digits=<span class="tok-num">3</span>))
+<span class="tok-fn">print</span>(<span class="tok-str">'AUC:'</span>, <span class="tok-fn">round</span>(<span class="tok-fn">roc_auc_score</span>(y_te, y_prob), <span class="tok-num">4</span>))
+
+<span class="tok-com"># 学习者行为画像聚类</span>
+scaler = <span class="tok-cls">StandardScaler</span>(); Xs = scaler.<span class="tok-fn">fit_transform</span>(X)
+km = <span class="tok-cls">KMeans</span>(n_clusters=<span class="tok-num">4</span>, random_state=<span class="tok-num">11</span>, n_init=<span class="tok-num">10</span>)
+data[<span class="tok-str">'profile'</span>] = km.<span class="tok-fn">fit_predict</span>(Xs)
+<span class="tok-fn">print</span>(<span class="tok-str">'=== 画像聚类中心(均值) ==='</span>)
+<span class="tok-fn">print</span>(data.<span class="tok-fn">groupby</span>(<span class="tok-str">'profile'</span>)[[<span class="tok-str">'V1'</span>,<span class="tok-str">'V3'</span>,<span class="tok-str">'V5'</span>,<span class="tok-str">'V6'</span>]].<span class="tok-fn">mean</span>().<span class="tok-fn">round</span>(<span class="tok-num">2</span>))
+
+<span class="tok-com"># 特征重要性</span>
+imp = <span class="tok-fn">sorted</span>(<span class="tok-fn">zip</span>([<span class="tok-str">'V1'</span>,<span class="tok-str">'V2'</span>,<span class="tok-str">'V3'</span>,<span class="tok-str">'V4'</span>,<span class="tok-str">'V5'</span>,<span class="tok-str">'V6'</span>,<span class="tok-str">'V7'</span>], clf.feature_importances_), key=<span class="tok-kw">lambda</span> x:-x[<span class="tok-num">1</span>])
+<span class="tok-fn">print</span>(<span class="tok-str">'=== 特征重要性 ==='</span>)
+<span class="tok-kw">for</span> name, score <span class="tok-kw">in</span> imp: <span class="tok-fn">print</span>(<span class="tok-str">f'{name}: {score:.4f}'</span>)</code></pre>
+      </div>
+    </article>
+
+    <!-- 方法 C4：LA -->
+    <article class="method-card fam-c">
+      <div class="method-head">
+        <div class="method-head-left">
+          <span class="method-num">METHOD · C4</span>
+          <h3>学习分析 LA</h3>
+          <div class="method-en">Learning Analytics</div>
+        </div>
+        <span class="method-family-tag">FAMILY C</span>
+      </div>
+      <div class="method-grid">
+        <div class="method-field full">
+          <div class="lbl">定义</div>
+          <p>学习分析（LA）测量、收集、分析和报告学习者及其学习环境的数据，用于理解和优化学习与教学环境。与 EDM 相比，LA 更强调可行动性反馈、早期预警和协作网络分析，常配合 dashboard 向师生可视化呈现。</p>
+        </div>
+        <div class="method-field">
+          <div class="lbl">核心公式 / 算法</div>
+          <span class="formula">参与度：E = w1·s + w2·v + w3·f + w4·d<br>风险：R = 1 if E &lt; Q0.2<br>协作中心性：Cb(v) = Σ σ_st(v)/σ_st</span>
+        </div>
+        <div class="method-field">
+          <div class="lbl">适用场景</div>
+          <ul>
+            <li>学习仪表盘与早期预警</li>
+            <li>协作学习网络分析</li>
+            <li>课程改进与教学循环</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">数据需求</div>
+          <ul>
+            <li>学习行为日志（点击流）</li>
+            <li>时间戳与动作类型</li>
+            <li>论坛互动关系（用于网络分析）</li>
+          </ul>
+        </div>
+        <div class="method-field">
+          <div class="lbl">局限</div>
+          <ul>
+            <li>数据采集引发隐私伦理问题</li>
+            <li>仪表盘易被误读</li>
+            <li>反馈闭环依赖教师介入</li>
+          </ul>
+        </div>
+        <div class="method-field full">
+          <div class="lbl">代表论文</div>
+          <span class="paper"><b>Siemens, G.</b> &amp; <b>Long, P.</b> (2011). <i>Penetrating the Fog: Analytics in Learning and Education.</i> EDUCAUSE Review.</span>
+          <span class="paper"><b>Ferguson, R.</b> (2012). <i>Learning Analytics: Drivers, Developments and Challenges.</i> IJTEL.</span>
+          <span class="paper"><b>Dawson, S.</b> et al. (2014). <i>Learning Analytics in Higher Education.</i> Higher Education Academy.</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head">
+          <span class="lang">python · learning_analytics_networkx.py</span>
+          <button class="copy-btn" data-copy="code-c4"><span class="icon">⧉</span><span class="btn-text">复制</span></button>
+        </div>
+        <pre id="code-c4"><code><span class="tok-com"># 学习分析：参与度评分 + 早期预警 + 协作网络</span>
+<span class="tok-com"># pip install pandas numpy networkx</span>
+<span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+<span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
+<span class="tok-kw">import</span> networkx <span class="tok-kw">as</span> nx
+<span class="tok-kw">from</span> collections <span class="tok-kw">import</span> defaultdict
+
+np.random.<span class="tok-fn">seed</span>(<span class="tok-num">12</span>)
+n_students = <span class="tok-num">300</span>
+logs = []
+<span class="tok-kw">for</span> sid <span class="tok-kw">in</span> <span class="tok-fn">range</span>(n_students):
+    n_sessions = np.random.<span class="tok-fn">randint</span>(<span class="tok-num">10</span>, <span class="tok-num">80</span>)
+    <span class="tok-kw">for</span> _ <span class="tok-kw">in</span> <span class="tok-fn">range</span>(n_sessions):
+        action = np.random.<span class="tok-fn">choice</span>([<span class="tok-str">'video'</span>,<span class="tok-str">'quiz'</span>,<span class="tok-str">'forum'</span>,<span class="tok-str">'reading'</span>],
+                                   p=[<span class="tok-num">0.4</span>,<span class="tok-num">0.3</span>,<span class="tok-num">0.15</span>,<span class="tok-num">0.15</span>])
+        ts = pd.<span class="tok-cls">Timestamp</span>(<span class="tok-str">'2026-09-01'</span>) + pd.<span class="tok-cls">Timedelta</span>(
+            minutes=<span class="tok-fn">int</span>(np.random.<span class="tok-fn">randint</span>(<span class="tok-num">0</span>, <span class="tok-num">60</span>*<span class="tok-num">24</span>*<span class="tok-num">60</span>)))
+        logs.<span class="tok-fn">append</span>({<span class="tok-str">'student'</span>:sid, <span class="tok-str">'action'</span>:action, <span class="tok-str">'ts'</span>:ts,
+                     <span class="tok-str">'duration'</span>:<span class="tok-fn">int</span>(np.random.<span class="tok-fn">exponential</span>(<span class="tok-num">15</span>))})
+
+df = pd.<span class="tok-cls">DataFrame</span>(logs).<span class="tok-fn">sort_values</span>(<span class="tok-str">'ts'</span>)
+
+features = df.<span class="tok-fn">groupby</span>(<span class="tok-str">'student'</span>).<span class="tok-fn">agg</span>(
+    total_sessions=(<span class="tok-str">'action'</span>,<span class="tok-str">'count'</span>),
+    video_time=(<span class="tok-str">'duration'</span>, <span class="tok-kw">lambda</span> x: x[df.<span class="tok-fn">loc</span>[x.index,<span class="tok-str">'action'</span>]==<span class="tok-str">'video'</span>].<span class="tok-fn">sum</span>()),
+    forum_posts=(<span class="tok-str">'action'</span>, <span class="tok-kw">lambda</span> x: (x==<span class="tok-str">'forum'</span>).<span class="tok-fn">sum</span>()),
+    active_days=(<span class="tok-str">'ts'</span>, <span class="tok-kw">lambda</span> x: x.dt.date.<span class="tok-fn">nunique</span>()),
+    avg_session=(<span class="tok-str">'duration'</span>,<span class="tok-str">'mean'</span>)).<span class="tok-fn">fillna</span>(<span class="tok-num">0</span>)
+
+features[<span class="tok-str">'engagement'</span>] = (
+    <span class="tok-num">0.3</span> * (features[<span class="tok-str">'total_sessions'</span>]/features[<span class="tok-str">'total_sessions'</span>].<span class="tok-fn">max</span>()) +
+    <span class="tok-num">0.3</span> * (features[<span class="tok-str">'video_time'</span>]/features[<span class="tok-str">'video_time'</span>].<span class="tok-fn">max</span>()) +
+    <span class="tok-num">0.2</span> * (features[<span class="tok-str">'forum_posts'</span>]/features[<span class="tok-str">'forum_posts'</span>].<span class="tok-fn">max</span>()) +
+    <span class="tok-num">0.2</span> * (features[<span class="tok-str">'active_days'</span>]/features[<span class="tok-str">'active_days'</span>].<span class="tok-fn">max</span>()))
+
+features[<span class="tok-str">'risk'</span>] = (features[<span class="tok-str">'engagement'</span>] &lt; features[<span class="tok-str">'engagement'</span>].<span class="tok-fn">quantile</span>(<span class="tok-num">0.2</span>)).<span class="tok-fn">astype</span>(<span class="tok-fn">int</span>)
+<span class="tok-fn">print</span>(<span class="tok-str">'=== 高风险学生数 ==='</span>, features[<span class="tok-str">'risk'</span>].<span class="tok-fn">sum</span>())
+
+<span class="tok-com"># 协作网络分析</span>
+G = nx.<span class="tok-cls">Graph</span>()
+<span class="tok-kw">for</span> sid <span class="tok-kw">in</span> <span class="tok-fn">range</span>(n_students): G.<span class="tok-fn">add_node</span>(sid)
+pair_counts = defaultdict(<span class="tok-fn">int</span>)
+<span class="tok-kw">for</span> _ <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-num">400</span>):
+    a, b = np.random.<span class="tok-fn">randint</span>(<span class="tok-num">0</span>, n_students, <span class="tok-num">2</span>)
+    <span class="tok-kw">if</span> a != b: pair_counts[<span class="tok-fn">tuple</span>(<span class="tok-fn">sorted</span>([a,b]))] += <span class="tok-num">1</span>
+<span class="tok-kw">for</span> (a,b), w <span class="tok-kw">in</span> pair_counts.<span class="tok-fn">items</span>(): G.<span class="tok-fn">add_edge</span>(a, b, weight=w)
+
+<span class="tok-fn">print</span>(<span class="tok-str">'=== 协作网络指标 ==='</span>)
+<span class="tok-fn">print</span>(<span class="tok-str">'节点:'</span>, G.<span class="tok-fn">number_of_nodes</span>(), <span class="tok-str">'边:'</span>, G.<span class="tok-fn">number_of_edges</span>())
+<span class="tok-fn">print</span>(<span class="tok-str">'平均度:'</span>, <span class="tok-fn">round</span>(np.<span class="tok-fn">mean</span>([d <span class="tok-kw">for</span> _,d <span class="tok-kw">in</span> G.<span class="tok-fn">degree</span>()]), <span class="tok-num">2</span>))
+<span class="tok-fn">print</span>(<span class="tok-str">'最大连通分量:'</span>, <span class="tok-fn">len</span>(<span class="tok-fn">max</span>(nx.<span class="tok-fn">connected_components</span>(G), key=<span class="tok-fn">len</span>)))
+<span class="tok-fn">print</span>(<span class="tok-str">'桥接中心性最高:'</span>, <span class="tok-fn">max</span>(nx.<span class="tok-fn">betweenness_centrality</span>(G).<span class="tok-fn">items</span>(), key=<span class="tok-kw">lambda</span> x:x[<span class="tok-num">1</span>])[<span class="tok-num">0</span>])</code></pre>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ========== 12 × 6 超表 ========== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">05 · SUPER TABLE · 12方法 × 6维度</span>
+      <h2>12 方法 × 6 维度超表</h2>
+      <p>把十二种方法在理论严谨性、估计精度、高维扩展、主要弱点、典型数据集、开源库六个维度上横向对照，便于快速定位"该用谁"。</p>
+    </div>
+
+    <div class="super-table-wrap">
+      <table class="super-table">
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>理论严谨性</th>
+            <th>估计精度</th>
+            <th>高维扩展</th>
+            <th>主要弱点</th>
+            <th>典型数据集</th>
+            <th>开源库</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="fam-a">
+            <td>Bloom 掌握学习法</td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell danger">弱</span></td>
+            <td>离散单元假设，忽视迁移</td>
+            <td>课堂单元测验记录</td>
+            <td>自研 / pandas</td>
+          </tr>
+          <tr class="fam-a">
+            <td>直接教学法</td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell danger">弱</span></td>
+            <td>脚本僵化，开放探究弱</td>
+            <td>DI 脚本响应记录</td>
+            <td>自研脚本系统</td>
+          </tr>
+          <tr class="fam-a">
+            <td>精熟学习</td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell danger">弱</span></td>
+            <td>双倍测验时间成本</td>
+            <td>单元形成性测验数据</td>
+            <td>自研 / LMS</td>
+          </tr>
+          <tr class="fam-a">
+            <td>Gagné 九事件</td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell danger">低</span></td>
+            <td><span class="tag-cell danger">弱</span></td>
+            <td>线性序列假设过强</td>
+            <td>教案结构与时长</td>
+            <td>教学设计工具</td>
+          </tr>
+          <tr class="fam-b">
+            <td>建构主义探究(5E)</td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell danger">低</span></td>
+            <td><span class="tag-cell danger">弱</span></td>
+            <td>评价主观，耗时长</td>
+            <td>课堂产物与量规评分</td>
+            <td>量规模板</td>
+          </tr>
+          <tr class="fam-b">
+            <td>同伴教学</td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell danger">弱</span></td>
+            <td>依赖高质量概念题</td>
+            <td>ConcepTest 双轮作答</td>
+            <td>clicker 系统</td>
+          </tr>
+          <tr class="fam-b">
+            <td>SOLE 自我组织</td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell danger">低</span></td>
+            <td><span class="tag-cell danger">弱</span></td>
+            <td>信息真伪难控</td>
+            <td>检索日志与展示</td>
+            <td>自研观察工具</td>
+          </tr>
+          <tr class="fam-b">
+            <td>项目式学习 PBL</td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell danger">低</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td>评价信度低，搭便车</td>
+            <td>里程碑作品与量规</td>
+            <td>量规平台</td>
+          </tr>
+          <tr class="fam-c">
+            <td>知识追踪 BKT</td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td>技能独立假设过强</td>
+            <td>ASSISTments / KDD Cup</td>
+            <td>pyBKT, BKT-Framework</td>
+          </tr>
+          <tr class="fam-c">
+            <td>知识追踪 DKT</td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell ok">强</span></td>
+            <td>黑箱，可解释性弱</td>
+            <td>ASSISTments / EdNet</td>
+            <td>TensorFlow, PyTorch</td>
+          </tr>
+          <tr class="fam-c">
+            <td>自适应测试 IRT</td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td>局部独立与单维假设</td>
+            <td>GRE / PISA 题库</td>
+            <td>pyirt, mirt, catsim</td>
+          </tr>
+          <tr class="fam-c">
+            <td>EDM 教育数据挖掘</td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell ok">高</span></td>
+            <td><span class="tag-cell ok">强</span></td>
+            <td>相关非因果，偏见放大</td>
+            <td>Open University / OULAD</td>
+            <td>scikit-learn, XGBoost</td>
+          </tr>
+          <tr class="fam-c">
+            <td>LA 学习分析</td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell warn">中</span></td>
+            <td><span class="tag-cell ok">强</span></td>
+            <td>隐私伦理与误读风险</td>
+            <td>LMS 点击流日志</td>
+            <td>networkx, OpenLAP</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px;color:var(--text-dim);font-size:13px;font-family:var(--mono)">
+      ▸ 评分口径：理论严谨性看模型假设与公理化程度；估计精度看交叉验证 AUC/RMSE；高维扩展看技能/特征数增长时的鲁棒性。
+    </p>
+  </div>
+</section>
+
+<!-- ========== 8 步 SVG 决策树 ========== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">06 · DECISION TREE · 8步方法选择</span>
+      <h2>8 步教育AI方法选择决策树</h2>
+      <p>从问题类型出发，经过数据量、维度、可解释性、时序性、实时性的逐层判断，分支到不同的方法家族。下面的 SVG 把整条判断路径一次画清楚，配套步骤表给出每一步的判据与输出。</p>
+    </div>
+
+    <div class="decision-tree-wrap">
+      <svg viewBox="0 0 1140 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="教育AI方法选择8步决策树">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#3B82F6"/>
+          </marker>
+          <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#E8A33D"/>
+          </marker>
+          <marker id="arrow-third" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8B5CF6"/>
+          </marker>
+        </defs>
+
+        <!-- 标题 -->
+        <text x="570" y="26" text-anchor="middle" fill="#DCE3F2" font-family="monospace" font-size="14" font-weight="700">起点：教育AI问题类型识别 → 终点：方法选定 + 验证指标</text>
+
+        <!-- Step 1 根节点：问题类型？ -->
+        <rect x="470" y="46" width="200" height="56" rx="10" fill="#132053" stroke="#3B82F6" stroke-width="2"/>
+        <text x="570" y="68" text-anchor="middle" fill="#60A5FA" font-family="monospace" font-size="11">STEP 1</text>
+        <text x="570" y="88" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">问题类型？</text>
+
+        <!-- 从根节点到四个分支的连线 -->
+        <line x1="570" y1="102" x2="570" y2="124" stroke="#3B82F6" stroke-width="1.5"/>
+        <line x1="170" y1="124" x2="970" y2="124" stroke="#3B82F6" stroke-width="1.5"/>
+        <line x1="170" y1="124" x2="170" y2="146" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="440" y1="124" x2="440" y2="146" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="700" y1="124" x2="700" y2="146" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="970" y1="124" x2="970" y2="146" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <!-- Step 2-5 四个问题分支 -->
+        <rect x="70" y="150" width="200" height="56" rx="10" fill="#172760" stroke="#3B82F6" stroke-width="1.6"/>
+        <text x="170" y="170" text-anchor="middle" fill="#60A5FA" font-family="monospace" font-size="11">STEP 2 · 估计能力?</text>
+        <text x="170" y="190" text-anchor="middle" fill="#fff" font-size="13">θ 是否为核心目标</text>
+
+        <rect x="340" y="150" width="200" height="56" rx="10" fill="#172760" stroke="#E8A33D" stroke-width="1.6"/>
+        <text x="440" y="170" text-anchor="middle" fill="#E8A33D" font-family="monospace" font-size="11">STEP 3 · 发现关系?</text>
+        <text x="440" y="190" text-anchor="middle" fill="#fff" font-size="13">行为模式 / 分群</text>
+
+        <rect x="600" y="150" width="200" height="56" rx="10" fill="#172760" stroke="#8B5CF6" stroke-width="1.6"/>
+        <text x="700" y="170" text-anchor="middle" fill="#8B5CF6" font-family="monospace" font-size="11">STEP 4 · 预测表现?</text>
+        <text x="700" y="190" text-anchor="middle" fill="#fff" font-size="13">未来掌握/挂科</text>
+
+        <rect x="870" y="150" width="200" height="56" rx="10" fill="#172760" stroke="#3B82F6" stroke-width="1.6"/>
+        <text x="970" y="170" text-anchor="middle" fill="#60A5FA" font-family="monospace" font-size="11">STEP 5 · 推荐内容?</text>
+        <text x="970" y="190" text-anchor="middle" fill="#fff" font-size="13">下一题/学习路径</text>
+
+        <!-- Step 6 数据量与维度判断（中段） -->
+        <line x1="170" y1="206" x2="170" y2="236" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="700" y1="206" x2="700" y2="236" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#arrow-third)"/>
+        <line x1="440" y1="206" x2="440" y2="236" stroke="#E8A33D" stroke-width="1.5" marker-end="url(#arrow-warn)"/>
+        <line x1="970" y1="206" x2="970" y2="236" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <rect x="70" y="240" width="200" height="56" rx="10" fill="#0F1A45" stroke="#3B82F6" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text x="170" y="260" text-anchor="middle" fill="#60A5FA" font-family="monospace" font-size="11">STEP 6 · 样本量 ≥ 500?</text>
+        <text x="170" y="280" text-anchor="middle" fill="#DCE3F2" font-size="12">是→IRT 3PL / 否→Bloom诊断</text>
+
+        <rect x="340" y="240" width="200" height="56" rx="10" fill="#0F1A45" stroke="#E8A33D" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text x="440" y="260" text-anchor="middle" fill="#E8A33D" font-family="monospace" font-size="11">STEP 6 · 可解释性需求?</text>
+        <text x="440" y="280" text-anchor="middle" fill="#DCE3F2" font-size="12">高→EDM树模型 / 低→深度聚类</text>
+
+        <rect x="600" y="240" width="200" height="56" rx="10" fill="#0F1A45" stroke="#8B5CF6" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text x="700" y="260" text-anchor="middle" fill="#8B5CF6" font-family="monospace" font-size="11">STEP 7 · 时序数据?</text>
+        <text x="700" y="280" text-anchor="middle" fill="#DCE3F2" font-size="12">是→DKT(LSTM) / 否→BKT(贝叶斯)</text>
+
+        <rect x="870" y="240" width="200" height="56" rx="10" fill="#0F1A45" stroke="#3B82F6" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text x="970" y="260" text-anchor="middle" fill="#60A5FA" font-family="monospace" font-size="11">STEP 7 · 实时性需求?</text>
+        <text x="970" y="280" text-anchor="middle" fill="#DCE3F2" font-size="12">实时→CAT / 离线→PBL量规</text>
+
+        <!-- Step 8 终点方法 -->
+        <line x1="170" y1="296" x2="170" y2="326" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="440" y1="296" x2="440" y2="326" stroke="#E8A33D" stroke-width="1.5" marker-end="url(#arrow-warn)"/>
+        <line x1="700" y1="296" x2="700" y2="326" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#arrow-third)"/>
+        <line x1="970" y1="296" x2="970" y2="326" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <rect x="70" y="330" width="200" height="64" rx="10" fill="#132053" stroke="#3B82F6" stroke-width="2"/>
+        <text x="170" y="350" text-anchor="middle" fill="#60A5FA" font-family="monospace" font-size="11">STEP 8 · 方法输出</text>
+        <text x="170" y="370" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">IRT + CAT 自适应测试</text>
+        <text x="170" y="386" text-anchor="middle" fill="#8C9BC4" font-size="11">验证：Fisher信息 / RMSE</text>
+
+        <rect x="340" y="330" width="200" height="64" rx="10" fill="#132053" stroke="#E8A33D" stroke-width="2"/>
+        <text x="440" y="350" text-anchor="middle" fill="#E8A33D" font-family="monospace" font-size="11">STEP 8 · 方法输出</text>
+        <text x="440" y="370" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">EDM + LA 分析仪表盘</text>
+        <text x="440" y="386" text-anchor="middle" fill="#8C9BC4" font-size="11">验证：AUC / 轮廓系数</text>
+
+        <rect x="600" y="330" width="200" height="64" rx="10" fill="#132053" stroke="#8B5CF6" stroke-width="2"/>
+        <text x="700" y="350" text-anchor="middle" fill="#8B5CF6" font-family="monospace" font-size="11">STEP 8 · 方法输出</text>
+        <text x="700" y="370" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">BKT / DKT 知识追踪</text>
+        <text x="700" y="386" text-anchor="middle" fill="#8C9BC4" font-size="11">验证：AUC / RMSE / 5折CV</text>
+
+        <rect x="870" y="330" width="200" height="64" rx="10" fill="#132053" stroke="#3B82F6" stroke-width="2"/>
+        <text x="970" y="350" text-anchor="middle" fill="#60A5FA" font-family="monospace" font-size="11">STEP 8 · 方法输出</text>
+        <text x="970" y="370" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">PBL / 探究学习量规</text>
+        <text x="970" y="386" text-anchor="middle" fill="#8C9BC4" font-size="11">验证：进度 / 综合分 / 增益</text>
+
+        <!-- 家族图例区 -->
+        <rect x="70" y="430" width="1000" height="200" rx="12" fill="#0A1233" stroke="#1E2F66" stroke-width="1"/>
+        <text x="90" y="456" fill="#E8A33D" font-family="monospace" font-size="12">▸ 决策路径注解（按颜色对应分支）</text>
+
+        <circle cx="100" cy="484" r="6" fill="#3B82F6"/>
+        <text x="116" y="488" fill="#DCE3F2" font-size="12">蓝色路径（估计能力 / 推荐内容）：以心理测量与自适应为核心，样本充足时用 IRT+CAT，否则退回 Bloom 诊断。</text>
+
+        <circle cx="100" cy="510" r="6" fill="#E8A33D"/>
+        <text x="116" y="514" fill="#DCE3F2" font-size="12">金色路径（发现关系）：以数据挖掘与学习分析为核心，可解释性高时用 EDM 树模型，否则用深度聚类。</text>
+
+        <circle cx="100" cy="536" r="6" fill="#8B5CF6"/>
+        <text x="116" y="540" fill="#DCE3F2" font-size="12">紫色路径（预测表现）：以知识追踪为核心，时序数据充足用 DKT，否则用 BKT 贝叶斯更新。</text>
+
+        <text x="90" y="568" fill="#60A5FA" font-family="monospace" font-size="12">▸ 通用前置检查</text>
+        <text x="90" y="588" fill="#8C9BC4" font-size="12">1) 数据隐私与知情同意  2) 技能/目标标注质量  3) 评测信度效度  4) 公平性审计  5) 反馈闭环是否闭合</text>
+        <text x="90" y="612" fill="#8C9BC4" font-size="12">若任一前置检查不通过，回退到家族 A 的教学设计法（Gagné 九事件 / 直接教学）确保教学底线。</text>
+      </svg>
+
+      <div class="tree-legend">
+        <div class="lg"><span class="swatch" style="background:#3B82F6"></span>估计/推荐路径</div>
+        <div class="lg"><span class="swatch" style="background:#E8A33D"></span>发现关系路径</div>
+        <div class="lg"><span class="swatch" style="background:#8B5CF6"></span>预测表现路径</div>
+        <div class="lg"><span class="swatch" style="background:#0F1A45;border-color:#3B82F6"></span>中间判据节点</div>
+        <div class="lg"><span class="swatch" style="background:#132053;border-color:#3B82F6"></span>终输出方法</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-row"><div class="sn">1</div><div class="q">问题类型识别</div><div class="a">是估计能力？发现关系？预测表现？推荐内容？</div></div>
+        <div class="step-row"><div class="sn">2</div><div class="q">是否估计学生能力 θ</div><div class="a">是 → 进入 IRT/CAT 路径；否 → 转 Step3</div></div>
+        <div class="step-row"><div class="sn">3</div><div class="q">是否发现行为关系/模式</div><div class="a">是 → 进入 EDM/LA 路径；否 → 转 Step4</div></div>
+        <div class="step-row"><div class="sn">4</div><div class="q">是否预测未来表现</div><div class="a">是 → 进入 BKT/DKT 路径；否 → 转 Step5</div></div>
+        <div class="step-row"><div class="sn">5</div><div class="q">是否推荐/生成学习内容</div><div class="a">是 → 进入 PBL/量规路径；否 → 回退家族A教学设计</div></div>
+        <div class="step-row"><div class="sn">6</div><div class="q">数据量与维度判断</div><div class="a">样本≥500→IRT；否则退 Bloom 诊断。可解释性高→EDM树</div></div>
+        <div class="step-row"><div class="sn">7</div><div class="q">时序性与实时性判断</div><div class="a">时序→DKT，非时序→BKT；实时→CAT，离线→PBL量规</div></div>
+        <div class="step-row"><div class="sn">8</div><div class="q">方法输出 + 验证指标</div><div class="a">IRT:RMSE / EDM:AUC / DKT:AUC+5折CV / PBL:综合分</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 三家族对比 ========== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">07 · COMPARISON · 三家族横向对比</span>
+      <h2>三家族横向对比：何时用谁</h2>
+      <p>三家族不是替代关系，而是互补关系。家族 A 回答"怎么教"，家族 B 回答"学生怎么学"，家族 C 回答"如何用数据建模学习者"。真实的教育AI系统通常是三者组合。</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card fam-a">
+        <h4><span class="dot"></span>家族 A · 传统教学设计</h4>
+        <p><b style="color:#fff">擅长</b>：显性化的教学序列设计、掌握阈值判定、基础技能训练。理论根基扎实，可解释性最强。</p>
+        <p><b style="color:#fff">短板</b>：缺乏个性化数据驱动，难以处理高维技能空间和复杂时序。</p>
+        <p><b style="color:#fff">典型组合</b>：Bloom 掌握阈值 + Gagné 九事件设计单节课，再用精熟学习双测验闭环。</p>
+        <div class="when">▸ 当问题=怎么教 / 课时设计 / 基础技能训练 → 用家族 A</div>
+      </div>
+      <div class="compare-card fam-b">
+        <h4><span class="dot"></span>家族 B · 学习科学</h4>
+        <p><b style="color:#fff">擅长</b>：激发高阶思维、协作学习、真实情境探究。关注"学"的深度而非"教"的效率。</p>
+        <p><b style="color:#fff">短板</b>：评价主观、耗时、规模化困难，难以产出可比较的量化指标。</p>
+        <p><b style="color:#fff">典型组合</b>：5E 探究 + 同伴教学激活概念转变，再用 PBL 把探究沉淀为作品。</p>
+        <div class="when">▸ 当问题=高阶思维 / 协作 / 真实任务 → 用家族 B</div>
+      </div>
+      <div class="compare-card fam-c">
+        <h4><span class="dot"></span>家族 C · 计算教育学</h4>
+        <p><b style="color:#fff">擅长</b>：大规模学习者建模、自适应推荐、风险预警。是 AI 教育的技术骨架。</p>
+        <p><b style="color:#fff">短板</b>：可解释性弱（DKT）、隐私伦理风险高、相关非因果。</p>
+        <p><b style="color:#fff">典型组合</b>：BKT/DKT 追踪掌握 → IRT/CAT 选下一题 → EDM 预警 → LA 仪表盘反馈。</p>
+        <div class="when">▸ 当问题=规模化 / 自适应 / 预测预警 → 用家族 C</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 参考文献 ========== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">08 · REFERENCES · 代表论文</span>
+      <h2>参考文献与方法源头</h2>
+      <p>本馆所引论文均为各方法的奠基性或综述性文献，按家族与出现顺序排列。建议读者从这些源头而非二手转述理解方法本质。</p>
+    </div>
+
+    <div class="refs-list">
+      <ol>
+        <li><b>Bloom, B.S.</b> (1968). <i>Learning for Mastery.</i> Evaluation Comment, 1(2). — 掌握学习法源头。</li>
+        <li><b>Bloom, B.S.</b> (1976). <i>Human Characteristics and School Learning.</i> McGraw-Hill. — 精熟学习理论扩展。</li>
+        <li><b>Guskey, T.R.</b> (2007). <i>Closing Achievement Gaps: Revisiting Bloom's Learning for Mastery.</i> J. of Advanced Academics. — 现代综述。</li>
+        <li><b>Engelmann, S. &amp; Carnine, D.</b> (1982). <i>Theory of Instruction.</i> — 直接教学法理论基础。</li>
+        <li><b>Stockard, J. et al.</b> (2018). <i>The Effectiveness of Direct Instruction Curricula.</i> Review of Educational Research. — DI 元分析。</li>
+        <li><b>Gagné, R.M.</b> (1985). <i>The Conditions of Learning and Theory of Instruction.</i> 4th ed. — 九事件源头。</li>
+        <li><b>Gagné, R.M., Briggs, L.J. &amp; Wager, W.W.</b> (1992). <i>Principles of Instructional Design.</i> — 教学设计经典。</li>
+        <li><b>Bybee, R.W. et al.</b> (2006). <i>The BSCS 5E Instructional Model.</i> — 5E 探究模型。</li>
+        <li><b>Piaget, J.</b> (1970). <i>Genetic Epistemology.</i> — 建构主义哲学基础。</li>
+        <li><b>Vygotsky, L.S.</b> (1978). <i>Mind in Society.</i> — 社会文化理论与最近发展区。</li>
+        <li><b>Mazur, E.</b> (1997). <i>Peer Instruction: A User's Manual.</i> Prentice Hall. — 同伴教学源头。</li>
+        <li><b>Crouch, C.H. &amp; Mazur, E.</b> (2001). <i>Peer Instruction: Ten years of experience and results.</i> AJP. — PI 十年成效。</li>
+        <li><b>Mitra, S.</b> (2013). <i>The School in the Cloud.</i> TED Books. — SOLE 与云端学校。</li>
+        <li><b>Thomas, J.W.</b> (2000). <i>A Review of Research on Project-Based Learning.</i> — PBL 综述。</li>
+        <li><b>Krajcik, J.S. &amp; Blumenfeld, P.</b> (2006). <i>Project-Based Learning.</i> In Cambridge Handbook of the Learning Sciences.</li>
+        <li><b>Hmelo-Silver, C.E.</b> (2004). <i>Problem-Based Learning: What and How Do Students Learn?</i> EPR.</li>
+        <li><b>Corbett, A.T. &amp; Anderson, J.R.</b> (1995). <i>Knowledge Tracing.</i> User Modeling. — BKT 源头。</li>
+        <li><b>Piech, C. et al.</b> (2015). <i>Deep Knowledge Tracing.</i> NeurIPS. — DKT 源头。</li>
+        <li><b>Yeung, C.K.</b> (2019). <i>Deep-IRT: Make Deep Knowledge Tracing Explainable.</i> AIED. — 可解释 DKT。</li>
+        <li><b>Lord, F.M.</b> (1980). <i>Applications of Item Response Theory.</i> Erlbaum. — IRT 经典。</li>
+        <li><b>Wainer, H. et al.</b> (2000). <i>Computerized Adaptive Testing: A Primer.</i> 2nd ed. — CAT 入门。</li>
+        <li><b>Baker, R.S.</b> (2010). <i>Data Mining for Education.</i> — EDM 综述。</li>
+        <li><b>Romero, C. &amp; Ventura, S.</b> (2013). <i>Data Mining in Education.</i> WIREs. — EDM 综述。</li>
+        <li><b>Siemens, G. &amp; Long, P.</b> (2011). <i>Penetrating the Fog: Analytics in Learning and Education.</i> EDUCAUSE Review. — LA 源头。</li>
+        <li><b>Ferguson, R.</b> (2012). <i>Learning Analytics: Drivers, Developments and Challenges.</i> IJTEL. — LA 综述。</li>
+        <li><b>Dawson, S. et al.</b> (2014). <i>Learning Analytics in Higher Education.</i> Higher Education Academy. — LA 高教应用。</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ========== 页脚 ========== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h4>方法论深潜馆</h4>
+        <p>教育和AI · Methodology Deep Annex。本馆把教育AI拆成三大家族十二方法，配 6 维超表与 8 步决策树，所有 Python 代码可一键复制运行。统一深蓝配色，与六个主馆风格兼容。</p>
+      </div>
+      <div class="footer-col">
+        <h5>返回六主馆</h5>
+        <a href="eduai_s01_tech_deepblue.html">S01 技术深蓝</a>
+        <a href="eduai_s02_academic_ink.html">S02 学术墨韵</a>
+        <a href="eduai_s03_minimal_gold.html">S03 极简金线</a>
+        <a href="eduai_s04_cyber_indigo.html">S04 赛博靛蓝</a>
+        <a href="eduai_s05_glass_sky.html">S05 玻璃天穹</a>
+        <a href="eduai_s06_magazine_slate.html">S06 杂志岩灰</a>
+      </div>
+      <div class="footer-col">
+        <h5>其它深潜馆</h5>
+        <a href="methodology_sub.html">方法论深潜（当前）</a>
+        <a href="applications_sub.html">应用深潜馆</a>
+        <a href="evaluation_sub.html">评估深潜馆</a>
+        <a href="four_layer_sub.html">四层架构深潜馆</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>METHODOLOGY · DEEP · ANNEX © 2026 · 教育和AI研究项目组</span>
+      <span>3 家族 · 12 方法 · 6 维度 · 8 步决策 · 12 Python 实现</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ========== 复制按钮：clipboard API + 视觉反馈 ========== */
+(function(){
+  'use strict';
+  var btns = document.querySelectorAll('.copy-btn');
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var targetId = btn.getAttribute('data-copy');
+      var pre = document.getElementById(targetId);
+      if(!pre){ return; }
+      var text = pre.innerText || pre.textContent;
+      var textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.top = '-9999px';
+      textArea.style.left = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+      var done = false;
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(function(){
+            showCopied();
+          }).catch(function(){
+            legacyCopy(textArea);
+            showCopied();
+          });
+        } else {
+          legacyCopy(textArea);
+          showCopied();
+        }
+        done = true;
+      } catch(e){
+        legacyCopy(textArea);
+        showCopied();
+      }
+      function showCopied(){
+        var txt = btn.querySelector('.btn-text');
+        var original = txt ? txt.textContent : '复制';
+        if(txt){ txt.textContent = '已复制'; }
+        btn.classList.add('copied');
+        setTimeout(function(){
+          if(txt){ txt.textContent = original; }
+          btn.classList.remove('copied');
+        }, 1800);
+      }
+      function legacyCopy(ta){
+        try{
+          document.execCommand('copy');
+        } catch(err){}
+      }
+      setTimeout(function(){
+        document.body.removeChild(textArea);
+      }, 200);
+    });
+  });
+
+  /* 平滑滚动到锚点 */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href');
+      if(id.length > 1){
+        var el = document.querySelector(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+      }
+    });
+  });
+
+  /* 方法卡片入场观察 */
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, {threshold: 0.08});
+    document.querySelectorAll('.method-card, .family-card, .compare-card').forEach(function(el){
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(18px)';
+      el.style.transition = 'opacity .6s ease, transform .6s ease';
+      io.observe(el);
+    });
+  }
+})();
+</script>
+<script id="apple-ui-interactions">
+document.querySelectorAll('.card-spotlight').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`);});});
+</script>
+
+</body>
+</html>
