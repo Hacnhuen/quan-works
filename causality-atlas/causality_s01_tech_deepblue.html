@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CausalGuard · 因果研究图集 · 科技深蓝</title>
+<style>
+  :root{
+    --bg:#070B1B; --card:#0D1430; --card2:#111A3E; --accent:#3B82F6;
+    --gold:#E8A33D; --violet:#8B5CF6; --ink:#E7ECF5; --muted:#9AA7C7;
+    --line:rgba(139,162,199,.16); --radius:16px;
+    --font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Helvetica Neue",system-ui,sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono","Fira Code",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1200px 600px at 12% -10%, rgba(59,130,246,.18), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(139,92,246,.14), transparent 55%),
+      var(--bg);
+    color:var(--ink); font-family:var(--font-sans);
+    -webkit-font-smoothing:antialiased; line-height:1.65; letter-spacing:.01em;
+  }
+  /* 页面级流动背景 */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1; opacity:.5;
+    background-image:
+      linear-gradient(transparent 95%, rgba(59,130,246,.06) 96%),
+      linear-gradient(90deg, transparent 95%, rgba(139,92,246,.05) 96%);
+    background-size:46px 46px;
+    animation:drift 40s linear infinite;
+  }
+  @keyframes drift{from{background-position:0 0,0 0}to{background-position:46px 46px,46px 46px}}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px}
+  section{padding:88px 0; border-bottom:1px solid var(--line)}
+  h1{font-size:clamp(34px,5vw,56px); font-weight:700; letter-spacing:-.03em; line-height:1.1}
+  h2{font-size:30px; font-weight:700; margin-bottom:8px; letter-spacing:-.02em}
+  h3{font-size:19px; font-weight:600; color:var(--ink); margin:22px 0 10px}
+  .sub{color:var(--muted); font-size:16px; margin-top:10px}
+  .tag{display:inline-block; font-family:var(--font-mono); font-size:12px; color:var(--accent);
+    border:1px solid var(--line); padding:3px 10px; border-radius:999px; margin-bottom:18px; letter-spacing:.04em}
+  .lead{font-size:18px; color:#C9D4EC; max-width:760px}
+  .eyebrow{font-family:var(--font-mono); font-size:12px; color:var(--gold); letter-spacing:.18em; text-transform:uppercase}
+  /* KPI 六卡 */
+  .kpi{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:28px}
+  .kpi .k{background:linear-gradient(160deg,var(--card),var(--card2)); border:1px solid var(--line);
+    border-radius:var(--radius); padding:22px; position:relative; overflow:hidden}
+  .kpi .k::after{content:""; position:absolute; right:-30px; top:-30px; width:90px; height:90px;
+    background:radial-gradient(circle,rgba(59,130,246,.25),transparent 70%); border-radius:50%}
+  .kpi .num{font-size:34px; font-weight:700; font-family:var(--font-mono); color:#fff}
+  .kpi .num.g{color:var(--gold)} .kpi .num.a{color:var(--accent)}
+  .kpi .lab{font-size:13px; color:var(--muted); margin-top:6px}
+  /* 卡片网格 */
+  .grid{display:grid; gap:18px; margin-top:24px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  .card{background:linear-gradient(160deg,var(--card),var(--card2)); border:1px solid var(--line);
+    border-radius:var(--radius); padding:22px; transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .3s}
+  .card:hover{transform:translateY(-4px); border-color:rgba(59,130,246,.5)}
+  .card h4{font-size:16px; margin-bottom:8px; color:#fff}
+  .card p{font-size:14px; color:var(--muted)}
+  code,.mono{font-family:var(--font-mono)}
+  pre{background:#060A18; border:1px solid var(--line); border-radius:12px; padding:18px;
+    overflow:auto; font-family:var(--font-mono); font-size:13px; line-height:1.6; color:#BFE3FF; margin:14px 0}
+  .pre-head{display:flex; justify-content:space-between; align-items:center; margin-top:14px}
+  .copy{background:rgba(59,130,246,.14); border:1px solid rgba(59,130,246,.4); color:#BFE3FF;
+    font-size:12px; padding:5px 12px; border-radius:999px; cursor:pointer; transition:.2s}
+  .copy:hover{background:rgba(59,130,246,.3)}
+  /* DAG SVG */
+  .dag{background:#060A18; border:1px solid var(--line); border-radius:var(--radius); padding:24px; margin-top:18px; text-align:center}
+  .pill{fill:#0D1430; stroke:#3B82F6; stroke-width:1.5}
+  .pill-t{fill:#E7ECF5; font-family:var(--font-mono); font-size:13px}
+  .edge{stroke:#8B5CF6; stroke-width:2; marker-end:url(#ar)}
+  /* 阶梯 */
+  .ladder{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px}
+  .rung{background:linear-gradient(160deg,var(--card),var(--card2)); border:1px solid var(--line);
+    border-radius:12px; padding:18px; border-top:3px solid var(--accent)}
+  .rung.r3{border-top-color:var(--gold)}
+  .rung .rn{font-family:var(--font-mono); color:var(--accent); font-size:13px}
+  .rung.r3 .rn{color:var(--gold)}
+  /* 谬误表 */
+  table{width:100%; border-collapse:collapse; margin-top:18px; font-size:13.5px}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left}
+  th{background:rgba(59,130,246,.1); color:#C9D4EC; font-weight:600}
+  td code{color:var(--gold)}
+  /* 管线 */
+  .pipe{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; align-items:center}
+  .step{background:linear-gradient(160deg,var(--card),var(--card2)); border:1px solid var(--line);
+    border-radius:10px; padding:10px 14px; font-size:13px; font-family:var(--font-mono)}
+  .step.formal{border-color:rgba(232,163,61,.5); color:var(--gold)}
+  .arrow{color:var(--violet); font-size:18px}
+  .bar{height:12px; border-radius:999px; background:rgba(255,255,255,.06); overflow:hidden; margin-top:8px}
+  .bar>i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--gold))}
+  .overflow-links{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px}
+  .ol{display:inline-flex; align-items:center; gap:8px; background:rgba(59,130,246,.12);
+    border:1px solid rgba(59,130,246,.35); color:#CFE2FF; text-decoration:none; padding:10px 16px;
+    border-radius:999px; font-size:14px; transition:.25s}
+  .ol:hover{background:rgba(59,130,246,.25); transform:translateY(-2px)}
+  .divider{height:1px; background:var(--line); margin:40px 0}
+  .footnote{font-size:12.5px; color:var(--muted); margin-top:14px}
+  .topbar{position:sticky; top:0; z-index:20; backdrop-filter:blur(16px);
+    background:rgba(7,11,27,.72); border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; padding:14px 24px}
+  .brand{font-family:var(--font-mono); font-size:14px; color:#fff; letter-spacing:.05em}
+  .brand b{color:var(--accent)}
+  .nav a{color:var(--muted); text-decoration:none; font-size:13px; margin-left:18px; transition:.2s}
+  .nav a:hover{color:#fff}
+  @media(max-width:768px){ .kpi,.ladder,.g2,.g3{grid-template-columns:1fr}
+    .nav{display:none} }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <div class="brand">Causal<b>Guard</b> · 因果研究图集</div>
+  <div class="nav"><a href="#overview">概览</a><a href="#ladder">阶梯</a><a href="#code">源码</a>
+  <a href="#audit">谬误</a><a href="#pipe">管线</a><a href="#bench">基准</a></div>
+</div></div>
+
+<!-- 00 OVERVIEW + KPI -->
+<section id="overview"><div class="wrap">
+  <span class="tag">STYLE 01 · tech_deepblue</span>
+  <span class="eyebrow">Causal Research Atlas</span>
+  <h1>让每一次 LLM 对话<br/>都经过因果检验</h1>
+  <p class="lead">CausalGuard 是一个<strong>零第三方依赖</strong>的因果分析中间件：把 Pearl 因果阶梯、do-演算、后门/前门识别、SCM 反事实计算，接入任意大模型的对话链路。本项目以可运行的 Python 源码为底座，44 项单元测试全绿、B1 识别基准 100%。</p>
+  <div class="kpi">
+    <div class="k"><div class="num a">0</div><div class="lab">第三方依赖（仅 Python 标准库）</div></div>
+    <div class="k"><div class="num">3</div><div class="lab">因果阶梯三层（关联/干预/反事实）</div></div>
+    <div class="k"><div class="num g">12</div><div class="lab">类因果谬误自动检测</div></div>
+    <div class="k"><div class="num a">100%</div><div class="lab">B1 识别正确性（12 DAG）</div></div>
+    <div class="k"><div class="num">44</div><div class="lab">单元测试全部通过</div></div>
+    <div class="k"><div class="num g">+1.865</div><div class="lab">朴素关联对真效应 +0.500 的放大倍数</div></div>
+  </div>
+</div></section>
+
+<!-- 01 CAUSAL LADDER 数值验证 -->
+<section id="ladder"><div class="wrap">
+  <span class="eyebrow">01 · Ladder</span>
+  <h2>因果阶梯三层 · 数值验证</h2>
+  <p class="sub">因果层级定理（Bareinboim et al., 2022）严格证明：低层级数据无法唯一确定高层级量。本项目的 SCM 引擎可在三者之间精确切换并给出数值。</p>
+  <div class="ladder">
+    <div class="rung"><div class="rn">RUNG 1 · 关联</div><h4>Seeing</h4>
+      <p class="mono">P(y | x)</p><p>仅观察共现。LLM 训练目标即此层：log P(xₜ|x&lt;ₜ)。</p></div>
+    <div class="rung"><div class="rn">RUNG 2 · 干预</div><h4>Doing</h4>
+      <p class="mono">P(y | do(x))</p><p>强制设定 X。do-演算找到调整集后数值估计。</p></div>
+    <div class="rung r3"><div class="rn">RUNG 3 · 反事实</div><h4>Imagining</h4>
+      <p class="mono">P(yₓ | x',y')</p><p>若当时做了别的，会怎样。需 SCM + 噪声反演。</p></div>
+  </div>
+  <div class="dag">
+    <svg width="440" height="200" viewBox="0 0 440 200">
+      <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+        <path d="M0,0 L8,3 L0,6 Z" fill="#8B5CF6"/></marker></defs>
+      <line class="edge" x1="90" y1="60" x2="210" y2="60"/>
+      <line class="edge" x1="90" y1="80" x2="210" y2="140"/>
+      <line class="edge" x1="230" y1="70" x2="350" y2="130"/>
+      <rect class="pill" x="40" y="40" width="50" height="34" rx="8"/>
+      <text class="pill-t" x="65" y="62">Z</text>
+      <rect class="pill" x="200" y="40" width="50" height="34" rx="8"/>
+      <text class="pill-t" x="225" y="62">T</text>
+      <rect class="pill" x="200" y="120" width="50" height="34" rx="8"/>
+      <text class="pill-t" x="225" y="142">Y</text>
+      <rect class="pill" x="350" y="115" width="50" height="34" rx="8"/>
+      <text class="pill-t" x="375" y="137">Y′</text>
+    </svg>
+    <p class="footnote">经典后门图：Z→T, Z→Y, T→Y。Z 为混杂变量，必须调整。</p>
+  </div>
+  <pre id="c1">from causalguard import CausalGraph, StructuralCausalModel
+
+g = CausalGraph.from_edges([("Z","T"),("Z","Y"),("T","Y")])
+scm = StructuralCausalModel(graph=g, mechanisms={
+    "Z": lambda pa,u: 1.0 if u>0 else 0.0,
+    "T": lambda pa,u: 1.0 if (2.0*pa["Z"]+u)>0.8 else 0.0,
+    "Y": lambda pa,u: 0.5*pa["T"]+2.0*pa["Z"]+0.3*u,
+})
+print(scm.ate("T","Y"))                       # Rung2 → 0.500
+print(scm.counterfactual({"T":0.,"Y":0.},     # Rung3 → 0.496
+                         {"T":1.}, "Y"))</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">scm.py · 三层查询出口</span>
+    <button class="copy" data-t="c1">复制</button></div>
+  <p class="sub">真因果效应 <b style="color:var(--gold)">+0.500</b>；LLM/朴素关联会给出 <b style="color:var(--gold)">+1.865</b>（放大 3.7 倍）；后门调整自动恢复 <b style="color:var(--accent)">+0.507</b>（误差 1.4%）。</p>
+</div></section>
+
+<!-- 02 do-CALCULUS -->
+<section id="docalc"><div class="wrap">
+  <span class="eyebrow">02 · do-Calculus</span>
+  <h2>do-演算自动识别</h2>
+  <p class="sub">给定因果图与目标变量，引擎自动寻找<strong>最小充分调整集</strong>并输出可识别的 estimand。正确处理全部经典陷阱：对撞不调整、中介不调整、处理后代不调整、M-bias 空集、前门准则、bow-arc 不可识别。</p>
+  <pre id="c2">from causalguard import identify_effect
+
+r = identify_effect(g, "T", "Y")
+r.strategy        # 'backdoor'
+r.adjustment_set  # ['Z']  ← 自动找到最小充分调整集
+r.estimand        # 'P(Y|do(T)) = Σ_{Z} P(Y|T,Z)·P(Z)'
+
+# 前门准则示例（中介 M，无未观测混杂）
+# Z 不可观测时仍能识别： P(Y|do(X)) = Σ_M P(M|X) Σ_X' P(X') P(Y|X',M)</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">core/scm.py · identify_effect</span>
+    <button class="copy" data-t="c2">复制</button></div>
+  <div class="grid g3">
+    <div class="card"><h4>后门准则</h4><p>阻断所有指向处理的"后门"混杂路径，保留因果链。</p></div>
+    <div class="card"><h4>前门准则</h4><p>当混杂不可观测，但存在完全中介 M 且无未观测混杂时仍可识别。</p></div>
+    <div class="card"><h4>边界与不可识别</h4><p>bow-arc、M-bias 空集、对撞开放等情形返回不可识别并解释原因。</p></div>
+  </div>
+</div></section>
+
+<!-- 03 SOURCE CODE ANATOMY -->
+<section id="code"><div class="wrap">
+  <span class="eyebrow">03 · Source</span>
+  <h2>CausalGuard 源码剖析</h2>
+  <p class="sub">零依赖架构：core 负责形式化因果推理，llm 负责语义抽取与离线降级，pipeline 串起七阶段守护，adapters 提供三种接入方式。</p>
+  <div class="grid g2">
+    <div class="card"><h4>core/scm.py</h4><p>DAG 构建、d-分离检验、后门/前门识别、SCM 三层查询（关联/干预/反事实）。形式化可信锚点。</p></div>
+    <div class="card"><h4>core/fallacies.py</h4><p>12 类因果谬误检测 + 因果阶梯分级（Rung1→Rung2 越级等）。</p></div>
+    <div class="card"><h4>core/graph_extract.py</h4><p>文本 → 因果 DAG（规则 + LLM 抽取），把自然语言变成可计算图。</p></div>
+    <div class="card"><h4>llm/client.py</h4><p>零依赖 OpenAI 兼容客户端，端点不可用时自动降级离线模式。</p></div>
+    <div class="card"><h4>llm/prompts.py</h4><p>CausalCoT / CausalPoT 思维链 + 降级重写提示词。</p></div>
+    <div class="card"><h4>pipeline.py</h4><p>七阶段守护管线总调度：S1→S7。</p></div>
+    <div class="card"><h4>adapters.py</h4><p>装饰器 / drop-in / HTTP 网关三种接入。</p></div>
+    <div class="card"><h4>cli.py + demo.py</h4><p>命令行与五个离线演示，无需任何 LLM 即可运行。</p></div>
+  </div>
+  <pre id="c3"># 接入：装饰器（一行守护任意 LLM 函数）
+from causalguard.adapters import causal_guarded
+from causalguard import Policy
+
+@causal_guarded(policy=Policy.ANNOTATE)
+def ask(q: str) -> str:
+    return my_llm(q)
+
+# 接入：OpenAI drop-in
+from causalguard.adapters import GuardedChat
+chat = GuardedChat(policy=Policy.REWRITE)
+resp = chat.create(model="gpt-4", messages=[{"role":"user","content":"..."}])
+resp["causalguard"]   # {'verdict':'high_risk','risk_score':0.8,'fallacies':['F01','F02']}</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">adapters.py · 装饰器 / drop-in</span>
+    <button class="copy" data-t="c3">复制</button></div>
+  <pre id="c4"># 接入：HTTP 网关（让应用 base_url 指向即可）
+python3 -c "from causalguard.adapters import serve; serve(port=8899)"
+
+# POST /v1/chat/completions  OpenAI 兼容，响应含 causalguard 字段
+# POST /v1/causal/audit      纯审计 {"text":"..."}
+# GET  /v1/causal/stats      会话因果健康度
+# 处置策略：annotate(附注) / rewrite(重写) / block(拦截) / off(只审)</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">adapters.py · HTTP 网关</span>
+    <button class="copy" data-t="c4">复制</button></div>
+</div></section>
+
+<!-- 04 FALLACIES -->
+<section id="audit"><div class="wrap">
+  <span class="eyebrow">04 · Fallacies</span>
+  <h2>十二类因果谬误检测</h2>
+  <p class="sub">每个谬误带严重级、文献出处与改写建议。下方为完整 12 类编码表。</p>
+  <table>
+    <tr><th>编码</th><th>谬误</th><th>编码</th><th>谬误</th></tr>
+    <tr><td><code>F01</code></td><td>相关当因果</td><td><code>F07</code></td><td>对撞条件化（Berkson）</td></tr>
+    <tr><td><code>F02</code></td><td>忽略混杂</td><td><code>F08</code></td><td>过度泛化</td></tr>
+    <tr><td><code>F03</code></td><td>因果倒置</td><td><code>F09</code></td><td>单因谬误</td></tr>
+    <tr><td><code>F04</code></td><td>幸存者偏差</td><td><code>F10</code></td><td>无依据反事实</td></tr>
+    <tr><td><code>F05</code></td><td>后此谬误</td><td><code>F11</code></td><td>中介被错误控制</td></tr>
+    <tr><td><code>F06</code></td><td>辛普森悖论风险</td><td><code>F12</code></td><td>生态学谬误</td></tr>
+  </table>
+  <pre id="c5">python3 -m causalguard.cli audit "喝咖啡的人更长寿，所以咖啡能延年益寿。"
+# 结论: [XX] high_risk  风险分 0.800
+# 因果阶梯: 声称 Rung2 (干预) vs 证据 Rung1 (关联)  ← 越级 1 级
+# [F01] 相关性当作因果性 (high)   Pearl (2009) Causality §3
+# [F02] 未处理混杂变量 (critical) 吸烟习惯/社会经济地位/生活方式</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">cli.py · audit 实测输出</span>
+    <button class="copy" data-t="c5">复制</button></div>
+</div></section>
+
+<!-- 05 SEVEN-STAGE PIPELINE -->
+<section id="pipe"><div class="wrap">
+  <span class="eyebrow">05 · Pipeline</span>
+  <h2>七阶段守护管线</h2>
+  <p class="sub">S5 用 LLM（擅长语义抽取），<strong style="color:var(--gold)">S6 用形式化引擎（不依赖 LLM，是可信锚点）</strong>。语义与形式化分工，各取所长。</p>
+  <div class="pipe">
+    <span class="step">S1 PROMPT_AUDIT</span><span class="arrow">→</span>
+    <span class="step">S2 CAUSAL_PROMPT</span><span class="arrow">→</span>
+    <span class="step">S3 GENERATE</span><span class="arrow">→</span>
+    <span class="step">S4 CLAIM_AUDIT</span><span class="arrow">→</span>
+    <span class="step">S5 GRAPH_BUILD</span><span class="arrow">→</span>
+    <span class="step formal">S6 IDENTIFY</span><span class="arrow">→</span>
+    <span class="step formal">S7 REPAIR</span>
+  </div>
+  <div class="grid g2" style="margin-top:26px">
+    <div class="card"><h4>语义层 S1–S5</h4><p>LLM 抽取文本中的因果主张、构建 DAG 草图。接真实 LLM 后抽取质量显著提升。</p></div>
+    <div class="card"><h4>形式化层 S6–S7</h4><p>do-演算识别 + 反事实修复。纯算法，端点不可用时仍 100% 工作。</p></div>
+  </div>
+</div></section>
+
+<!-- 06 BENCHMARK -->
+<section id="bench"><div class="wrap">
+  <span class="eyebrow">06 · Benchmark</span>
+  <h2>基准实测</h2>
+  <p class="sub">B1 是形式化算法正确性测试（唯一标准答案，必须 100%）；B2/B3 受限于自建评测集规模，视为无回归的健全性检查。</p>
+  <div class="grid g2">
+    <div class="card"><h4>B1 识别正确性</h4>
+      <p>CLadder-style，12 DAG。结果 <b style="color:var(--gold)">100.0%</b></p>
+      <div class="bar"><i style="width:100%"></i></div></div>
+    <div class="card"><h4>B2 谬误判别</h4>
+      <p>Corr2Cause-style，18 条。结果 <b style="color:var(--gold)">F1 = 1.000</b></p>
+      <div class="bar"><i style="width:100%"></i></div></div>
+    <div class="card"><h4>B3 阶梯分级</h4>
+      <p>Pearl Rung，7 条。结果 <b style="color:var(--gold)">100.0%</b></p>
+      <div class="bar"><i style="width:100%"></i></div></div>
+    <div class="card"><h4>单元测试</h4>
+      <p>44 项，<b style="color:var(--gold)">全部通过</b></p>
+      <div class="bar"><i style="width:100%"></i></div></div>
+  </div>
+  <pre id="c6"># 学术基准自评
+python3 benchmarks/run_benchmark.py
+# 完整演示（离线可跑，无需任何 LLM）
+python3 -m causalguard.demo
+# do-演算识别
+python3 -m causalguard.cli effect --edges "Z>T,Z>Y,T>Y" -t T -y Y</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">benchmarks/run_benchmark.py</span>
+    <button class="copy" data-t="c6">复制</button></div>
+  <h3 style="margin-top:26px">SCM 数值验证 · 三层一致性</h3>
+  <p class="sub">下方为可复现的数值验证：在同一结构上分别取关联（Rung1）、干预（Rung2）、反事实（Rung3），三者逐步逼近真实因果效应 +0.500。</p>
+  <pre id="c7">import numpy as np
+from causalguard import CausalGraph, StructuralCausalModel
+
+g = CausalGraph.from_edges([("Z","T"),("Z","Y"),("T","Y")])
+scm = StructuralCausalModel(graph=g, mechanisms={
+    "Z": lambda pa,u: 1.0 if u>0 else 0.0,
+    "T": lambda pa,u: 1.0 if (2.0*pa["Z"]+u)>0.8 else 0.0,
+    "Y": lambda pa,u: 0.5*pa["T"]+2.0*pa["Z"]+0.3*u,
+})
+df = scm.sample(n=20000)
+# Rung1 关联（朴素）：混淆了 Z → 偏高
+naive = df[df.T==1].Y.mean() - df[df.T==0].Y.mean()
+# Rung2 干预：后门调整 Z
+ate   = scm.ate("T","Y")
+# Rung3 反事实：给定 T=0,Y=0 个体在 T=1 下的 Y
+cf    = scm.counterfactual({"T":0.,"Y":0.}, {"T":1.}, "Y")
+print(f"naive(关联)   = {naive:.3f}   ← 被混杂放大")
+print(f"ATE(干预)     = {ate:.3f}     ← 真效应 +0.500")
+print(f"counterfactual = {cf:.3f}      ← Rung3 个人化")</pre>
+  <div class="pre-head"><span class="mono" style="color:var(--muted)">scm.py · 三层数值验证</span>
+    <button class="copy" data-t="c7">复制</button></div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><h4>Rung1 关联失真</h4><p>朴素差分同时捕获 Z→T 与 Z→Y 的混杂路径，数值被系统性抬高。</p></div>
+    <div class="card"><h4>Rung2 干预恢复</h4><p>阻断后门后 ATE 收敛到真值 +0.500，误差 &lt;2%。</p></div>
+    <div class="card"><h4>Rung3 反事实</h4><p>在个体噪声上反演，给出"若当时做了别的"的个人化估计。</p></div>
+  </div>
+  <p class="footnote">重要边界：本系统检测的是<strong>因果表述的合规性</strong>，不是因果结论的真伪。它能指出"你没有证据支持这个断言"，但不能告诉你"这个因果关系是否真实存在"。</p>
+</div></section>
+
+<!-- 07 TOOLCHAIN (causal-native only) -->
+<section id="tool"><div class="wrap">
+  <span class="eyebrow">07 · Toolchain</span>
+  <h2>AI-Science 工具链</h2>
+  <p class="sub">本项目在工程实践上对照的主流因果工具生态。CausalGuard 以零依赖形式化引擎定位，与下列库互补。</p>
+  <div class="grid g3">
+    <div class="card"><h4>DoWhy</h4><p>微软全流程框架：建模→识别→估计→反驳一站式。</p></div>
+    <div class="card"><h4>CausalNex</h4><p>基于 DAG 的因果推断与贝叶斯网络学习。</p></div>
+    <div class="card"><h4>EconML</h4><p>微软经济计量 ML，专注 CATE 异质处理效应。</p></div>
+    <div class="card"><h4>CausalML</h4><p>树方法 / Meta-Learner  uplift 建模。</p></div>
+    <div class="card"><h4>DoubleML</h4><p>双重机器学习，Neyman 正交 + 交叉拟合。</p></div>
+    <div class="card"><h4>CausalNLP</h4><p>文本因果抽取，对应本项目 S5 语义层思路。</p></div>
+    <div class="card"><h4>Semantic Scholar</h4><p>学术文献检索，辅助因果证据溯源。</p></div>
+    <div class="card"><h4>Elicit</h4><p>AI 文献综述，加速因果研究信源评定。</p></div>
+  </div>
+</div></section>
+
+<!-- 08 LIMITATIONS -->
+<section id="limit"><div class="wrap">
+  <span class="eyebrow">08 · Limitations</span>
+  <h2>局限与诚实边界</h2>
+  <div class="grid g2">
+    <div class="card"><h4>漏检风险</h4><p>谬误检测基于语言模式，存在漏检；接真实 LLM 后 S5 抽取质量显著提升。</p></div>
+    <div class="card"><h4>评测集规模</h4><p>自建且规模小，B2/B3 不足以声称泛化能力。</p></div>
+    <div class="card"><h4>识别覆盖</h4><p>仅后门 + 前门，未实现完整 ID 算法（Shpitser & Pearl 2006）。</p></div>
+    <div class="card"><h4>反事实效率</h4><p>反事实用拒绝采样，高维证据下接受率低。</p></div>
+  </div>
+</div></section>
+
+<!-- OVERFLOW LINKS -->
+<section id="overflow" style="border-bottom:none"><div class="wrap">
+  <span class="eyebrow">Deep Annex</span>
+  <h2>深潜馆入口</h2>
+  <p class="sub">主馆承载概览；方法族与工程实践细节下放到深潜馆。</p>
+  <div class="overflow-links">
+    <a class="ol" href="methodology_sub.html">→ 方法论深潜馆 · 3 大家族 × 12 方法</a>
+    <a class="ol" href="applications_sub.html">→ 应用深潜馆 · CausalGuard 源码剖析 + 基准</a>
+    <a class="ol" href="causality_hub_master.html">⌂ 返回 HUB 总入口</a>
+    <a class="ol" href="causality_s02_academic_ink.html">学术墨蓝主馆</a>
+    <a class="ol" href="causality_s03_glass_sky.html">玻璃天青主馆</a>
+  </div>
+</div></section>
+
+<script>
+  document.querySelectorAll('.copy').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const t=document.getElementById(b.dataset.t).innerText;
+      navigator.clipboard.writeText(t).then(()=>{
+        b.textContent='已复制'; setTimeout(()=>b.textContent='复制',1400);
+      });
+    });
+  });
+</script>
+</body>
+</html>
